@@ -12,8 +12,10 @@ int main() {
         sf::Event event;
 
         while (game.getRenderer()->getWindow().pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
+            if (event.type == sf::Event::Closed){
                 game.getRenderer()->getWindow().close();
+                PLOG_DEBUG<<"Cancel the game!";
+            }
         }
         game.getRenderer()->getWindow().clear();
         game.renderMainMenu();

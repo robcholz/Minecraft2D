@@ -7,6 +7,9 @@
 
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "widget/Widgets.hpp"
+#include "Log.h"
+#include "GameInfo.hpp"
+#include "Init.h"
 
 class Render {
 private:
@@ -20,8 +23,8 @@ public:
         screenHeight = sf::VideoMode::getDesktopMode().height / 2;
         window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
 
-        //TODO:VSYNC is on here
-        window->setVerticalSyncEnabled(true);
+        PLOG_DEBUG << "Initialize the RunCraft main renderer. Parameters: Name: " + windowName + " Size: " +
+                      std::to_string(screenWidth) + "*" + std::to_string(screenHeight);
     }
 
     Render(int screenWidth, int screenHeight, const std::string &windowName) {

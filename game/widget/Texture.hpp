@@ -29,6 +29,8 @@ public:
         if (!texture.loadFromFile(filepath + filename))
             std::cout << "CANNOT load texture from " + filepath + filename << std::endl;
         sprite.setTexture(texture);
+
+        return *this;
     }
 
     Texture &fitToScreen() {

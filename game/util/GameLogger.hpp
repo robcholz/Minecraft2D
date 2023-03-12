@@ -10,6 +10,9 @@
 #include <filesystem>
 #include <iostream>
 #include "FileHelper.hpp"
+#include "Appenders/RollingFileAppender.h"
+#include "Formatters/TxtFormatter.h"
+#include "Appenders/ColorConsoleAppender.h"
 #include <string>
 
 
@@ -17,21 +20,6 @@ class GameLogger {
 private:
     std::string logPath = "../log";
 protected:
-    std::string getLogFileName() {
-        FileHelper fileHelper(logPath);
-        auto filename = fileHelper.getDirectory();
-        if (fileHelper.isDirEmpty() || isdigit(*(filename[0].at(filename->size() - 1).c_str()))) {
-            return getCurrentDate() + "-0";
-        }
-        int maxDigit = atoi((filename[0].at(filename[0].size() - 1)).c_str());
-        for (int i = 0; i < fileHelper.getDirectory()->size(); i++) {
-            if (maxDigit < atoi(&filename->at(i).at(filename->size() - 1))) {
-                maxDigit = atoi(&filename->at(i).at(filename->size() - 1));
-            }
-        }
-        return getCurrentDate() + "-" + std::to_string(maxDigit + 1);
-    }
-
     std::string getCurrentDate() {
         time_t now = time(nullptr);
         tm *t = localtime(&now);
@@ -41,11 +29,46 @@ protected:
 
 public:
     GameLogger() {
+        static plog::RollingFileAppender<plog::TxtFormatter> fileAppender(
+                getLogFileName().c_str(), 8000, 1);
+        static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
+        plog::init(plog::debug, &fileAppender).addAppender(&consoleAppender);
+    }
+
+    GameLogger(const std::string &path) {
+        logPath = path;
         if (!FileHelper::fIsExisted(logPath)) {
             FileHelper::createFolder(logPath);
         }
     }
 
-};
+    std::string getLogFileName() {
+        FileHelper fileHelper(logPath);
+        auto filename = fileHelper.getDirectory();
+        int current_max = 0, max = 0;
+        for (std::string name: *filename) {
+            // get the largest integer in the last pos
+            int count = 0;
+            int index_front = 0;
+            int index_back = 0;
+            for (int i = name.length() - 1; i >= 0; i--) {
+                if (name.at(i) == '-') {
+                    if (count == 0) {
+                        index_front = i;
+                        count++;
+                    }
+                    if ((count == 1) && (i != index_front)) {
+                        index_back = i;
+                        current_max = stoi(name.substr(index_back + 1, index_front));
+                        i = -1;
+                    }
+                }
+            }
+            if (max < current_max)
+                max = current_max;
+        }
+        return logPath + "/" + getCurrentDate() + "-" + std::to_string(max + 1) + "-log" + ".log";
+    }
+}GameLogger;
 
 #endif //RUNCRAFT_GAMELOGGER_HPP

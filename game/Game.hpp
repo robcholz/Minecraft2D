@@ -9,6 +9,8 @@
 #include "widget/Texture.hpp"
 #include "util/utils.hpp"
 #include "widget/Button.hpp"
+#include "GameInfo.hpp"
+#include "Initializers/ConsoleInitializer.h"
 
 class Game {
 private:
@@ -21,23 +23,29 @@ private:
     Texture *backgroundTexture = new Texture("background.png");
     Button *backgroundSinglePlayer{};
     Button *backgroundOptions{};
+
 public:
     explicit Game(const std::string &windowName) {
         renderer = new Render(windowName);
         //backgroundSinglePlayer = new Button("Singleplayer", new sf::Vector2f(100, 100));
         //backgroundOptions = new Button("Options", new sf::Vector2f(200, 200));
+
+        PLOG_DEBUG << "Game started!";
     }
 
     Render *getRenderer() { return renderer; }
 
     void initResource() {
         initAudio();
+        PLOG_DEBUG << "Initialize resources.";
     }
 
     void renderMainMenu() {
         if (backgroundOnce.once()) {
             backgroundTexture->fitToScreen();
             backgroundMusic.playRandomly();
+
+            PLOG_DEBUG<<"Rendered main menu!";
         }
         backgroundTexture->render();
         //backgroundSinglePlayer->render();
@@ -50,6 +58,8 @@ public:
                 .addAudio("beginning")
                 .addAudio("beginning_2")
                 .addAudio("moog_city_2");
+
+        PLOG_DEBUG<<"Initialize audio resources";
     }
 
     [[nodiscard]] unsigned int getScreenWidth() const { return renderer->getWindow().getSize().x; }

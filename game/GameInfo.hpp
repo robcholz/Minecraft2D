@@ -7,18 +7,20 @@
 
 #include "Render.hpp"
 #include "util/GameLogger.hpp"
+#include <Log.h>
+#include "Initializers/RollingFileInitializer.h"
+#include "Appenders/ColorConsoleAppender.h"
 
 class GameInfo {
 private:
     Render *renderInstance;
-    //GameLogger logger;
 public:
-    GameInfo(){
-
-    }
+    GameInfo() = default;
 
     GameInfo &setRenderer(Render *renderer) {
         renderInstance = renderer;
+
+        PLOG_DEBUG<<"Successfully set the renderer";
         return *this;
     }
 

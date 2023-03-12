@@ -35,6 +35,7 @@ public:
     }
 
     std::vector<std::string> *getDirectory() {
+        directories.clear();
         for (const auto &entry: std::filesystem::directory_iterator(directoryPath))
             directories.push_back(entry.path());
         return &directories;
@@ -45,10 +46,10 @@ public:
     }
 
     void createFile(const std::string &filename) {
-        std::ofstream MyFile(directoryPath+"/"+filename);
+        std::ofstream MyFile(directoryPath + "/" + filename);
     }
 
-    bool isDirEmpty(){
+    bool isDirEmpty() {
         return std::filesystem::is_empty(directoryPath);
     }
 };

@@ -12,6 +12,7 @@
 #include <SFML/Audio.hpp>
 #include <cstdlib>
 #include "util/Math_Helper.hpp"
+#include "Log.h"
 
 class Audio {
 protected:
@@ -66,9 +67,9 @@ public:
     AudioList &addAudio(const std::string &filename) {
         auto *soundBuffer = new sf::SoundBuffer;
         if (!soundBuffer->loadFromFile(audioPath + filename + audioFileType)) {
-            std::cout << "CANNOT load .ogg file from the directory " + audioPath + filename + audioFileType
-                      << " check the path again!"
-                      << std::endl;
+
+            PLOG_DEBUG << "CANNOT load .ogg file from the directory " + audioPath + filename + audioFileType
+                      << " check the path again!";
         }
 
         playlist.push_back(new SoundInfo(filename, soundBuffer));
@@ -111,9 +112,13 @@ private:
     sf::SoundBuffer *soundBuffer = nullptr;
 
 public:
-    explicit AudioPlayer(const std::string &filename) {
+    AudioPlayer(const std::string &filename) {
         audioPath = "../resources/sound/" + filename + audioFileType;
     };
+
+    ~AudioPlayer(){
+        delete soundBuffer;
+    }
 
     AudioPlayer &addAudio() {
         soundBuffer = new sf::SoundBuffer;
