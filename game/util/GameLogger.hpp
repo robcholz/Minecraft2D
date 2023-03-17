@@ -57,17 +57,15 @@ protected:
 
 public:
     GameLogger() {
+        if (!FileHelper::fIsExisted(logPath)) {
+            FileHelper::createFolder(logPath);
+        }
+
         static plog::RollingFileAppender<plog::TxtFormatter> fileAppender(
                 getLogFileName().c_str(), 8000, 1);
         static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
         plog::init(plog::debug, &fileAppender).addAppender(&consoleAppender);
-    }
 
-    [[maybe_unused]] explicit GameLogger(const std::string &path) {
-        logPath = path;
-        if (!FileHelper::fIsExisted(logPath)) {
-            FileHelper::createFolder(logPath);
-        }
     }
 
     ~GameLogger() = default;

@@ -10,48 +10,75 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <memory>
 #include "../Game.hpp"
-#include "Widgets.hpp"
+#include "../GameInfo.hpp"
+#include "Widget.hpp"
 
-class Button : public Widgets {
+class Button : public Widget {
 private:
-    Texture button_normal;
-    Texture button_clicked;
-    Texture *button_current_ptr;
-    sf::Text text;
-    bool state;
+    sf::Texture buttonNormal;
+    sf::Texture buttonClicked;
+    sf::RectangleShape *buttonCurrentPtr;
+    sf::Text message;
 
-    std::string button_path = "widgets.png";
+    std::shared_ptr<sf::IntRect> *intRectNormal;
+    std::shared_ptr<sf::IntRect> *intRectClicked;
+    std::shared_ptr<sf::Vector2f> *buttonSize;
+
+    struct size {
+        int width;
+        int height;
+    } size{};
+    bool state;
 
     AudioPlayer *audio_player = new AudioPlayer("effect/gui_button_click");
 public:
-    explicit Button(const std::string &words, sf::Vector2f *location) {
-        button_normal.load(button_path);
-        button_normal.load(button_path);
+    explicit Button(const std::string &words, int width = 200, int height = 20,
+                    sf::Vector2f *position = new sf::Vector2f(0, 0)) {
+        size.width = width;
+        size.height = height;
 
-        button_current_ptr = &button_normal;
+        buttonSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
+
+        buttonCurrentPtr = new sf::RectangleShape(**buttonSize);
+        intRectNormal = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 66, 200, 20));
+        intRectClicked = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 86, 200, 20));
+
+        buttonNormal.loadFromFile(widgetAssetPath, **intRectNormal);
+        buttonClicked.loadFromFile(widgetAssetPath, **intRectClicked);
+
+        buttonCurrentPtr->setTexture(&buttonNormal);
+        buttonCurrentPtr->setScale((float) width / 200, (float) height / 20);
+        buttonCurrentPtr->setPosition(*position);
+
         state = false;
-        button_normal.setPosition(*location);
-        button_clicked.setPosition(*location);
-        text.setString(words);
-        text.setPosition(location->x + 3, location->y + 3);
-        text.setScale(1, 1);
+
+        message.setString(words);
+        message.setPosition(position->x + 3, position->y + 3);
+        message.setScale(1, 1);
     }
 
     ~Button() {
         delete audio_player;
-        delete &text;
-        delete &button_normal;
-        delete &button_clicked;
     }
 
-    void checkClick(sf::Vector2f mousePos) {
-        if (mousePos.x > button_current_ptr->getPosition().x
-            && mousePos.x < (button_current_ptr->getPosition().x + button_current_ptr->getScale().x)) {
-            if (mousePos.y > button_current_ptr->getPosition().y
-                && mousePos.y < (button_current_ptr->getPosition().y + button_current_ptr->getScale().y)) {
-                setState(!state);
-                audio_player->play();
+    void checkClick(sf::Vector2i mousePos, bool pressed_) {
+        if (mousePos.x > buttonCurrentPtr->getPosition().x
+            && mousePos.x < (buttonCurrentPtr->getPosition().x + size.width)) {
+            if (mousePos.y > buttonCurrentPtr->getPosition().y
+                && mousePos.y < (buttonCurrentPtr->getPosition().y + size.height)) {
+                if (pressed_) {
+                    audio_player->play();
+                    std::cout << "Yes" << std::endl;
+                }
+                if (!pressed()) {
+                    setState(!state);
+                }
+            }
+        } else {
+            if (pressed()) {
+                setState(false);
             }
         }
     }
@@ -59,35 +86,42 @@ public:
     void setState(bool which) {
         state = which;
         if (state) {
-            button_current_ptr = &button_clicked;
+            buttonCurrentPtr->setTexture(&buttonClicked);
             return;
         }
-        button_current_ptr = &button_normal;
+        buttonCurrentPtr->setTexture(&buttonNormal);
     }
 
     Button &setScale(float factorX, float factorY) {
-        text.setScale(factorX, factorY);
+        message.setScale(factorX, factorY);
         return *this;
     }
 
     Button &setScale(sf::Vector2f &factors) {
-        text.setScale(factors);
+        message.setScale(factors);
         return *this;
     }
 
     Button &setText(std::string words) {
-        text.setString(words);
+        message.setString(words);
         return *this;
     }
 
-    bool getState() const { return state; }
+    bool pressed() const { return state; }
 
-    sf::Drawable *getRenderAble() override { return button_current_ptr->getRenderAble(); }
+    [[maybe_unused]] struct size getSize() const { return size; }
 
-    sf::String getText() { return text.getString(); }
+    Button *getRenderable(){
+        return this;
+    }
+
+    sf::Drawable *getRenderAble() override { return nullptr; }
+
+    sf::String getText() { return message.getString(); }
 
     void render() override {
         GameInfo.getRender()->render(this);
+        GameInfo.getRender()->render(message);
     }
 };
 

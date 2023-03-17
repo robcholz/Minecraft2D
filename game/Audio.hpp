@@ -18,13 +18,14 @@ class Audio {
 protected:
     // sound player
     sf::Sound sound;
+    sf::SoundBuffer soundBuffer;
     // file path
     std::string audioPath;
     const std::string audioFileType = ".ogg";
 
 public:
     bool isPlaying() {
-        return (sound.getStatus() == sf::SoundSource::Status::Playing);
+        return sound.getStatus() == sf::SoundSource::Status::Playing;
     }
 
     void pause() { sound.pause(); }
@@ -41,20 +42,15 @@ public:
 
 class AudioList : public Audio {
 private:
-    // Sound struct
-    class SoundInfo {
-    public:
-        std::string filename;
-        sf::SoundBuffer *soundBuffer = nullptr;
-
-        SoundInfo(const std::string &filename, sf::SoundBuffer *soundBuffer) {
-            this->filename = filename;
-            this->soundBuffer = soundBuffer;
-        }
-    };
+    sf::SoundBuffer soundBuffer;
 
     // where all the sounds stored here
-    std::vector<SoundInfo *> playlist;
+    std::vector<std::string> playlist;
+
+    void load(int n) {
+        soundBuffer.loadFromFile(audioPath + playlist.at(n) + audioFileType);
+    }
+
 public:
     /**
      * @param folder_path the path of the audio stored in the resources/sound/ directory.
@@ -73,15 +69,10 @@ public:
      * @return AudioList&
      */
     AudioList &addAudio(const std::string &filename) {
-        auto *soundBuffer = new sf::SoundBuffer;
-        if (!soundBuffer->loadFromFile(audioPath + filename + audioFileType)) {
-
-            PLOG_DEBUG << "CANNOT load .ogg file from the directory " + audioPath + filename + audioFileType
-                      << " check the path again!";
-        }
-
-        playlist.push_back(new SoundInfo(filename, soundBuffer));
-        sound.setBuffer(*playlist[0]->soundBuffer);
+        playlist.push_back(filename);
+        sound.setBuffer(soundBuffer);
+        if (playlist.size() == 1)
+            load(0);
         return *this;
     }
 
@@ -90,22 +81,7 @@ public:
      */
     void playRandomly() {
         stop();
-        sound.setBuffer(*(playlist[Random(0, playlist.size())]->soundBuffer));
-        Audio::play();
-    }
-
-    /**
-     * @brief play the nth sound in the list
-     * @param n index of the sound in the list
-     */
-    void play(int n) {
-        stop();
-        if (n < playlist.size()) {
-            sound.setBuffer(*playlist[n]->soundBuffer);
-        } else {
-            std::cout << "IndexOutOfBoundException" << std::endl;
-        }
-
+        load(Random(0, playlist.size()));
         Audio::play();
     }
 
@@ -115,42 +91,37 @@ public:
      */
     void play(const std::string &filename) {
         for (auto &obj: playlist) {
-            if (filename == obj->filename) {
+            if (filename == obj) {
                 stop();
-                sound.setBuffer(*(obj->soundBuffer));
+                soundBuffer.loadFromFile(audioPath + filename + audioFileType);
                 Audio::play();
             }
         }
     }
-
 };
 
 class AudioPlayer : public Audio {
 private:
     std::string filename;
-    sf::SoundBuffer *soundBuffer = nullptr;
-
 public:
     explicit AudioPlayer(const std::string &filename) {
         audioPath = "../resources/sound/" + filename + audioFileType;
+        addAudio();
     };
 
-    ~AudioPlayer(){
-        delete soundBuffer;
-    }
+    ~AudioPlayer() = default;
 
     /**
      * @brief add a single sound
      * @return
      */
     [[maybe_unused]] AudioPlayer &addAudio() {
-        soundBuffer = new sf::SoundBuffer;
-        if (!soundBuffer->loadFromFile(audioPath)) {
+        if (!soundBuffer.loadFromFile(audioPath)) {
             std::cout << "CANNOT load .ogg file from the directory " + audioPath
                       << " check the path again!"
                       << std::endl;
         }
-        sound.setBuffer(*soundBuffer);
+        sound.setBuffer(soundBuffer);
         return *this;
     }
 };

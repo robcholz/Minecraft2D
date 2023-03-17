@@ -358,10 +358,13 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/time.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_timeval64.h \
   /Users/zhangjie/CLionProjects/RunCraft/game/widget/Texture.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/widget/GUI.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/util/utils.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/widget/Button.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Game.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/widget/Widgets.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Render.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h \
   /Users/zhangjie/CLionProjects/RunCraft/game/util/GameLogger.hpp \
@@ -382,14 +385,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/WinApi.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/RollingFileInitializer.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Formatters/CsvFormatter.h \
-  /Users/zhangjie/CLionProjects/RunCraft/game/util/utils.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/widget/Button.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/ConsoleInitializer.h
+  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/ConsoleInitializer.h \
+  /Users/zhangjie/CLionProjects/RunCraft/game/widget/Background.hpp
 
 
-/Users/zhangjie/CLionProjects/RunCraft/game/widget/Button.hpp:
-
-/Users/zhangjie/CLionProjects/RunCraft/game/util/utils.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/game/widget/Background.hpp:
 
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/RollingFileInitializer.h:
 
@@ -411,7 +411,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Users/zhangjie/CLionProjects/RunCraft/game/Render.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/game/widget/Widgets.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/game/util/utils.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/game/widget/Button.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/game/widget/GUI.hpp:
 
 /Users/zhangjie/CLionProjects/RunCraft/game/widget/Texture.hpp:
 
@@ -728,6 +732,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/runetype.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iterator:
+
+/Users/zhangjie/CLionProjects/RunCraft/game/widget/Widget.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__undef_macros:
 

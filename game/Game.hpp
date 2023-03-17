@@ -11,6 +11,7 @@
 #include "widget/Button.hpp"
 #include "GameInfo.hpp"
 #include "Initializers/ConsoleInitializer.h"
+#include "widget/Background.hpp"
 
 class Game {
 private:
@@ -20,9 +21,9 @@ private:
     /*AudioList*/
     AudioList backgroundMusic;
     Once backgroundOnce;
-    Texture *backgroundTexture = new Texture("background.png");
-    Button *backgroundSinglePlayer{};
-    Button *backgroundOptions{};
+    Background *backgroundTexture = new Background("background.png");
+    Button *backgroundSinglePlayer = new Button("hello!", 300, 40, new sf::Vector2f(350, 200));
+    Button *backgroundOptions;
 
 public:
     explicit Game(const std::string &windowName) {
@@ -45,11 +46,11 @@ public:
             backgroundTexture->fitToScreen();
             backgroundMusic.playRandomly();
 
-            PLOG_DEBUG<<"Rendered main menu!";
+            PLOG_DEBUG << "Rendered main menu!";
         }
         backgroundTexture->render();
-        //backgroundSinglePlayer->render();
-        //backgroundOptions->render();
+        backgroundSinglePlayer->render();
+        backgroundOptions->render();
     }
 
     void initAudio() {
@@ -59,7 +60,7 @@ public:
                 .addAudio("beginning_2")
                 .addAudio("moog_city_2");
 
-        PLOG_DEBUG<<"Initialize audio resources";
+        PLOG_DEBUG << "Initialize audio resources";
     }
 
     [[nodiscard]] unsigned int getScreenWidth() const { return renderer->getWindow().getSize().x; }
