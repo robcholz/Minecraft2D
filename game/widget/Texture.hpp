@@ -25,6 +25,8 @@ public:
         sprite.setTexture(texture);
     }
 
+    ~Texture() override =default;
+
     Texture &load(const std::string &filename){
         if (!texture.loadFromFile(filepath + filename))
             std::cout << "CANNOT load texture from " + filepath + filename << std::endl;
@@ -34,8 +36,8 @@ public:
     }
 
     Texture &fitToScreen() {
-        sprite.scale((float) GameInfo.getScreenWidth() / texture.getSize().x,
-                     (float) GameInfo.getScreenHeight() / texture.getSize().y);
+        sprite.scale((float) GameInfo.getScreenWidth() / static_cast<float>(texture.getSize().x),
+                     (float) GameInfo.getScreenHeight() / static_cast<float>(texture.getSize().y));
         return *this;
     }
 

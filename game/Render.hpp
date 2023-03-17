@@ -27,9 +27,9 @@ public:
                       std::to_string(screenWidth) + "*" + std::to_string(screenHeight);
     }
 
-    Render(int screenWidth, int screenHeight, const std::string &windowName) {
-        screenWidth = screenWidth;
-        screenHeight = screenHeight;
+    [[maybe_unused]] Render(int screenWidth, int screenHeight, const std::string &windowName) {
+        this->screenWidth = screenWidth;
+        this->screenHeight = screenHeight;
         window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
     }
 

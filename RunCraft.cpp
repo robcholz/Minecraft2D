@@ -9,7 +9,7 @@ int main() {
     game.initResource();
 
     while (game.getRenderer()->getWindow().isOpen()) {
-        sf::Event event;
+        sf::Event event{};
 
         while (game.getRenderer()->getWindow().pollEvent(event)) {
             if (event.type == sf::Event::Closed){

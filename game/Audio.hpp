@@ -56,6 +56,10 @@ private:
     // where all the sounds stored here
     std::vector<SoundInfo *> playlist;
 public:
+    /**
+     * @param folder_path the path of the audio stored in the resources/sound/ directory.
+     * \n Default is ../resources/sound
+     */
     explicit AudioList(const std::string &folder_path = "../resources/sound/") {
         audioPath = folder_path;
     };
@@ -64,6 +68,10 @@ public:
         std::destroy(playlist.begin(), playlist.end());
     }
 
+    /**
+     * @param filename the name of the .ogg file(doesn't contain file format)
+     * @return AudioList&
+     */
     AudioList &addAudio(const std::string &filename) {
         auto *soundBuffer = new sf::SoundBuffer;
         if (!soundBuffer->loadFromFile(audioPath + filename + audioFileType)) {
@@ -77,12 +85,19 @@ public:
         return *this;
     }
 
+    /**
+     * @brief randomly play a sound from the soundList
+     */
     void playRandomly() {
         stop();
         sound.setBuffer(*(playlist[Random(0, playlist.size())]->soundBuffer));
         Audio::play();
     }
 
+    /**
+     * @brief play the nth sound in the list
+     * @param n index of the sound in the list
+     */
     void play(int n) {
         stop();
         if (n < playlist.size()) {
@@ -94,6 +109,10 @@ public:
         Audio::play();
     }
 
+    /**
+     * @brief play a sound by its name
+     * @param filename sound name
+     */
     void play(const std::string &filename) {
         for (auto &obj: playlist) {
             if (filename == obj->filename) {
@@ -112,7 +131,7 @@ private:
     sf::SoundBuffer *soundBuffer = nullptr;
 
 public:
-    AudioPlayer(const std::string &filename) {
+    explicit AudioPlayer(const std::string &filename) {
         audioPath = "../resources/sound/" + filename + audioFileType;
     };
 
@@ -120,7 +139,11 @@ public:
         delete soundBuffer;
     }
 
-    AudioPlayer &addAudio() {
+    /**
+     * @brief add a single sound
+     * @return
+     */
+    [[maybe_unused]] AudioPlayer &addAudio() {
         soundBuffer = new sf::SoundBuffer;
         if (!soundBuffer->loadFromFile(audioPath)) {
             std::cout << "CANNOT load .ogg file from the directory " + audioPath

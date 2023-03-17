@@ -46,10 +46,10 @@ public:
     }
 
     void checkClick(sf::Vector2f mousePos) {
-        if (mousePos.x > button_current_ptr->getPosition().x &&
-            mousePos.x < (button_current_ptr->getPosition().x + button_current_ptr->getScale().x)) {
-            if (mousePos.y > button_current_ptr->getPosition().y &&
-                mousePos.y < (button_current_ptr->getPosition().y + button_current_ptr->getScale().y)) {
+        if (mousePos.x > button_current_ptr->getPosition().x
+            && mousePos.x < (button_current_ptr->getPosition().x + button_current_ptr->getScale().x)) {
+            if (mousePos.y > button_current_ptr->getPosition().y
+                && mousePos.y < (button_current_ptr->getPosition().y + button_current_ptr->getScale().y)) {
                 setState(!state);
                 audio_player->play();
             }

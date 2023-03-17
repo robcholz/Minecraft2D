@@ -6,6 +6,7 @@
 #define RUNCRAFT_MATH_HELPER_HPP
 
 #include <cmath>
+#include <random>
 
 float Random(int from, int to) {
     return from + (rand() % to);

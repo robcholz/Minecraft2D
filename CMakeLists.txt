@@ -3,7 +3,10 @@ project(RunCraft)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES RunCraft.cpp game/Game.hpp game/util/Math_Helper.hpp game/util/File.hpp game/widget/Button.hpp game/Audio.hpp game/widget/Texture.hpp game/Render.hpp game/widget/Widgets.hpp game/GameInfo.hpp game/util/utils.hpp game/util/GameLogger.hpp game/util/FileHelper.hpp)
+set(SOURCE_FILES RunCraft.cpp game/Game.hpp game/util/Math_Helper.hpp
+        game/util/File.hpp game/widget/Button.hpp game/Audio.hpp
+        game/widget/Texture.hpp game/Render.hpp game/widget/Widgets.hpp
+        game/GameInfo.hpp game/util/utils.hpp game/util/GameLogger.hpp game/util/FileHelper.hpp)
 add_executable(RunCraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)
