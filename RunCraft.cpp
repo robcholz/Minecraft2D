@@ -8,6 +8,9 @@ int main() {
 
     game.initResource();
 
+    std::cout << GameInfo.getScreenWidth() << " " << GameInfo.getScreenHeight() << std::endl;
+
+
     while (game.getRenderer()->getWindow().isOpen()) {
         sf::Event event{};
 
@@ -20,5 +23,7 @@ int main() {
         game.getRenderer()->getWindow().clear();
         game.renderMainMenu();
         game.getRenderer()->getWindow().display();
+        std::cout << sf::Mouse::getPosition(game.getRenderer()->getWindow()).x << " "
+                  << sf::Mouse::getPosition(game.getRenderer()->getWindow()).y << std::endl;
     }
 }

@@ -11,7 +11,7 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio.hpp>
 #include <cstdlib>
-#include "util/Math_Helper.hpp"
+#include "../util/Math_Helper.hpp"
 #include "Log.h"
 
 class Audio {

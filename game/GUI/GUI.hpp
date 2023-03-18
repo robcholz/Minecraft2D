@@ -12,9 +12,7 @@ class GUI {
 protected:
     std::string filePath = "../resources/gui/";
 public:
-    virtual sf::Drawable *getRenderAble() = 0;
-
-    virtual void render() = 0;
+    virtual void render()=0;
 };
 
 #endif //RUNCRAFT_GUI_HPP

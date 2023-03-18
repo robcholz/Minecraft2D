@@ -6,9 +6,8 @@
 #define RUNCRAFT_RENDER_HPP
 
 #include <SFML/Graphics/RenderWindow.hpp>
-#include "widget/Widget.hpp"
 #include "Log.h"
-#include "GameInfo.hpp"
+#include "../GameInfo.hpp"
 #include "Init.h"
 
 class Render {
@@ -42,11 +41,6 @@ public:
     void render(const sf::Drawable &drawable, const sf::RenderStates &states = sf::RenderStates::Default) {
         window->draw(drawable, states);
     }
-
-    void render(Widget *widget) {
-        window->draw(*widget->getRenderAble());
-    }
-
 };
 
 #endif //RUNCRAFT_RENDER_HPP
