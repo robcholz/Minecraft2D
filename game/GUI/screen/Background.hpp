@@ -6,7 +6,7 @@
 #define RUNCRAFT_BACKGROUND_HPP
 
 #include "../../GameInfo.hpp"
-#include "../../Graphics/SingleComponent/Texture.hpp"
+#include "../../Render/SingleComponent/Texture.hpp"
 
 class Background : public Texture {
 public:

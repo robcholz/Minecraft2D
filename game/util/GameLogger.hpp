@@ -61,10 +61,10 @@ public:
             FileHelper::createFolder(logPath);
         }
 
-        static plog::RollingFileAppender<plog::TxtFormatter> fileAppender(
+        static plog::RollingFileAppender<plog::TxtFormatter> file_appender(
                 getLogFileName().c_str(), 8000, 1);
-        static plog::ColorConsoleAppender<plog::TxtFormatter> consoleAppender;
-        plog::init(plog::debug, &fileAppender).addAppender(&consoleAppender);
+        static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
+        plog::init(plog::debug, &file_appender).addAppender(&console_appender);
 
     }
 
@@ -75,12 +75,12 @@ public:
      * @return log name, in format yyyy-mm-dd-index-log.log
      */
     std::string getLogFileName() {
-        FileHelper fileHelper(logPath);
+        FileHelper file_helper(logPath);
         int current_daily_max, daily_max = 0, days_log;
         time_t current_date_obj = time(nullptr);
         tm *date_ptr = localtime(&current_date_obj);
         int current_days = (date_ptr->tm_year + 1900) * 360 + (date_ptr->tm_mon + 1) * 30 + date_ptr->tm_mday;
-        for (std::string name: *fileHelper.getDirectory()) {
+        for (std::string name: *file_helper.getDirectory()) {
             days_log = stoi(name.substr(name.find('-') - 4, 4)) * 360 +
                        stoi(getSplitStr(name, 1, 2)) * 30 +
                        stoi(getSplitStr(name, 2, 3));
@@ -94,6 +94,6 @@ public:
         }
         return logPath + "/" + getCurrentDate() + "-" + std::to_string(daily_max + 1) + "-log" + ".log";
     }
-} GameLogger;
+};
 
 #endif //RUNCRAFT_GAMELOGGER_HPP

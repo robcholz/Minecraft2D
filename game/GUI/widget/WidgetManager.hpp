@@ -5,43 +5,28 @@
 #ifndef RUNCRAFT_WIDGETMANAGER_HPP
 #define RUNCRAFT_WIDGETMANAGER_HPP
 
-#include <vector>
 #include <SFML/Graphics/Transformable.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "../GUI.hpp"
-
-class Widget : public GUI {
-protected:
-    struct RenderAble {
-        sf::Drawable *drawable;
-        sf::Text *text;
-    } renderAble{};
-
-    std::string widgetAssetPath = filePath + "widgets.png";
-public:
-    Widget() = default;
-    virtual RenderAble *getWidgetRenderAble() = 0;
-    virtual void listen(sf::Vector2i mousePos, bool isPressed)=0;
-};
+#include "Widget.hpp"
+#include "ButtonManager.hpp"
 
 class WidgetManager {
 private:
-    std::vector<Widget *> widgetsList;
-
+	ButtonManager *buttonManager;
 public:
-    WidgetManager()=default;
+	WidgetManager() = default;
 
-    WidgetManager &addWidget(Widget *widget) {
-        widgetsList.push_back(widget);
-        return *this;
-    }
+	WidgetManager &addManager(ButtonManager *manager) {
+		buttonManager = manager;
+		return *this;
+	}
 
-    void render(sf::Vector2i mousePosition,bool isPressed){
-        for (auto &widgetObj: widgetsList) {
-            widgetObj->listen(mousePosition, isPressed);
-            widgetObj->render();
-        }
-    }
+	~WidgetManager() = default;
+
+	void listen(sf::Vector2i mousePosition, bool isPressed) {
+		buttonManager->listen(mousePosition, isPressed);
+	}
 };
 
 #endif //RUNCRAFT_WIDGETMANAGER_HPP

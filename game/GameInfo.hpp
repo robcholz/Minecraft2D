@@ -5,7 +5,7 @@
 #ifndef RUNCRAFT_GAMEINFO_HPP
 #define RUNCRAFT_GAMEINFO_HPP
 
-#include "Graphics/Render.hpp"
+#include "Render/Render.hpp"
 #include "util/GameLogger.hpp"
 #include <Log.h>
 #include "Initializers/RollingFileInitializer.h"

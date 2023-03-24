@@ -5,74 +5,91 @@
 #ifndef RUNCRAFT_GAME_HPP
 #define RUNCRAFT_GAME_HPP
 
-#include "Audio/Audio.hpp"
+#include "Sound/Audio.hpp"
 #include "util/utils.hpp"
 #include "GameInfo.hpp"
 #include "Initializers/ConsoleInitializer.h"
 #include "GUI/screen/Background.hpp"
 #include "GUI/widget/Button.hpp"
+#include "GUI/widget/WidgetManager.hpp"
+#include "GUI/widget/ButtonManager.hpp"
 
 class Game {
 private:
-    /*Main Renderer*/
-    Render *renderer;
+	/*Main Renderer*/
+	Render *renderer;
 
-    /*backGround!*/
-    AudioList backgroundMusic;
-    Once backgroundOnce;
-    Background *backgroundTexture = new Background("background.png");
-    Button *backgroundSinglePlayer = new Button("Singleplayer", 200, new sf::Vector2f(600, 400));
-    Button *backgroundOptions = new Button("Options", 200, new sf::Vector2f(800, 600));
-    WidgetManager *backgroundWidgetManager = new WidgetManager;
+	/*backGround!*/
+	AudioList backgroundMusic;
+	Once backgroundOnce;
+	Background *backgroundTexture = new Background("background.png");
+	Button *backgroundSinglePlayer = new Button("Singleplayer", 200, new sf::Vector2f(600, 400));
+	Button *backgroundOptions = new Button("Options", 200, new sf::Vector2f(800, 600));
+	Button *backgroundLanguage = new Button("", 300, new sf::Vector2f(500, 500));
+
+	WidgetManager *backgroundWidgetManager=new WidgetManager;
+	ButtonManager *backgroundButtonManager=new ButtonManager;
 
 public:
-    explicit Game(const std::string &windowName) {
-        renderer = new Render(windowName);
+	explicit Game(const std::string &windowName) {
+		renderer = new Render(windowName);
 
-        PLOG_DEBUG << "Game started!";
-    }
+		PLOG_DEBUG << "Game started!";
+	}
 
-    Render *getRenderer() { return renderer; }
+	~Game() {
+		delete renderer;
+		delete backgroundTexture;
+		delete backgroundSinglePlayer;
+		delete backgroundOptions;
+		delete backgroundLanguage;
+		delete backgroundWidgetManager;
+		delete backgroundButtonManager;
+	}
 
-    void initResource() {
-        initAudio();
-        initWidget();
+	Render *getRenderer() { return renderer; }
 
-        PLOG_DEBUG << "Initialize resources.";
-    }
+	void initResource() {
+		initAudio();
+		initWidget();
 
-    void renderMainMenu() {
-        if (backgroundOnce.once()) {
-            backgroundTexture->fitToScreen();
-            backgroundMusic.playRandomly();
+		PLOG_DEBUG << "Initialize resources.";
+	}
 
-            PLOG_DEBUG << "Rendered main menu!";
-        }
+	void renderMainMenu() {
+		if (backgroundOnce.runOnce()) {
+			backgroundTexture->fitToScreen();
+			backgroundMusic.playRandomly();
 
-        backgroundTexture->render();
-        backgroundWidgetManager->render(sf::Mouse::getPosition(this->getRenderer()->getWindow()),
-                                        sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
-    }
+			PLOG_DEBUG << "Rendered main menu!";
+		}
 
-    void initAudio() {
-        backgroundMusic.addAudio("oxygène")
-                .addAudio("beginning")
-                .addAudio("beginning_2")
-                .addAudio("moog_city_2");
+		backgroundTexture->render();
+		backgroundWidgetManager->listen(sf::Mouse::getPosition(this->getRenderer()->getWindow()),
+		                               sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
+	}
 
-        PLOG_DEBUG << "Initialize audio resources";
-    }
+	void initAudio() {
+		backgroundMusic.addAudio("oxygène")
+				.addAudio("beginning")
+				.addAudio("beginning_2")
+				.addAudio("moog_city_2");
 
-    void initWidget() {
-        backgroundWidgetManager->addWidget(backgroundSinglePlayer)
-                .addWidget(backgroundOptions);
+		PLOG_DEBUG << "Initialize audio resources";
+	}
 
-        PLOG_DEBUG << "Initialize widget components";
-    }
+	void initWidget() {
+		backgroundWidgetManager->addManager(backgroundButtonManager);
+		backgroundButtonManager->addButton(backgroundSinglePlayer)
+				.addButton(backgroundOptions)
+				.addButton(backgroundLanguage);
 
-    [[nodiscard]] unsigned int getScreenWidth() const { return renderer->getWindow().getSize().x; }
+		PLOG_DEBUG << "Initialize widget components";
+	}
 
-    [[nodiscard]] unsigned int getScreenHeight() const { return renderer->getWindow().getSize().y; }
+	[[nodiscard]] unsigned int getScreenWidth() const { return renderer->getWindow().getSize().x; }
+
+	[[nodiscard]] unsigned int getScreenHeight() const { return renderer->getWindow().getSize().y; }
 
 };
 

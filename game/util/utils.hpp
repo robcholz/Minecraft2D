@@ -7,11 +7,11 @@
 
 class Once {
 private:
-    bool _once = true;
+    bool once = true;
 public:
-    bool once() {
-        if (_once) {
-            _once = false;
+    bool runOnce() {
+        if (once) {
+            once = false;
             return true;
         } else {
             return false;

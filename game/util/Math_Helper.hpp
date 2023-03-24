@@ -8,7 +8,7 @@
 #include <cmath>
 #include <random>
 
-float Random(int from, int to) {
+int Random(int from, int to) {
     return from + (rand() % to);
 }
 
@@ -48,7 +48,7 @@ public:
         return result;
     }
 
-    void operator=(const Vector2D &that) {
+    Vector2D &operator=(const Vector2D &that) {
         this->x = that.x;
         this->y = that.y;
     }

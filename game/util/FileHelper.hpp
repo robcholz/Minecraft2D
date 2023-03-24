@@ -16,8 +16,8 @@ private:
 
     std::string directoryPath;
 public:
-    explicit FileHelper(const std::string &directory_path) {
-        directoryPath = directory_path;
+    explicit FileHelper(const std::string &directoryPath) {
+        this->directoryPath = directoryPath;
     }
 
     ~FileHelper()=default;
@@ -43,12 +43,12 @@ public:
         return &directories;
     }
 
-    bool static createFolder(const std::string &folder_name) {
-        return mkdir(folder_name.c_str(), 0777);
+    bool static createFolder(const std::string &folderName) {
+        return mkdir(folderName.c_str(), 0777);
     }
 
     void createFile(const std::string &filename) {
-        std::ofstream MyFile(directoryPath + "/" + filename);
+        std::ofstream my_file(directoryPath + "/" + filename);
     }
 
     bool isDirEmpty() {

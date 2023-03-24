@@ -8,8 +8,8 @@ int main() {
 
     game.initResource();
 
+    //TODO
     std::cout << GameInfo.getScreenWidth() << " " << GameInfo.getScreenHeight() << std::endl;
-
 
     while (game.getRenderer()->getWindow().isOpen()) {
         sf::Event event{};

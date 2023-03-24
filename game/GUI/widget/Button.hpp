@@ -13,112 +13,102 @@
 #include <memory>
 #include "../../Game.hpp"
 #include "../../GameInfo.hpp"
-#include "WidgetManager.hpp"
+#include "Widget.hpp"
 
 class Button : public Widget {
 private:
-    sf::Texture buttonNormal;
-    sf::Texture buttonClicked;
-    sf::Sprite *buttonCurrentPtr;
-    sf::Font font;
-    sf::Text message;
+	sf::Texture buttonNormal;
+	sf::Texture buttonClicked;
+	sf::Sprite *buttonCurrentPtr;
+	sf::Font font;
+	sf::Text message;
 
-    std::shared_ptr<sf::IntRect> *intRectNormal;
-    std::shared_ptr<sf::IntRect> *intRectClicked;
-    std::shared_ptr<sf::Vector2f> *buttonSize;
+	std::shared_ptr<sf::IntRect> *intRectNormal;
+	std::shared_ptr<sf::IntRect> *intRectClicked;
+	std::shared_ptr<sf::Vector2f> *buttonSize;
 
-    int width;
-    const int height=50;
-    bool state = false;
-
-    AudioPlayer *audio_player = new AudioPlayer("effect/gui_button_click");
+	int width;
+	const int height = 50;
+	bool lastState = false, stateChange = false;
 public:
-    explicit Button(const std::string &words, int width = 200, sf::Vector2f *position = new sf::Vector2f(0, 0)) {
-        this->width = width;
+	explicit Button(const std::string &words, int width = 200, sf::Vector2f *position = new sf::Vector2f(0, 0)) {
+		this->width = width;
 
-        buttonSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
+		buttonSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
 
-        buttonCurrentPtr = new sf::Sprite;
-        intRectNormal = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 66, 200, 20));
-        intRectClicked = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 86, 200, 20));
+		buttonCurrentPtr = new sf::Sprite;
+		intRectNormal = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 66, 200, 20));
+		intRectClicked = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 86, 200, 20));
 
-        buttonNormal.loadFromFile(widgetAssetPath, **intRectNormal);
-        buttonClicked.loadFromFile(widgetAssetPath, **intRectClicked);
+		buttonNormal.loadFromFile(widgetAssetPath, **intRectNormal);
+		buttonClicked.loadFromFile(widgetAssetPath, **intRectClicked);
 
-        buttonCurrentPtr->setTexture(buttonNormal, buttonSize);
-        buttonCurrentPtr->setScale((float) width / 200, 1);
-        buttonCurrentPtr->setPosition(*position);
+		buttonCurrentPtr->setTexture(buttonNormal, buttonSize);
+		buttonCurrentPtr->setScale((float) width / 200, 1);
+		buttonCurrentPtr->setPosition(*position);
 
-        font.loadFromFile("../resources/font/runcraft.ttf");
-        //message.setFont(font);
-        message.setString(words);
-        message.setPosition(position->x + (float)this->width / 2 - message.findCharacterPos(0).x, position->y);
-        message.setCharacterSize(50);
+		font.loadFromFile("../resources/font/runcraft.ttf");
+		message.setFont(font);
+		message.setString(words);
+		message.setPosition(position->x + (float) this->width / 2 - message.findCharacterPos(0).x, position->y);
+		message.setCharacterSize(50);
 
-        renderAble.drawable = buttonCurrentPtr;
-        renderAble.text = &message;
-    }
+		renderAble.drawable = buttonCurrentPtr;
+		renderAble.text = &message;
+	}
 
-    ~Button() {
-        delete audio_player;
-    }
+	~Button() = default;
 
-    void listen(sf::Vector2i mousePos, bool isPressed) override {
-        if ((float) mousePos.x > buttonCurrentPtr->getPosition().x
-            && (float) mousePos.x < (buttonCurrentPtr->getPosition().x + (float) width)) {
-            if ((float) mousePos.y > buttonCurrentPtr->getPosition().y
-                && (float) mousePos.y < (buttonCurrentPtr->getPosition().y + (float) height)) {
-                if (isPressed) {
-                    audio_player->play();
-                    std::cout << "Yes" << std::endl;
-                }
-                if (!pressed()) {
-                    setState(!state);
-                }
-            }
-        } else {
-            if (pressed()) {
-                setState(false);
-            }
-        }
-    }
+	void listen(sf::Vector2i mousePos, bool isPressed) override {
+		if ((float) mousePos.x > buttonCurrentPtr->getPosition().x
+		    && (float) mousePos.x < (buttonCurrentPtr->getPosition().x + (float) width)) {
+			if ((float) mousePos.y > buttonCurrentPtr->getPosition().y
+			    && (float) mousePos.y < (buttonCurrentPtr->getPosition().y + (float) height)) {
+				setState(isPressed);
+			}
+		} else { setState(false); }
+	}
 
-    void setState(bool which) {
-        state = which;
-        if (state) {
-            buttonCurrentPtr->setTexture(buttonClicked);
-            return;
-        }
-        buttonCurrentPtr->setTexture(buttonNormal);
-    }
+	void setState(bool state) {
+		if (lastState != state) {
+			stateChange = true;
+			lastState = state;
+			if (lastState) {
+				buttonCurrentPtr->setTexture(buttonClicked);
+				return;
+			} else { buttonCurrentPtr->setTexture(buttonNormal); }
+		} else stateChange = false;
+	}
 
-    Button &setScale(float factorX, float factorY) {
-        message.setScale(factorX, factorY);
-        return *this;
-    }
+	Button &setScale(float factorX, float factorY) {
+		message.setScale(factorX, factorY);
+		return *this;
+	}
 
-    Button &setScale(sf::Vector2f &factors) {
-        message.setScale(factors);
-        return *this;
-    }
+	Button &setScale(sf::Vector2f &factors) {
+		message.setScale(factors);
+		return *this;
+	}
 
-    Button &setText(std::string words) {
-        message.setString(words);
-        return *this;
-    }
+	Button &setText(const std::string &words) {
+		message.setString(words);
+		return *this;
+	}
 
-    bool pressed() const { return state; }
+	bool pressed() const { return lastState; }
 
-    [[maybe_unused]] int getWidth() const { return width; }
+	bool stateChanged() const { return stateChange; }
 
-    void render() override {
-        GameInfo.getRender()->render(*renderAble.drawable);
-        GameInfo.getRender()->render(*renderAble.text);
-    }
+	[[maybe_unused]] int getWidth() const { return width; }
 
-    RenderAble *getWidgetRenderAble() override {
-        return &renderAble;
-    }
+	void render() override {
+		GameInfo.getRender()->render(*renderAble.drawable);
+		GameInfo.getRender()->render(*renderAble.text);
+	}
+
+	RenderAble *getWidgetRenderAble() override {
+		return &renderAble;
+	}
 };
 
 #endif //RUNCRAFT_BUTTON_HPP
