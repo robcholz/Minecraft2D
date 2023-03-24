@@ -389,4 +389,5 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/../GUI.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp

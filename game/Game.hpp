@@ -23,7 +23,7 @@ private:
 	AudioList backgroundMusic;
 	Once backgroundOnce;
 	Background *backgroundTexture = new Background("background.png");
-	Button *backgroundSinglePlayer = new Button("Singleplayer", 200, new sf::Vector2f(600, 400));
+	Button *backgroundSinglePlayer = new Button("Singleplayer", 300, new sf::Vector2f(600, 400));
 	Button *backgroundOptions = new Button("Options", 200, new sf::Vector2f(800, 600));
 	Button *backgroundLanguage = new Button("", 300, new sf::Vector2f(500, 500));
 

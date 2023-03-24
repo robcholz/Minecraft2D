@@ -392,7 +392,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp
 
 
 /Users/zhangjie/CLionProjects/RunCraft/game/Render/SingleComponent/SingleTextureComponent.hpp:
@@ -608,6 +609,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_u_int.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_u_short.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_u_char.h:
 

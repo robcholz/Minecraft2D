@@ -19,7 +19,7 @@ class Button : public Widget {
 private:
 	sf::Texture buttonNormal;
 	sf::Texture buttonClicked;
-	sf::Sprite *buttonCurrentPtr;
+	sf::Sprite *buttonCurrentPtr=new sf::Sprite;
 	sf::Font font;
 	sf::Text message;
 
@@ -36,7 +36,6 @@ public:
 
 		buttonSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
 
-		buttonCurrentPtr = new sf::Sprite;
 		intRectNormal = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 66, 200, 20));
 		intRectClicked = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 86, 200, 20));
 
@@ -44,7 +43,7 @@ public:
 		buttonClicked.loadFromFile(widgetAssetPath, **intRectClicked);
 
 		buttonCurrentPtr->setTexture(buttonNormal, buttonSize);
-		buttonCurrentPtr->setScale((float) width / 200, 1);
+		buttonCurrentPtr->setScale((float) width / 200, (float) width / 200);
 		buttonCurrentPtr->setPosition(*position);
 
 		font.loadFromFile("../resources/font/runcraft.ttf");
@@ -57,7 +56,9 @@ public:
 		renderAble.text = &message;
 	}
 
-	~Button() = default;
+	~Button(){
+		delete buttonCurrentPtr;
+	}
 
 	void listen(sf::Vector2i mousePos, bool isPressed) override {
 		if ((float) mousePos.x > buttonCurrentPtr->getPosition().x

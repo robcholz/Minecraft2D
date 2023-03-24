@@ -95,6 +95,9 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Background.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Button.hpp">
 			<Option target="RunCraft"/>
 		</Unit>

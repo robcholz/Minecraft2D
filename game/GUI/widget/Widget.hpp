@@ -12,16 +12,18 @@
 
 class Widget : public GUI {
 protected:
-    struct RenderAble {
-        sf::Drawable *drawable;
-        sf::Text *text;
-    } renderAble{};
+	struct RenderAble {
+		sf::Drawable *drawable;
+		sf::Text *text;
+	} renderAble{};
 
-    std::string widgetAssetPath = filePath + "widgets.png";
+	std::string widgetAssetPath = filePath + "widgets.png";
 public:
-    Widget() = default;
-    virtual RenderAble *getWidgetRenderAble() = 0;
-    virtual void listen(sf::Vector2i mousePos, bool isPressed)=0;
+	Widget() = default;
+
+	virtual RenderAble *getWidgetRenderAble() = 0;
+
+	virtual void listen(sf::Vector2i mousePos, bool isPressed) = 0;
 };
 
 #endif //RUNCRAFT_WIDGET_HPP
