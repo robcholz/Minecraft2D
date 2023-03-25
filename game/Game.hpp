@@ -16,29 +16,31 @@
 
 class Game {
 private:
-	/*Main Renderer*/
-	Render *renderer;
+	struct game {
+		/*Main Renderer*/
+		Render *renderer;
+	} game{};
 
 	/*backGround!*/
 	AudioList backgroundMusic;
 	Once backgroundOnce;
 	Background *backgroundTexture = new Background("background.png");
-	Button *backgroundSinglePlayer = new Button("Singleplayer", 300, new sf::Vector2f(600, 400));
-	Button *backgroundOptions = new Button("Options", 200, new sf::Vector2f(800, 600));
-	Button *backgroundLanguage = new Button("", 300, new sf::Vector2f(500, 500));
+	Button *backgroundSinglePlayer = new Button("Singleplayer", 600, 80, true, new sf::Vector2i(800-600/2, 400));
+	Button *backgroundOptions = new Button("Options", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 600));
+	Button *backgroundLanguage = new Button("Language", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 500));
 
-	WidgetManager *backgroundWidgetManager=new WidgetManager;
-	ButtonManager *backgroundButtonManager=new ButtonManager;
+	WidgetManager *backgroundWidgetManager = new WidgetManager;
+	ButtonManager *backgroundButtonManager = new ButtonManager;
 
 public:
 	explicit Game(const std::string &windowName) {
-		renderer = new Render(windowName);
+		game.renderer = new Render(windowName);
 
 		PLOG_DEBUG << "Game started!";
 	}
 
 	~Game() {
-		delete renderer;
+		delete game.renderer;
 		delete backgroundTexture;
 		delete backgroundSinglePlayer;
 		delete backgroundOptions;
@@ -47,7 +49,7 @@ public:
 		delete backgroundButtonManager;
 	}
 
-	Render *getRenderer() { return renderer; }
+	Render *getRenderer() const { return game.renderer; }
 
 	void initResource() {
 		initAudio();
@@ -66,7 +68,7 @@ public:
 
 		backgroundTexture->render();
 		backgroundWidgetManager->listen(sf::Mouse::getPosition(this->getRenderer()->getWindow()),
-		                               sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
+		                                sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
 	}
 
 	void initAudio() {
@@ -87,9 +89,9 @@ public:
 		PLOG_DEBUG << "Initialize widget components";
 	}
 
-	[[nodiscard]] unsigned int getScreenWidth() const { return renderer->getWindow().getSize().x; }
+	[[nodiscard]] unsigned int getScreenWidth() const { return game.renderer->getWindow().getSize().x; }
 
-	[[nodiscard]] unsigned int getScreenHeight() const { return renderer->getWindow().getSize().y; }
+	[[nodiscard]] unsigned int getScreenHeight() const { return game.renderer->getWindow().getSize().y; }
 
 };
 

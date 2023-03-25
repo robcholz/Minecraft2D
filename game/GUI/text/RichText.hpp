@@ -205,7 +205,7 @@ public:
 	private:
 		/**
 		 * @brief Get the index of the sf::Text containing the pos'th character.
-		 * \n Also changes pos to the position of the character in the sf::Text.
+		 * \n Also changes pos to the buttonPosition of the character in the sf::Text.
 		 * @param pos
 		 * @return
 		 */
@@ -496,12 +496,13 @@ public:
 
 	/**
 	 * @brief Set font
-	 * @param font
+	 * @param newFont
+	 * @return *this
 	 */
-	void setFont(const sf::Font &newFont) {
+	RichText &setFont(const sf::Font &newFont) {
 		// Maybe skip
 		if (font == &newFont)
-			return;
+			return *this;
 
 		// Update font
 		font = &newFont;
@@ -511,6 +512,7 @@ public:
 			line.setFont(newFont);
 
 		updateGeometry();
+		return *this;
 	}
 
 	/**

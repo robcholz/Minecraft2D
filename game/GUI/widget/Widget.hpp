@@ -6,6 +6,7 @@
 #define RUNCRAFT_WIDGET_HPP
 
 #include "../GUI.hpp"
+#include "../text/RichText.hpp"
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
@@ -14,7 +15,7 @@ class Widget : public GUI {
 protected:
 	struct RenderAble {
 		sf::Drawable *drawable;
-		sf::Text *text;
+		RichText *text;
 	} renderAble{};
 
 	std::string widgetAssetPath = filePath + "widgets.png";

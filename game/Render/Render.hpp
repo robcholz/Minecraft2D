@@ -12,35 +12,36 @@
 
 class Render {
 private:
-    sf::RenderWindow *window;
-    unsigned int screenWidth;
-    unsigned int screenHeight;
+	sf::RenderWindow *window;
+	unsigned int screenWidth;
+	unsigned int screenHeight;
 
 public:
-    explicit Render(const std::string &windowName) {
-        screenWidth = sf::VideoMode::getDesktopMode().height * 8 / 9;
-        screenHeight = sf::VideoMode::getDesktopMode().height / 2;
-        window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
+	explicit Render(const std::string &windowName) {
+		screenWidth = sf::VideoMode::getDesktopMode().height * 8 / 9;
+		screenHeight = sf::VideoMode::getDesktopMode().height / 2;
+		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight),
+		                              windowName);
 
-        PLOG_DEBUG << "Initialize the RunCraft main renderer. Parameters: Name: " + windowName + " Size: " +
-                      std::to_string(screenWidth) + "*" + std::to_string(screenHeight);
-    }
+		PLOG_DEBUG << "Initialize the RunCraft main renderer. Parameters: Name: " + windowName + " Size: " +
+		              std::to_string(screenWidth) + "*" + std::to_string(screenHeight);
+	}
 
-    [[maybe_unused]] Render(int screenWidth, int screenHeight, const std::string &windowName) {
-        this->screenWidth = screenWidth;
-        this->screenHeight = screenHeight;
-        window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
-    }
+	[[maybe_unused]] Render(int screenWidth, int screenHeight, const std::string &windowName) {
+		this->screenWidth = screenWidth;
+		this->screenHeight = screenHeight;
+		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
+	}
 
-    sf::RenderWindow &getWindow() { return *window; }
+	sf::RenderWindow &getWindow() { return *window; }
 
-    [[nodiscard]] unsigned int getScreenWidth() const { return window->getSize().x; }
+	[[nodiscard]] unsigned int getScreenWidth() const { return window->getSize().x; }
 
-    [[nodiscard]] unsigned int getScreenHeight() const { return window->getSize().y; }
+	[[nodiscard]] unsigned int getScreenHeight() const { return window->getSize().y; }
 
-    void render(const sf::Drawable &drawable, const sf::RenderStates &states = sf::RenderStates::Default) {
-        window->draw(drawable, states);
-    }
+	void render(const sf::Drawable &drawable, const sf::RenderStates &states = sf::RenderStates::Default) {
+		window->draw(drawable, states);
+	}
 };
 
 #endif //RUNCRAFT_RENDER_HPP

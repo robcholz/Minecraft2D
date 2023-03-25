@@ -14,26 +14,28 @@
 #include "../../Game.hpp"
 #include "../../GameInfo.hpp"
 #include "Widget.hpp"
+#include "../text/RichText.hpp"
 
 class Button : public Widget {
 private:
 	sf::Texture buttonNormal;
 	sf::Texture buttonClicked;
-	sf::Sprite *buttonCurrentPtr=new sf::Sprite;
+	sf::Sprite *buttonCurrentPtr = new sf::Sprite;
 	sf::Font font;
-	sf::Text message;
+	RichText message;
 
 	std::shared_ptr<sf::IntRect> *intRectNormal;
 	std::shared_ptr<sf::IntRect> *intRectClicked;
+
 	std::shared_ptr<sf::Vector2f> *buttonSize;
-
-	int width;
-	const int height = 50;
+	std::shared_ptr<sf::Vector2i> *buttonPosition;
 	bool lastState = false, stateChange = false;
+	bool visible;
 public:
-	explicit Button(const std::string &words, int width = 200, sf::Vector2f *position = new sf::Vector2f(0, 0)) {
-		this->width = width;
-
+	explicit Button(const std::string &words, int width = 200, int height = 20, bool visible = true,
+	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) {
+		this->visible = visible;
+		buttonPosition = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(position->x, position->y));
 		buttonSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
 
 		intRectNormal = new std::shared_ptr<sf::IntRect>(new sf::IntRect(0, 66, 200, 20));
@@ -41,33 +43,38 @@ public:
 
 		buttonNormal.loadFromFile(widgetAssetPath, **intRectNormal);
 		buttonClicked.loadFromFile(widgetAssetPath, **intRectClicked);
-
-		buttonCurrentPtr->setTexture(buttonNormal, buttonSize);
-		buttonCurrentPtr->setScale((float) width / 200, (float) width / 200);
-		buttonCurrentPtr->setPosition(*position);
-
 		font.loadFromFile("../resources/font/runcraft.ttf");
-		message.setFont(font);
-		message.setString(words);
-		message.setPosition(position->x + (float) this->width / 2 - message.findCharacterPos(0).x, position->y);
-		message.setCharacterSize(50);
+
+		if (visible) {
+			buttonCurrentPtr->setTexture(buttonNormal, buttonSize);
+			buttonCurrentPtr->setScale((float) width / 200, (float) height / 20);
+			buttonCurrentPtr->setPosition((float) buttonPosition->get()->x, (float) buttonPosition->get()->y);
+
+			message.setFont(font).setColor(sf::Color::White).setMessage(words);
+			message.setPosition(
+					(float) buttonPosition->get()->x + buttonSize->get()->x / 2 - message.getGlobalBounds().width,
+					(float) position->y - buttonSize->get()->y / 8 - 1.0f);
+			message.setCharacterSize((int) ((float) height / 80.0f * 64.0f));
+		}
 
 		renderAble.drawable = buttonCurrentPtr;
 		renderAble.text = &message;
 	}
 
-	~Button(){
+	~Button() {
 		delete buttonCurrentPtr;
 	}
 
 	void listen(sf::Vector2i mousePos, bool isPressed) override {
-		if ((float) mousePos.x > buttonCurrentPtr->getPosition().x
-		    && (float) mousePos.x < (buttonCurrentPtr->getPosition().x + (float) width)) {
-			if ((float) mousePos.y > buttonCurrentPtr->getPosition().y
-			    && (float) mousePos.y < (buttonCurrentPtr->getPosition().y + (float) height)) {
-				setState(isPressed);
-			}
-		} else { setState(false); }
+		if (visible) {
+			if ((float) mousePos.x > buttonCurrentPtr->getPosition().x
+			    && (float) mousePos.x < (buttonCurrentPtr->getPosition().x + (float) buttonSize->get()->x)) {
+				if ((float) mousePos.y > buttonCurrentPtr->getPosition().y
+				    && (float) mousePos.y < (buttonCurrentPtr->getPosition().y + (float) buttonSize->get()->y)) {
+					setState(isPressed);
+				}
+			} else { setState(false); }
+		}
 	}
 
 	void setState(bool state) {
@@ -92,7 +99,12 @@ public:
 	}
 
 	Button &setText(const std::string &words) {
-		message.setString(words);
+		message.setMessage(words);
+		return *this;
+	}
+
+	Button &setVisibility(bool visibility) {
+		visible = visibility;
 		return *this;
 	}
 
@@ -100,7 +112,7 @@ public:
 
 	bool stateChanged() const { return stateChange; }
 
-	[[maybe_unused]] int getWidth() const { return width; }
+	[[maybe_unused]] Vector2D<int> *getSize() const { return reinterpret_cast<Vector2D<int> *>(buttonSize->get()); }
 
 	void render() override {
 		GameInfo.getRender()->render(*renderAble.drawable);

@@ -89,10 +89,16 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft.cpp">
 			<Option target="RunCraft"/>
 		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/Events/SystemEvents.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Background.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Settings.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp">
