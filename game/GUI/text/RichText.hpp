@@ -205,7 +205,7 @@ public:
 	private:
 		/**
 		 * @brief Get the index of the sf::Text containing the pos'th character.
-		 * \n Also changes pos to the buttonPosition of the character in the sf::Text.
+		 * \n Also changes pos to the widgetOutlinePosition of the character in the sf::Text.
 		 * @param pos
 		 * @return
 		 */

@@ -1,41 +1,35 @@
 //
-// Created by robcholz on 3/8/23.
+// Created by robcholz on 3/26/23.
 //
 
-#ifndef RUNCRAFT_BUTTON_HPP
-#define RUNCRAFT_BUTTON_HPP
+#ifndef RUNCRAFT_SLIDER_HPP
+#define RUNCRAFT_SLIDER_HPP
 
 #pragma once
 
-#include <SFML/Graphics/Image.hpp>
-#include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include <SFML/Graphics/Texture.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include <memory>
-#include "../../Game.hpp"
-#include "../../GameInfo.hpp"
 #include "Widget.hpp"
-#include "../text/RichText.hpp"
-#include "../screen/Screen.hpp"
+#include "../../GameInfo.hpp"
 
-class Button : public Widget {
+class Slider : public Widget {
 private:
 	RichText message;
 
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
-			new sf::IntRect(0, 66, 200, 20));
-	inline static std::shared_ptr<sf::IntRect> *intRectClicked = new std::shared_ptr<sf::IntRect>(
+			new sf::IntRect(0, 46, 200, 20));
+	inline static std::shared_ptr<sf::IntRect> *intRectActivated = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 86, 200, 20));
+
+	// std::shared_ptr<sf::Vector2i> *sliderPosition;
 public:
-	explicit Button(const std::string &words, int width = 200, int height = 20, bool visible = true,
-	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) {
+	explicit Slider(const std::string &words, int width = 200, int height = 20, bool visible = true,
+	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) : Widget() {
 		this->visible = visible;
 		widgetOutlinePosition = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(position->x, position->y));
 		widgetSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
 
 		widgetNormal.loadFromFile(widgetAssetPath, **intRectNormal);
-		widgetActivated.loadFromFile(widgetAssetPath, **intRectClicked);
+		widgetActivated.loadFromFile(widgetAssetPath, **intRectActivated);
 
 		if (visible) {
 			widgetCurrentPtr->setTexture(widgetNormal, widgetSize);
@@ -52,7 +46,7 @@ public:
 		}
 	}
 
-	~Button() {
+	~Slider() {
 		delete widgetCurrentPtr;
 	}
 
@@ -68,21 +62,6 @@ public:
 		}
 	}
 
-	Button &setScale(float factorX, float factorY) {
-		message.setScale(factorX, factorY);
-		return *this;
-	}
-
-	Button &setScale(sf::Vector2f &factors) {
-		message.setScale(factors);
-		return *this;
-	}
-
-	Button &setText(const std::string &words) {
-		message.setMessage(words);
-		return *this;
-	}
-
 	/*
 	void optionsOnClicked(Screen *screen) {
 
@@ -93,6 +72,7 @@ public:
 		GameInfo.getRender()->render(*widgetCurrentPtr);
 		GameInfo.getRender()->render(message);
 	}
+
 };
 
-#endif //RUNCRAFT_BUTTON_HPP
+#endif //RUNCRAFT_SLIDER_HPP

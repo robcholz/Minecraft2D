@@ -15,20 +15,45 @@
 
 class Widget : public GUI {
 protected:
-	struct RenderAble {
-		sf::Drawable *drawable;
-		RichText *text;
-	} renderAble{};
+	sf::Texture widgetNormal;
+	sf::Texture widgetActivated;
+	sf::Sprite *widgetCurrentPtr = new sf::Sprite;
+	std::shared_ptr<sf::Vector2f> *widgetSize;
+	std::shared_ptr<sf::Vector2i> *widgetOutlinePosition;
 
-	std::string widgetAssetPath = filePath + "widgets.png";
+	inline static sf::Font font;
+	std::string widgetAssetPath = guiFilePath + "widgets.png";
+	std::string fontAssetPath = fontFilePath + "runcraft.ttf";
+
+	bool visible = true;
+	bool lastState = false, stateChange = false;
 public:
-	Widget() = default;
+	explicit Widget() {
+		font.loadFromFile(fontAssetPath);
+		widgetSize = nullptr;
+		widgetOutlinePosition = nullptr;
+	}
 
-	virtual RenderAble *getWidgetRenderAble() = 0;
+	void setState(bool state) {
+		if (lastState != state) {
+			stateChange = true;
+			lastState = state;
+			if (lastState) {
+				widgetCurrentPtr->setTexture(widgetActivated);
+				return;
+			} else { widgetCurrentPtr->setTexture(widgetNormal); }
+		} else stateChange = false;
+	}
 
-	virtual bool pressed() = 0;
+	[[nodiscard]] Vector2D<int> *getSize() const { return reinterpret_cast<Vector2D<int> *>(widgetSize->get()); }
 
-	virtual bool stateChanged() = 0;
+	void setVisibility(bool visibility) {
+		visible = visibility;
+	}
+
+	bool pressed() const { return lastState; }
+
+	bool stateChanged() const { return stateChange; }
 
 	virtual void listen(sf::Vector2i mousePosition, bool isPressed) = 0;
 };

@@ -9,16 +9,23 @@
 
 #include "../widget/WidgetManager.hpp"
 
-class Screen {
+class Screen : public GUI {
 private:
-	Background *background = new Background("options_background.png");
+	Background *background;
+	WidgetManager *widgetManager;
 public:
-	explicit Screen() {
+	explicit Screen(std::string &backgroundTexturePath,WidgetManager *widgetManager) {
+		background = new Background(guiFilePath + backgroundTexturePath);
+		this->widgetManager=widgetManager;
 		background->composeToScreen();
 	}
 
-	Screen &addWidgetManager(WidgetManager *widgetManager) {
-		return *this;
+	~Screen(){delete background;}
+
+	void render() override {
+		background->render();
+		//TODO:
+		//widgetManager->listen();
 	}
 };
 

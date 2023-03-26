@@ -107,6 +107,9 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Button.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Slider.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
