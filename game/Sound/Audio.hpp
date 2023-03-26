@@ -14,6 +14,8 @@
 #include "../util/Math_Helper.hpp"
 #include "Log.h"
 
+#pragma once
+
 class Audio {
 protected:
 	// sound player

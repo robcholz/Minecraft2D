@@ -384,6 +384,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Background.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Render/SingleComponent/Texture.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/list \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Render/SingleComponent/SingleTextureComponent.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Button.hpp \
@@ -392,11 +393,17 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Screen.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Events/SystemEvents.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/Game.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/game/Game.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Settings.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Screen.hpp
 
+
+/Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Settings.hpp:
 
 /Users/zhangjie/CLionProjects/RunCraft/game/Events/SystemEvents.hpp:
 
@@ -553,6 +560,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /usr/local/include/SFML/Graphics/BlendMode.hpp:
 
 /usr/local/include/SFML/System/Utf.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/list:
 
 /usr/local/include/SFML/System/String.hpp:
 
@@ -728,8 +737,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/cwctype:
 
-/Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp:
-
 /usr/local/include/SFML/Window/ContextSettings.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/bit:
@@ -837,6 +844,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Converters/UTF8Converter.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/appleapiopts.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Screen.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_pthread/_pthread_once_t.h:
 

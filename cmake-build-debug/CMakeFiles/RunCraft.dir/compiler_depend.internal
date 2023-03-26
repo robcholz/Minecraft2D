@@ -385,6 +385,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Background.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/Render/SingleComponent/Texture.hpp
+ /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/list
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/Render/SingleComponent/SingleTextureComponent.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Button.hpp
@@ -393,8 +394,12 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Widget.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/text/RichText.hpp
+ /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Screen.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp
- /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/ButtonManager.hpp
+ /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/Events/SystemEvents.hpp
  /Users/zhangjie/CLionProjects/RunCraft/game/Game.hpp
+ /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Settings.hpp
+ /Users/zhangjie/CLionProjects/RunCraft/game/GUI/GUI.hpp
+ /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/Screen.hpp
 

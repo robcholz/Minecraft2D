@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_GAMEINFO_HPP
 #define RUNCRAFT_GAMEINFO_HPP
 
+#pragma once
+
 #include "Render/Render.hpp"
 #include "util/GameLogger.hpp"
 #include <Log.h>

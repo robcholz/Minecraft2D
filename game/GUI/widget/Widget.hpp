@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_WIDGET_HPP
 #define RUNCRAFT_WIDGET_HPP
 
+#pragma once
+
 #include "../GUI.hpp"
 #include "../text/RichText.hpp"
 #include <SFML/Graphics/Text.hpp>
@@ -24,7 +26,11 @@ public:
 
 	virtual RenderAble *getWidgetRenderAble() = 0;
 
-	virtual void listen(sf::Vector2i mousePos, bool isPressed) = 0;
+	virtual bool pressed() = 0;
+
+	virtual bool stateChanged() = 0;
+
+	virtual void listen(sf::Vector2i mousePosition, bool isPressed) = 0;
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

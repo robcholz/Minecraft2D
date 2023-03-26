@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_RENDER_HPP
 #define RUNCRAFT_RENDER_HPP
 
+#pragma once
+
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Log.h"
 #include "../GameInfo.hpp"

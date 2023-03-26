@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_FILE_HPP
 #define RUNCRAFT_FILE_HPP
 
+#pragma once
+
 #include <string>
 #include <utility>
 #include <fstream>

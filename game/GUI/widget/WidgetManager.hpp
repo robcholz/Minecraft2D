@@ -1,31 +1,35 @@
 //
-// Created by robcholz on 3/17/23.
+// Created by robcholz on 3/24/23.
 //
 
 #ifndef RUNCRAFT_WIDGETMANAGER_HPP
 #define RUNCRAFT_WIDGETMANAGER_HPP
 
-#include <SFML/Graphics/Transformable.hpp>
-#include <SFML/Graphics/Text.hpp>
-#include "../GUI.hpp"
-#include "Widget.hpp"
-#include "ButtonManager.hpp"
+#pragma once
+
+#include <vector>
+#include "Button.hpp"
 
 class WidgetManager {
 private:
-	ButtonManager *buttonManager;
+	std::vector<Widget *> widgetsList;
+	AudioPlayer audioPlayer;
 public:
 	WidgetManager() = default;
 
-	WidgetManager &addManager(ButtonManager *manager) {
-		buttonManager = manager;
+	WidgetManager &addWidget(Widget *widget) {
+		widgetsList.push_back(widget);
 		return *this;
 	}
 
 	~WidgetManager() = default;
 
 	void listen(sf::Vector2i mousePosition, bool isPressed) {
-		buttonManager->listen(mousePosition, isPressed);
+		for (auto *button_obj: widgetsList) {
+			button_obj->listen(mousePosition, isPressed);
+			if (button_obj->pressed() && button_obj->stateChanged()) { audioPlayer.play(); }
+			button_obj->render();
+		}
 	}
 };
 

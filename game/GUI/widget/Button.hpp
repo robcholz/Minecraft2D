@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_BUTTON_HPP
 #define RUNCRAFT_BUTTON_HPP
 
+#pragma once
+
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/Sprite.hpp>
@@ -15,6 +17,7 @@
 #include "../../GameInfo.hpp"
 #include "Widget.hpp"
 #include "../text/RichText.hpp"
+#include "../screen/Screen.hpp"
 
 class Button : public Widget {
 private:
@@ -108,11 +111,18 @@ public:
 		return *this;
 	}
 
-	bool pressed() const { return lastState; }
 
-	bool stateChanged() const { return stateChange; }
+	/*
+	void optionsOnClicked(Screen *screen) {
+
+	}
+	 */
 
 	[[maybe_unused]] Vector2D<int> *getSize() const { return reinterpret_cast<Vector2D<int> *>(buttonSize->get()); }
+
+	bool pressed() override { return lastState; }
+
+	bool stateChanged() override { return stateChange; }
 
 	void render() override {
 		GameInfo.getRender()->render(*renderAble.drawable);

@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_GAMELOGGER_HPP
 #define RUNCRAFT_GAMELOGGER_HPP
 
+#pragma once
+
 #include "ctime"
 #include "Logger.h"
 #include <filesystem>

@@ -11,14 +11,16 @@ int main() {
 
     game.initResource();
 
+
     while (game.getRenderer()->getWindow().isOpen()) {
 		game_main_event.listen();
-        game.getRenderer()->getWindow().clear();
+        //game.getRenderer()->getWindow().clear();
         game.renderMainMenu();
-        game.getRenderer()->getWindow().display();
 
+        game.getRenderer()->getWindow().display();
+		/*
 		std::cout << sf::Mouse::getPosition(game.getRenderer()->getWindow()).x << " "
                   << sf::Mouse::getPosition(game.getRenderer()->getWindow()).y << std::endl;
-
+		*/
     }
 }

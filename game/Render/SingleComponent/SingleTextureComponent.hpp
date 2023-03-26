@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_SINGLETEXTURECOMPONENT_HPP
 #define RUNCRAFT_SINGLETEXTURECOMPONENT_HPP
 
+#pragma once
+
 #include <SFML/Graphics/Drawable.hpp>
 #include "../../GUI/GUI.hpp"
 

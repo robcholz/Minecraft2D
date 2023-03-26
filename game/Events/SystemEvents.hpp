@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_SYSTEMEVENTS_HPP
 #define RUNCRAFT_SYSTEMEVENTS_HPP
 
+#pragma once
+
 #include <SFML/Window/Event.hpp>
 #include "../Game.hpp"
 

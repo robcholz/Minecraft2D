@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_UTILS_HPP
 #define RUNCRAFT_UTILS_HPP
 
+#pragma once
+
 class Once {
 private:
     bool once = true;

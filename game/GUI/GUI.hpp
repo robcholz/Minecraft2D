@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_GUI_HPP
 #define RUNCRAFT_GUI_HPP
 
+#pragma once
+
 #include <string>
 #include <SFML/Graphics/Drawable.hpp>
 

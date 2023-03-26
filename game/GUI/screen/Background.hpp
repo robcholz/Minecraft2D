@@ -5,26 +5,49 @@
 #ifndef RUNCRAFT_BACKGROUND_HPP
 #define RUNCRAFT_BACKGROUND_HPP
 
+#pragma once
+
 #include "../../GameInfo.hpp"
 #include "../../Render/SingleComponent/Texture.hpp"
 
 class Background : public Texture {
 public:
-    explicit Background(const std::string &filename) : Texture(filename) {}
+	explicit Background(const std::string &filename) : Texture(filename) {}
 
-    Background &fitToScreen() {
-        sprite.scale((float) GameInfo.getScreenWidth() / static_cast<float>(texture.getSize().x),
-                     (float) GameInfo.getScreenHeight() / static_cast<float>(texture.getSize().y));
-        return *this;
-    }
+	~Background() {
+		textureAtlas.clear();
+	}
 
-    sf::Drawable *getRenderAble() override {
-        return &sprite;
-    }
+	Background &fitToScreen() {
+		textureAtlas.front()->scale((float) GameInfo.getScreenWidth() / static_cast<float>(sourceTexture.getSize().x),
+		                            (float) GameInfo.getScreenHeight() / static_cast<float>(sourceTexture.getSize().y));
+		return *this;
+	}
 
-    void render() override {
-        GameInfo.getRender()->render(sprite);
-    }
+	Background &composeToScreen() {
+		textureAtlas.clear();
+		float scale = roundf((float) GameInfo.getScreenWidth() / 200);
+		int texture_width = (int) ((float) sourceTexture.getSize().x * scale);
+		for (int image_x = 0; image_x < GameInfo.getScreenWidth(); image_x += texture_width) {
+			for (int image_y = 0; image_y < GameInfo.getScreenHeight(); image_y += texture_width) {
+				auto *texture_atlas = new sf::Sprite(sourceTexture);
+				texture_atlas->setScale(scale, scale);
+				texture_atlas->setPosition((float) image_x, (float) image_y);
+				textureAtlas.push_front(texture_atlas);
+			}
+		}
+		return *this;
+	}
+
+	sf::Drawable *getRenderAble() override {
+		return textureAtlas.front();
+	}
+
+	void render() override {
+		for (auto texture_atlas: textureAtlas) {
+			GameInfo.getRender()->render(*texture_atlas);
+		}
+	}
 };
 
 #endif //RUNCRAFT_BACKGROUND_HPP

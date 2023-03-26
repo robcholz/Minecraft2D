@@ -10,6 +10,8 @@
 #include <fstream>
 #include <dirent.h>
 
+#pragma once
+
 class FileHelper {
 private:
     std::vector<std::string> directories;

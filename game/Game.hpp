@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_GAME_HPP
 #define RUNCRAFT_GAME_HPP
 
+#pragma once
+
 #include "Sound/Audio.hpp"
 #include "util/utils.hpp"
 #include "GameInfo.hpp"
@@ -12,7 +14,7 @@
 #include "GUI/screen/Background.hpp"
 #include "GUI/widget/Button.hpp"
 #include "GUI/widget/WidgetManager.hpp"
-#include "GUI/widget/ButtonManager.hpp"
+#include "GUI/widget/WidgetManager.hpp"
 
 class Game {
 private:
@@ -30,7 +32,6 @@ private:
 	Button *backgroundLanguage = new Button("Language", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 500));
 
 	WidgetManager *backgroundWidgetManager = new WidgetManager;
-	ButtonManager *backgroundButtonManager = new ButtonManager;
 
 public:
 	explicit Game(const std::string &windowName) {
@@ -46,7 +47,6 @@ public:
 		delete backgroundOptions;
 		delete backgroundLanguage;
 		delete backgroundWidgetManager;
-		delete backgroundButtonManager;
 	}
 
 	Render *getRenderer() const { return game.renderer; }
@@ -81,10 +81,9 @@ public:
 	}
 
 	void initWidget() {
-		backgroundWidgetManager->addManager(backgroundButtonManager);
-		backgroundButtonManager->addButton(backgroundSinglePlayer)
-				.addButton(backgroundOptions)
-				.addButton(backgroundLanguage);
+		backgroundWidgetManager->addWidget(backgroundSinglePlayer)
+				.addWidget(backgroundOptions)
+				.addWidget(backgroundLanguage);
 
 		PLOG_DEBUG << "Initialize widget components";
 	}

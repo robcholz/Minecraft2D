@@ -5,6 +5,8 @@
 #ifndef RUNCRAFT_MATH_HELPER_HPP
 #define RUNCRAFT_MATH_HELPER_HPP
 
+#pragma once
+
 #include <cmath>
 #include <random>
 
