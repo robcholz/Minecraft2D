@@ -16,6 +16,7 @@ private:
 	sf::Texture widgetNormal;
 	sf::Sprite *sliderBackgroundPtr = new sf::Sprite;
 	RichText message;
+	bool sliderLock = true;
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 46, 200, 20)); // background blur
 	inline static std::shared_ptr<sf::IntRect> *intRectSliderNormal = new std::shared_ptr<sf::IntRect>(
@@ -25,7 +26,8 @@ private:
 	inline static std::shared_ptr<sf::Color> *backgroundMessageColor = new std::shared_ptr<sf::Color>(
 			new sf::Color(220, 220, 220, 255));
 
-	int sliderPosX = 0, sliderPosY = 0;
+	float sliderPosX = 0, sliderPosY = 0;
+	bool isInBackgroundBoundary = false, isInSliderBoundary = false;
 public:
 	explicit Slider(const std::string &words, int width = 200, int height = 20, bool visible = true,
 	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) : Widget() {
@@ -48,7 +50,7 @@ public:
 			                                 (float) widgetOutlinePosition->get()->y);
 
 			widgetCurrentPtr->setTexture(widgetNormal, widgetSize);
-			widgetCurrentPtr->setScale((float) 0.15f, (float) height / 20);
+			widgetCurrentPtr->scale((float) 0.15f, (float) height / 20);
 			widgetCurrentPtr->setPosition((float) sliderPosX, (float) sliderPosY);
 
 			message.setFont(font).setColor(**backgroundMessageColor).setMessage(words);
@@ -69,49 +71,74 @@ public:
 		if (lastState != state) {
 			stateChange = true;
 			lastState = state;
-			if (lastState) {
+			if (activated()) {
 				widgetCurrentPtr->setTexture(widgetActivated);
 				return;
 			} else { widgetCurrentPtr->setTexture(widgetNormal); }
-		} else stateChange = false;
+		} else {
+			stateChange = false;
+		}
 	}
 
-	void sliderUpdatePos(sf::Vector2i mousePos, bool isPressed) {
-		if (isPressed) {
-			if ((mousePos.x > widgetOutlinePosition->get()->x) &&
-			    (mousePos.x < widgetOutlinePosition->get()->x + (int) widgetSize->get()->x -
-			                  (int) widgetCurrentPtr->getGlobalBounds().width)) {
-				sliderPosX = mousePos.x;
-			}
-			widgetCurrentPtr->setPosition((float) sliderPosX, (float) sliderPosY);
+	void cursorBackgroundIntersectionCheck(sf::Vector2i mousePos) {
+		isInBackgroundBoundary = (((float) mousePos.x > sliderBackgroundPtr->getPosition().x
+		                           && (float) mousePos.x <
+		                              (sliderBackgroundPtr->getPosition().x + (float) widgetSize->get()->x))
+		                          && ((float) mousePos.y > sliderBackgroundPtr->getPosition().y &&
+		                              (float) mousePos.y <
+		                              (sliderBackgroundPtr->getPosition().y + (float) widgetSize->get()->y)));
+	}
+
+	bool sliderBoundaryCheck(float x) {
+		return ((sliderBackgroundPtr->getPosition().x < x) &&
+		        (x < sliderBackgroundPtr->getPosition().x + sliderBackgroundPtr->getGlobalBounds().width -
+		             widgetCurrentPtr->getGlobalBounds().width));
+	}
+
+	void cursorSliderIntersectionCheck(sf::Vector2i mousePos) {
+		isInSliderBoundary = (((float) mousePos.x > sliderPosX) &&
+		                      ((float) mousePos.x < sliderPosX + (float) widgetCurrentPtr->getGlobalBounds().width)
+		                      && ((float) mousePos.y > widgetCurrentPtr->getGlobalBounds().top) &&
+		                      ((float) mousePos.y < widgetCurrentPtr->getGlobalBounds().top +
+		                                            widgetCurrentPtr->getGlobalBounds().height));
+	}
+
+	void updatePosition(float x) {
+		if (sliderBoundaryCheck(x)) {
+			sliderPosX = x;
+			widgetCurrentPtr->setPosition(x, (float) sliderPosY);
 		}
 	}
 
 	void listen(sf::Vector2i mousePos, bool isPressed) override {
 		if (visible) {
-			if ((float) mousePos.x > widgetCurrentPtr->getPosition().x
-			    && (float) mousePos.x < (widgetCurrentPtr->getPosition().x + (float) widgetSize->get()->x)) {
-				if ((float) mousePos.y > widgetCurrentPtr->getPosition().y
-				    && (float) mousePos.y < (widgetCurrentPtr->getPosition().y + (float) widgetSize->get()->y)) {
-					sliderUpdatePos(mousePos, isPressed);
-					setState(isPressed);
-				}
-			} else { setState(false); }
+			cursorBackgroundIntersectionCheck(mousePos);
+			cursorSliderIntersectionCheck(mousePos);
+			if (isInSliderBoundary && isPressed || isInBackgroundBoundary && isPressed) { sliderLock = false; }
+			if (!isPressed) { sliderLock = true; }
+			if (!sliderLock) {
+				updatePosition((float) mousePos.x);
+			}
+			setState(!sliderLock);
 		}
 	}
 
-	/*
-	void optionsOnClicked(Screen *screen) {
-
+	unsigned short getValue() {
+		return (unsigned short) (
+				((sliderPosX - sliderBackgroundPtr->getGlobalBounds().left+2) / sliderBackgroundPtr->getPosition().x) * 100.0f);
 	}
-	 */
+
+/*
+void optionsOnClicked(Screen *screen) {
+
+}
+ */
 
 	void render() override {
 		GameInfo.getRender()->render(*sliderBackgroundPtr);
 		GameInfo.getRender()->render(*widgetCurrentPtr);
 		GameInfo.getRender()->render(message);
 	}
-
 };
 
 #endif //RUNCRAFT_SLIDER_HPP

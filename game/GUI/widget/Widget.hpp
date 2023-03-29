@@ -51,7 +51,7 @@ public:
 		visible = visibility;
 	}
 
-	bool pressed() const { return lastState; }
+	bool activated() const { return lastState; }
 
 	bool stateChanged() const { return stateChange; }
 

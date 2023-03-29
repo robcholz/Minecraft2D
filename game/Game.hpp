@@ -31,7 +31,7 @@ private:
 	Button *backgroundSinglePlayer = new Button("Singleplayer", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 400));
 	Button *backgroundOptions = new Button("Options", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 600));
 	Button *backgroundLanguage = new Button("Language", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 500));
-	Slider *slider = new Slider("TestSlider", 400, 80, true, new sf::Vector2i(800 - 600 / 2, 300));
+	Slider *slider = new Slider("TestSlider", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 300));
 	WidgetManager *backgroundWidgetManager = new WidgetManager;
 
 public:

@@ -25,10 +25,10 @@ public:
 	~WidgetManager() = default;
 
 	void listen(sf::Vector2i mousePosition, bool isPressed) {
-		for (auto *button_obj: widgetsList) {
-			button_obj->listen(mousePosition, isPressed);
-			if (button_obj->pressed() && button_obj->stateChanged()) { audioPlayer.play(); }
-			button_obj->render();
+		for (auto *widget_obj: widgetsList) {
+			widget_obj->listen(mousePosition, isPressed);
+			if (widget_obj->activated() && widget_obj->stateChanged()) { audioPlayer.play(); }
+			widget_obj->render();
 		}
 	}
 };
