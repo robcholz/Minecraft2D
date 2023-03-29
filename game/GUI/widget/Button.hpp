@@ -34,11 +34,11 @@ public:
 		widgetOutlinePosition = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(position->x, position->y));
 		widgetSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
 
-		widgetNormal.loadFromFile(widgetAssetPath, **intRectNormal);
+		sliderBackgroundNormal.loadFromFile(widgetAssetPath, **intRectNormal);
 		widgetActivated.loadFromFile(widgetAssetPath, **intRectClicked);
 
 		if (visible) {
-			widgetCurrentPtr->setTexture(widgetNormal, widgetSize);
+			widgetCurrentPtr->setTexture(sliderBackgroundNormal, widgetSize);
 			widgetCurrentPtr->setScale((float) width / 200, (float) height / 20);
 			widgetCurrentPtr->setPosition((float) widgetOutlinePosition->get()->x,
 			                              (float) widgetOutlinePosition->get()->y);

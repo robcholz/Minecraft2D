@@ -15,6 +15,7 @@
 #include "GUI/widget/Button.hpp"
 #include "GUI/widget/WidgetManager.hpp"
 #include "GUI/widget/WidgetManager.hpp"
+#include "GUI/widget/Slider.hpp"
 
 class Game {
 private:
@@ -27,10 +28,10 @@ private:
 	AudioList backgroundMusic;
 	Once backgroundOnce;
 	Background *backgroundTexture = new Background("background.png");
-	Button *backgroundSinglePlayer = new Button("Singleplayer", 600, 80, true, new sf::Vector2i(800-600/2, 400));
+	Button *backgroundSinglePlayer = new Button("Singleplayer", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 400));
 	Button *backgroundOptions = new Button("Options", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 600));
 	Button *backgroundLanguage = new Button("Language", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 500));
-
+	Slider *slider = new Slider("TestSlider", 400, 80, true, new sf::Vector2i(800 - 600 / 2, 300));
 	WidgetManager *backgroundWidgetManager = new WidgetManager;
 
 public:
@@ -83,7 +84,8 @@ public:
 	void initWidget() {
 		backgroundWidgetManager->addWidget(backgroundSinglePlayer)
 				.addWidget(backgroundOptions)
-				.addWidget(backgroundLanguage);
+				.addWidget(backgroundLanguage)
+				.addWidget(slider);
 
 		PLOG_DEBUG << "Initialize widget components";
 	}

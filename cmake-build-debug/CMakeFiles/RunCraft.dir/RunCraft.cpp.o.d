@@ -393,5 +393,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/../screen/Screen.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/screen/../widget/WidgetManager.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/WidgetManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/game/GUI/widget/Slider.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Events/SystemEvents.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/game/Events/../Game.hpp

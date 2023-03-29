@@ -11,7 +11,6 @@ int main() {
 
     game.initResource();
 
-
     while (game.getRenderer()->getWindow().isOpen()) {
 		game_main_event.listen();
         //game.getRenderer()->getWindow().clear();

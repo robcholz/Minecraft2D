@@ -15,7 +15,7 @@
 
 class Widget : public GUI {
 protected:
-	sf::Texture widgetNormal;
+	sf::Texture sliderBackgroundNormal;
 	sf::Texture widgetActivated;
 	sf::Sprite *widgetCurrentPtr = new sf::Sprite;
 	std::shared_ptr<sf::Vector2f> *widgetSize;
@@ -34,14 +34,14 @@ public:
 		widgetOutlinePosition = nullptr;
 	}
 
-	void setState(bool state) {
+	virtual void setState(bool state) {
 		if (lastState != state) {
 			stateChange = true;
 			lastState = state;
 			if (lastState) {
 				widgetCurrentPtr->setTexture(widgetActivated);
 				return;
-			} else { widgetCurrentPtr->setTexture(widgetNormal); }
+			} else { widgetCurrentPtr->setTexture(sliderBackgroundNormal); }
 		} else stateChange = false;
 	}
 
