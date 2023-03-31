@@ -10,47 +10,65 @@
 #include <memory>
 #include "ErrorHandling/ErrorHandling.hpp"
 #include "GameInfo.hpp"
-#include "GUI/widget/WidgetManager.hpp"
 #include "GUI/widget/Button.hpp"
 
-class Screen : public GUI {
+enum ScreenEvent:unsigned char {
+	SCREEN_TRANSFER,
+	SCREEN_NORMAL
+};
+
+class Screen {
 private:
 	Background *background = nullptr;
-	std::shared_ptr<WidgetManager> *widgetManager = nullptr;
-	InputState *inputState = nullptr;
+	std::list<Widget *> widgetsList;
+	InputState *inputStatePtr = nullptr;
 
-	bool isEnabled = false;
+	Screen *callBackScreenPtr = nullptr;
+	Button *callBackButtonPtr = nullptr;
+
+	AudioPlayer audioPlayer;
+	ScreenEvent screenEvent;
 public:
 	explicit Screen(Background *background) {
 		this->background = background;
-		widgetManager = new std::shared_ptr<WidgetManager>(new WidgetManager);
-	}
-
-	explicit Screen(Background *background, WidgetManager *widgetManager) {
-		this->background = background;
-		this->widgetManager = reinterpret_cast<std::shared_ptr<WidgetManager> *>(widgetManager);
-	}
-
-	void enable(bool enable) {isEnabled = enable;}
-
-	void setInputStatePtr(InputState *pInputState) { this->inputState = pInputState; }
-
-	void setCallbackScreenInstance(){
-
-	}
-
-	[[nodiscard]] std::shared_ptr<WidgetManager> *getWidgetManager() const {
-		if (widgetManager != nullptr)return widgetManager;
-		else throw NullPtrException();
 	}
 
 	~Screen() = default;
 
-	void render() override {
-		if(isEnabled){
-			background->render();
-			widgetManager->get()->listen(inputState);
+	Screen &addWidget(Widget *widget) {
+		widgetsList.push_back(widget);
+		return *this;
+	}
+
+	ScreenEvent getScreenEvent() const { return screenEvent; }
+
+	Screen &setCallbackScreen(Screen *callBackScreen, Button *callBackButton) {
+		callBackScreenPtr = callBackScreen;
+		callBackButtonPtr = callBackButton;
+		return *this;
+	}
+
+	Screen *getCallBackScreen() { return callBackScreenPtr; }
+
+	void listen(InputState *inputState) { inputStatePtr = inputState; }
+
+	void render() {
+		background->render();
+		for (auto *widget_obj: widgetsList) {
+			widget_obj->listen(inputStatePtr->mousePosition, inputStatePtr->isPressed);
+			widget_obj->render();
+			if (widget_obj->isClicked() && widget_obj->stateChanged()) {
+				audioPlayer.play();
+				if (callBackButtonPtr->isPressed()) {
+					widget_obj->action();
+					callBackButtonPtr->setState(false);
+					screenEvent=SCREEN_TRANSFER;
+					return;
+				}
+				widget_obj->action();
+			}
 		}
+		screenEvent=SCREEN_NORMAL;
 	}
 };
 

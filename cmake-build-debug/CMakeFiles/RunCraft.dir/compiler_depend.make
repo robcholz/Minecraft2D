@@ -367,9 +367,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/text/RichText.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/cmath \
-  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/Screen.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/ErrorHandling/ErrorHandling.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/WidgetManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/Sound/Audio.hpp \
   /usr/local/include/SFML/Audio/Sound.hpp \
   /usr/local/include/SFML/Audio/Export.hpp \
@@ -392,11 +390,12 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/Math_Helper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/Screen.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/ErrorHandling/ErrorHandling.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/ScreenManager.hpp
 
 
-/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/Screen.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/numeric:
 
@@ -416,7 +415,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /usr/local/include/SFML/Audio/Sound.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/Screen.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp:
 
 /Users/zhangjie/CLionProjects/RunCraft/Minecraft/Render/SingleComponent/SingleTextureComponent.hpp:
 
@@ -935,8 +934,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /usr/local/include/SFML/Audio/SoundSource.hpp:
 
 /usr/local/include/SFML/Audio/Export.hpp:
-
-/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/WidgetManager.hpp:
 
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/ConsoleInitializer.h:
 

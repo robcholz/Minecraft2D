@@ -9,9 +9,7 @@
 
 class NullPtrException : public std::exception {
 public:
-	char *what() {
-		return "NullPointer Exception";
-	}
+
 };
 
 #endif //RUNCRAFT_ERRORHANDLING_HPP

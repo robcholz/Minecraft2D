@@ -117,9 +117,6 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/WidgetManager.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/Render/Render.hpp">
 			<Option target="RunCraft"/>
 		</Unit>

@@ -7,7 +7,7 @@ set(SOURCE_FILES RunCraft.cpp Minecraft/util/Math_Helper.hpp
         Minecraft/util/File.hpp Minecraft/GUI/widget/Button.hpp Minecraft/Sound/Audio.hpp Minecraft/Render/SingleComponent/Texture.hpp
         Minecraft/Render/Render.hpp game/GameInfo.hpp Minecraft/util/utils.hpp Minecraft/util/GameLogger.hpp
         Minecraft/util/FileHelper.hpp Minecraft/GUI/GUI.hpp Minecraft/GUI/screen/Background.hpp
-        Minecraft/Render/SingleComponent/SingleTextureComponent.hpp Minecraft/GUI/widget/WidgetManager.hpp
+        Minecraft/Render/SingleComponent/SingleTextureComponent.hpp
         Minecraft/GUI/text/RichText.hpp Minecraft/GUI/text/RichText.hpp Minecraft/Events/SystemEvents.hpp
         Minecraft/GUI/screen/Screen.hpp Minecraft/GUI/widget/Slider.hpp game/Menu.hpp Minecraft/ErrorHandling/ErrorHandling.hpp Minecraft/GUI/screen/ScreenManager.hpp)
 add_executable(RunCraft ${SOURCE_FILES})

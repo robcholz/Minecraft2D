@@ -5,12 +5,14 @@
 #ifndef RUNCRAFT_SCREENMANAGER_HPP
 #define RUNCRAFT_SCREENMANAGER_HPP
 
-#include <list>
+#include <vector>
 #include "Screen.hpp"
 
-class ScreenManager {
+class ScreenManager : public GUI {
 private:
-	std::list<Screen *> screenList;
+	std::vector<Screen *> screenList;
+	Screen *currentRenderingScreen = nullptr;
+	InputState *inputState = nullptr;
 public:
 	ScreenManager() = default;
 
@@ -19,7 +21,20 @@ public:
 		return *this;
 	}
 
-	void setEntryScreen(Screen *entryScreen) {entryScreen->enable(true); }
+	void setEntryScreen(Screen *entryScreen) {
+		currentRenderingScreen = entryScreen;
+	}
+
+	void setInputStatePtr(InputState *pInputState) { this->inputState = pInputState; }
+
+	void render() override {
+		currentRenderingScreen->listen(inputState);
+		currentRenderingScreen->render();
+		if (currentRenderingScreen->getScreenEvent() == ScreenEvent::SCREEN_TRANSFER) {
+			currentRenderingScreen = currentRenderingScreen->getCallBackScreen();
+		}
+	}
+
 };
 
 #endif //RUNCRAFT_SCREENMANAGER_HPP

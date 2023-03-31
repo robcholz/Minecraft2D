@@ -13,7 +13,6 @@
 #include "Initializers/ConsoleInitializer.h"
 #include "GUI/screen/Background.hpp"
 #include "GUI/widget/Button.hpp"
-#include "GUI/widget/WidgetManager.hpp"
 #include "GUI/widget/Slider.hpp"
 #include "Render/Render.hpp"
 #include "Sound/Audio.hpp"
@@ -29,6 +28,7 @@ private:
 
 	AudioList backgroundMusic;
 	Once backgroundOnce;
+
 	Background *backgroundTexture = new Background("background.png");
 	/*main menu*/
 	Button *backgroundMenuSinglePlayer = new Button("Singleplayer", 600, 80, true,
@@ -38,6 +38,7 @@ private:
 	Button *backgroundMenuQuitGame = new Button("Quit Game", 285, 80, true,
 	                                            new sf::Vector2i(800 - 600 / 2 + 600 - 285, 600));
 	Screen *backgroundMenuScreen = new Screen(backgroundTexture);
+
 	/*settings*/
 	Button *backgroundBiomeSettingSnowyPlains = new Button("Snowy Plains", 285, 80, true,
 	                                                       new sf::Vector2i(800 - 285 / 2, 400));
@@ -47,7 +48,7 @@ private:
 	Button *backgroundBiomeSettingDesert = new Button("Desert", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 500));
 	Button *backgroundBiomeSettingBirchForest = new Button("Birch Forest", 285, 80, true,
 	                                                       new sf::Vector2i(800 - 285 / 2 + 285, 500));
-	Button *backgroundSettingBack = new Button("Back", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 600));
+	Button *backgroundBiomeSettingBack = new Button("Back", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 600));
 	Screen *backgroundBiomeSettingScreen = new Screen(backgroundTexture);
 
 	ScreenManager screenManager;
@@ -79,14 +80,11 @@ public:
 		if (backgroundOnce.runOnce()) {
 			backgroundTexture->fitToScreen();
 			backgroundMusic.playRandomly();
-
 			PLOG_DEBUG << "Rendered main menu!";
 		}
 
-		backgroundMenuScreen->setInputStatePtr(GameInfo.getInputState());
-		backgroundBiomeSettingScreen->setInputStatePtr(GameInfo.getInputState());
-		backgroundBiomeSettingScreen->render();
-		backgroundMenuScreen->render();
+		screenManager.setInputStatePtr(GameInfo.getInputState());
+		screenManager.render();
 	}
 
 	void initAudio() {
@@ -99,26 +97,27 @@ public:
 	}
 
 	void initWidget() {
-		screenManager.addScreen(backgroundMenuScreen)
+		screenManager
+				.addScreen(backgroundMenuScreen)
 				.addScreen(backgroundBiomeSettingScreen)
 				.setEntryScreen(backgroundMenuScreen);
-		backgroundMenuScreen->getWidgetManager()->get()->addWidget(backgroundMenuSinglePlayer)
+		backgroundMenuScreen->setCallbackScreen(backgroundBiomeSettingScreen, backgroundMenuOptions)
 				.addWidget(backgroundMenuOptions)
+				.addWidget(backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuLanguage)
 				.addWidget(backgroundMenuQuitGame);
-		backgroundMenuOptions->actionToExecWhenClicked(backgroundBiomeSettingScreen);
 		backgroundMenuQuitGame->actionToExecWhenClicked([] {
 			PLOG_DEBUG << "Cancel Minecraft!";
 			GameInfo.getRender()->getWindow().close();
 		});
 
-		//backgroundBiomeSettingScreen->enable(true);
-		backgroundBiomeSettingScreen->getWidgetManager()->get()->addWidget(backgroundBiomeSettingSnowyPlains)
+		backgroundBiomeSettingScreen->setCallbackScreen(backgroundMenuScreen, backgroundBiomeSettingBack)
+				.addWidget(backgroundBiomeSettingBack)
+				.addWidget(backgroundBiomeSettingSnowyPlains)
 				.addWidget(backgroundBiomeSettingPlains)
 				.addWidget(backgroundBiomeSettingForest)
 				.addWidget(backgroundBiomeSettingBirchForest)
-				.addWidget(backgroundBiomeSettingDesert)
-				.addWidget(backgroundSettingBack);
+				.addWidget(backgroundBiomeSettingDesert);
 
 		backgroundBiomeSettingSnowyPlains->actionToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::SNOWY_PLAINS; });
@@ -130,7 +129,6 @@ public:
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::BIRCH_FOREST; });
 		backgroundBiomeSettingDesert->actionToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::DESERT; });
-		backgroundSettingBack->actionToExecWhenClicked(backgroundMenuScreen);
 
 		PLOG_DEBUG << "Initialize widget components";
 	}

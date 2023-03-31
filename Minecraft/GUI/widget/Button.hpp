@@ -16,10 +16,12 @@
 #include "GameInfo.hpp"
 #include "Widget.hpp"
 #include "GUI/text/RichText.hpp"
-#include "GUI/screen/Screen.hpp"
 
 class Button : public Widget {
 private:
+	typedef void (*ActionWhenClicked)(void);
+	ActionWhenClicked execFuncPtr = nullptr;
+
 	RichText message;
 
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
@@ -66,6 +68,10 @@ public:
 			} else { setState(false); }
 		}
 	}
+
+	void actionToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
+
+	void action() override { if (execFuncPtr != nullptr)execFuncPtr();}
 
 	Button &setScale(float factorX, float factorY) {
 		message.setScale(factorX, factorY);

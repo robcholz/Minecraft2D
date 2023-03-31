@@ -15,8 +15,6 @@ class Screen; /*fuck circular dependencies*/
 
 class Widget : public GUI {
 protected:
-	typedef void (*ActionWhenClicked)(void);
-
 	sf::Texture sliderBackgroundNormal;
 	sf::Texture widgetActivated;
 	sf::Sprite *widgetCurrentPtr = new sf::Sprite;
@@ -29,8 +27,7 @@ protected:
 
 	bool visible = true;
 	bool lastState = false, stateChange = false, clickState = false;
-
-	ActionWhenClicked execFuncPtr = nullptr;
+	bool pressed = false;
 
 	void setClicked(bool clicked) { clickState = clicked; }
 
@@ -44,6 +41,7 @@ public:
 	}
 
 	virtual void setState(bool state) {
+		pressed = state;
 		setClicked(!lastState && state);
 		if (lastState != state) {
 			stateChange = true;
@@ -57,15 +55,15 @@ public:
 		} else stateChange = false;
 	}
 
-	void setVisibility(bool visibility) {
-		visible = visibility;
-	}
+	void setVisibility(bool visibility) { visible = visibility; }
 
-	void actionToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
+	bool getVisiailibty() const { return visible; }
 
-	void action() { if (execFuncPtr != nullptr)execFuncPtr(); }
+	virtual void action() = 0;
 
 	bool isClicked() const { return clickState; }
+
+	bool isPressed() const { return pressed; }
 
 	virtual void listen(sf::Vector2i mousePosition, bool isPressed) = 0;
 
