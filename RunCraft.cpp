@@ -1,25 +1,21 @@
 #include <SFML/Graphics.hpp>
-#include "game/Game.hpp"
-#include "game/Events/SystemEvents.hpp"
+#include "Minecraft/Events/SystemEvents.hpp"
+#include "game/Menu.hpp"
 
 int main() {
-    Game game("RunCrafts");
-	SystemEvents game_main_event(&game);
-    GameInfo.setRenderer(game.getRenderer());
+	Menu game_menu("RunCrafts");
+	SystemEvents game_main_event(&game_menu);
+	GameInfo.setRenderer(game_menu.getRenderer());
 
-    game.getRenderer()->getWindow().setVerticalSyncEnabled(true);
+	game_menu.getRenderer()->getWindow().setVerticalSyncEnabled(true);
 
-    game.initResource();
-
-    while (game.getRenderer()->getWindow().isOpen()) {
+	while (GameInfo.getRender()->getWindow().isOpen()) {
 		game_main_event.listen();
-        //game.getRenderer()->getWindow().clear();
-        game.renderMainMenu();
+		GameInfo.listen(sf::Mouse::getPosition(GameInfo.getRender()->getWindow()),
+		                sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
 
-        game.getRenderer()->getWindow().display();
-		/*
-		std::cout << sf::Mouse::getPosition(game.getRenderer()->getWindow()).x << " "
-                  << sf::Mouse::getPosition(game.getRenderer()->getWindow()).y << std::endl;
-		*/
-    }
+		game_menu.renderMainMenu();
+
+		GameInfo.getRender()->getWindow().display();
+	}
 }

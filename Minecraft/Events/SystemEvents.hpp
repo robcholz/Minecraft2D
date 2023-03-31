@@ -8,21 +8,21 @@
 #pragma once
 
 #include <SFML/Window/Event.hpp>
-#include "../Game.hpp"
+#include "Menu.hpp"
 
 class SystemEvents {
 private:
-	Game *game = nullptr;
+	Menu *game = nullptr;
 	sf::Event event{};
 public:
-	explicit SystemEvents(Game *game) { this->game = game; }
+	explicit SystemEvents(Menu *game) { this->game = game; }
 
 	void listen() {
 		while (game->getRenderer()->getWindow().pollEvent(event)) {
 			switch (event.type) {
 				case sf::Event::Closed:
 					game->getRenderer()->getWindow().close();
-					PLOG_DEBUG << "Cancel the game!";
+					PLOG_DEBUG << "Cancel the Minecraft!";
 					break;
 				case sf::Event::Resized:
 					break;
@@ -73,7 +73,7 @@ public:
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 				game->getRenderer()->getWindow().close();
-				PLOG_DEBUG << "Cancel the game!";
+				PLOG_DEBUG << "Cancel the Minecraft!";
 			}
 		}
 	}

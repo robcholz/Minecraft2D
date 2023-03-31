@@ -7,14 +7,16 @@
 
 #pragma once
 
-#include "../GUI.hpp"
-#include "../text/RichText.hpp"
+class Screen; /*fuck circular dependencies*/
+
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
 
 class Widget : public GUI {
 protected:
+	typedef void (*ActionWhenClicked)(void);
+
 	sf::Texture sliderBackgroundNormal;
 	sf::Texture widgetActivated;
 	sf::Sprite *widgetCurrentPtr = new sf::Sprite;
@@ -26,7 +28,16 @@ protected:
 	std::string fontAssetPath = fontFilePath + "runcraft.ttf";
 
 	bool visible = true;
-	bool lastState = false, stateChange = false;
+	bool lastState = false, stateChange = false, clickState = false;
+
+	Screen *screenWhenClicked = nullptr;
+
+	ActionWhenClicked execFuncPtr = nullptr;
+
+	void setClicked(bool clicked) { clickState = clicked; }
+
+	bool activated() const { return lastState; }
+
 public:
 	explicit Widget() {
 		font.loadFromFile(fontAssetPath);
@@ -35,27 +46,39 @@ public:
 	}
 
 	virtual void setState(bool state) {
+		setClicked(!lastState && state);
 		if (lastState != state) {
 			stateChange = true;
 			lastState = state;
 			if (lastState) {
 				widgetCurrentPtr->setTexture(widgetActivated);
 				return;
-			} else { widgetCurrentPtr->setTexture(sliderBackgroundNormal); }
+			} else {
+				widgetCurrentPtr->setTexture(sliderBackgroundNormal);
+			}
 		} else stateChange = false;
 	}
-
-	[[nodiscard]] Vector2D<int> *getSize() const { return reinterpret_cast<Vector2D<int> *>(widgetSize->get()); }
 
 	void setVisibility(bool visibility) {
 		visible = visibility;
 	}
 
-	bool activated() const { return lastState; }
+	void actionToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
 
-	bool stateChanged() const { return stateChange; }
+	void actionToExecWhenClicked(Screen *screen) { this->screenWhenClicked = screen; }
+
+	void action() {
+		if (execFuncPtr != nullptr)execFuncPtr();
+		else if (screenWhenClicked != nullptr) {
+
+		}
+	}
+
+	bool isClicked() const { return clickState; }
 
 	virtual void listen(sf::Vector2i mousePosition, bool isPressed) = 0;
+
+	bool stateChanged() const { return stateChange; }
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

@@ -7,12 +7,13 @@
 
 #pragma once
 
-#include <vector>
-#include "Button.hpp"
+#include <list>
+#include "Sound/Audio.hpp"
+#include "GameInfo.hpp"
 
 class WidgetManager {
 private:
-	std::vector<Widget *> widgetsList;
+	std::list<Widget *> widgetsList;
 	AudioPlayer audioPlayer;
 public:
 	WidgetManager() = default;
@@ -24,11 +25,14 @@ public:
 
 	~WidgetManager() = default;
 
-	void listen(sf::Vector2i mousePosition, bool isPressed) {
+	void listen(InputState *inputState) {
 		for (auto *widget_obj: widgetsList) {
-			widget_obj->listen(mousePosition, isPressed);
-			if (widget_obj->activated() && widget_obj->stateChanged()) { audioPlayer.play(); }
+			widget_obj->listen(inputState->mousePosition, inputState->isPressed);
 			widget_obj->render();
+			if (widget_obj->isClicked() && widget_obj->stateChanged()) {
+				audioPlayer.play();
+				widget_obj->action();
+			}
 		}
 	}
 };

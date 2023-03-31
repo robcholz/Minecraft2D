@@ -11,8 +11,7 @@
 #include <SFML/Audio/Sound.hpp>
 #include <SFML/Audio.hpp>
 #include <cstdlib>
-#include "../util/Math_Helper.hpp"
-#include "Log.h"
+#include "util/Math_Helper.hpp"
 
 #pragma once
 

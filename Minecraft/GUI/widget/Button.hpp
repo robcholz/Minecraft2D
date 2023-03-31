@@ -13,11 +13,10 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <memory>
-#include "../../Game.hpp"
-#include "../../GameInfo.hpp"
+#include "GameInfo.hpp"
 #include "Widget.hpp"
-#include "../text/RichText.hpp"
-#include "../screen/Screen.hpp"
+#include "GUI/text/RichText.hpp"
+#include "GUI/screen/Screen.hpp"
 
 class Button : public Widget {
 private:
@@ -82,12 +81,6 @@ public:
 		message.setMessage(words);
 		return *this;
 	}
-
-	/*
-	void optionsOnClicked(Screen *screen) {
-
-	}
-	 */
 
 	void render() override {
 		GameInfo.getRender()->render(*widgetCurrentPtr);

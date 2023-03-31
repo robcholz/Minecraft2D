@@ -9,7 +9,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include "Widget.hpp"
-#include "../../GameInfo.hpp"
+#include "GameInfo.hpp"
 
 class Slider : public Widget {
 private:
@@ -33,8 +33,8 @@ public:
 	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) : Widget() {
 		this->visible = visible;
 		widgetOutlinePosition = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(position->x, position->y));
-		sliderPosX = (int) ((float) position->x * 1.5f);
-		sliderPosY = position->y;
+		sliderPosX = (float) position->x * 1.5f;
+		sliderPosY = (float) position->y;
 		widgetSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
 
 		/*background*/
@@ -125,14 +125,9 @@ public:
 
 	unsigned short getValue() {
 		return (unsigned short) (
-				((sliderPosX - sliderBackgroundPtr->getGlobalBounds().left+2) / sliderBackgroundPtr->getPosition().x) * 100.0f);
+				((sliderPosX - sliderBackgroundPtr->getGlobalBounds().left + 2) /
+				 sliderBackgroundPtr->getPosition().x) * 100.0f);
 	}
-
-/*
-void optionsOnClicked(Screen *screen) {
-
-}
- */
 
 	void render() override {
 		GameInfo.getRender()->render(*sliderBackgroundPtr);
