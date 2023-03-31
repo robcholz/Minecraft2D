@@ -392,7 +392,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/Math_Helper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/ScreenManager.hpp
 
 
 /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp:
@@ -828,6 +829,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/i386/_mcontext.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/machine/_mcontext.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/ScreenManager.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__locale:
 

@@ -30,8 +30,6 @@ protected:
 	bool visible = true;
 	bool lastState = false, stateChange = false, clickState = false;
 
-	Screen *screenWhenClicked = nullptr;
-
 	ActionWhenClicked execFuncPtr = nullptr;
 
 	void setClicked(bool clicked) { clickState = clicked; }
@@ -65,14 +63,7 @@ public:
 
 	void actionToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
 
-	void actionToExecWhenClicked(Screen *screen) { this->screenWhenClicked = screen; }
-
-	void action() {
-		if (execFuncPtr != nullptr)execFuncPtr();
-		else if (screenWhenClicked != nullptr) {
-
-		}
-	}
+	void action() { if (execFuncPtr != nullptr)execFuncPtr(); }
 
 	bool isClicked() const { return clickState; }
 

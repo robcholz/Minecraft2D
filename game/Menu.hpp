@@ -100,8 +100,8 @@ public:
 
 	void initWidget() {
 		screenManager.addScreen(backgroundMenuScreen)
-				.addScreen(backgroundBiomeSettingScreen);
-		//backgroundMenuScreen->enable(true);
+				.addScreen(backgroundBiomeSettingScreen)
+				.setEntryScreen(backgroundMenuScreen);
 		backgroundMenuScreen->getWidgetManager()->get()->addWidget(backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuOptions)
 				.addWidget(backgroundMenuLanguage)

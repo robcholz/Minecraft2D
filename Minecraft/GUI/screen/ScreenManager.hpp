@@ -18,6 +18,8 @@ public:
 		screenList.push_back(screen);
 		return *this;
 	}
+
+	void setEntryScreen(Screen *entryScreen) {entryScreen->enable(true); }
 };
 
 #endif //RUNCRAFT_SCREENMANAGER_HPP

@@ -389,4 +389,5 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/Math_Helper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/ScreenManager.hpp

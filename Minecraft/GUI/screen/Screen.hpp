@@ -11,6 +11,7 @@
 #include "ErrorHandling/ErrorHandling.hpp"
 #include "GameInfo.hpp"
 #include "GUI/widget/WidgetManager.hpp"
+#include "GUI/widget/Button.hpp"
 
 class Screen : public GUI {
 private:
@@ -33,6 +34,10 @@ public:
 	void enable(bool enable) {isEnabled = enable;}
 
 	void setInputStatePtr(InputState *pInputState) { this->inputState = pInputState; }
+
+	void setCallbackScreenInstance(){
+
+	}
 
 	[[nodiscard]] std::shared_ptr<WidgetManager> *getWidgetManager() const {
 		if (widgetManager != nullptr)return widgetManager;
