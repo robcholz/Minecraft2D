@@ -12,32 +12,29 @@ class Screen; /*fuck circular dependencies*/
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
+#include "util/Math_Helper.hpp"
 
 class Widget : public GUI {
 protected:
 	sf::Texture sliderBackgroundNormal;
 	sf::Texture widgetActivated;
 	sf::Sprite *widgetCurrentPtr = new sf::Sprite;
-	std::shared_ptr<sf::Vector2f> *widgetSize;
-	std::shared_ptr<sf::Vector2i> *widgetOutlinePosition;
+	std::shared_ptr<sf::Vector2i> *widgetSize;
+	Areai widgetOutline{};
 
 	inline static sf::Font font;
 	std::string widgetAssetPath = guiFilePath + "widgets.png";
 	std::string fontAssetPath = fontFilePath + "runcraft.ttf";
 
 	bool visible = true;
-	bool lastState = false, stateChange = false, clickState = false;
-	bool pressed = false;
+	bool lastState = false, stateChange = false, clickState = false, pressed = false;
 
 	void setClicked(bool clicked) { clickState = clicked; }
-
-	bool activated() const { return lastState; }
 
 public:
 	explicit Widget() {
 		font.loadFromFile(fontAssetPath);
 		widgetSize = nullptr;
-		widgetOutlinePosition = nullptr;
 	}
 
 	virtual void setState(bool state) {
@@ -55,11 +52,22 @@ public:
 		} else stateChange = false;
 	}
 
+	bool static checkVectorBoundary(sf::Vector2i vector, sf::IntRect area) {
+		return ((vector.x > area.left && vector.x < area.left + area.width) &&
+		        (vector.y > area.top - area.height && vector.y < area.height));
+	}
+
+	bool static checkVectorBoundary(int x, int y, int left, int top, int width, int height) {
+		return ((x > left && x < left + width) && (y > top && y < top + height));
+	}
+
 	void setVisibility(bool visibility) { visible = visibility; }
 
 	bool getVisiailibty() const { return visible; }
 
 	virtual void action() = 0;
+
+	bool activated() const { return lastState; }
 
 	bool isClicked() const { return clickState; }
 

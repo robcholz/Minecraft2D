@@ -29,32 +29,30 @@ private:
 	AudioList backgroundMusic;
 	Once backgroundOnce;
 
-	Background *backgroundTexture = new Background("background.png");
 	/*main menu*/
-	Button *backgroundMenuSinglePlayer = new Button("Singleplayer", 600, 80, true,
-	                                                new sf::Vector2i(800 - 600 / 2, 400));
-	Button *backgroundMenuOptions = new Button("Options", 600, 80, true, new sf::Vector2i(800 - 600 / 2, 500));
-	Button *backgroundMenuLanguage = new Button("Language", 285, 80, true, new sf::Vector2i(800 - 600 / 2, 600));
-	Button *backgroundMenuQuitGame = new Button("Quit Game", 285, 80, true,
-	                                            new sf::Vector2i(800 - 600 / 2 + 600 - 285, 600));
+	Button *backgroundMenuSinglePlayer = new Button("Singleplayer", 800, 80, true, new sf::Vector2i(800 - 800 / 2, 400));
+	Button *backgroundMenuOptions = new Button("Options", 800, 80, true, new sf::Vector2i(800 - 800 / 2, 500));
+	Button *backgroundMenuLanguage = new Button("Language", 380, 80, true, new sf::Vector2i(800 - 800 / 2, 650));
+	Button *backgroundMenuQuitGame = new Button("Quit Game", 380, 80, true, new sf::Vector2i(800 + 800 / 2 - 380, 650));
+	Background *backgroundTexture = new Background("background.png");
 	Screen *backgroundMenuScreen = new Screen(backgroundTexture);
 
 	/*settings*/
-	Button *backgroundBiomeSettingSnowyPlains = new Button("Snowy Plains", 285, 80, true,
-	                                                       new sf::Vector2i(800 - 285 / 2, 400));
-	Button *backgroundBiomeSettingPlains = new Button("Plains", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 400));
-	Button *backgroundBiomeSettingForest = new Button("Forest", 285, 80, true,
-	                                                  new sf::Vector2i(800 - 285 / 2 + 285, 400));
-	Button *backgroundBiomeSettingDesert = new Button("Desert", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 500));
-	Button *backgroundBiomeSettingBirchForest = new Button("Birch Forest", 285, 80, true,
-	                                                       new sf::Vector2i(800 - 285 / 2 + 285, 500));
-	Button *backgroundBiomeSettingBack = new Button("Back", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 600));
+	Button *backgroundSettingBiomeSnowyPlains = new Button("Snowy Plains", 590, 80, true, new sf::Vector2i(800 - 1200 / 2, 400));
+	Button *backgroundSettingBiomePlains = new Button("Plains", 590, 80, true, new sf::Vector2i(800 + 1200 / 2 - 590, 400));
+	Button *backgroundSettingBiomeForest = new Button("Forest", 590, 80, true, new sf::Vector2i(800 - 1200 / 2, 500));
+	Button *backgroundSettingBiomeDesert = new Button("Desert", 590, 80, true, new sf::Vector2i(800 + 1200 / 2 - 590, 500));
+	Button *backgroundSettingBiomeBirchForest = new Button("Birch Forest", 590, 80, true, new sf::Vector2i(800 - 1200 / 2, 600));
+	Button *backgroundSettingBiomeJungle = new Button("Jungle", 590, 80, true, new sf::Vector2i(800 + 1200 / 2 - 590, 600));
+	Button *backgroundSettingBack = new Button("Done", 780, 80, true, new sf::Vector2i(800 - 780 / 2, 750));
+	Slider *backgroundSettingVolumeSlider = new Slider("Sound Volume", 1200, 80, true, new sf::Vector2i(800 - 1200 / 2, 200));
 	Screen *backgroundBiomeSettingScreen = new Screen(backgroundTexture);
 
 	/*singleplayer setting page*/
-	Button *singleplayerSettingBack=new Button("Back", 300, 80, true, new sf::Vector2i(800 - 300 / 2, 800));
-	Background *singleplayerSettingBackground=new Background("options_background.png");
-	Screen *singleplayerSettingScreen=new Screen(singleplayerSettingBackground);
+	Button *singleplayerSettingBack = new Button("Done", 300, 80, true, new sf::Vector2i(800 - 300 / 2, 800));
+	Background *singleplayerSettingBackground = new Background("options_background.png");
+	Screen *singleplayerSettingScreen = new Screen(singleplayerSettingBackground);
+
 	ScreenManager screenManager;
 public:
 	explicit Menu(const std::string &windowName) {
@@ -108,37 +106,41 @@ public:
 				.addScreen(singleplayerSettingScreen)
 				.setEntry(backgroundMenuScreen);
 		backgroundMenuScreen->addCallbackScreen(backgroundBiomeSettingScreen, backgroundMenuOptions)
-				.addCallbackScreen(singleplayerSettingScreen,backgroundMenuSinglePlayer)
+				.addCallbackScreen(singleplayerSettingScreen, backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuOptions)
 				.addWidget(backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuLanguage)
 				.addWidget(backgroundMenuQuitGame);
-		backgroundMenuQuitGame->actionToExecWhenClicked([] {
+		backgroundMenuQuitGame->actionsToExecWhenClicked([] {
 			PLOG_DEBUG << "Cancel RunCraft!";
 			GameInfo.getRender()->getWindow().close();
 		});
 
 		singleplayerSettingScreen->addCallbackScreen(backgroundMenuScreen, singleplayerSettingBack)
-			.addWidget(singleplayerSettingBack);
+				.addWidget(singleplayerSettingBack);
 
-		backgroundBiomeSettingScreen->addCallbackScreen(backgroundMenuScreen, backgroundBiomeSettingBack)
-				.addWidget(backgroundBiomeSettingBack)
-				.addWidget(backgroundBiomeSettingSnowyPlains)
-				.addWidget(backgroundBiomeSettingPlains)
-				.addWidget(backgroundBiomeSettingForest)
-				.addWidget(backgroundBiomeSettingBirchForest)
-				.addWidget(backgroundBiomeSettingDesert);
+		backgroundBiomeSettingScreen->addCallbackScreen(backgroundMenuScreen, backgroundSettingBack)
+				.addWidget(backgroundSettingBack)
+				.addWidget(backgroundSettingBiomeSnowyPlains)
+				.addWidget(backgroundSettingBiomePlains)
+				.addWidget(backgroundSettingBiomeForest)
+				.addWidget(backgroundSettingBiomeBirchForest)
+				.addWidget(backgroundSettingBiomeDesert)
+				.addWidget(backgroundSettingBiomeJungle)
+				.addWidget(backgroundSettingVolumeSlider);
 
-		backgroundBiomeSettingSnowyPlains->actionToExecWhenClicked(
+		backgroundSettingBiomeSnowyPlains->actionsToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::SNOWY_PLAINS; });
-		backgroundBiomeSettingPlains->actionToExecWhenClicked(
+		backgroundSettingBiomePlains->actionsToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::PLAINS; });
-		backgroundBiomeSettingForest->actionToExecWhenClicked(
+		backgroundSettingBiomeForest->actionsToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::FOREST; });
-		backgroundBiomeSettingBirchForest->actionToExecWhenClicked(
+		backgroundSettingBiomeBirchForest->actionsToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::BIRCH_FOREST; });
-		backgroundBiomeSettingDesert->actionToExecWhenClicked(
+		backgroundSettingBiomeDesert->actionsToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::DESERT; });
+		backgroundSettingBiomeJungle->actionsToExecWhenClicked(
+				[] { GameInfo.getGameGlobalData()->biome = game_data::JUNGLE; });
 
 		PLOG_DEBUG << "Initialize widget components";
 	}

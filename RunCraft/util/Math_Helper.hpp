@@ -14,6 +14,19 @@ int Random(int from, int to) {
 	return from + (rand() % to);
 }
 
+template<typename vT>
+struct Area {
+	vT x, y;
+	vT width, height;
+};
+typedef Area<int> Areai;
+
+template<typename vT>
+struct Interval {
+	vT lower, upper;
+};
+typedef Interval<int> Intervali;
+
 template<typename vT=double>
 class Vector2D {
 private:

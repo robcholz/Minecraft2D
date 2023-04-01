@@ -3,8 +3,8 @@
 // Credits: https://github.com/skyrpex/RichText
 //
 
-#ifndef RUNCRAFT_RICHTEXT_HPP
-#define RUNCRAFT_RICHTEXT_HPP
+#ifndef RUNCRAFT_TEXT_HPP
+#define RUNCRAFT_TEXT_HPP
 
 #pragma once
 
@@ -44,7 +44,7 @@ struct Outline {
 	float thickness = 0.f;
 };
 
-class RichText : public sf::Drawable, public sf::Transformable {
+class Text : public sf::Drawable, public sf::Transformable {
 
 public:
 	/**
@@ -302,7 +302,7 @@ private:
 	 * @brief Delegate constructor
 	 * @param font
 	 */
-	explicit RichText(const sf::Font *font)
+	explicit Text(const sf::Font *font)
 			: font(font),
 			  characterSize(30),
 			  currentStroke{sf::Color::White, sf::Color::Transparent},
@@ -343,32 +343,32 @@ private:
 	}
 
 public:
-	RichText() : RichText(nullptr) {}
+	Text() : Text(nullptr) {}
 
-	explicit RichText(const sf::Font &font) : RichText(&font) {}
+	explicit Text(const sf::Font &font) : Text(&font) {}
 
-	RichText &setStroke(const TextStroke &stroke){
+	Text &setStroke(const TextStroke &stroke){
 		currentStroke = stroke;
 		return *this;
 	}
 
-	RichText &setOutline(const Outline &outline) {
+	Text &setOutline(const Outline &outline) {
 		currentStroke.outline = outline.outline;
 		currentStroke.thickness = outline.thickness;
 		return *this;
 	}
 
-	RichText &setColor(const sf::Color &color) {
+	Text &setColor(const sf::Color &color) {
 		currentStroke.fill = color;
 		return *this;
 	}
 
-	RichText &setStyle(sf::Text::Style style) {
+	Text &setStyle(sf::Text::Style style) {
 		currentStyle = style;
 		return *this;
 	}
 
-	RichText &setMessage(const sf::String &string) {
+	Text &setMessage(const sf::String &string) {
 		// Maybe skip
 		if (string.isEmpty())
 			return *this;
@@ -479,10 +479,10 @@ public:
 	 * @brief Set character size
 	 * @param size
 	 */
-	void setCharacterSize(unsigned int size) {
+	Text &setCharacterSize(unsigned int size) {
 		// Maybe skip
 		if (characterSize == size)
-			return;
+			return *this;
 
 		// Update character size
 		characterSize = size;
@@ -492,6 +492,7 @@ public:
 			line.setCharacterSize(size);
 
 		updateGeometry();
+		return *this;
 	}
 
 	/**
@@ -499,7 +500,7 @@ public:
 	 * @param newFont
 	 * @return *this
 	 */
-	RichText &setFont(const sf::Font &newFont) {
+	Text &setFont(const sf::Font &newFont) {
 		// Maybe skip
 		if (font == &newFont)
 			return *this;
@@ -592,4 +593,4 @@ public:
 	sf::FloatRect getGlobalBounds() const { return getTransform().transformRect(getLocalBounds()); }
 };
 
-#endif //RUNCRAFT_RICHTEXT_HPP
+#endif //RUNCRAFT_TEXT_HPP

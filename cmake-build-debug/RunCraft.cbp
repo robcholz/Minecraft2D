@@ -111,7 +111,7 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp">
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/Text.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp">

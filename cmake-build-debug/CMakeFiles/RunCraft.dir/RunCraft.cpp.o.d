@@ -362,8 +362,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/SingleTextureComponent.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Widget.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/Math_Helper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/cmath \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/random \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/Text.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp \
   /usr/local/include/SFML/Audio/Sound.hpp \
@@ -384,9 +387,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /usr/local/include/SFML/Audio/SoundFileFactory.inl \
   /usr/local/include/SFML/Audio/SoundFileReader.hpp \
   /usr/local/include/SFML/Audio/SoundFileWriter.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/Math_Helper.hpp \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/random \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp

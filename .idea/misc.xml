@@ -9,5 +9,9 @@
     <libraryRoots>
       <file path="$PROJECT_DIR$/include" />
     </libraryRoots>
+    <excludeRoots>
+      <file path="$PROJECT_DIR$/log" />
+      <file path="$PROJECT_DIR$/resources" />
+    </excludeRoots>
   </component>
 </project>

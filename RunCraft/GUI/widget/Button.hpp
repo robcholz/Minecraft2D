@@ -15,42 +15,41 @@
 #include <memory>
 #include "GameInfo.hpp"
 #include "Widget.hpp"
-#include "GUI/text/RichText.hpp"
+#include "GUI/text/Text.hpp"
 
 class Button : public Widget {
 private:
 	typedef void (*ActionWhenClicked)(void);
+
 	ActionWhenClicked execFuncPtr = nullptr;
 
-	RichText message;
+	Text message;
 
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 66, 200, 20));
 	inline static std::shared_ptr<sf::IntRect> *intRectClicked = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 86, 200, 20));
 public:
-	explicit Button(const std::string &words, int width = 200, int height = 20, bool visible = true,
+	explicit Button(const std::string &words, int width = 400, int height = 80, bool visible = true,
 	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) {
 		this->visible = visible;
-		widgetOutlinePosition = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(position->x, position->y));
-		widgetSize = new std::shared_ptr<sf::Vector2f>(new sf::Vector2f((float) width, (float) height));
+		widgetOutline.x = (float) position->x;
+		widgetOutline.y = (float) position->y;
+		widgetOutline.width = (float) width;
+		widgetOutline.height = (float) height;
+		widgetSize = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(width, height));
 
 		sliderBackgroundNormal.loadFromFile(widgetAssetPath, **intRectNormal);
 		widgetActivated.loadFromFile(widgetAssetPath, **intRectClicked);
 
-		if (visible) {
-			widgetCurrentPtr->setTexture(sliderBackgroundNormal, widgetSize);
-			widgetCurrentPtr->setScale((float) width / 200, (float) height / 20);
-			widgetCurrentPtr->setPosition((float) widgetOutlinePosition->get()->x,
-			                              (float) widgetOutlinePosition->get()->y);
+		widgetCurrentPtr->setTexture(sliderBackgroundNormal, widgetSize);
+		widgetCurrentPtr->setScale((float) width / 200, (float) height / 20);
+		widgetCurrentPtr->setPosition(widgetOutline.x, widgetOutline.y);
 
-			message.setFont(font).setColor(sf::Color::White).setMessage(words);
-			message.setPosition(
-					(float) widgetOutlinePosition->get()->x + widgetSize->get()->x / 2 -
-					message.getGlobalBounds().width,
-					(float) position->y - widgetSize->get()->y / 8 - 1.0f);
-			message.setCharacterSize((int) ((float) height / 80.0f * 64.0f));
-		}
+		message.setFont(font).setColor(sf::Color::White).setMessage(words)
+				.setPosition(widgetOutline.x + widgetOutline.width / 2 - message.getGlobalBounds().width,
+				             widgetOutline.y - widgetOutline.height / 8 - 1.0f);
+		message.setCharacterSize((int) (widgetOutline.height / 80.0f * 64.0f));
 	}
 
 	~Button() {
@@ -59,19 +58,19 @@ public:
 
 	void listen(sf::Vector2i mousePos, bool isPressed) override {
 		if (visible) {
-			if ((float) mousePos.x > widgetCurrentPtr->getPosition().x
-			    && (float) mousePos.x < (widgetCurrentPtr->getPosition().x + (float) widgetSize->get()->x)) {
-				if ((float) mousePos.y > widgetCurrentPtr->getPosition().y
-				    && (float) mousePos.y < (widgetCurrentPtr->getPosition().y + (float) widgetSize->get()->y)) {
+			if ((float) mousePos.x > widgetOutline.x
+			    && (float) mousePos.x < (widgetOutline.x + widgetOutline.width)) {
+				if ((float) mousePos.y > widgetOutline.y
+				    && (float) mousePos.y < (widgetOutline.y + widgetOutline.height)) {
 					setState(isPressed);
 				}
 			} else { setState(false); }
 		}
 	}
 
-	void actionToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
+	void actionsToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
 
-	void action() override { if (execFuncPtr != nullptr)execFuncPtr();}
+	void action() override { if (execFuncPtr != nullptr)execFuncPtr(); }
 
 	Button &setScale(float factorX, float factorY) {
 		message.setScale(factorX, factorY);

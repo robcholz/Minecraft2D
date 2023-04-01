@@ -19,16 +19,23 @@ namespace game_data {
 		PLAINS,
 		FOREST,
 		DESERT,
-		BIRCH_FOREST
+		BIRCH_FOREST,
+		JUNGLE
 	};
 
-	typedef unsigned short SoundLevel;
+	typedef unsigned char SoundVolume;
+	struct SoundLevel {
+		SoundVolume masterVolume;
+		SoundVolume music, jukeBoxOrNoteblocks;
+		SoundVolume weather, blocks;
+		SoundVolume hostileCreatures, friendlyCreatures;
+		SoundVolume players, ambientAndEnvironment;
+	};
 }
 
 struct GameGlobalData {
 	game_data::Biome biome;
 	game_data::SoundLevel soundLevel;
-	game_data::SoundLevel playerSoundLevel;
 };
 
 struct InputState {
