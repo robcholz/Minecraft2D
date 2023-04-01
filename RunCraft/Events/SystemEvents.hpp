@@ -12,16 +12,16 @@
 
 class SystemEvents {
 private:
-	Menu *game = nullptr;
+	Render *render = nullptr;
 	sf::Event event{};
 public:
-	explicit SystemEvents(Menu *game) { this->game = game; }
+	explicit SystemEvents(Render *render) { this->render = render; }
 
 	void listen() {
-		while (game->getRenderer()->getWindow().pollEvent(event)) {
+		while (render->getWindow().pollEvent(event)) {
 			switch (event.type) {
 				case sf::Event::Closed:
-					game->getRenderer()->getWindow().close();
+					render->getWindow().close();
 					PLOG_DEBUG << "Cancel the RunCraft!";
 					break;
 				case sf::Event::Resized:
@@ -72,7 +72,7 @@ public:
 					break;
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
-				game->getRenderer()->getWindow().close();
+				render->getWindow().close();
 				PLOG_DEBUG << "Cancel the RunCraft!";
 			}
 		}

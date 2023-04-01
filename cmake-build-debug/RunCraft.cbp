@@ -120,6 +120,9 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/Render.hpp">
 			<Option target="RunCraft"/>
 		</Unit>

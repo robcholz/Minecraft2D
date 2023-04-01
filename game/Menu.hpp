@@ -18,45 +18,57 @@
 #include "Sound/Audio.hpp"
 #include "GUI/screen/Screen.hpp"
 #include "GUI/screen/ScreenManager.hpp"
+#include "GUI/widget/ValueSlider.hpp"
 
 class Menu {
 private:
-	struct menu {
-		/*Main Renderer*/
-		Render *renderer;
-	} menu{};
-
+	int screenWidth = (int) GameInfo.getScreenWidth();
+	int screenHeight = (int) GameInfo.getScreenHeight();
 	AudioList backgroundMusic;
 	Once backgroundOnce;
 
-	/*main menu*/
-	Button *backgroundMenuSinglePlayer = new Button("Singleplayer", 800, 80, true, new sf::Vector2i(800 - 800 / 2, 400));
-	Button *backgroundMenuOptions = new Button("Options", 800, 80, true, new sf::Vector2i(800 - 800 / 2, 500));
-	Button *backgroundMenuLanguage = new Button("Language", 380, 80, true, new sf::Vector2i(800 - 800 / 2, 650));
-	Button *backgroundMenuQuitGame = new Button("Quit Game", 380, 80, true, new sf::Vector2i(800 + 800 / 2 - 380, 650));
 	Background *backgroundTexture = new Background("background.png");
+	Background *settingBackground = new Background("options_background.png");
+
+	/*main menu*/
+	Button *backgroundMenuSinglePlayer = new Button("Singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432);
+	Button *backgroundMenuOptions = new Button("Options", 800, 80, true, screenWidth / 2 - 800 / 2, 528);
+	Button *backgroundMenuWhat = new Button("Something uncertain", 800, 80, true, screenWidth / 2 - 800 / 2, 624);
+	Button *backgroundMenuLanguage = new Button("Language", 380, 80, true, screenWidth / 2 - 800 / 2, 768);
+	Button *backgroundMenuQuitGame = new Button("Quit Game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768);
 	Screen *backgroundMenuScreen = new Screen(backgroundTexture);
 
 	/*settings*/
-	Button *backgroundSettingBiomeSnowyPlains = new Button("Snowy Plains", 590, 80, true, new sf::Vector2i(800 - 1200 / 2, 400));
-	Button *backgroundSettingBiomePlains = new Button("Plains", 590, 80, true, new sf::Vector2i(800 + 1200 / 2 - 590, 400));
-	Button *backgroundSettingBiomeForest = new Button("Forest", 590, 80, true, new sf::Vector2i(800 - 1200 / 2, 500));
-	Button *backgroundSettingBiomeDesert = new Button("Desert", 590, 80, true, new sf::Vector2i(800 + 1200 / 2 - 590, 500));
-	Button *backgroundSettingBiomeBirchForest = new Button("Birch Forest", 590, 80, true, new sf::Vector2i(800 - 1200 / 2, 600));
-	Button *backgroundSettingBiomeJungle = new Button("Jungle", 590, 80, true, new sf::Vector2i(800 + 1200 / 2 - 590, 600));
-	Button *backgroundSettingBack = new Button("Done", 780, 80, true, new sf::Vector2i(800 - 780 / 2, 750));
-	Slider *backgroundSettingVolumeSlider = new Slider("Sound Volume", 1200, 80, true, new sf::Vector2i(800 - 1200 / 2, 200));
+	Button *backgroundSettingBiomeSnowyPlains = new Button("Snowy Plains", 590, 80, true, screenWidth / 2 - 1200 / 2, 400);
+	Button *backgroundSettingBiomePlains = new Button("Plains", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 400);
+	Button *backgroundSettingBiomeForest = new Button("Forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 500);
+	Button *backgroundSettingBiomeDesert = new Button("Desert", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 500);
+	Button *backgroundSettingBiomeBirchForest = new Button("Birch Forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 600);
+	Button *backgroundSettingBiomeJungle = new Button("Jungle", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 600);
+	Button *backgroundSettingVolume = new Button("Music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200);
+	Button *backgroundSettingBack = new Button("Done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50);
 	Screen *backgroundBiomeSettingScreen = new Screen(backgroundTexture);
 
-	/*singleplayer setting page*/
-	Button *singleplayerSettingBack = new Button("Done", 300, 80, true, new sf::Vector2i(800 - 300 / 2, 800));
-	Background *singleplayerSettingBackground = new Background("options_background.png");
-	Screen *singleplayerSettingScreen = new Screen(singleplayerSettingBackground);
+	/*music settings*/
+	ValueSlider *settingVolumeSliderMasterVolume = new ValueSlider("Master Volume", 1240, 80, true, screenWidth / 2 - 620, 115);
+	ValueSlider *settingVolumeSliderMusic = new ValueSlider("Music", 590, 80, true, screenWidth / 2 - 620, 225);
+	ValueSlider *settingVolumeSliderJukeboxNoteblocks = new ValueSlider("Jukebox/Noteblocks", 590, 80, true, screenWidth / 2 + 30, 225);
+	ValueSlider *settingVolumeSliderWeather = new ValueSlider("Weather", 590, 80, true, screenWidth / 2 - 620, 335);
+	ValueSlider *settingVolumeSliderBlocks = new ValueSlider("Blocks", 36, 590, 80, true, screenWidth / 2 + 30, 335);
+	ValueSlider *settingVolumeSliderHostileCreatures = new ValueSlider("Hostile Creatures", 590, 80, true, screenWidth / 2 - 620, 445);
+	ValueSlider *settingVolumeSliderFriendlyCreatures = new ValueSlider("Friendly Creatures", 590, 80, true, screenWidth / 2 + 30, 445);
+	ValueSlider *settingVolumeSliderPlayers = new ValueSlider("Players", 590, 80, true, screenWidth / 2 - 620, 555);
+	ValueSlider *settingVolumeSliderAmbientEnvironment = new ValueSlider("Ambient/Environment", 590, 80, true, screenWidth / 2 + 30, 555);
+	Button *settingVolumeBack = new Button("Done", 790, 80, true, screenWidth / 2 - 390, 555 + 260);
+	Screen *settingVolumeScreen = new Screen(settingBackground);
+
+	/*singleplayer page*/
+	Button *singleplayerSettingBack = new Button("Done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50);
+	Screen *singleplayerSettingScreen = new Screen(settingBackground);
 
 	ScreenManager screenManager;
 public:
-	explicit Menu(const std::string &windowName) {
-		menu.renderer = new Render(windowName);
+	explicit Menu() {
 		PLOG_DEBUG << "Menu started!";
 		initResource();
 	}
@@ -69,8 +81,6 @@ public:
 		delete backgroundMenuScreen;
 	}
 
-	Render *getRenderer() const { return menu.renderer; }
-
 	void initResource() {
 		initAudio();
 		initWidget();
@@ -81,7 +91,7 @@ public:
 	void renderMainMenu() {
 		if (backgroundOnce.runOnce()) {
 			backgroundTexture->fitToScreen();
-			singleplayerSettingBackground->composeToScreen();
+			settingBackground->composeToScreen();
 			backgroundMusic.playRandomly();
 			PLOG_DEBUG << "Rendered main menu!";
 		}
@@ -104,22 +114,39 @@ public:
 				.addScreen(backgroundMenuScreen)
 				.addScreen(backgroundBiomeSettingScreen)
 				.addScreen(singleplayerSettingScreen)
+				.addScreen(settingVolumeScreen)
 				.setEntry(backgroundMenuScreen);
+
 		backgroundMenuScreen->addCallbackScreen(backgroundBiomeSettingScreen, backgroundMenuOptions)
 				.addCallbackScreen(singleplayerSettingScreen, backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuOptions)
 				.addWidget(backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuLanguage)
+				.addWidget(backgroundMenuWhat)
 				.addWidget(backgroundMenuQuitGame);
 		backgroundMenuQuitGame->actionsToExecWhenClicked([] {
 			PLOG_DEBUG << "Cancel RunCraft!";
 			GameInfo.getRender()->getWindow().close();
 		});
 
+		settingVolumeScreen->addCallbackScreen(backgroundBiomeSettingScreen, settingVolumeBack)
+				.addWidget(settingVolumeSliderAmbientEnvironment)
+				.addWidget(settingVolumeSliderBlocks)
+				.addWidget(settingVolumeSliderFriendlyCreatures)
+				.addWidget(settingVolumeSliderFriendlyCreatures)
+				.addWidget(settingVolumeSliderHostileCreatures)
+				.addWidget(settingVolumeSliderJukeboxNoteblocks)
+				.addWidget(settingVolumeSliderMasterVolume)
+				.addWidget(settingVolumeSliderMusic)
+				.addWidget(settingVolumeSliderPlayers)
+				.addWidget(settingVolumeSliderWeather)
+				.addWidget(settingVolumeBack);
+
 		singleplayerSettingScreen->addCallbackScreen(backgroundMenuScreen, singleplayerSettingBack)
 				.addWidget(singleplayerSettingBack);
 
 		backgroundBiomeSettingScreen->addCallbackScreen(backgroundMenuScreen, backgroundSettingBack)
+				.addCallbackScreen(settingVolumeScreen, backgroundSettingVolume)
 				.addWidget(backgroundSettingBack)
 				.addWidget(backgroundSettingBiomeSnowyPlains)
 				.addWidget(backgroundSettingBiomePlains)
@@ -127,7 +154,7 @@ public:
 				.addWidget(backgroundSettingBiomeBirchForest)
 				.addWidget(backgroundSettingBiomeDesert)
 				.addWidget(backgroundSettingBiomeJungle)
-				.addWidget(backgroundSettingVolumeSlider);
+				.addWidget(backgroundSettingVolume);
 
 		backgroundSettingBiomeSnowyPlains->actionsToExecWhenClicked(
 				[] { GameInfo.getGameGlobalData()->biome = game_data::Biome::SNOWY_PLAINS; });

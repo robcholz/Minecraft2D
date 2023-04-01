@@ -14,17 +14,19 @@
 #include "GUI/text/Text.hpp"
 
 class Slider : public Widget {
-private:
+protected:
 	typedef unsigned short ButtonValue;
+	Areai sliderOutline{};
+	Intervali sliderOutlineBound{};
+	ButtonValue sliderValue = 100;
+	std::string title;
+	Text message;
+private:
 	sf::Sprite *sliderBackgroundPtr = new sf::Sprite;
 	sf::Texture widgetNormal;
 	bool isInBackgroundBoundary = false, isInSliderBoundary = false;
-	Areai sliderOutline{};
-	Intervali sliderOutlineBound{};
-	ButtonValue buttonValue = 100;
 	bool sliderLock = true;
-	std::string title;
-	Text message;
+
 
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 46, 200, 20)); // background blur
@@ -35,8 +37,7 @@ private:
 	inline static std::shared_ptr<sf::Color> *backgroundMessageColor = new std::shared_ptr<sf::Color>(
 			new sf::Color(220, 220, 220, 255));
 public:
-	explicit Slider(const std::string &words, int width = 200, int height = 20, bool visible = true,
-	                const sf::Vector2i *position = new sf::Vector2i(0, 0)) : Widget() {
+	explicit Slider(const std::string &words, int width = 200, int height = 20, bool visible = true, int x = 0, int y = 0) : Widget() {
 		title = words;
 		this->visible = visible;
 		widgetSize = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(width, height));
@@ -49,14 +50,14 @@ public:
 
 		sliderBackgroundPtr->setTexture(sliderBackgroundNormal, widgetSize); // background
 		sliderBackgroundPtr->setScale((float) width / 200, (float) height / 20);
-		sliderBackgroundPtr->setPosition((float) position->x, (float) position->y);
+		sliderBackgroundPtr->setPosition((float) x, (float) y);
 
 		widgetCurrentPtr->setTexture(widgetNormal, widgetSize);
 		widgetCurrentPtr->scale((float) 0.15f, (float) height / 20);
-		widgetCurrentPtr->setPosition((float) position->x * 1.5f, (float) position->y);
+		widgetCurrentPtr->setPosition((float) x * 1.5f, (float) y);
 
-		widgetOutline.x = position->x;
-		widgetOutline.y = position->y;
+		widgetOutline.x = x;
+		widgetOutline.y = y;
 		widgetOutline.width = width;
 		widgetOutline.height = height;
 		sliderOutline.x = (int) widgetCurrentPtr->getGlobalBounds().left;
@@ -98,12 +99,7 @@ public:
 		                    (float) sliderOutline.y - (float) sliderOutline.height / 8 - 1.0f);
 	}
 
-	void action() override {
-		message.clear();
-		buttonValue = (ButtonValue) (
-				((float) (sliderOutline.x - widgetOutline.x) / (float) (widgetOutline.width - sliderOutline.width - 8)) * 100.0f);
-		message.setMessage(title + ": " + std::to_string(getValue()) + "%");
-	}
+	void action() override {}
 
 	void cursorBackgroundIntersectionCheck(sf::Vector2i mousePos) {
 		isInBackgroundBoundary = checkVectorBoundary(mousePos.x, mousePos.y, widgetOutline.x, widgetOutline.y, widgetOutline.width,
@@ -140,7 +136,7 @@ public:
 		}
 	}
 
-	ButtonValue getValue() const { return buttonValue; }
+	ButtonValue getValue() const { return sliderValue; }
 
 	void render() override {
 		GameInfo.getRender()->render(*sliderBackgroundPtr);

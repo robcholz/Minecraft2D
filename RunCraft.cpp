@@ -3,11 +3,12 @@
 #include "game/Menu.hpp"
 
 int main() {
-	Menu game_menu("RunCrafts");
-	SystemEvents game_main_event(&game_menu);
-	GameInfo.setRenderer(game_menu.getRenderer());
+	Render render("RunCrafts");
+	GameInfo.setRenderer(&render);
+	Menu game_menu;
+	SystemEvents game_main_event(&render);
 
-	game_menu.getRenderer()->getWindow().setVerticalSyncEnabled(true);
+	render.getWindow().setVerticalSyncEnabled(true);
 
 	while (GameInfo.getRender()->getWindow().isOpen()) {
 		game_main_event.listen();

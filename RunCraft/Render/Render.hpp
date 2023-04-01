@@ -8,6 +8,7 @@
 #pragma once
 
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <iostream>
 #include "Log.h"
 #include "GameInfo.hpp"
 #include "Init.h"
@@ -20,8 +21,8 @@ private:
 
 public:
 	explicit Render(const std::string &windowName) {
-		screenWidth = sf::VideoMode::getDesktopMode().height * 8 / 9;
-		screenHeight = sf::VideoMode::getDesktopMode().height / 2;
+		screenWidth = (int) ((float) sf::VideoMode::getDesktopMode().width * 19 / 32);
+		screenHeight = (int) ((float) sf::VideoMode::getDesktopMode().height * 8 / 15);
 		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight),
 		                              windowName);
 
