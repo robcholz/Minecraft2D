@@ -22,7 +22,7 @@ public:
 			switch (event.type) {
 				case sf::Event::Closed:
 					game->getRenderer()->getWindow().close();
-					PLOG_DEBUG << "Cancel the Minecraft!";
+					PLOG_DEBUG << "Cancel the RunCraft!";
 					break;
 				case sf::Event::Resized:
 					break;
@@ -73,7 +73,7 @@ public:
 			}
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
 				game->getRenderer()->getWindow().close();
-				PLOG_DEBUG << "Cancel the Minecraft!";
+				PLOG_DEBUG << "Cancel the RunCraft!";
 			}
 		}
 	}

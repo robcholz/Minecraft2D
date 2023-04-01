@@ -51,6 +51,10 @@ private:
 	Button *backgroundBiomeSettingBack = new Button("Back", 285, 80, true, new sf::Vector2i(800 - 285 / 2, 600));
 	Screen *backgroundBiomeSettingScreen = new Screen(backgroundTexture);
 
+	/*singleplayer setting page*/
+	Button *singleplayerSettingBack=new Button("Back", 300, 80, true, new sf::Vector2i(800 - 300 / 2, 800));
+	Background *singleplayerSettingBackground=new Background("options_background.png");
+	Screen *singleplayerSettingScreen=new Screen(singleplayerSettingBackground);
 	ScreenManager screenManager;
 public:
 	explicit Menu(const std::string &windowName) {
@@ -79,6 +83,7 @@ public:
 	void renderMainMenu() {
 		if (backgroundOnce.runOnce()) {
 			backgroundTexture->fitToScreen();
+			singleplayerSettingBackground->composeToScreen();
 			backgroundMusic.playRandomly();
 			PLOG_DEBUG << "Rendered main menu!";
 		}
@@ -100,18 +105,23 @@ public:
 		screenManager
 				.addScreen(backgroundMenuScreen)
 				.addScreen(backgroundBiomeSettingScreen)
-				.setEntryScreen(backgroundMenuScreen);
-		backgroundMenuScreen->setCallbackScreen(backgroundBiomeSettingScreen, backgroundMenuOptions)
+				.addScreen(singleplayerSettingScreen)
+				.setEntry(backgroundMenuScreen);
+		backgroundMenuScreen->addCallbackScreen(backgroundBiomeSettingScreen, backgroundMenuOptions)
+				.addCallbackScreen(singleplayerSettingScreen,backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuOptions)
 				.addWidget(backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuLanguage)
 				.addWidget(backgroundMenuQuitGame);
 		backgroundMenuQuitGame->actionToExecWhenClicked([] {
-			PLOG_DEBUG << "Cancel Minecraft!";
+			PLOG_DEBUG << "Cancel RunCraft!";
 			GameInfo.getRender()->getWindow().close();
 		});
 
-		backgroundBiomeSettingScreen->setCallbackScreen(backgroundMenuScreen, backgroundBiomeSettingBack)
+		singleplayerSettingScreen->addCallbackScreen(backgroundMenuScreen, singleplayerSettingBack)
+			.addWidget(singleplayerSettingBack);
+
+		backgroundBiomeSettingScreen->addCallbackScreen(backgroundMenuScreen, backgroundBiomeSettingBack)
 				.addWidget(backgroundBiomeSettingBack)
 				.addWidget(backgroundBiomeSettingSnowyPlains)
 				.addWidget(backgroundBiomeSettingPlains)

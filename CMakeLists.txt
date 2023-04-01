@@ -3,18 +3,18 @@ project(RunCraft)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES RunCraft.cpp Minecraft/util/Math_Helper.hpp
-        Minecraft/util/File.hpp Minecraft/GUI/widget/Button.hpp Minecraft/Sound/Audio.hpp Minecraft/Render/SingleComponent/Texture.hpp
-        Minecraft/Render/Render.hpp game/GameInfo.hpp Minecraft/util/utils.hpp Minecraft/util/GameLogger.hpp
-        Minecraft/util/FileHelper.hpp Minecraft/GUI/GUI.hpp Minecraft/GUI/screen/Background.hpp
-        Minecraft/Render/SingleComponent/SingleTextureComponent.hpp
-        Minecraft/GUI/text/RichText.hpp Minecraft/GUI/text/RichText.hpp Minecraft/Events/SystemEvents.hpp
-        Minecraft/GUI/screen/Screen.hpp Minecraft/GUI/widget/Slider.hpp game/Menu.hpp Minecraft/ErrorHandling/ErrorHandling.hpp Minecraft/GUI/screen/ScreenManager.hpp)
+set(SOURCE_FILES RunCraft.cpp RunCraft/util/Math_Helper.hpp
+        RunCraft/util/File.hpp RunCraft/GUI/widget/Button.hpp RunCraft/Sound/Audio.hpp RunCraft/Render/SingleComponent/Texture.hpp
+        RunCraft/Render/Render.hpp game/GameInfo.hpp RunCraft/util/utils.hpp RunCraft/util/GameLogger.hpp
+        RunCraft/util/FileHelper.hpp RunCraft/GUI/GUI.hpp RunCraft/GUI/screen/Background.hpp
+        RunCraft/Render/SingleComponent/SingleTextureComponent.hpp
+        RunCraft/GUI/text/RichText.hpp RunCraft/GUI/text/RichText.hpp RunCraft/Events/SystemEvents.hpp
+        RunCraft/GUI/screen/Screen.hpp RunCraft/GUI/widget/Slider.hpp game/Menu.hpp RunCraft/ErrorHandling/ErrorHandling.hpp RunCraft/GUI/screen/ScreenManager.hpp game/RunCraft.hpp)
 add_executable(RunCraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)
 include_directories(include/plog)
-include_directories(Minecraft)
+include_directories(RunCraft)
 include_directories(game)
 
 

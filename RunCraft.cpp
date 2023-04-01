@@ -1,5 +1,5 @@
 #include <SFML/Graphics.hpp>
-#include "Minecraft/Events/SystemEvents.hpp"
+#include "RunCraft/Events/SystemEvents.hpp"
 #include "game/Menu.hpp"
 
 int main() {

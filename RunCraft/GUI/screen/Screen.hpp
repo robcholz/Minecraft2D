@@ -12,10 +12,6 @@
 #include "GameInfo.hpp"
 #include "GUI/widget/Button.hpp"
 
-enum ScreenEvent:unsigned char {
-	SCREEN_TRANSFER,
-	SCREEN_NORMAL
-};
 
 class Screen {
 private:
@@ -23,11 +19,10 @@ private:
 	std::list<Widget *> widgetsList;
 	InputState *inputStatePtr = nullptr;
 
-	Screen *callBackScreenPtr = nullptr;
-	Button *callBackButtonPtr = nullptr;
+	std::map<Button *, Screen *> callbackScreenMap;
+	Screen *responseCallBackScreenPtr = nullptr;
 
 	AudioPlayer audioPlayer;
-	ScreenEvent screenEvent;
 public:
 	explicit Screen(Background *background) {
 		this->background = background;
@@ -40,15 +35,14 @@ public:
 		return *this;
 	}
 
-	ScreenEvent getScreenEvent() const { return screenEvent; }
+	//ScreenEvent getScreenEvent() const { return screenEvent; }
 
-	Screen &setCallbackScreen(Screen *callBackScreen, Button *callBackButton) {
-		callBackScreenPtr = callBackScreen;
-		callBackButtonPtr = callBackButton;
+	Screen &addCallbackScreen(Screen *callBackScreen, Button *callBackButton) {
+		callbackScreenMap.insert({callBackButton, callBackScreen});
 		return *this;
 	}
 
-	Screen *getCallBackScreen() { return callBackScreenPtr; }
+	Screen *getResponseCallbackScreen() {return responseCallBackScreenPtr;}
 
 	void listen(InputState *inputState) { inputStatePtr = inputState; }
 
@@ -56,19 +50,20 @@ public:
 		background->render();
 		for (auto *widget_obj: widgetsList) {
 			widget_obj->listen(inputStatePtr->mousePosition, inputStatePtr->isPressed);
-			widget_obj->render();
 			if (widget_obj->isClicked() && widget_obj->stateChanged()) {
 				audioPlayer.play();
-				if (callBackButtonPtr->isPressed()) {
-					widget_obj->action();
-					callBackButtonPtr->setState(false);
-					screenEvent=SCREEN_TRANSFER;
-					return;
+				for (auto & screen_map_obj : callbackScreenMap) {
+					if(screen_map_obj.first->isPressed()){
+						widget_obj->action();
+						screen_map_obj.first->setState(false);
+						responseCallBackScreenPtr=screen_map_obj.second;
+						return;
+					}
 				}
 				widget_obj->action();
-			}
+			} else responseCallBackScreenPtr= nullptr;
+			widget_obj->render();
 		}
-		screenEvent=SCREEN_NORMAL;
 	}
 };
 

@@ -10,7 +10,7 @@
 
 class ScreenManager : public GUI {
 private:
-	std::vector<Screen *> screenList;
+	std::list<Screen *> screenList;
 	Screen *currentRenderingScreen = nullptr;
 	InputState *inputState = nullptr;
 public:
@@ -21,7 +21,7 @@ public:
 		return *this;
 	}
 
-	void setEntryScreen(Screen *entryScreen) {
+	void setEntry(Screen *entryScreen) {
 		currentRenderingScreen = entryScreen;
 	}
 
@@ -30,8 +30,8 @@ public:
 	void render() override {
 		currentRenderingScreen->listen(inputState);
 		currentRenderingScreen->render();
-		if (currentRenderingScreen->getScreenEvent() == ScreenEvent::SCREEN_TRANSFER) {
-			currentRenderingScreen = currentRenderingScreen->getCallBackScreen();
+		if (currentRenderingScreen->getResponseCallbackScreen()!= nullptr) {
+			currentRenderingScreen = currentRenderingScreen->getResponseCallbackScreen();
 		}
 	}
 

@@ -27,7 +27,7 @@
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/include/rapidjson"/>
 					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/include/plog"/>
-					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/Minecraft"/>
+					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/RunCraft"/>
 					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/game"/>
 					<Add directory="/Library/Frameworks/SFML.framework"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
@@ -53,7 +53,7 @@
 					<Add directory="/usr/local/include"/>
 					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/include/rapidjson"/>
 					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/include/plog"/>
-					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/Minecraft"/>
+					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/RunCraft"/>
 					<Add directory="/Users/zhangjie/CLionProjects/RunCraft/game"/>
 					<Add directory="/Library/Frameworks/SFML.framework"/>
 					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
@@ -90,67 +90,70 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/ErrorHandling/ErrorHandling.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/Events/SystemEvents.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/GUI.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/Background.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/Screen.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/screen/ScreenManager.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/text/RichText.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Button.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/GUI/widget/Slider.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/Render/Render.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/Render/SingleComponent/SingleTextureComponent.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/Render/SingleComponent/Texture.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/Sound/Audio.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/File.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/FileHelper.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/GameLogger.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/Math_Helper.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/Minecraft/util/utils.hpp">
-			<Option target="RunCraft"/>
-		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft.cpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Events/SystemEvents.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Background.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/Render.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/SingleTextureComponent.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/Texture.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/File.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/FileHelper.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/Math_Helper.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/utils.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/Menu.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/game/RunCraft.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/CMakeLists.txt">
