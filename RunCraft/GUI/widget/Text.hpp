@@ -22,7 +22,7 @@ private:
 
 	[[maybe_unused]] bool isClicked() { return false; }
 
-	void setState(bool state) override {}
+	void updateState(bool state) override {}
 
 	void action() override {}
 

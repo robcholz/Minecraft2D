@@ -19,8 +19,8 @@ class Widget : public GUI {
 protected:
 	typedef std::function<void()> ActionWhenActivated;
 
-	sf::Texture sliderBackgroundNormal;
-	sf::Texture widgetActivated;
+	sf::Texture widgetNormalTexture;
+	sf::Texture widgetActivatedTexture;
 	sf::Sprite widgetCurrentSprite;
 	std::shared_ptr<sf::Vector2i> *widgetSize;
 	Areai widgetOutline{};
@@ -28,32 +28,21 @@ protected:
 	std::string widgetAssetPath = guiFilePath + "widgets.png";
 
 	bool visible = true;
-	bool lastState = false, stateChange = false, clickState = false, pressed = false;
-
-	void setClicked(bool clicked) { clickState = clicked; }
+	bool lastState = false, clickState = false, pressed = false;
 public:
 	explicit Widget() {
 		widgetSize = nullptr;
 	}
 
-	virtual void setState(bool state) {
+	virtual void updateState(bool state) {
 		pressed = state;
-		setClicked(!lastState && state);
-		if (lastState != state) {
-			stateChange = true;
-			lastState = state;
-			if (lastState) {
-				widgetCurrentSprite.setTexture(widgetActivated);
-				return;
-			} else {
-				widgetCurrentSprite.setTexture(sliderBackgroundNormal);
-			}
-		} else stateChange = false;
+		if (lastState != state && state) { clickState = true; } else { clickState = false; }
+		lastState = state;
 	}
 
-	bool static checkVectorBoundary(sf::Vector2i vector, sf::IntRect area) {
-		return ((vector.x > area.left && vector.x < area.left + area.width) &&
-		        (vector.y > area.top - area.height && vector.y < area.height));
+	bool static checkVectorBoundary(sf::Vector2i vector, Areai area) {
+		return ((vector.x > area.x && vector.x < area.x + area.width) &&
+		        (vector.y > area.y && vector.y < area.y + area.height));
 	}
 
 	bool static checkVectorBoundary(int x, int y, int left, int top, int width, int height) {
@@ -62,21 +51,26 @@ public:
 
 	void setVisibility(bool visibility) { visible = visibility; }
 
-	bool getVisiailibty() const { return visible; }
+	bool getVisibility() const { return visible; }
 
 	virtual void action() = 0;
-
-	bool activated() const { return lastState; }
 
 	bool isClicked() const { return clickState; }
 
 	bool isPressed() const { return pressed; }
 
-	virtual void listen(sf::Vector2i mousePosition, bool isPressed) = 0;
+	virtual void listen(sf::Vector2i mousePosition, bool isPressed) {
+		if (getVisibility()) {
+			if (checkVectorBoundary(mousePosition, widgetOutline)) {
+				updateState(isPressed);
+				widgetCurrentSprite.setTexture(widgetActivatedTexture);
+			} else {
+				widgetCurrentSprite.setTexture(widgetNormalTexture);
+			}
+		}
+	}
 
 	void render() override {}
-
-	bool stateChanged() const { return stateChange; }
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

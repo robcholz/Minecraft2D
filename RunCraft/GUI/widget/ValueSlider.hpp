@@ -17,7 +17,7 @@ public:
 	explicit ValueSlider(const std::string &words, int width = 200, int height = 20, bool visible = true,
 	                     int x = 0, int y = 0)
 			: Slider(words, width, height, visible, x, y) {
-		widgetCurrentSprite.setPosition((float) sliderOutlineBound.upper, (float) sliderOutline.y);
+		widgetCurrentSprite.setPosition((float) sliderOutlineBound.upper, (float) widgetOutline.y);
 	}
 
 	explicit ValueSlider(const std::string &words, int defaultValue, int width = 200, int height = 20, bool visible = true,
@@ -29,7 +29,7 @@ public:
 		widgetCurrentSprite.setPosition(
 				(float) sliderOutlineBound.lower +
 				((float) defaultValue / 100) * (float) (sliderOutlineBound.upper - sliderOutlineBound.lower),
-				(float) sliderOutline.y);
+				(float) widgetOutline.y);
 	}
 
 	ValueSlider &varToChangeWhenMoved(game_data::SoundVolume *controlledValue = nullptr) { this->controlledValuePtr = controlledValue; return *this;}
@@ -39,7 +39,7 @@ public:
 	void action() override {
 		message.clear();
 		sliderValue = (ButtonValue)(
-				((float) (sliderOutline.x - widgetOutline.x) / (float) (widgetOutline.width - sliderOutline.width - 8)) * 100.0f);
+				((float) (widgetOutline.x - sliderBackgroundOutline.x) / (float) (sliderBackgroundOutline.width - widgetOutline.width - 8)) * 100.0f);
 		*controlledValuePtr = sliderValue;
 		if (getValue() != 0)
 			message.setMessage(title + ": " + std::to_string(getValue()) + "%");

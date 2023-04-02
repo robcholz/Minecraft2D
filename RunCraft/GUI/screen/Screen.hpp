@@ -50,12 +50,12 @@ public:
 		background->render();
 		for (auto *widget_obj: widgetsList) {
 			widget_obj->listen(inputStatePtr->mousePosition, inputStatePtr->isPressed);
-			if (widget_obj->isClicked() && widget_obj->stateChanged()) {
+			if (widget_obj->isClicked()) {
 				audioPlayer.play();
 				for (auto & screen_map_obj : callbackScreenMap) {
-					if(screen_map_obj.first->isPressed()){
+					if(screen_map_obj.first->isClicked()){
 						widget_obj->action();
-						screen_map_obj.first->setState(false);
+						screen_map_obj.first->updateState(false);
 						responseCallBackScreenPtr=screen_map_obj.second;
 						return;
 					}

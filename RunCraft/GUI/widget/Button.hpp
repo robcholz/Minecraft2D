@@ -13,6 +13,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <memory>
+#include <utility>
 #include "GameInfo.hpp"
 #include "Widget.hpp"
 #include "GUI/text/RichText.hpp"
@@ -36,10 +37,10 @@ public:
 		widgetOutline.height = height;
 		widgetSize = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(width, height));
 
-		sliderBackgroundNormal.loadFromFile(widgetAssetPath, **intRectNormal);
-		widgetActivated.loadFromFile(widgetAssetPath, **intRectClicked);
+		widgetNormalTexture.loadFromFile(widgetAssetPath, **intRectNormal);
+		widgetActivatedTexture.loadFromFile(widgetAssetPath, **intRectClicked);
 
-		widgetCurrentSprite.setTexture(sliderBackgroundNormal, widgetSize);
+		widgetCurrentSprite.setTexture(widgetNormalTexture, widgetSize);
 		widgetCurrentSprite.setScale((float) width / 200, (float) height / 20);
 		widgetCurrentSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 
@@ -49,19 +50,7 @@ public:
 		message.setCharacterSize((int) ((float) widgetOutline.height / 80.0f * 64.0f));
 	}
 
-	void listen(sf::Vector2i mousePos, bool isPressed) override {
-		if (visible) {
-			if (mousePos.x > widgetOutline.x
-			    && mousePos.x < (widgetOutline.x + widgetOutline.width)) {
-				if (mousePos.y > widgetOutline.y
-				    && mousePos.y < (widgetOutline.y + widgetOutline.height)) {
-					setState(isPressed);
-				}
-			} else { setState(false); }
-		}
-	}
-
-	void actionsToExecWhenClicked(ActionWhenActivated execFunc) { execFuncPtr = execFunc; }
+	void actionsToExecWhenClicked(ActionWhenActivated execFunc) { execFuncPtr = std::move(execFunc); }
 
 	void action() override { if (execFuncPtr != nullptr)execFuncPtr(); }
 
@@ -81,8 +70,10 @@ public:
 	}
 
 	void render() override {
-		GameInfo.getRender()->render(widgetCurrentSprite);
-		GameInfo.getRender()->render(message);
+		if (getVisibility()) {
+			GameInfo.getRender()->render(widgetCurrentSprite);
+			GameInfo.getRender()->render(message);
+		}
 	}
 };
 

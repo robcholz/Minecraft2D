@@ -34,7 +34,7 @@ namespace game_data {
 }
 
 struct GameGlobalData {
-	game_data::Biome biome;
+	[[maybe_unused]] game_data::Biome biome;
 	game_data::SoundLevel soundLevel;
 };
 
@@ -47,7 +47,7 @@ class GameInfo {
 private:
 	Render *renderInstance{};
 	InputState inputState;
-	GameGlobalData gameGlobalData;
+	GameGlobalData gameGlobalData{};
 public:
 	GameInfo() = default;
 
