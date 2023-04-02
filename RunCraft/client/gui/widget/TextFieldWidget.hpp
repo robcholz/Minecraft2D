@@ -2,15 +2,13 @@
 // Created by robcholz on 4/2/23.
 //
 
-#ifndef RUNCRAFT_TEXT_HPP
-#define RUNCRAFT_TEXT_HPP
+#ifndef RUNCRAFT_TEXTFIELDWIDGET_HPP
+#define RUNCRAFT_TEXTFIELDWIDGET_HPP
 
 #include "Widget.hpp"
-#include "GUI/text/RichText.hpp"
-#include "GUI/GUI.hpp"
-#include "GameInfo.hpp"
+#include "client/GameInfo.hpp"
 
-class Text : public Widget {
+class TextFieldWidget : public Widget {
 private:
 	RichText *text = new RichText(gui_style::MessageFont);
 
@@ -29,7 +27,7 @@ private:
 	void listen(sf::Vector2i mousePosition, bool isPressed) override {}
 
 public:
-	explicit Text(const std::string &message, int size, bool visible, int x, int y) {
+	explicit TextFieldWidget(const std::string &message, int size, bool visible, int x, int y) {
 		this->visible = visible;
 		text->setMessage(message)
 				.setCharacterSize(size)
@@ -41,7 +39,7 @@ public:
 		widgetOutline.height = (int) text->getGlobalBounds().height;
 	}
 
-	~Text() {
+	~TextFieldWidget() {
 		delete text;
 	}
 
@@ -52,4 +50,4 @@ public:
 	}
 };
 
-#endif //RUNCRAFT_TEXT_HPP
+#endif //RUNCRAFT_TEXTFIELDWIDGET_HPP

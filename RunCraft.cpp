@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "RunCraft/Events/SystemEvents.hpp"
-#include "game/Menu.hpp"
+#include "RunCraft/events/SystemEvents.hpp"
+#include "client/Menu.hpp"
 
 int main() {
 	Render render("RunCrafts");

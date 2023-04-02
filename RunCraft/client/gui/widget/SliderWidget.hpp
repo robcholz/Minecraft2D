@@ -2,19 +2,17 @@
 // Created by robcholz on 3/26/23.
 //
 
-#ifndef RUNCRAFT_SLIDER_HPP
-#define RUNCRAFT_SLIDER_HPP
+#ifndef RUNCRAFT_SLIDERWIDGET_HPP
+#define RUNCRAFT_SLIDERWIDGET_HPP
 
 #pragma once
 
 #include <SFML/Graphics/Sprite.hpp>
 #include "Widget.hpp"
-#include "GameInfo.hpp"
+#include "client/GameInfo.hpp"
 #include "util/Math_Helper.hpp"
-#include "GUI/text/RichText.hpp"
-#include "GUI/Style/GUIStyle.hpp"
 
-class Slider : public Widget {
+class SliderWidget : public Widget {
 protected:
 	typedef unsigned short ButtonValue;
 	Areai sliderBackgroundOutline{};
@@ -35,7 +33,7 @@ private:
 	inline static std::shared_ptr<sf::IntRect> *intRectSliderActivated = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 86, 200, 20)); // slider component
 public:
-	explicit Slider(const std::string &words, int width = 200, int height = 20, bool visible = true, int x = 0, int y = 0) : Widget() {
+	explicit SliderWidget(const std::string &words, int width = 200, int height = 20, bool visible = true, int x = 0, int y = 0) : Widget() {
 		title = words;
 		this->visible = visible;
 		widgetSize = new std::shared_ptr<sf::Vector2i>(new sf::Vector2i(width, height));
@@ -97,7 +95,9 @@ public:
 	}
 
 	void updatePosition(int x) {
-		if (sliderBoundaryCheck(x)) {
+		if ((sliderBackgroundOutline.x < x) && (x < sliderBackgroundOutline.x + sliderBackgroundOutline.width)) {
+			if (sliderOutlineBound.lower > x) x = sliderOutlineBound.lower;
+			if (sliderOutlineBound.upper < x) x = sliderOutlineBound.upper;
 			widgetOutline.x = x;
 			widgetCurrentSprite.setPosition((float) x, (float) widgetOutline.y);
 		}
@@ -110,11 +110,13 @@ public:
 			if (isInSliderBoundary && isPressed || isInBackgroundBoundary && isPressed) { sliderLock = false; }
 			if (!isPressed) { sliderLock = true; }
 			updateState(!sliderLock);
+			if (checkVectorBoundary(mousePos, sliderBackgroundOutline)) {
+				widgetCurrentSprite.setTexture(widgetActivatedTexture);
+			} else widgetCurrentSprite.setTexture(widgetNormalTexture);
 			if (!sliderLock) {
 				action();
-				widgetCurrentSprite.setTexture(widgetActivatedTexture);
 				updatePosition(mousePos.x);
-			} else widgetCurrentSprite.setTexture(widgetNormalTexture);
+			}
 		}
 	}
 
@@ -127,4 +129,4 @@ public:
 	}
 };
 
-#endif //RUNCRAFT_SLIDER_HPP
+#endif //RUNCRAFT_SLIDERWIDGET_HPP

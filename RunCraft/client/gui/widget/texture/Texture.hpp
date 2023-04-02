@@ -8,7 +8,6 @@
 #include <list>
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include "../../GUI/GUI.hpp"
 #include "SingleTextureComponent.hpp"
 
 #pragma once

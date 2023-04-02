@@ -11,10 +11,11 @@
 #include "Logger.h"
 #include <filesystem>
 #include <iostream>
-#include "FileHelper.hpp"
+#include "resource/FileHelper.hpp"
 #include "Appenders/RollingFileAppender.h"
 #include "Formatters/TxtFormatter.h"
 #include "Appenders/ColorConsoleAppender.h"
+#include "Init.h"
 #include <string>
 
 //#define USE_LOGFILE

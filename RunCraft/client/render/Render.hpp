@@ -10,7 +10,7 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <iostream>
 #include "Log.h"
-#include "GameInfo.hpp"
+#include "client/GameInfo.hpp"
 #include "Init.h"
 
 class Render {

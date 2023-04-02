@@ -303,14 +303,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /usr/local/include/SFML/Graphics/Sprite.hpp \
   /usr/local/include/SFML/Graphics/Text.hpp \
   /usr/local/include/SFML/Graphics/VertexBuffer.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Events/SystemEvents.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/Menu.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/events/SystemEvents.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/Menu.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/utils.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/Render.hpp \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iostream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/istream \
-  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Log.h \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/GameInfo.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Logger.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/IAppender.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Record.h \
@@ -318,6 +315,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Severity.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Util.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/sstream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/istream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/fcntl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/fcntl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_o_sync.h \
@@ -335,13 +333,12 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/gethostuuid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/time.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_timeval64.h \
-  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/filesystem \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/stack \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/deque \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iomanip \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/FileHelper.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iostream \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/resource/FileHelper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/dirent.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/dirent.h \
@@ -352,24 +349,32 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/ColorConsoleAppender.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/ConsoleAppender.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/WinApi.h \
+  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h \
+  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Log.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/RollingFileInitializer.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Formatters/CsvFormatter.h \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/render/Render.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/ConsoleInitializer.h \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Background.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/Texture.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/Background.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/texture/Texture.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/list \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/../../GUI/GUI.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/SingleTextureComponent.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Widget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/texture/SingleTextureComponent.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/GUI.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/ButtonWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/Math_Helper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/cmath \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/style/GUIStyle.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/text/RichText.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/TexturedButtonWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/SoundSliderWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/SliderWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/TextFieldWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/ScreenManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/Screen.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/sound/Audio.hpp \
   /usr/local/include/SFML/Audio/Sound.hpp \
   /usr/local/include/SFML/Audio/Export.hpp \
   /usr/local/include/SFML/Audio/SoundSource.hpp \
@@ -387,10 +392,4 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /usr/local/include/SFML/Audio/SoundFileFactory.hpp \
   /usr/local/include/SFML/Audio/SoundFileFactory.inl \
   /usr/local/include/SFML/Audio/SoundFileReader.hpp \
-  /usr/local/include/SFML/Audio/SoundFileWriter.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp
+  /usr/local/include/SFML/Audio/SoundFileWriter.hpp

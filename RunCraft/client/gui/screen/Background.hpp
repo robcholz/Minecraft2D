@@ -7,8 +7,8 @@
 
 #pragma once
 
-#include "GameInfo.hpp"
-#include "Render/SingleComponent/Texture.hpp"
+#include "client/GameInfo.hpp"
+#include "client/gui/widget/texture/Texture.hpp"
 
 class Background : public Texture {
 public:

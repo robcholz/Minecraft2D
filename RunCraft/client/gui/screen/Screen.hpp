@@ -8,9 +8,8 @@
 #pragma once
 
 #include <memory>
-#include "ErrorHandling/ErrorHandling.hpp"
-#include "GameInfo.hpp"
-#include "GUI/widget/Button.hpp"
+#include "client/GameInfo.hpp"
+#include "sound/Audio.hpp"
 
 
 class Screen {
@@ -19,7 +18,7 @@ private:
 	std::list<Widget *> widgetsList;
 	InputState *inputStatePtr = nullptr;
 
-	std::map<Button *, Screen *> callbackScreenMap;
+	std::map<ButtonWidget *, Screen *> callbackScreenMap;
 	Screen *responseCallBackScreenPtr = nullptr;
 
 	AudioPlayer audioPlayer;
@@ -37,7 +36,7 @@ public:
 
 	//ScreenEvent getScreenEvent() const { return screenEvent; }
 
-	Screen &addCallbackScreen(Screen *callBackScreen, Button *callBackButton) {
+	Screen &addCallbackScreen(Screen *callBackScreen, ButtonWidget *callBackButton) {
 		callbackScreenMap.insert({callBackButton, callBackScreen});
 		return *this;
 	}

@@ -2,8 +2,8 @@
 // Created by robcholz on 3/8/23.
 //
 
-#ifndef RUNCRAFT_BUTTON_HPP
-#define RUNCRAFT_BUTTON_HPP
+#ifndef RUNCRAFT_BUTTONWIDGET_HPP
+#define RUNCRAFT_BUTTONWIDGET_HPP
 
 #pragma once
 
@@ -14,11 +14,12 @@
 #include <SFML/Graphics/Text.hpp>
 #include <memory>
 #include <utility>
-#include "GameInfo.hpp"
+#include "client/GameInfo.hpp"
 #include "Widget.hpp"
-#include "GUI/text/RichText.hpp"
+#include "client/gui/style/GUIStyle.hpp"
+#include "client/gui/text/RichText.hpp"
 
-class Button : public Widget {
+class ButtonWidget : public Widget {
 private:
 	ActionWhenActivated execFuncPtr = nullptr;
 
@@ -29,7 +30,7 @@ private:
 	inline static std::shared_ptr<sf::IntRect> *intRectClicked = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 86, 200, 20));
 public:
-	explicit Button(const std::string &words, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0) {
+	explicit ButtonWidget(const std::string &words, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0) {
 		this->visible = visible;
 		widgetOutline.x = x;
 		widgetOutline.y = y;
@@ -54,17 +55,17 @@ public:
 
 	void action() override { if (execFuncPtr != nullptr)execFuncPtr(); }
 
-	Button &setScale(float factorX, float factorY) {
+	ButtonWidget &setScale(float factorX, float factorY) {
 		message.setScale(factorX, factorY);
 		return *this;
 	}
 
-	Button &setScale(sf::Vector2f &factors) {
+	ButtonWidget &setScale(sf::Vector2f &factors) {
 		message.setScale(factors);
 		return *this;
 	}
 
-	Button &setText(const std::string &words) {
+	ButtonWidget &setText(const std::string &words) {
 		message.setMessage(words);
 		return *this;
 	}
@@ -77,4 +78,4 @@ public:
 	}
 };
 
-#endif //RUNCRAFT_BUTTON_HPP
+#endif //RUNCRAFT_BUTTONWIDGET_HPP

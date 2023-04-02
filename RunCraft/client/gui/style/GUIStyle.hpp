@@ -7,6 +7,8 @@
 
 #include <memory>
 #include <SFML/Graphics/Color.hpp>
+#include <SFML/Graphics/Font.hpp>
+#include "client/gui/GUI.hpp"
 
 namespace initialization {
 	class GUIFont : public sf::Font, public GUI {

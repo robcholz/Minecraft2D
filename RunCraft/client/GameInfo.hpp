@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "Render/Render.hpp"
 #include "util/GameLogger.hpp"
 #include "Log.h"
 #include "Initializers/RollingFileInitializer.h"
 #include "Appenders/ColorConsoleAppender.h"
+#include "client/render/Render.hpp"
 
 namespace game_data {
 	enum Biome : unsigned short {

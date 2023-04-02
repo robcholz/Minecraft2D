@@ -13,7 +13,6 @@ class Screen; /*fuck circular dependencies*/
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
 #include "util/Math_Helper.hpp"
-#include "GUI/Style/GUIStyle.hpp"
 
 class Widget : public GUI {
 protected:
@@ -70,7 +69,7 @@ public:
 		}
 	}
 
-	void render() override {}
+	void render() override  {}
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

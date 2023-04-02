@@ -306,14 +306,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /usr/local/include/SFML/Graphics/Sprite.hpp \
   /usr/local/include/SFML/Graphics/Text.hpp \
   /usr/local/include/SFML/Graphics/VertexBuffer.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Events/SystemEvents.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/Menu.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/events/SystemEvents.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/Menu.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/utils.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/Render.hpp \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iostream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/istream \
-  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Log.h \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/GameInfo.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Logger.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/IAppender.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Record.h \
@@ -321,6 +318,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Severity.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Util.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/sstream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/istream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/fcntl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/fcntl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_o_sync.h \
@@ -338,13 +336,12 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/gethostuuid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/time.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_timeval64.h \
-  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/filesystem \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/stack \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/deque \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iomanip \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/FileHelper.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iostream \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/resource/FileHelper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/dirent.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/dirent.h \
@@ -355,24 +352,32 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/ColorConsoleAppender.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/ConsoleAppender.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/WinApi.h \
+  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h \
+  /Users/zhangjie/CLionProjects/RunCraft/include/plog/Log.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/RollingFileInitializer.h \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Formatters/CsvFormatter.h \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/render/Render.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/ConsoleInitializer.h \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Background.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/Texture.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/Background.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/texture/Texture.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/list \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/SingleTextureComponent.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Widget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/texture/SingleTextureComponent.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/GUI.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/ButtonWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/Widget.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/Math_Helper.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/cmath \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/style/GUIStyle.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/text/RichText.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/TexturedButtonWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/SoundSliderWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/SliderWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/TextFieldWidget.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/ScreenManager.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/Screen.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/sound/Audio.hpp \
   /usr/local/include/SFML/Audio/Sound.hpp \
   /usr/local/include/SFML/Audio/Export.hpp \
   /usr/local/include/SFML/Audio/SoundSource.hpp \
@@ -390,13 +395,7 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /usr/local/include/SFML/Audio/SoundFileFactory.hpp \
   /usr/local/include/SFML/Audio/SoundFileFactory.inl \
   /usr/local/include/SFML/Audio/SoundFileReader.hpp \
-  /usr/local/include/SFML/Audio/SoundFileWriter.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp
+  /usr/local/include/SFML/Audio/SoundFileWriter.hpp
 
 
 /usr/local/include/SFML/Audio/SoundBufferRecorder.hpp:
@@ -413,11 +412,13 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /usr/local/include/SFML/Audio/Sound.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/ScreenManager.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/TextFieldWidget.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/text/RichText.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/style/GUIStyle.hpp:
 
 /usr/local/include/SFML/Audio/SoundFileFactory.inl:
 
@@ -425,9 +426,19 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/Math_Helper.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/Texture.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/Widget.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/ButtonWidget.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/texture/SingleTextureComponent.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/texture/Texture.hpp:
 
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Initializers/RollingFileInitializer.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/include/plog/Log.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h:
 
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Formatters/TxtFormatter.h:
 
@@ -439,43 +450,37 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/filesystem:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp:
-
-/Users/zhangjie/CLionProjects/RunCraft/include/plog/Init.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_timeval64.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_select.h:
+/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iostream:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Widget.hpp:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_uuid_t.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_select.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/unistd.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/unistd.h:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/stat.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_filesec_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_seek_set.h:
 
-/Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/IAppender.h:
-
-/Users/zhangjie/CLionProjects/RunCraft/include/plog/Log.h:
-
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/istream:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_uuid_t.h:
+/Users/zhangjie/CLionProjects/RunCraft/include/plog/Appenders/IAppender.h:
 
-/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iostream:
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/GameLogger.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_s_ifmt.h:
 
 /Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/utils.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Events/SystemEvents.hpp:
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/Menu.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/stat.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/events/SystemEvents.hpp:
 
 /usr/local/include/SFML/Graphics/Glsl.inl:
 
@@ -507,10 +512,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /usr/local/include/SFML/Graphics/PrimitiveType.hpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp:
-
 /usr/local/include/SFML/Graphics/Rect.hpp:
 
 /usr/local/include/SFML/Graphics/Rect.inl:
@@ -525,11 +526,15 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /usr/local/include/SFML/Window/WindowStyle.hpp:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/Screen.hpp:
+
 /usr/local/include/SFML/Window/WindowHandle.hpp:
 
 /usr/local/include/SFML/Window/Window.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/vector:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/GameInfo.hpp:
 
 /usr/local/include/SFML/Window/Keyboard.hpp:
 
@@ -598,8 +603,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_useconds_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_nlink_t.h:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_key_t.h:
 
@@ -679,8 +682,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/__threading_support:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/util/FileHelper.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_posix_vdisable.h:
 
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Record.h:
@@ -692,8 +693,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/pthread/pthread_impl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/errno.h:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp:
 
 /usr/local/include/SFML/System/FileInputStream.hpp:
 
@@ -819,8 +818,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Logger.h:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/Render.hpp:
-
 /usr/local/include/SFML/System/ThreadLocalPtr.inl:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/resource.h:
@@ -867,6 +864,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/stdlib.h:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/resource/FileHelper.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/bitset:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/exception:
@@ -883,15 +882,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Users/zhangjie/CLionProjects/RunCraft/RunCraft.cpp:
 
-/Users/zhangjie/CLionProjects/RunCraft/game/Menu.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/_types/_intmax_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/assert.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/_types/_uint64_t.h:
-
-/Users/zhangjie/CLionProjects/RunCraft/game/GameInfo.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/_types.h:
 
@@ -904,8 +899,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/strings.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/ostream:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_errno_t.h:
 
@@ -1005,6 +998,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/wchar.h:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/SliderWidget.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_clock_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_pthread/_pthread_condattr_t.h:
@@ -1029,8 +1024,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_uintptr_t.h:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xlocale/_wchar.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_u_int16_t.h:
@@ -1053,7 +1046,11 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_ucontext.h:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/sound/Audio.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_u_int32_t.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/SoundSliderWidget.hpp:
 
 /usr/local/include/SFML/Window.hpp:
 
@@ -1068,8 +1065,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /usr/local/include/SFML/Window/Export.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_int64_t.h:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Background.hpp:
 
 /usr/local/include/SFML/System/Thread.inl:
 
@@ -1103,13 +1098,13 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/AvailabilityVersions.h:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/widget/TexturedButtonWidget.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/time.h:
 
 /usr/local/include/SFML/System/Time.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/machine/_types.h:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/Render/SingleComponent/SingleTextureComponent.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/Availability.h:
 
@@ -1151,9 +1146,9 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/i386/_types.h:
 
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/ios:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/render/Render.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_pthread/_pthread_mutexattr_t.h:
 
@@ -1177,11 +1172,15 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /usr/local/include/SFML/System/Export.hpp:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/screen/Background.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_mode_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/i386/signal.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/cdefs.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/client/gui/GUI.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/ratio:
 

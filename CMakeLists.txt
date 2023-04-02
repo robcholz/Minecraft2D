@@ -4,12 +4,12 @@ project(RunCraft)
 set(CMAKE_CXX_STANDARD 17)
 
 set(SOURCE_FILES RunCraft.cpp RunCraft/util/Math_Helper.hpp
-        RunCraft/util/File.hpp RunCraft/GUI/widget/Button.hpp RunCraft/Sound/Audio.hpp RunCraft/Render/SingleComponent/Texture.hpp
-        RunCraft/Render/Render.hpp game/GameInfo.hpp RunCraft/util/utils.hpp RunCraft/util/GameLogger.hpp
-        RunCraft/util/FileHelper.hpp RunCraft/GUI/GUI.hpp RunCraft/GUI/screen/Background.hpp
-        RunCraft/Render/SingleComponent/SingleTextureComponent.hpp
-        RunCraft/GUI/text/RichText.hpp RunCraft/GUI/text/RichText.hpp RunCraft/Events/SystemEvents.hpp
-        RunCraft/GUI/screen/Screen.hpp RunCraft/GUI/widget/Slider.hpp game/Menu.hpp RunCraft/ErrorHandling/ErrorHandling.hpp RunCraft/GUI/screen/ScreenManager.hpp game/RunCraft.hpp RunCraft/GUI/widget/ValueSlider.hpp RunCraft/GUI/widget/Text.hpp RunCraft/GUI/Style/GUIStyle.hpp)
+        RunCraft/resource/File.hpp RunCraft/client/gui/widget/ButtonWidget.hpp RunCraft/sound/Audio.hpp RunCraft/client/gui/widget/texture/Texture.hpp
+        RunCraft/client/render/Render.hpp RunCraft/client/GameInfo.hpp RunCraft/util/utils.hpp RunCraft/util/GameLogger.hpp
+        RunCraft/resource/FileHelper.hpp RunCraft/client/gui/GUI.hpp RunCraft/client/gui/screen/Background.hpp
+        RunCraft/client/gui/widget/texture/SingleTextureComponent.hpp
+        RunCraft/client/gui/text/RichText.hpp RunCraft/client/gui/text/RichText.hpp RunCraft/events/SystemEvents.hpp
+        RunCraft/client/gui/screen/Screen.hpp RunCraft/client/gui/widget/SliderWidget.hpp RunCraft/client/Menu.hpp RunCraft/error/ErrorHandling.hpp RunCraft/client/gui/screen/ScreenManager.hpp RunCraft/client/RunCraft.hpp RunCraft/client/gui/widget/SoundSliderWidget.hpp RunCraft/client/gui/widget/TextFieldWidget.hpp RunCraft/client/gui/style/GUIStyle.hpp RunCraft/client/gui/widget/TexturedButtonWidget.hpp RunCraft/client/gui/text/TranslatableText.hpp RunCraft/item/Item.hpp RunCraft/item/Items.hpp RunCraft/block/Blocks.hpp RunCraft/block/Block.hpp)
 add_executable(RunCraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)

@@ -8,7 +8,7 @@
 #pragma once
 
 #include <SFML/Window/Event.hpp>
-#include "Menu.hpp"
+#include "client/Menu.hpp"
 
 class SystemEvents {
 private:

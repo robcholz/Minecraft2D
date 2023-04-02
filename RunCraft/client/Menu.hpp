@@ -9,17 +9,15 @@
 
 
 #include "util/utils.hpp"
-#include "GameInfo.hpp"
+#include "client/GameInfo.hpp"
 #include "Initializers/ConsoleInitializer.h"
-#include "GUI/screen/Background.hpp"
-#include "GUI/widget/Button.hpp"
-#include "GUI/widget/Slider.hpp"
-#include "Render/Render.hpp"
-#include "Sound/Audio.hpp"
-#include "GUI/screen/Screen.hpp"
-#include "GUI/screen/ScreenManager.hpp"
-#include "GUI/widget/ValueSlider.hpp"
-#include "GUI/widget/Text.hpp"
+#include "client/gui/screen/Background.hpp"
+#include "client/gui/widget/ButtonWidget.hpp"
+#include "client/gui/widget/TexturedButtonWidget.hpp"
+#include "client/gui/widget/SoundSliderWidget.hpp"
+#include "client/gui/widget/TextFieldWidget.hpp"
+#include "client/gui/screen/ScreenManager.hpp"
+#include "sound/Audio.hpp"
 
 class Menu {
 private:
@@ -32,40 +30,45 @@ private:
 	Background *settingBackground = new Background("options_background.png");
 
 	/*main menu*/
-	Button *backgroundMenuSinglePlayer = new Button("Singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432);
-	Button *backgroundMenuOptions = new Button("Options", 800, 80, true, screenWidth / 2 - 800 / 2, 528);
-	Button *backgroundMenuWhat = new Button("Something uncertain", 800, 80, true, screenWidth / 2 - 800 / 2, 624);
-	Button *backgroundMenuLanguage = new Button("Language", 380, 80, true, screenWidth / 2 - 800 / 2, 768);
-	Button *backgroundMenuQuitGame = new Button("Quit Game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768);
+	ButtonWidget *backgroundMenuSinglePlayer = new ButtonWidget("Singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432);
+	ButtonWidget *backgroundMenuOptions = new ButtonWidget("Options...", 800, 80, true, screenWidth / 2 - 800 / 2, 528);
+	ButtonWidget *backgroundMenuWhat = new ButtonWidget("Something uncertain", 800, 80, true, screenWidth / 2 - 800 / 2, 624);
+	ButtonWidget *backgroundMenuLanguage = new ButtonWidget("Language", 380, 80, true, screenWidth / 2 - 800 / 2, 768);
+	ButtonWidget *backgroundMenuQuitGame = new ButtonWidget("Quit Game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768);
+	TexturedButtonWidget *backgroundMenuLanguageTexturedButton = new TexturedButtonWidget(32, 32, true, screenWidth / 2 - 500, 768);
 	Screen *backgroundMenuScreen = new Screen(backgroundTexture);
 
 	/*settings*/
-	Button *backgroundSettingBiomeSnowyPlains = new Button("Snowy Plains", 590, 80, true, screenWidth / 2 - 1200 / 2, 400);
-	Button *backgroundSettingBiomePlains = new Button("Plains", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 400);
-	Button *backgroundSettingBiomeForest = new Button("Forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 500);
-	Button *backgroundSettingBiomeDesert = new Button("Desert", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 500);
-	Button *backgroundSettingBiomeBirchForest = new Button("Birch Forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 600);
-	Button *backgroundSettingBiomeJungle = new Button("Jungle", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 600);
-	Button *backgroundSettingVolume = new Button("Music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200);
-	Button *backgroundSettingBack = new Button("Done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50);
+	ButtonWidget *backgroundSettingBiomeSnowyPlains = new ButtonWidget("Snowy Plains", 590, 80, true, screenWidth / 2 - 1200 / 2, 400);
+	ButtonWidget *backgroundSettingBiomePlains = new ButtonWidget("Plains", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 400);
+	ButtonWidget *backgroundSettingBiomeForest = new ButtonWidget("Forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 500);
+	ButtonWidget *backgroundSettingBiomeDesert = new ButtonWidget("Desert", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 500);
+	ButtonWidget *backgroundSettingBiomeBirchForest = new ButtonWidget("Birch Forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 600);
+	ButtonWidget *backgroundSettingBiomeJungle = new ButtonWidget("Jungle", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 600);
+	ButtonWidget *backgroundSettingVolume = new ButtonWidget("Music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200);
+	ButtonWidget *backgroundSettingBack = new ButtonWidget("Done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50);
 	Screen *backgroundBiomeSettingScreen = new Screen(backgroundTexture);
 
 	/*music settings*/
-	Text *settingVolumeSliderTitle = new Text("Music & Sound Options", 70, true, screenWidth / 2 - 440 / 2, 20);
-	ValueSlider *settingVolumeSliderMasterVolume = new ValueSlider("Master Volume", 1240, 80, true, screenWidth / 2 - 620, 115);
-	ValueSlider *settingVolumeSliderMusic = new ValueSlider("Music", 590, 80, true, screenWidth / 2 - 620, 225);
-	ValueSlider *settingVolumeSliderJukeboxNoteblocks = new ValueSlider("Jukebox/Noteblocks", 590, 80, true, screenWidth / 2 + 30, 225);
-	ValueSlider *settingVolumeSliderWeather = new ValueSlider("Weather", 590, 80, true, screenWidth / 2 - 620, 335);
-	ValueSlider *settingVolumeSliderBlocks = new ValueSlider("Blocks", 36, 590, 80, true, screenWidth / 2 + 30, 335);
-	ValueSlider *settingVolumeSliderHostileCreatures = new ValueSlider("Hostile Creatures", 590, 80, true, screenWidth / 2 - 620, 445);
-	ValueSlider *settingVolumeSliderFriendlyCreatures = new ValueSlider("Friendly Creatures", 590, 80, true, screenWidth / 2 + 30, 445);
-	ValueSlider *settingVolumeSliderPlayers = new ValueSlider("Players", 590, 80, true, screenWidth / 2 - 620, 555);
-	ValueSlider *settingVolumeSliderAmbientEnvironment = new ValueSlider("Ambient/Environment", 590, 80, true, screenWidth / 2 + 30, 555);
-	Button *settingVolumeBack = new Button("Done", 790, 80, true, screenWidth / 2 - 390, 555 + 260);
+	TextFieldWidget *settingVolumeSliderTitle = new TextFieldWidget("Music & sound Options", 70, true, screenWidth / 2 - 440 / 2, 20);
+	SoundSliderWidget *settingVolumeSliderMasterVolume = new SoundSliderWidget("Master Volume", 1240, 80, true, screenWidth / 2 - 620, 115);
+	SoundSliderWidget *settingVolumeSliderMusic = new SoundSliderWidget("Music", 590, 80, true, screenWidth / 2 - 620, 225);
+	SoundSliderWidget *settingVolumeSliderJukeboxNoteblocks = new SoundSliderWidget("Jukebox/Noteblocks", 590, 80, true,
+	                                                                                screenWidth / 2 + 30, 225);
+	SoundSliderWidget *settingVolumeSliderWeather = new SoundSliderWidget("Weather", 590, 80, true, screenWidth / 2 - 620, 335);
+	SoundSliderWidget *settingVolumeSliderBlocks = new SoundSliderWidget("Blocks", 36, 590, 80, true, screenWidth / 2 + 30, 335);
+	SoundSliderWidget *settingVolumeSliderHostileCreatures = new SoundSliderWidget("Hostile Creatures", 590, 80, true,
+	                                                                               screenWidth / 2 - 620, 445);
+	SoundSliderWidget *settingVolumeSliderFriendlyCreatures = new SoundSliderWidget("Friendly Creatures", 590, 80, true,
+	                                                                                screenWidth / 2 + 30, 445);
+	SoundSliderWidget *settingVolumeSliderPlayers = new SoundSliderWidget("Players", 590, 80, true, screenWidth / 2 - 620, 555);
+	SoundSliderWidget *settingVolumeSliderAmbientEnvironment = new SoundSliderWidget("Ambient/Environment", 590, 80, true,
+	                                                                                 screenWidth / 2 + 30, 555);
+	ButtonWidget *settingVolumeBack = new ButtonWidget("Done", 790, 80, true, screenWidth / 2 - 390, 555 + 260);
 	Screen *settingVolumeScreen = new Screen(settingBackground);
 
 	/*singleplayer page*/
-	Button *singleplayerSettingBack = new Button("Done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50);
+	ButtonWidget *singleplayerSettingBack = new ButtonWidget("Done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50);
 	Screen *singleplayerSettingScreen = new Screen(settingBackground);
 
 	ScreenManager screenManager;
@@ -84,6 +87,7 @@ public:
 		delete backgroundMenuWhat;
 		delete backgroundMenuLanguage;
 		delete backgroundMenuQuitGame;
+		delete backgroundMenuLanguageTexturedButton;
 		delete backgroundMenuScreen;
 
 		delete backgroundSettingBiomeSnowyPlains;
@@ -157,6 +161,7 @@ public:
 				.addWidget(backgroundMenuSinglePlayer)
 				.addWidget(backgroundMenuLanguage)
 				.addWidget(backgroundMenuWhat)
+				.addWidget(backgroundMenuLanguageTexturedButton)
 				.addWidget(backgroundMenuQuitGame);
 		backgroundMenuQuitGame->actionsToExecWhenClicked([] {
 			PLOG_DEBUG << "Cancel RunCraft!";
@@ -182,7 +187,7 @@ public:
 		settingVolumeSliderJukeboxNoteblocks->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.jukeBoxOrNoteblocks);
 		settingVolumeSliderMasterVolume->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.masterVolume);
 		settingVolumeSliderMusic->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.music)
-				.actionsToExecWhenMoved([this]() { backgroundMusic.changeVolume((GameInfo.getGameGlobalData()->soundLevel.music));});
+				.actionsToExecWhenMoved([this]() { backgroundMusic.changeVolume((GameInfo.getGameGlobalData()->soundLevel.music)); });
 		settingVolumeSliderPlayers->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.players);
 		settingVolumeSliderWeather->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.weather);
 

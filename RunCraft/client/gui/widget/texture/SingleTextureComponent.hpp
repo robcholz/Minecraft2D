@@ -8,7 +8,7 @@
 #pragma once
 
 #include <SFML/Graphics/Drawable.hpp>
-#include "../../GUI/GUI.hpp"
+#include "client/gui/GUI.hpp"
 
 class SingleTextureComponent: public GUI{
 public:

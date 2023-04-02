@@ -278,7 +278,7 @@ public:
 
 protected:
 	/**
-	 * @brief Render
+	 * @brief render
 	 * @param target
 	 * @param states
 	 */
