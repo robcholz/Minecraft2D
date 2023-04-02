@@ -11,7 +11,8 @@
 #include "Widget.hpp"
 #include "GameInfo.hpp"
 #include "util/Math_Helper.hpp"
-#include "GUI/text/Text.hpp"
+#include "GUI/text/RichText.hpp"
+#include "GUI/Style/GUIStyle.hpp"
 
 class Slider : public Widget {
 protected:
@@ -20,13 +21,12 @@ protected:
 	Intervali sliderOutlineBound{};
 	ButtonValue sliderValue = 100;
 	std::string title;
-	Text message;
+	RichText message;
 private:
-	sf::Sprite *sliderBackgroundPtr = new sf::Sprite;
+	sf::Sprite sliderBackgroundSprite;
 	sf::Texture widgetNormal;
 	bool isInBackgroundBoundary = false, isInSliderBoundary = false;
 	bool sliderLock = true;
-
 
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 46, 200, 20)); // background blur
@@ -34,8 +34,6 @@ private:
 			new sf::IntRect(0, 66, 200, 20)); // background blur
 	inline static std::shared_ptr<sf::IntRect> *intRectSliderActivated = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 86, 200, 20)); // slider component
-	inline static std::shared_ptr<sf::Color> *backgroundMessageColor = new std::shared_ptr<sf::Color>(
-			new sf::Color(220, 220, 220, 255));
 public:
 	explicit Slider(const std::string &words, int width = 200, int height = 20, bool visible = true, int x = 0, int y = 0) : Widget() {
 		title = words;
@@ -48,37 +46,32 @@ public:
 		widgetNormal.loadFromFile(widgetAssetPath, **intRectSliderNormal);
 		widgetActivated.loadFromFile(widgetAssetPath, **intRectSliderActivated);
 
-		sliderBackgroundPtr->setTexture(sliderBackgroundNormal, widgetSize); // background
-		sliderBackgroundPtr->setScale((float) width / 200, (float) height / 20);
-		sliderBackgroundPtr->setPosition((float) x, (float) y);
+		sliderBackgroundSprite.setTexture(sliderBackgroundNormal, widgetSize); // background
+		sliderBackgroundSprite.setScale((float) width / 200, (float) height / 20);
+		sliderBackgroundSprite.setPosition((float) x, (float) y);
 
-		widgetCurrentPtr->setTexture(widgetNormal, widgetSize);
-		widgetCurrentPtr->scale((float) 0.15f, (float) height / 20);
-		widgetCurrentPtr->setPosition((float) x * 1.5f, (float) y);
+		widgetCurrentSprite.setTexture(widgetNormal, widgetSize);
+		widgetCurrentSprite.scale((float) 0.15f, (float) height / 20);
+		widgetCurrentSprite.setPosition((float) x * 1.5f, (float) y);
 
 		widgetOutline.x = x;
 		widgetOutline.y = y;
 		widgetOutline.width = width;
 		widgetOutline.height = height;
-		sliderOutline.x = (int) widgetCurrentPtr->getGlobalBounds().left;
-		sliderOutline.y = (int) widgetCurrentPtr->getGlobalBounds().top;
-		sliderOutline.width = (int) widgetCurrentPtr->getGlobalBounds().width;
-		sliderOutline.height = (int) widgetCurrentPtr->getGlobalBounds().height;
+		sliderOutline.x = (int) widgetCurrentSprite.getGlobalBounds().left;
+		sliderOutline.y = (int) widgetCurrentSprite.getGlobalBounds().top;
+		sliderOutline.width = (int) widgetCurrentSprite.getGlobalBounds().width;
+		sliderOutline.height = (int) widgetCurrentSprite.getGlobalBounds().height;
 
-		sliderOutlineBound.lower = (int) sliderBackgroundPtr->getPosition().x + 4;
-		sliderOutlineBound.upper = (int) sliderBackgroundPtr->getPosition().x
-		                           + (int) sliderBackgroundPtr->getGlobalBounds().width
-		                           - (int) widgetCurrentPtr->getGlobalBounds().width - 4;
-		message.setFont(font)
-				.setColor(**backgroundMessageColor)
+		sliderOutlineBound.lower = (int) sliderBackgroundSprite.getPosition().x + 4;
+		sliderOutlineBound.upper = (int) sliderBackgroundSprite.getPosition().x
+		                           + (int) sliderBackgroundSprite.getGlobalBounds().width
+		                           - (int) widgetCurrentSprite.getGlobalBounds().width - 4;
+		message.setFont(gui_style::MessageFont)
+				.setColor(gui_style::MessageColor)
 				.setMessage(title + ": " + std::to_string(getValue()) + "%");
 		updateMessagePosition();
 		message.setCharacterSize((int) ((float) height / 80.0f * 64.0f));
-	}
-
-	~Slider() {
-		delete widgetCurrentPtr;
-		delete sliderBackgroundPtr;
 	}
 
 	void setState(bool state) override {
@@ -86,9 +79,9 @@ public:
 			stateChange = true;
 			lastState = state;
 			if (activated()) {
-				widgetCurrentPtr->setTexture(widgetActivated);
+				widgetCurrentSprite.setTexture(widgetActivated);
 				return;
-			} else { widgetCurrentPtr->setTexture(widgetNormal); }
+			} else { widgetCurrentSprite.setTexture(widgetNormal); }
 		} else {
 			stateChange = false;
 		}
@@ -118,7 +111,7 @@ public:
 	void updatePosition(int x) {
 		if (sliderBoundaryCheck(x)) {
 			sliderOutline.x = x;
-			widgetCurrentPtr->setPosition((float) x, (float) sliderOutline.y);
+			widgetCurrentSprite.setPosition((float) x, (float) sliderOutline.y);
 		}
 	}
 
@@ -139,8 +132,8 @@ public:
 	ButtonValue getValue() const { return sliderValue; }
 
 	void render() override {
-		GameInfo.getRender()->render(*sliderBackgroundPtr);
-		GameInfo.getRender()->render(*widgetCurrentPtr);
+		GameInfo.getRender()->render(sliderBackgroundSprite);
+		GameInfo.getRender()->render(widgetCurrentSprite);
 		GameInfo.getRender()->render(message);
 	}
 };

@@ -366,7 +366,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/cmath \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/Text.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp \
   /usr/local/include/SFML/Audio/Sound.hpp \
@@ -390,4 +391,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp

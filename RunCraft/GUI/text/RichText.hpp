@@ -3,8 +3,8 @@
 // Credits: https://github.com/skyrpex/RichText
 //
 
-#ifndef RUNCRAFT_TEXT_HPP
-#define RUNCRAFT_TEXT_HPP
+#ifndef RUNCRAFT_RICHTEXT_HPP
+#define RUNCRAFT_RICHTEXT_HPP
 
 #pragma once
 
@@ -44,7 +44,7 @@ struct Outline {
 	float thickness = 0.f;
 };
 
-class Text : public sf::Drawable, public sf::Transformable {
+class RichText : public sf::Drawable, public sf::Transformable {
 
 public:
 	/**
@@ -107,7 +107,7 @@ public:
 		}
 
 		/**
-		 * @brief Set font
+		 * @brief Set defaultFont
 		 * @param font
 		 */
 		void setFont(const sf::Font &newFont) {
@@ -204,8 +204,8 @@ public:
 
 	private:
 		/**
-		 * @brief Get the index of the sf::Text containing the pos'th character.
-		 * \n Also changes pos to the widgetOutlinePosition of the character in the sf::Text.
+		 * @brief Get the index of the sf::RichText containing the pos'th character.
+		 * \n Also changes pos to the widgetOutlinePosition of the character in the sf::RichText.
 		 * @param pos
 		 * @return
 		 */
@@ -302,7 +302,7 @@ private:
 	 * @brief Delegate constructor
 	 * @param font
 	 */
-	explicit Text(const sf::Font *font)
+	explicit RichText(const sf::Font *font)
 			: font(font),
 			  characterSize(30),
 			  currentStroke{sf::Color::White, sf::Color::Transparent},
@@ -310,7 +310,7 @@ private:
 	}
 
 	/**
-	 * @brief Creates a sf::Text instance using the current styles
+	 * @brief Creates a sf::RichText instance using the current styles
 	 * @param string
 	 * @return
 	 */
@@ -343,32 +343,32 @@ private:
 	}
 
 public:
-	Text() : Text(nullptr) {}
+	RichText() : RichText(nullptr) {}
 
-	explicit Text(const sf::Font &font) : Text(&font) {}
+	explicit RichText(const sf::Font &font) : RichText(&font) {}
 
-	Text &setStroke(const TextStroke &stroke){
+	RichText &setStroke(const TextStroke &stroke){
 		currentStroke = stroke;
 		return *this;
 	}
 
-	Text &setOutline(const Outline &outline) {
+	RichText &setOutline(const Outline &outline) {
 		currentStroke.outline = outline.outline;
 		currentStroke.thickness = outline.thickness;
 		return *this;
 	}
 
-	Text &setColor(const sf::Color &color) {
+	RichText &setColor(const sf::Color &color) {
 		currentStroke.fill = color;
 		return *this;
 	}
 
-	Text &setStyle(sf::Text::Style style) {
+	RichText &setStyle(sf::Text::Style style) {
 		currentStyle = style;
 		return *this;
 	}
 
-	Text &setMessage(const sf::String &string) {
+	RichText &setMessage(const sf::String &string) {
 		// Maybe skip
 		if (string.isEmpty())
 			return *this;
@@ -479,7 +479,7 @@ public:
 	 * @brief Set character size
 	 * @param size
 	 */
-	Text &setCharacterSize(unsigned int size) {
+	RichText &setCharacterSize(unsigned int size) {
 		// Maybe skip
 		if (characterSize == size)
 			return *this;
@@ -496,19 +496,19 @@ public:
 	}
 
 	/**
-	 * @brief Set font
+	 * @brief Set defaultFont
 	 * @param newFont
 	 * @return *this
 	 */
-	Text &setFont(const sf::Font &newFont) {
+	RichText &setFont(const sf::Font &newFont) {
 		// Maybe skip
 		if (font == &newFont)
 			return *this;
 
-		// Update font
+		// Update defaultFont
 		font = &newFont;
 
-		// Set texts font
+		// Set texts defaultFont
 		for (Line &line: lines)
 			line.setFont(newFont);
 
@@ -575,7 +575,7 @@ public:
 	unsigned int getCharacterSize() const { return characterSize; }
 
 	/**
-	 * @brief Get font
+	 * @brief Get defaultFont
 	 * @return
 	 */
 	const sf::Font *getFont() const { return font; }
@@ -593,4 +593,4 @@ public:
 	sf::FloatRect getGlobalBounds() const { return getTransform().transformRect(getLocalBounds()); }
 };
 
-#endif //RUNCRAFT_TEXT_HPP
+#endif //RUNCRAFT_RICHTEXT_HPP

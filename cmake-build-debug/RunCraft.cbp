@@ -102,6 +102,9 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Background.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
@@ -111,13 +114,16 @@
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
-		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/Text.hpp">
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Button.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp">
+			<Option target="RunCraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp">
 			<Option target="RunCraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp">

@@ -15,15 +15,13 @@
 #include <memory>
 #include "GameInfo.hpp"
 #include "Widget.hpp"
-#include "GUI/text/Text.hpp"
+#include "GUI/text/RichText.hpp"
 
 class Button : public Widget {
 private:
-	typedef void (*ActionWhenClicked)(void);
+	ActionWhenActivated execFuncPtr = nullptr;
 
-	ActionWhenClicked execFuncPtr = nullptr;
-
-	Text message;
+	RichText message;
 
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 66, 200, 20));
@@ -41,18 +39,14 @@ public:
 		sliderBackgroundNormal.loadFromFile(widgetAssetPath, **intRectNormal);
 		widgetActivated.loadFromFile(widgetAssetPath, **intRectClicked);
 
-		widgetCurrentPtr->setTexture(sliderBackgroundNormal, widgetSize);
-		widgetCurrentPtr->setScale((float) width / 200, (float) height / 20);
-		widgetCurrentPtr->setPosition((float) widgetOutline.x, (float) widgetOutline.y);
+		widgetCurrentSprite.setTexture(sliderBackgroundNormal, widgetSize);
+		widgetCurrentSprite.setScale((float) width / 200, (float) height / 20);
+		widgetCurrentSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 
-		message.setFont(font).setColor(sf::Color::White).setMessage(words)
+		message.setFont(gui_style::MessageFont).setColor(gui_style::MessageColor).setMessage(words)
 				.setPosition((float) widgetOutline.x + (float) widgetOutline.width / 2 - message.getGlobalBounds().width,
 				             (float) widgetOutline.y - (float) widgetOutline.height / 8 - 1.0f);
 		message.setCharacterSize((int) ((float) widgetOutline.height / 80.0f * 64.0f));
-	}
-
-	~Button() {
-		delete widgetCurrentPtr;
 	}
 
 	void listen(sf::Vector2i mousePos, bool isPressed) override {
@@ -67,7 +61,7 @@ public:
 		}
 	}
 
-	void actionsToExecWhenClicked(ActionWhenClicked execFunc) { execFuncPtr = execFunc; }
+	void actionsToExecWhenClicked(ActionWhenActivated execFunc) { execFuncPtr = execFunc; }
 
 	void action() override { if (execFuncPtr != nullptr)execFuncPtr(); }
 
@@ -87,7 +81,7 @@ public:
 	}
 
 	void render() override {
-		GameInfo.getRender()->render(*widgetCurrentPtr);
+		GameInfo.getRender()->render(widgetCurrentSprite);
 		GameInfo.getRender()->render(message);
 	}
 };

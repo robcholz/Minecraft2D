@@ -369,7 +369,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/cmath \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/random \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/numeric \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/Text.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/Sound/Audio.hpp \
   /usr/local/include/SFML/Audio/Sound.hpp \
@@ -393,7 +394,9 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/Screen.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/ErrorHandling/ErrorHandling.hpp \
   /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/screen/ScreenManager.hpp \
-  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/ValueSlider.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp \
+  /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/GUI.hpp
 
 
 /usr/local/include/SFML/Audio/SoundBufferRecorder.hpp:
@@ -412,6 +415,10 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 
 /Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Slider.hpp:
 
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/widget/Text.hpp:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/RichText.hpp:
+
 /usr/local/include/SFML/Audio/SoundFileFactory.inl:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/numeric:
@@ -425,8 +432,6 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Users/zhangjie/CLionProjects/RunCraft/include/plog/Formatters/TxtFormatter.h:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1/iomanip:
-
-/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/text/Text.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/dirent.h:
 
@@ -1023,6 +1028,8 @@ CMakeFiles/RunCraft.dir/RunCraft.cpp.o: /Users/zhangjie/CLionProjects/RunCraft/R
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_pthread/_pthread_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_uintptr_t.h:
+
+/Users/zhangjie/CLionProjects/RunCraft/RunCraft/GUI/Style/GUIStyle.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/xlocale/_wchar.h:
 

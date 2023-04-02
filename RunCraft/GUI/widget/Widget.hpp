@@ -13,27 +13,26 @@ class Screen; /*fuck circular dependencies*/
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
 #include "util/Math_Helper.hpp"
+#include "GUI/Style/GUIStyle.hpp"
 
 class Widget : public GUI {
 protected:
+	typedef std::function<void()> ActionWhenActivated;
+
 	sf::Texture sliderBackgroundNormal;
 	sf::Texture widgetActivated;
-	sf::Sprite *widgetCurrentPtr = new sf::Sprite;
+	sf::Sprite widgetCurrentSprite;
 	std::shared_ptr<sf::Vector2i> *widgetSize;
 	Areai widgetOutline{};
 
-	inline static sf::Font font;
 	std::string widgetAssetPath = guiFilePath + "widgets.png";
-	std::string fontAssetPath = fontFilePath + "runcraft.ttf";
 
 	bool visible = true;
 	bool lastState = false, stateChange = false, clickState = false, pressed = false;
 
 	void setClicked(bool clicked) { clickState = clicked; }
-
 public:
 	explicit Widget() {
-		font.loadFromFile(fontAssetPath);
 		widgetSize = nullptr;
 	}
 
@@ -44,10 +43,10 @@ public:
 			stateChange = true;
 			lastState = state;
 			if (lastState) {
-				widgetCurrentPtr->setTexture(widgetActivated);
+				widgetCurrentSprite.setTexture(widgetActivated);
 				return;
 			} else {
-				widgetCurrentPtr->setTexture(sliderBackgroundNormal);
+				widgetCurrentSprite.setTexture(sliderBackgroundNormal);
 			}
 		} else stateChange = false;
 	}
@@ -74,6 +73,8 @@ public:
 	bool isPressed() const { return pressed; }
 
 	virtual void listen(sf::Vector2i mousePosition, bool isPressed) = 0;
+
+	void render() override {}
 
 	bool stateChanged() const { return stateChange; }
 };

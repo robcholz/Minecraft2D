@@ -19,6 +19,7 @@
 #include "GUI/screen/Screen.hpp"
 #include "GUI/screen/ScreenManager.hpp"
 #include "GUI/widget/ValueSlider.hpp"
+#include "GUI/widget/Text.hpp"
 
 class Menu {
 private:
@@ -50,6 +51,7 @@ private:
 	Screen *backgroundBiomeSettingScreen = new Screen(backgroundTexture);
 
 	/*music settings*/
+	Text *settingVolumeSliderTitle = new Text("Music & Sound Options", 70, true, screenWidth / 2 - 440 / 2, 20);
 	ValueSlider *settingVolumeSliderMasterVolume = new ValueSlider("Master Volume", 1240, 80, true, screenWidth / 2 - 620, 115);
 	ValueSlider *settingVolumeSliderMusic = new ValueSlider("Music", 590, 80, true, screenWidth / 2 - 620, 225);
 	ValueSlider *settingVolumeSliderJukeboxNoteblocks = new ValueSlider("Jukebox/Noteblocks", 590, 80, true, screenWidth / 2 + 30, 225);
@@ -75,10 +77,42 @@ public:
 
 	~Menu() {
 		delete backgroundTexture;
+		delete settingBackground;
+
 		delete backgroundMenuSinglePlayer;
 		delete backgroundMenuOptions;
+		delete backgroundMenuWhat;
 		delete backgroundMenuLanguage;
+		delete backgroundMenuQuitGame;
 		delete backgroundMenuScreen;
+
+		delete backgroundSettingBiomeSnowyPlains;
+		delete backgroundSettingBiomePlains;
+		delete backgroundSettingBiomeForest;
+		delete backgroundSettingBiomeDesert;
+		delete backgroundSettingBiomeBirchForest;
+		delete backgroundSettingBiomeJungle;
+		delete backgroundSettingVolume;
+		delete backgroundSettingBack;
+		delete backgroundBiomeSettingScreen;
+
+		/*music settings*/
+		delete settingVolumeSliderTitle;
+		delete settingVolumeSliderMasterVolume;
+		delete settingVolumeSliderMusic;
+		delete settingVolumeSliderJukeboxNoteblocks;
+		delete settingVolumeSliderWeather;
+		delete settingVolumeSliderBlocks;
+		delete settingVolumeSliderHostileCreatures;
+		delete settingVolumeSliderFriendlyCreatures;
+		delete settingVolumeSliderPlayers;
+		delete settingVolumeSliderAmbientEnvironment;
+		delete settingVolumeBack;
+		delete settingVolumeScreen;
+
+		/*singleplayer page*/
+		delete singleplayerSettingBack;
+		delete singleplayerSettingScreen;
 	}
 
 	void initResource() {
@@ -130,9 +164,9 @@ public:
 		});
 
 		settingVolumeScreen->addCallbackScreen(backgroundBiomeSettingScreen, settingVolumeBack)
+				.addWidget(settingVolumeSliderTitle)
 				.addWidget(settingVolumeSliderAmbientEnvironment)
 				.addWidget(settingVolumeSliderBlocks)
-				.addWidget(settingVolumeSliderFriendlyCreatures)
 				.addWidget(settingVolumeSliderFriendlyCreatures)
 				.addWidget(settingVolumeSliderHostileCreatures)
 				.addWidget(settingVolumeSliderJukeboxNoteblocks)
@@ -141,6 +175,16 @@ public:
 				.addWidget(settingVolumeSliderPlayers)
 				.addWidget(settingVolumeSliderWeather)
 				.addWidget(settingVolumeBack);
+		settingVolumeSliderAmbientEnvironment->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.ambientAndEnvironment);
+		settingVolumeSliderBlocks->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.blocks);
+		settingVolumeSliderFriendlyCreatures->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.friendlyCreatures);
+		settingVolumeSliderHostileCreatures->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.hostileCreatures);
+		settingVolumeSliderJukeboxNoteblocks->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.jukeBoxOrNoteblocks);
+		settingVolumeSliderMasterVolume->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.masterVolume);
+		settingVolumeSliderMusic->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.music)
+				.actionsToExecWhenMoved([this]() { backgroundMusic.changeVolume((GameInfo.getGameGlobalData()->soundLevel.music));});
+		settingVolumeSliderPlayers->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.players);
+		settingVolumeSliderWeather->varToChangeWhenMoved(&GameInfo.getGameGlobalData()->soundLevel.weather);
 
 		singleplayerSettingScreen->addCallbackScreen(backgroundMenuScreen, singleplayerSettingBack)
 				.addWidget(singleplayerSettingBack);

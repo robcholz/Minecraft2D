@@ -39,6 +39,10 @@ public:
 	void play() {
 		sound.play();
 	}
+
+	void changeVolume(game_data::SoundVolume volume) {
+		sound.setVolume(volume);
+	}
 };
 
 class AudioList : public Audio {
