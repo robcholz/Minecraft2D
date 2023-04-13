@@ -98,7 +98,16 @@
 		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/Block.hpp">
 			<Option target="runcraft"/>
 		</Unit>
+		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/BlockPos.hpp">
+			<Option target="runcraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/BlockTextureLoader.hpp">
+			<Option target="runcraft"/>
+		</Unit>
 		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/Blocks.hpp">
+			<Option target="runcraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/GrassBlock.hpp">
 			<Option target="runcraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/GameInfo.hpp">
@@ -147,6 +156,9 @@
 			<Option target="runcraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/widget/texture/Texture.hpp">
+			<Option target="runcraft"/>
+		</Unit>
+		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/render/BlockRenderer.hpp">
 			<Option target="runcraft"/>
 		</Unit>
 		<Unit filename="/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/render/Render.hpp">

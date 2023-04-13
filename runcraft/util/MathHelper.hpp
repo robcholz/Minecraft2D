@@ -30,93 +30,96 @@ typedef Interval<int> Intervali;
 template<typename vT=double>
 class Vector2D {
 private:
-	vT x;
-	vT y;
+	vT i;
+	vT j;
 public:
-	explicit Vector2D(vT x = 0.0f, vT y = 0.0f) {
-		this->x = x;
-		this->y = y;
+	explicit Vector2D(vT i = 0.0f, vT j = 0.0f) {
+		this->i = i;
+		this->j = j;
 	}
 
 	Vector2D(const Vector2D &that) {
-		this->x = that.x;
-		this->y = that.y;
+		this->i = that.i;
+		this->j = that.j;
 	}
 
 	~Vector2D() = default;
 
-	vT getX() { return this->x; }
+	vT getX() { return this->i; }
 
-	vT getY() { return this->y; }
+	vT getY() { return this->j; }
 
 	Vector2D operator-(const Vector2D &that) {
 		Vector2D result;
-		result.x = this->x - that.x;
-		result.y = this->y - that.y;
+		result.i = this->i - that.i;
+		result.j = this->j - that.j;
 		return result;
 	}
 
 	Vector2D operator+(const Vector2D &that) {
 		Vector2D result;
-		result.x = this->x + that.x;
-		result.y = this->y + that.y;
+		result.i = this->i + that.i;
+		result.j = this->j + that.j;
 		return result;
 	}
 
 	Vector2D &operator=(const Vector2D &that) {
-		this->x = that.x;
-		this->y = that.y;
+		this->i = that.i;
+		this->j = that.j;
 	}
 };
 
 template<typename vT=double>
 class Vector3D {
 private:
-	vT x;
-	vT y;
-	vT z;
+	vT i;
+	vT j;
+	vT k;
 public:
-	explicit Vector3D(vT x = 0.0f, vT y = 0.0f, vT z = 0.0f) {
-		this->x = x;
-		this->y = y;
-		this->z = z;
+	explicit Vector3D(vT i = 0.0f, vT j = 0.0f, vT k = 0.0f) {
+		this->i = i;
+		this->j = j;
+		this->k = k;
 	}
 
 	Vector3D(const Vector3D &that) {
-		this->x = that.x;
-		this->y = that.y;
-		this->z = that.z;
+		this->i = that.i;
+		this->j = that.j;
+		this->k = that.k;
 	}
 
 	~Vector3D() = default;
 
-	vT getX() { return this->x; }
+	vT getX() { return this->i; }
 
-	vT getY() { return this->y; }
+	vT getY() { return this->j; }
 
-	vT getZ() { return this->z; }
+	vT getZ() { return this->k; }
 
 	Vector3D operator-(Vector3D that) {
 		Vector3D result;
-		result.x = this->x - that.x;
-		result.y = this->y - that.y;
-		result.z = this->z - that.z;
+		result.i = this->i - that.i;
+		result.j = this->j - that.j;
+		result.k = this->k - that.k;
 		return result;
 	}
 
 	Vector3D operator+(const Vector3D &that) {
 		Vector3D result;
-		result.x = this->x + that.x;
-		result.y = this->y + that.y;
-		result.z = this->z + that.z;
+		result.i = this->i + that.i;
+		result.j = this->j + that.j;
+		result.k = this->k + that.k;
 		return result;
 	}
 
 	Vector3D &operator=(const Vector3D &that) {
-		this->x = that.x;
-		this->y = that.y;
-		this->z = that.z;
+		this->i = that.i;
+		this->j = that.j;
+		this->k = that.k;
 	}
 };
+
+typedef Vector3D<int> Vec3i;
+typedef Vector3D<double> Vec3d;
 
 #endif //RUNCRAFT_MATHHELPER_HPP

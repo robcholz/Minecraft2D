@@ -32,7 +32,7 @@ set(SOURCE_FILES
         runcraft/resource/FileHelper.hpp
         runcraft/events/SystemEvents.hpp
         runcraft/error/ErrorHandling.hpp
-        runcraft/sound/BlockSoundGroup.hpp runcraft/world/poi/WorldCoordinate.hpp runcraft/world/chunk/Chunk.hpp)
+        runcraft/sound/BlockSoundGroup.hpp runcraft/world/poi/WorldCoordinate.hpp runcraft/world/chunk/Chunk.hpp runcraft/block/GrassBlock.hpp runcraft/client/render/BlockRenderer.hpp runcraft/block/BlockPos.hpp runcraft/block/BlockTextureLoader.hpp)
 add_executable(runcraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)

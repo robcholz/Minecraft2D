@@ -5,46 +5,21 @@
 #ifndef RUNCRAFT_BLOCK_HPP
 #define RUNCRAFT_BLOCK_HPP
 
-//TODO
-//TODO
-
+#include <string>
+#include <SFML/Graphics/Texture.hpp>
 #include "sound/BlockSoundGroup.hpp"
+#include "BlockPos.hpp"
 
 class Block{
-
-};
-
-class Settings {
 private:
-	bool collidable;
-	BlockSoundGroup soundGroup;
-	//ToIntFunction <BlockState> luminance;
-	float resistance;
-	float hardness;
-	bool randomTicks;
-	float slipperiness;
-	float velocityMultiplier;
-	float jumpVelocityMultiplier;
-	//Identifier lootTableId;
-	//bool opaque;
-	//Boolean isAir;
-	//TypedContextPredicate<EntityType< ?>> allowsSpawningPredicate;
-	//ContextPredicate solidBlockPredicate;
-	//ContextPredicate suffocationPredicate;
-	//ContextPredicate blockVisionPredicate;
-
-	//ContextPredicate postProcessPredicate;
-
-	//ContextPredicate emissiveLightingPredicate;
-
-	//Boolean dynamicBounds;
-
-
-	Settings() {
+	std::string id;
+	BlockPos blockPos;
+	sf::Texture texture;
+public:
+	explicit Block(std::string id, ){
 
 	}
-
-public:
 };
+
 
 #endif //RUNCRAFT_BLOCK_HPP

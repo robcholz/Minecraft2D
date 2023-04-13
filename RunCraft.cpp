@@ -11,8 +11,6 @@ int main() {
 
 	render.getWindow().setVerticalSyncEnabled(true);
 
-	std::cout<<TranslatableText::getTranslatable("singleplayer",translatable::Category::GUI_BUTTON);
-
 	while (GameInfo.getRender()->getWindow().isOpen()) {
 		game_main_event.listen();
 		GameInfo.listen(sf::Mouse::getPosition(GameInfo.getRender()->getWindow()),
