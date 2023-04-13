@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/Users/zhangjie/CLionProjects/RunCraft/RunCraft.cpp" "CMakeFiles/RunCraft.dir/RunCraft.cpp.o" "gcc" "CMakeFiles/RunCraft.dir/RunCraft.cpp.o.d"
+  "/Users/zhangjie/Documents/Code/C++_C/RunCraft/RunCraft.cpp" "CMakeFiles/runcraft.dir/RunCraft.cpp.o" "gcc" "CMakeFiles/runcraft.dir/RunCraft.cpp.o.d"
   )
 
 # Targets to which this target links.

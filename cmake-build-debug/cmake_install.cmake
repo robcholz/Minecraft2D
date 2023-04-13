@@ -1,4 +1,4 @@
-# Install script for directory: /Users/zhangjie/CLionProjects/RunCraft
+# Install script for directory: /Users/zhangjie/Documents/Code/C++_C/RunCraft
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

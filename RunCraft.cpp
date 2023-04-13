@@ -1,6 +1,7 @@
 #include <SFML/Graphics.hpp>
-#include "RunCraft/events/SystemEvents.hpp"
+#include "runcraft/events/SystemEvents.hpp"
 #include "client/Menu.hpp"
+#include "resource/TranslatableText.hpp"
 
 int main() {
 	Render render("RunCrafts");
@@ -9,6 +10,8 @@ int main() {
 	SystemEvents game_main_event(&render);
 
 	render.getWindow().setVerticalSyncEnabled(true);
+
+	std::cout<<TranslatableText::getTranslatable("singleplayer",translatable::Category::GUI_BUTTON);
 
 	while (GameInfo.getRender()->getWindow().isOpen()) {
 		game_main_event.listen();

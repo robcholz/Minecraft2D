@@ -1,5 +1,5 @@
-/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -G "CodeBlocks - Unix Makefiles" -S /Users/zhangjie/CLionProjects/RunCraft -B /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug
+/Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=/usr/bin/make -G "CodeBlocks - Unix Makefiles" -S /Users/zhangjie/Documents/Code/C++_C/RunCraft -B /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug
 -- Found SFML 2.5.1 in /Library/Frameworks/SFML.framework/Resources/CMake
 -- Configuring done
 -- Generating done
--- Build files have been written to: /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug
+-- Build files have been written to: /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug

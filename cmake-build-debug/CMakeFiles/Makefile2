@@ -54,16 +54,16 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhangjie/CLionProjects/RunCraft
+CMAKE_SOURCE_DIR = /Users/zhangjie/Documents/Code/C++_C/RunCraft
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/RunCraft.dir/all
+all: CMakeFiles/runcraft.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/RunCraft.dir/clean
+clean: CMakeFiles/runcraft.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/RunCraft.dir
+# Target rules for target CMakeFiles/runcraft.dir
 
 # All Build rule for target.
-CMakeFiles/RunCraft.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target RunCraft"
-.PHONY : CMakeFiles/RunCraft.dir/all
+CMakeFiles/runcraft.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug/CMakeFiles --progress-num=1,2 "Built target runcraft"
+.PHONY : CMakeFiles/runcraft.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/RunCraft.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/RunCraft.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug/CMakeFiles 0
-.PHONY : CMakeFiles/RunCraft.dir/rule
+CMakeFiles/runcraft.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/runcraft.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug/CMakeFiles 0
+.PHONY : CMakeFiles/runcraft.dir/rule
 
 # Convenience name for target.
-RunCraft: CMakeFiles/RunCraft.dir/rule
-.PHONY : RunCraft
+runcraft: CMakeFiles/runcraft.dir/rule
+.PHONY : runcraft
 
 # clean rule for target.
-CMakeFiles/RunCraft.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/clean
-.PHONY : CMakeFiles/RunCraft.dir/clean
+CMakeFiles/runcraft.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/clean
+.PHONY : CMakeFiles/runcraft.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

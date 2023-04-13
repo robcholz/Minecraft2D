@@ -57,10 +57,10 @@ RM = /Applications/CLion.app/Contents/bin/cmake/mac/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/zhangjie/CLionProjects/RunCraft
+CMAKE_SOURCE_DIR = /Users/zhangjie/Documents/Code/C++_C/RunCraft
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug
+CMAKE_BINARY_DIR = /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -87,9 +87,9 @@ rebuild_cache/fast: rebuild_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug/CMakeFiles /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug/CMakeFiles /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/CLionProjects/RunCraft/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/zhangjie/Documents/Code/C++_C/RunCraft/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -117,24 +117,24 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named RunCraft
+# Target rules for targets named runcraft
 
 # Build rule for target.
-RunCraft: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 RunCraft
-.PHONY : RunCraft
+runcraft: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 runcraft
+.PHONY : runcraft
 
 # fast build rule for target.
-RunCraft/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/build
-.PHONY : RunCraft/fast
+runcraft/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/build
+.PHONY : runcraft/fast
 
 RunCraft.o: RunCraft.cpp.o
 .PHONY : RunCraft.o
 
 # target to build an object file
 RunCraft.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/RunCraft.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/RunCraft.cpp.o
 .PHONY : RunCraft.cpp.o
 
 RunCraft.i: RunCraft.cpp.i
@@ -142,7 +142,7 @@ RunCraft.i: RunCraft.cpp.i
 
 # target to preprocess a source file
 RunCraft.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/RunCraft.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/RunCraft.cpp.i
 .PHONY : RunCraft.cpp.i
 
 RunCraft.s: RunCraft.cpp.s
@@ -150,7 +150,7 @@ RunCraft.s: RunCraft.cpp.s
 
 # target to generate assembly for a file
 RunCraft.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/RunCraft.dir/build.make CMakeFiles/RunCraft.dir/RunCraft.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/runcraft.dir/build.make CMakeFiles/runcraft.dir/RunCraft.cpp.s
 .PHONY : RunCraft.cpp.s
 
 # Help Target
@@ -161,7 +161,7 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... RunCraft"
+	@echo "... runcraft"
 	@echo "... RunCraft.o"
 	@echo "... RunCraft.i"
 	@echo "... RunCraft.s"

@@ -1,8 +1,0 @@
-//
-// Created by robcholz on 4/2/23.
-//
-
-#ifndef RUNCRAFT_TRANSLATABLETEXT_HPP
-#define RUNCRAFT_TRANSLATABLETEXT_HPP
-
-#endif //RUNCRAFT_TRANSLATABLETEXT_HPP

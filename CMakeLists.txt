@@ -1,24 +1,48 @@
 cmake_minimum_required(VERSION 3.24)
-project(RunCraft)
+project(runcraft)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES RunCraft.cpp RunCraft/util/Math_Helper.hpp
-        RunCraft/resource/File.hpp RunCraft/client/gui/widget/ButtonWidget.hpp RunCraft/sound/Audio.hpp RunCraft/client/gui/widget/texture/Texture.hpp
-        RunCraft/client/render/Render.hpp RunCraft/client/GameInfo.hpp RunCraft/util/utils.hpp RunCraft/util/GameLogger.hpp
-        RunCraft/resource/FileHelper.hpp RunCraft/client/gui/GUI.hpp RunCraft/client/gui/screen/Background.hpp
-        RunCraft/client/gui/widget/texture/SingleTextureComponent.hpp
-        RunCraft/client/gui/text/RichText.hpp RunCraft/client/gui/text/RichText.hpp RunCraft/events/SystemEvents.hpp
-        RunCraft/client/gui/screen/Screen.hpp RunCraft/client/gui/widget/SliderWidget.hpp RunCraft/client/Menu.hpp RunCraft/error/ErrorHandling.hpp RunCraft/client/gui/screen/ScreenManager.hpp RunCraft/client/RunCraft.hpp RunCraft/client/gui/widget/SoundSliderWidget.hpp RunCraft/client/gui/widget/TextFieldWidget.hpp RunCraft/client/gui/style/GUIStyle.hpp RunCraft/client/gui/widget/TexturedButtonWidget.hpp RunCraft/client/gui/text/TranslatableText.hpp RunCraft/item/Item.hpp RunCraft/item/Items.hpp RunCraft/block/Blocks.hpp RunCraft/block/Block.hpp)
-add_executable(RunCraft ${SOURCE_FILES})
+set(SOURCE_FILES
+        RunCraft.cpp
+        runcraft/client/gui/widget/texture/SingleTextureComponent.hpp
+        runcraft/client/gui/widget/TexturedButtonWidget.hpp
+        runcraft/client/gui/widget/SoundSliderWidget.hpp
+        runcraft/client/gui/widget/TextFieldWidget.hpp
+        runcraft/client/gui/widget/texture/Texture.hpp
+        runcraft/client/gui/widget/ButtonWidget.hpp
+        runcraft/client/gui/widget/SliderWidget.hpp
+        runcraft/resource/TranslatableText.hpp
+        runcraft/client/gui/screen/ScreenManager.hpp
+        runcraft/client/gui/screen/Background.hpp
+        runcraft/client/gui/screen/Screen.hpp
+        runcraft/client/gui/style/GUIStyle.hpp
+        runcraft/client/gui/text/RichText.hpp
+        runcraft/client/gui/GUI.hpp
+        runcraft/client/GameInfo.hpp
+        runcraft/client/RunCraft.hpp
+        runcraft/client/Menu.hpp
+        runcraft/client/render/Render.hpp
+        runcraft/util/MathHelper.hpp
+        runcraft/util/GameLogger.hpp
+        runcraft/util/Utils.hpp
+        runcraft/block/Blocks.hpp
+        runcraft/block/Block.hpp
+        runcraft/sound/Audio.hpp
+        runcraft/resource/FileHelper.hpp
+        runcraft/events/SystemEvents.hpp
+        runcraft/error/ErrorHandling.hpp
+        runcraft/sound/BlockSoundGroup.hpp runcraft/world/poi/WorldCoordinate.hpp runcraft/world/chunk/Chunk.hpp)
+add_executable(runcraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)
 include_directories(include/plog)
-include_directories(RunCraft)
+include_directories(include/json)
+include_directories(runcraft)
 include_directories(game)
 
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
-target_link_libraries(RunCraft sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+target_link_libraries(runcraft sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
 
