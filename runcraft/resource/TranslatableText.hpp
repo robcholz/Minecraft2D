@@ -13,12 +13,6 @@
 using Json = nlohmann::json;
 
 namespace translatable {
-	enum CategoryType : unsigned char {
-		GUI,
-		GAME,
-
-		CATEGORY_INDEX
-	};
 	enum GUICategory : unsigned char {
 		GUI_BUTTON,
 		GUI_SLIDER,
@@ -35,9 +29,8 @@ namespace translatable {
 
 		GAME_INDEX_LAST
 	};
-	std::string GUIJsonMap[GUICategory::GUI_INDEX_LAST] = {{"gui.button.", "gui.slider.", "gui.textfield."};
+	std::string GUIJsonMap[GUICategory::GUI_INDEX_LAST] = {"gui.button.", "gui.slider.", "gui.textfield."};
 	std::string GameJsonMap[GameCategory::GAME_INDEX_LAST] = {"runcraft.block.", "runcraft.item.", "runcraft.mob.", "runcraft.player.", "runcraft.subtitle."};
-	std::string CategoryArrayMap[CategoryType::CATEGORY_INDEX] = {*GUIJsonMap, *GameJsonMap};
 }
 
 class TranslatableText {
@@ -53,15 +46,10 @@ public:
 		return lang_json[translatable::GUIJsonMap[category] + id];
 	}
 
-	static std::string getTranslatable(const std::string &id, translatable::GUICategory category,translatable::CategoryType categoryType) {
+	static std::string getTranslatable(const std::string &id, translatable::GameCategory category) {
 		std::ifstream file(langPath);
 		Json lang_json = Json::parse(file);
-		switch (categoryType) {
-			case translatable::CategoryType::GUI:
-
-
-		}
-		return lang_json[translatable::GUIJsonMap[category] + id];
+		return lang_json[translatable::GameJsonMap[category] + id];
 	}
 };
 

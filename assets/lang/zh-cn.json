@@ -21,5 +21,7 @@
   "gui.slider.hostile_creatures_volume": "敌对生物",
   "gui.slider.friendly_creatures_volume": "友好生物",
   "gui.slider.players_volume": "玩家",
-  "gui.slider.ambient_environment_volume": "环境"
+  "gui.slider.ambient_environment_volume": "环境",
+
+  "gui.button.generate_experimental_world": "Generate Experimental World"
 }

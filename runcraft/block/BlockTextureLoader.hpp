@@ -8,6 +8,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <fstream>
 #include <map>
+#include <set>
 #include "json.hpp"
 
 using Json = nlohmann::json;
@@ -29,7 +30,7 @@ public:
 		blockStateJson = Json::parse(file);
 		for (int i = 0; i < blockStatesPath.size(); i++) {
 			texturePathMap.insert(blockStateJson,"")
-			//TODO: FUCK
+
 		}
 	}
 
