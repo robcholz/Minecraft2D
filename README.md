@@ -12,7 +12,7 @@
 - [ ] Fullscreen
 - [x] Widget components
 - [x] Sound manager
-- [ ] Block
+- [ ] Block - In progress
 - [ ] World gen
 - [ ] Decoration
 - [ ] Player
