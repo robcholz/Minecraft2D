@@ -8,7 +8,6 @@
 
 int main(){
 	//runcraft:block/grass_block_side
-	BlockTextureLoader loader("glass_block");
 	std::cout << FileHelper::transferJsonPathToFilePath("runcraft:block/grass_block_side");
 	return 0;
 }
