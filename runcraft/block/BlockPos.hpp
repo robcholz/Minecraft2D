@@ -8,15 +8,19 @@
 #include "util/MathHelper.hpp"
 #include <memory>
 
+enum BlockDirectionType : unsigned short { UP, DOWN, NORTH, SOUTH, IN, OUT };
+
 class BlockPos {
 private:
 	std::shared_ptr<Vec3i *> blockCenterPos;
-	enum DirectionType : unsigned char { UP, DOWN, WEST, SOUTH, IN, OUT };
-	DirectionType direction;
+	BlockDirectionType direction;
 public:
-	explicit BlockPos(int i, int j, int k) { blockCenterPos = std::make_shared<Vec3i *>(new Vec3i(i, j, k)); }
+	explicit BlockPos(int i = 0, int j = 0, int k = 0) {
+		blockCenterPos = std::make_shared<Vec3i *>(new Vec3i(i, j, k));
+		direction = BlockDirectionType::UP;
+	}
 
-	DirectionType getDirection() { return direction; }
+	BlockDirectionType getDirection() { return direction; }
 
 	BlockPos &up() {
 		direction = UP;
@@ -29,7 +33,7 @@ public:
 	}
 
 	BlockPos &west() {
-		direction = WEST;
+		direction = NORTH;
 		return *this;
 	}
 

@@ -22,5 +22,6 @@
   "gui.slider.friendly_creatures_volume": "Friendly Creatures",
   "gui.slider.players_volume": "Players",
   "gui.slider.ambient_environment_volume": "Ambient/Environment",
+
   "gui.button.generate_experimental_world": "Generate Experimental World"
 }

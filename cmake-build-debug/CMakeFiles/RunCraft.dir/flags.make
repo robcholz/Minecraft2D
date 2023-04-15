@@ -4,7 +4,7 @@
 # compile CXX with /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/usr/local/include -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/include/rapidjson -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/include/json -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/game -iframework /Library/Frameworks
+CXX_INCLUDES = -I/usr/local/include -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/include/rapidjson -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/include/json -I/Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft -iframework /Library/Frameworks
 
 CXX_FLAGS = -g -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk -mmacosx-version-min=10.15 -fcolor-diagnostics -F/Library/Frameworks/.  -std=gnu++17
 

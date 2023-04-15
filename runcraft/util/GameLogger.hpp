@@ -16,9 +16,10 @@
 #include "Formatters/TxtFormatter.h"
 #include "Appenders/ColorConsoleAppender.h"
 #include "Init.h"
+#include "resource/FileHelper.hpp"
 #include <string>
+#include "client/GameInfo.hpp"
 
-//#define USE_LOGFILE
 
 class GameLogger {
 private:
@@ -61,18 +62,15 @@ protected:
 
 public:
 	GameLogger() {
-		if (!FileHelper::fIsExisted(logPath)) {
+		if (!FileHelper::isFileExisted(logPath)) {
 			FileHelper::createFolder(logPath);
 		}
 
 		static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
-#ifdef USE_LOGFILE
-		static plog::RollingFileAppender<plog::TxtFormatter> file_appender(
-				getLogFileName().c_str(), 8000, 1);
-		plog::init(plog::debug, &console_appender).addAppender(&file_appender);
-#else
-		plog::init(plog::debug, &console_appender);
-#endif
+		if(GameInfo.options.isLoggedToFile()) {
+			static plog::RollingFileAppender<plog::TxtFormatter> file_appender(getLogFileName().c_str(), 8000, 1);
+			plog::init(GameInfo.options.logSeverity(), &console_appender).addAppender(&file_appender);
+		} else plog::init(GameInfo.options.logSeverity(), &console_appender);
 	}
 
 	~GameLogger() = default;
@@ -87,7 +85,7 @@ public:
 		time_t current_date_obj = time(nullptr);
 		tm *date_ptr = localtime(&current_date_obj);
 		int current_days = (date_ptr->tm_year + 1900) * 360 + (date_ptr->tm_mon + 1) * 30 + date_ptr->tm_mday;
-		for (std::string name: *file_helper.getDirectory()) {
+		for (std::string name: *file_helper.getFilesInDirectory()) {
 			days_log = stoi(name.substr(name.find('-') - 4, 4)) * 360 +
 			           stoi(getSplitStr(name, 1, 2)) * 30 +
 			           stoi(getSplitStr(name, 2, 3));
@@ -101,6 +99,6 @@ public:
 		}
 		return logPath + "/" + getCurrentDate() + "-" + std::to_string(daily_max + 1) + "-log" + ".log";
 	}
-} GameLogger;
+};
 
 #endif //RUNCRAFT_GAMELOGGER_HPP

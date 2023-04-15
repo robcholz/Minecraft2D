@@ -5,7 +5,14 @@
 #ifndef RUNCRAFT_BLOCKS_HPP
 #define RUNCRAFT_BLOCKS_HPP
 
-//TODO
-//TODO
+#include "Block.hpp"
+
+class Blocks{
+public:
+	Block testBlock{"grass_block"};
+	void render(){
+		testBlock.render();
+	}
+};
 
 #endif //RUNCRAFT_BLOCKS_HPP

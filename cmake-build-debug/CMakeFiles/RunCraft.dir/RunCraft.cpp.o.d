@@ -307,7 +307,13 @@ CMakeFiles/runcraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/Menu.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/util/Utils.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/GameInfo.hpp \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/util/GameLogger.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/fstream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/istream \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/filesystem \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/stack \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/deque \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iomanip \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Log.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Logger.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Appenders/IAppender.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Record.h \
@@ -315,7 +321,6 @@ CMakeFiles/runcraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Severity.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Util.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/sstream \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/istream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/fcntl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/fcntl.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_o_sync.h \
@@ -333,28 +338,23 @@ CMakeFiles/runcraft.dir/RunCraft.cpp.o: \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/gethostuuid.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/time.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/_types/_timeval64.h \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/filesystem \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/stack \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/deque \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iomanip \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/render/Render.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/iostream \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/resource/FileHelper.hpp \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/fstream \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/dirent.h \
-  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/dirent.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Appenders/RollingFileAppender.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Converters/UTF8Converter.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Converters/NativeEOLConverter.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Formatters/TxtFormatter.h \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Init.h \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/json/json.hpp \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ciso646 \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/cmath \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/array \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/forward_list \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/unordered_map \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/__hash_table \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/valarray \
+  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/clocale \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Initializers/ConsoleInitializer.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Appenders/ColorConsoleAppender.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Appenders/ConsoleAppender.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/WinApi.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Init.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Log.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Initializers/RollingFileInitializer.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Formatters/CsvFormatter.h \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/render/Render.hpp \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Initializers/ConsoleInitializer.h \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/screen/Background.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/widget/texture/Texture.hpp \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/list \
@@ -363,20 +363,10 @@ CMakeFiles/runcraft.dir/RunCraft.cpp.o: \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/widget/ButtonWidget.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/widget/Widget.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/util/MathHelper.hpp \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/cmath \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/random \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/numeric \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/style/GUIStyle.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/text/RichText.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/resource/TranslatableText.hpp \
-  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/json/json.hpp \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/ciso646 \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/array \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/forward_list \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/unordered_map \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/__hash_table \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/valarray \
-  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1/clocale \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/error/ErrorHandling.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/widget/TexturedButtonWidget.hpp \
   /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/client/gui/widget/SoundSliderWidget.hpp \
@@ -402,4 +392,17 @@ CMakeFiles/runcraft.dir/RunCraft.cpp.o: \
   /usr/local/include/SFML/Audio/SoundFileFactory.hpp \
   /usr/local/include/SFML/Audio/SoundFileFactory.inl \
   /usr/local/include/SFML/Audio/SoundFileReader.hpp \
-  /usr/local/include/SFML/Audio/SoundFileWriter.hpp
+  /usr/local/include/SFML/Audio/SoundFileWriter.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/Blocks.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/Block.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/sound/BlockSoundGroup.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/BlockPos.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/block/BlockTextureLoader.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/resource/FileHelper.hpp \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/dirent.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX11.1.sdk/usr/include/sys/dirent.h \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/runcraft/util/GameLogger.hpp \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Appenders/RollingFileAppender.h \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Converters/UTF8Converter.h \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Converters/NativeEOLConverter.h \
+  /Users/zhangjie/Documents/Code/C++_C/RunCraft/include/plog/Formatters/TxtFormatter.h

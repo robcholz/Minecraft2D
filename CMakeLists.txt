@@ -32,17 +32,30 @@ set(SOURCE_FILES
         runcraft/resource/FileHelper.hpp
         runcraft/events/SystemEvents.hpp
         runcraft/error/ErrorHandling.hpp
-        runcraft/sound/BlockSoundGroup.hpp runcraft/world/poi/WorldCoordinate.hpp runcraft/world/chunk/Chunk.hpp runcraft/block/GrassBlock.hpp runcraft/client/render/BlockRenderer.hpp runcraft/block/BlockPos.hpp runcraft/block/BlockTextureLoader.hpp)
+        runcraft/sound/BlockSoundGroup.hpp
+        runcraft/world/poi/WorldCoordinate.hpp
+        runcraft/world/chunk/Chunk.hpp
+        runcraft/block/GrassBlock.hpp
+        runcraft/client/render/BlockRenderer.hpp
+        runcraft/block/BlockPos.hpp
+        runcraft/block/BlockTextureLoader.hpp
+        )
 add_executable(runcraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)
 include_directories(include/plog)
 include_directories(include/json)
 include_directories(runcraft)
-include_directories(game)
-
 
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
 target_link_libraries(runcraft sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
+
+#unit test
+include(CTest)
+if (${CMAKE_SOURCE_DIR} STREQUAL ${CMAKE_CURRENT_SOURCE_DIR})
+    add_subdirectory(test/test_block)
+    add_subdirectory(test/test_resource)
+endif ()
+enable_testing()
 

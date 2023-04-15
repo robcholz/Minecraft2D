@@ -7,11 +7,10 @@
 
 #pragma once
 
-#include "util/GameLogger.hpp"
+#include <fstream>
 #include "Log.h"
-#include "Initializers/RollingFileInitializer.h"
-#include "Appenders/ColorConsoleAppender.h"
 #include "client/render/Render.hpp"
+#include "json.hpp"
 
 namespace game_data {
 	enum Biome : unsigned short {
@@ -31,23 +30,47 @@ namespace game_data {
 		SoundVolume hostileCreatures, friendlyCreatures;
 		SoundVolume players, ambientAndEnvironment;
 	};
+	struct GameGlobalData {
+		[[maybe_unused]] Biome biome;
+		SoundLevel soundLevel;
+	};
+	struct GameUniversalInfo {
+		using String = std::string;
+		String gameName;
+		String lang;
+		String lastOpenedDate;
+	};
 }
-
-struct GameGlobalData {
-	[[maybe_unused]] game_data::Biome biome;
-	game_data::SoundLevel soundLevel;
-};
 
 struct InputState {
 	sf::Vector2i mousePosition;
 	bool isPressed{};
 };
 
-struct GameUniversalInfo{
+struct Options {
+	using Json = nlohmann::json;
 	using String = std::string;
-	String gameName;
-	String lang;
-	String lastOpenedDate;
+	using LogSeverity = plog::Severity;
+	String optionsJsonPath = "../assets/options.json";
+	Json optionsJson;
+
+	void load() {
+		std::ifstream file(optionsJsonPath);
+		optionsJson = Options::Json::parse(file);
+	}
+
+	bool isLoggedToFile() { return optionsJson["logging"]["file"]; }
+
+	LogSeverity logSeverity() {
+		String severity = optionsJson["logging"]["max_severity"];
+		if (severity == "none") return LogSeverity::none;
+		else if(severity=="fatal") return LogSeverity::fatal;
+		else if(severity=="error") return LogSeverity::error;
+		else if(severity=="warning") return LogSeverity::warning;
+		else if(severity=="info") return LogSeverity::info;
+		else if(severity=="debug") return LogSeverity::debug;
+		else return LogSeverity::verbose;
+	}
 };
 
 class GameInfo {
@@ -55,10 +78,14 @@ private:
 	Render *renderInstance{};
 	InputState inputState;
 public:
-	GameGlobalData gameGlobalData{};
-	GameUniversalInfo gameUniversalOptions{};
+	game_data::GameGlobalData gameGlobalData{};
+	game_data::GameUniversalInfo gameUniversalOptions{};
 
-	GameInfo() = default;
+	Options options;
+
+	GameInfo() {
+		options.load();
+	}
 
 	GameInfo &setRenderer(Render *renderer) {
 		renderInstance = renderer;

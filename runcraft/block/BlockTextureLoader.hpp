@@ -8,31 +8,47 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <fstream>
 #include <map>
-#include <set>
 #include "json.hpp"
+#include "block/BlockPos.hpp"
+#include "resource/FileHelper.hpp"
 
 using Json = nlohmann::json;
 
 class BlockTextureLoader {
 protected:
-	std::string blockStatesPath = "../assets/textures/blockstates/";
+	std::string blockStatePath = "../assets/blockstates/";
 private:
-	sf::Texture *textureUp, *textureDown, *textureSouth, *textureNorth, *textureIn, *textureOut;
-	std::map<std::string,std::string> texturePathMap;
+	std::map<BlockDirectionType, sf::Texture *> textureTiles;
+	std::map<std::string, sf::Texture *> texturePtrMap;
 	Json blockStateJson;
 
-	void loadTexture(std::string &direction){
-
+	sf::Texture *loadTexture(const std::string &filePath) {
+		if (!texturePtrMap[filePath]) {
+			auto *texture = new sf::Texture;
+			texture->loadFromFile(filePath);
+			return texture;
+		} else return texturePtrMap[filePath];
 	}
+
 public:
-	explicit BlockTextureLoader(std::string &id) {
-		std::ifstream file(blockStatesPath + id + ".json");
-		blockStateJson = Json::parse(file);
-		for (int i = 0; i < blockStatesPath.size(); i++) {
-			texturePathMap.insert(blockStateJson,"")
+	BlockTextureLoader() = default;
 
-		}
+	explicit BlockTextureLoader(const std::string &id) { loadBlockTiles(id); }
+
+	void loadBlockTiles(const std::string &id) {
+		std::ifstream file(blockStatePath + id + ".json");
+		blockStateJson = Json::parse(file);
+		textureTiles.insert({BlockDirectionType::UP, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["up"]))});
+		textureTiles.insert({BlockDirectionType::DOWN, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["down"]))});
+		textureTiles.insert({BlockDirectionType::IN, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["in"]))});
+		textureTiles.insert({BlockDirectionType::OUT, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["out"]))});
+		textureTiles.insert({BlockDirectionType::NORTH, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["north"]))});
+		textureTiles.insert({BlockDirectionType::SOUTH, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["south"]))});
 	}
+
+	sf::Texture *getBlockTextureTile(BlockDirectionType type) { return textureTiles[type]; }
+
+	~BlockTextureLoader() = default;
 
 };
 

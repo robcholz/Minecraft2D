@@ -17,11 +17,15 @@ set(CMAKE_MAKEFILE_DEPENDS
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeLanguageInformation.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeSystemSpecificInformation.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CMakeSystemSpecificInitialize.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CTest.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CTestTargets.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/CTestUseLaunchers.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/AppleClang-C.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/AppleClang-CXX.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/CMakeCommonCompilerMacros.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/Clang.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Compiler/GNU.cmake"
+  "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/DartConfiguration.tcl.in"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-AppleClang-C.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-AppleClang-CXX.cmake"
   "/Applications/CLion.app/Contents/bin/cmake/mac/share/cmake-3.24/Modules/Platform/Apple-Clang-C.cmake"
@@ -40,6 +44,8 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.24.2/CMakeCCompiler.cmake"
   "CMakeFiles/3.24.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/3.24.2/CMakeSystem.cmake"
+  "/Users/zhangjie/Documents/Code/C++_C/RunCraft/test/test_block/CMakeLists.txt"
+  "/Users/zhangjie/Documents/Code/C++_C/RunCraft/test/test_resource/CMakeLists.txt"
   )
 
 # The corresponding makefile is:
@@ -50,10 +56,43 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
+  "DartConfiguration.tcl"
   "CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/test_block/CMakeFiles/CMakeDirectoryInformation.cmake"
+  "test/test_resource/CMakeFiles/CMakeDirectoryInformation.cmake"
   )
 
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/runcraft.dir/DependInfo.cmake"
+  "CMakeFiles/Experimental.dir/DependInfo.cmake"
+  "CMakeFiles/Nightly.dir/DependInfo.cmake"
+  "CMakeFiles/Continuous.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyMemoryCheck.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyStart.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyUpdate.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyConfigure.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyBuild.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyTest.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyCoverage.dir/DependInfo.cmake"
+  "CMakeFiles/NightlyMemCheck.dir/DependInfo.cmake"
+  "CMakeFiles/NightlySubmit.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalStart.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalUpdate.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalConfigure.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalBuild.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalTest.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalCoverage.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalMemCheck.dir/DependInfo.cmake"
+  "CMakeFiles/ExperimentalSubmit.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousStart.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousUpdate.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousConfigure.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousBuild.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousTest.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousCoverage.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousMemCheck.dir/DependInfo.cmake"
+  "CMakeFiles/ContinuousSubmit.dir/DependInfo.cmake"
+  "test/test_block/CMakeFiles/BlockTests.dir/DependInfo.cmake"
+  "test/test_resource/CMakeFiles/RunCraftTests.dir/DependInfo.cmake"
   )

@@ -7,7 +7,6 @@
 
 #pragma once
 
-
 #include "util/Utils.hpp"
 #include "client/GameInfo.hpp"
 #include "Initializers/ConsoleInitializer.h"
@@ -147,8 +146,7 @@ public:
 	}
 
 	void initWidget() {
-		screenManager
-				.addScreen(backgroundMenuScreen)
+		screenManager.addScreen(backgroundMenuScreen)
 				.addScreen(backgroundBiomeSettingScreen)
 				.addScreen(singleplayerSettingScreen)
 				.addScreen(settingVolumeScreen)
@@ -186,8 +184,7 @@ public:
 		settingVolumeSliderJukeboxNoteblocks->varToChangeWhenMoved(&GameInfo.gameGlobalData.soundLevel.jukeBoxOrNoteblocks);
 		settingVolumeSliderMasterVolume->varToChangeWhenMoved(&GameInfo.gameGlobalData.soundLevel.masterVolume);
 		settingVolumeSliderMusic->varToChangeWhenMoved(&GameInfo.gameGlobalData.soundLevel.music)
-		                        .actionsToExecWhenMoved(
-				                        [this]() { backgroundMusic.changeVolume((GameInfo.gameGlobalData.soundLevel.music)); });
+		                        .actionsToExecWhenMoved([this]() { backgroundMusic.changeVolume((GameInfo.gameGlobalData.soundLevel.music)); });
 		settingVolumeSliderPlayers->varToChangeWhenMoved(&GameInfo.gameGlobalData.soundLevel.players);
 		settingVolumeSliderWeather->varToChangeWhenMoved(&GameInfo.gameGlobalData.soundLevel.weather);
 
@@ -206,18 +203,12 @@ public:
 		                            .addWidget(backgroundSettingBiomeJungle)
 		                            .addWidget(backgroundSettingVolume);
 
-		backgroundSettingBiomeSnowyPlains->actionsToExecWhenClicked(
-				[] { GameInfo.gameGlobalData.biome = game_data::Biome::SNOWY_PLAINS; });
-		backgroundSettingBiomePlains->actionsToExecWhenClicked(
-				[] { GameInfo.gameGlobalData.biome = game_data::Biome::PLAINS; });
-		backgroundSettingBiomeForest->actionsToExecWhenClicked(
-				[] { GameInfo.gameGlobalData.biome = game_data::Biome::FOREST; });
-		backgroundSettingBiomeBirchForest->actionsToExecWhenClicked(
-				[] { GameInfo.gameGlobalData.biome = game_data::Biome::BIRCH_FOREST; });
-		backgroundSettingBiomeDesert->actionsToExecWhenClicked(
-				[] { GameInfo.gameGlobalData.biome = game_data::Biome::DESERT; });
-		backgroundSettingBiomeJungle->actionsToExecWhenClicked(
-				[] { GameInfo.gameGlobalData.biome = game_data::JUNGLE; });
+		backgroundSettingBiomeSnowyPlains->actionsToExecWhenClicked([] { GameInfo.gameGlobalData.biome = game_data::Biome::SNOWY_PLAINS; });
+		backgroundSettingBiomePlains->actionsToExecWhenClicked([] { GameInfo.gameGlobalData.biome = game_data::Biome::PLAINS; });
+		backgroundSettingBiomeForest->actionsToExecWhenClicked([] { GameInfo.gameGlobalData.biome = game_data::Biome::FOREST; });
+		backgroundSettingBiomeBirchForest->actionsToExecWhenClicked([] { GameInfo.gameGlobalData.biome = game_data::Biome::BIRCH_FOREST; });
+		backgroundSettingBiomeDesert->actionsToExecWhenClicked([] { GameInfo.gameGlobalData.biome = game_data::Biome::DESERT; });
+		backgroundSettingBiomeJungle->actionsToExecWhenClicked([] { GameInfo.gameGlobalData.biome = game_data::JUNGLE; });
 
 		PLOG_DEBUG << "Initialize widget components";
 	}
