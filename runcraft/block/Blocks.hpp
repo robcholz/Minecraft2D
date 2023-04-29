@@ -5,14 +5,21 @@
 #ifndef RUNCRAFT_BLOCKS_HPP
 #define RUNCRAFT_BLOCKS_HPP
 
-#include "Block.hpp"
+#include "GrassBlock.hpp"
+#include "AirBlock.hpp"
+#include "DirtBlock.hpp"
 
-class Blocks{
-public:
-	Block testBlock{"grass_block"};
-	void render(){
-		testBlock.render();
-	}
-};
+namespace block::blocks{
+	const static AirBlock AIR_BLOCK{};
+	const static GrassBlock GRASS_BLOCK{};
+	const static DirtBlock DIRT_BLOCK{};
+
+	class Blocks{
+	public:
+		void render(){
+
+		}
+	};
+}
 
 #endif //RUNCRAFT_BLOCKS_HPP

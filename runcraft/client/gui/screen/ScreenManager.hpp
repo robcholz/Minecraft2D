@@ -12,7 +12,7 @@ class ScreenManager : public GUI {
 private:
 	std::list<Screen *> screenList;
 	Screen *currentRenderingScreen = nullptr;
-	InputState *inputState = nullptr;
+	external_data::PeripheralState *inputState = nullptr;
 public:
 	ScreenManager() = default;
 
@@ -25,7 +25,7 @@ public:
 		currentRenderingScreen = entryScreen;
 	}
 
-	void setInputStatePtr(InputState *pInputState) { this->inputState = pInputState; }
+	void setInputStatePtr(external_data::PeripheralState *pInputState) { this->inputState = pInputState; }
 
 	void render() override {
 		currentRenderingScreen->listen(inputState);

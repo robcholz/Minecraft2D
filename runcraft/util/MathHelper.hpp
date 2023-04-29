@@ -19,13 +19,28 @@ struct Area {
 	vT x, y;
 	vT width, height;
 };
-typedef Area<int> Areai;
 
 template<typename vT>
 struct Interval {
 	vT lower, upper;
 };
+
 typedef Interval<int> Intervali;
+typedef Area<int> Areai;
+
+template<typename vT>
+bool static checkIntervalBoundary(vT value, Interval<vT> interval) {
+	return (value > interval.lower && value < interval.upper);
+}
+
+bool static checkVectorBoundary(sf::Vector2i vector, Areai area) {
+	return ((vector.x > area.x && vector.x < area.x + area.width) &&
+	        (vector.y > area.y && vector.y < area.y + area.height));
+}
+
+bool static checkVectorBoundary(int x, int y, int left, int top, int width, int height) {
+	return ((x > left && x < left + width) && (y > top && y < top + height));
+}
 
 template<typename vT=double>
 class Vector2D {
@@ -41,6 +56,11 @@ public:
 	Vector2D(const Vector2D &that) {
 		this->i = that.i;
 		this->j = that.j;
+	}
+
+	void setVector(vT i, vT j) {
+		this->i = i;
+		this->j = j;
 	}
 
 	~Vector2D() = default;
@@ -66,6 +86,7 @@ public:
 	Vector2D &operator=(const Vector2D &that) {
 		this->i = that.i;
 		this->j = that.j;
+		return *this;
 	}
 };
 
@@ -86,6 +107,12 @@ public:
 		this->i = that.i;
 		this->j = that.j;
 		this->k = that.k;
+	}
+
+	void setVector(vT i, vT j, vT k) {
+		this->i = i;
+		this->j = j;
+		this->k = k;
 	}
 
 	~Vector3D() = default;
@@ -118,6 +145,9 @@ public:
 		this->k = that.k;
 	}
 };
+
+typedef Vector2D<int> Vec2i;
+typedef Vector2D<double> Vec2d;
 
 typedef Vector3D<int> Vec3i;
 typedef Vector3D<double> Vec3d;

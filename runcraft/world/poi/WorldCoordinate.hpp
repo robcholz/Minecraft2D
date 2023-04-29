@@ -9,16 +9,29 @@
 #include <memory>
 #include "world/chunk/Chunk.hpp"
 
-class WorldCoordinate {
-private:
-	long long worldX;
-	unsigned short worldZ;
+namespace coordinate {
 
+	typedef int BlockPositionT;
+	typedef double WorldPositionT;
 
-public:
-	WorldCoordinate(){
+	class WorldCoordinate {
+	private:
+		BlockPositionT blockX, blockZ;
+		WorldPositionT worldX, worldZ;
 
-	}
-};
+	public:
+		explicit WorldCoordinate(WorldPositionT x, WorldPositionT z) {
+			worldX = x;
+			worldZ = z;
+		}
+
+		WorldCoordinate &offset(WorldPositionT x, WorldPositionT z) {
+			worldX += x;
+			worldZ += z;
+			return *this;
+		}
+
+	};
+}
 
 #endif //RUNCRAFT_WORLDCOORDINATE_HPP

@@ -12,7 +12,8 @@
 #include "client/render/Render.hpp"
 #include "json.hpp"
 
-namespace game_data {
+namespace internal_data {
+	typedef unsigned char SoundVolume;
 	enum Biome : unsigned short {
 		SNOWY_PLAINS,
 		PLAINS,
@@ -21,8 +22,6 @@ namespace game_data {
 		BIRCH_FOREST,
 		JUNGLE
 	};
-
-	typedef unsigned char SoundVolume;
 	struct SoundLevel {
 		SoundVolume masterVolume;
 		SoundVolume music, jukeBoxOrNoteblocks;
@@ -30,82 +29,103 @@ namespace game_data {
 		SoundVolume hostileCreatures, friendlyCreatures;
 		SoundVolume players, ambientAndEnvironment;
 	};
-	struct GameGlobalData {
-		[[maybe_unused]] Biome biome;
+
+	struct Internal {
+		Biome biome;
 		SoundLevel soundLevel;
-	};
-	struct GameUniversalInfo {
-		using String = std::string;
-		String gameName;
-		String lang;
-		String lastOpenedDate;
 	};
 }
 
-struct InputState {
-	sf::Vector2i mousePosition;
-	bool isPressed{};
-};
+namespace external_data {
+	struct General {
+		std::string gameName;
+		std::string lang;
+		std::string lastOpenedDate;
+	};
 
-struct Options {
-	using Json = nlohmann::json;
-	using String = std::string;
-	using LogSeverity = plog::Severity;
-	String optionsJsonPath = "../assets/options.json";
-	Json optionsJson;
+	struct PeripheralState {
+		sf::Vector2i mouseAbsolutePosition{};
+		sf::Vector2i mouseRelativeToGameWindowPos{};
+		double mouseWheelScrollDelta{};
+		bool isButtonPressedLeft{};
+		bool isButtonPressedRight{};
+		bool isButtonPressedMiddle{};
+		bool touchBegan{}, touchMoved{}, touchEnded{};
 
-	void load() {
-		std::ifstream file(optionsJsonPath);
-		optionsJson = Options::Json::parse(file);
-	}
+		[[maybe_unused]] void listen(sf::Vector2i mousePosition, bool isPressed) {
+			isButtonPressedLeft = isPressed;
+			mouseRelativeToGameWindowPos = mousePosition;
+		}
+	};
 
-	bool isLoggedToFile() { return optionsJson["logging"]["file"]; }
+	struct WindowState {
+		Render *rendererPtr = nullptr;
+		Camera *camera = nullptr;
+		short zoomSize = 50;
+		bool gainedFocus{}, lostFocus{};
+		bool resized{};
 
-	LogSeverity logSeverity() {
-		String severity = optionsJson["logging"]["max_severity"];
-		if (severity == "none") return LogSeverity::none;
-		else if(severity=="fatal") return LogSeverity::fatal;
-		else if(severity=="error") return LogSeverity::error;
-		else if(severity=="warning") return LogSeverity::warning;
-		else if(severity=="info") return LogSeverity::info;
-		else if(severity=="debug") return LogSeverity::debug;
-		else return LogSeverity::verbose;
-	}
-};
+		[[nodiscard]] unsigned int getScreenWidth() const { return rendererPtr->getWindowConfig().screenWidth; }
+
+		[[nodiscard]] unsigned int getScreenHeight() const { return rendererPtr->getWindowConfig().screenHeight; }
+
+		[[nodiscard]] Render *getRender() const { return rendererPtr; }
+	};
+
+	struct Logging {
+		nlohmann::json optionsJson;
+
+		void load() {
+			std::ifstream file("../assets/options.json");
+			optionsJson = nlohmann::json::parse(file);
+		}
+
+		bool isLoggedToFile() { return optionsJson["logging"]["file"]; }
+
+		plog::Severity logSeverity() {
+			std::string severity = optionsJson["logging"]["max_severity"];
+			if (severity == "none") return plog::Severity::none;
+			else if (severity == "fatal") return plog::Severity::fatal;
+			else if (severity == "error") return plog::Severity::error;
+			else if (severity == "warning") return plog::Severity::warning;
+			else if (severity == "info") return plog::Severity::info;
+			else if (severity == "debug") return plog::Severity::debug;
+			else return plog::Severity::verbose;
+		}
+	};
+
+	struct External {
+		General general;
+		WindowState windowState;
+		PeripheralState peripheralState;
+		Logging logger;
+	};
+}
 
 class GameInfo {
 private:
-	Render *renderInstance{};
-	InputState inputState;
+	internal_data::Internal internalData{};
+	external_data::External externalData{};
 public:
-	game_data::GameGlobalData gameGlobalData{};
-	game_data::GameUniversalInfo gameUniversalOptions{};
-
-	Options options;
-
 	GameInfo() {
-		options.load();
+		externalData.logger.load();
 	}
 
-	GameInfo &setRenderer(Render *renderer) {
-		renderInstance = renderer;
-
+	void setRenderer(Render *renderer) {
+		externalData.windowState.rendererPtr = renderer;
+		externalData.windowState.camera = renderer->getCamera();
 		PLOG_DEBUG << "Successfully set the renderer";
-		return *this;
 	}
 
-	void listen(sf::Vector2i mousePosition, bool isPressed) {
-		this->inputState.isPressed = isPressed;
-		this->inputState.mousePosition = mousePosition;
-	}
+	internal_data::Internal *getInternalData() { return &internalData; }
 
-	InputState *getInputState() { return &inputState; }
+	const internal_data::Internal *getConstInternalData() { return &internalData; }
 
-	[[nodiscard]] unsigned int getScreenWidth() const { return renderInstance->getScreenWidth(); }
+	external_data::External *getExternalData() { return &externalData; }
 
-	[[nodiscard]] unsigned int getScreenHeight() const { return renderInstance->getScreenHeight(); }
+	const external_data::External *getConstExternalData() { return &externalData; }
 
-	Render *getRender() { return renderInstance; }
+	[[nodiscard]] Render *getRender() const { return externalData.windowState.rendererPtr; }
 };
 
 GameInfo GameInfo;

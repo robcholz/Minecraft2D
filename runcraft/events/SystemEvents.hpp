@@ -12,33 +12,50 @@
 
 class SystemEvents {
 private:
-	Render *render = nullptr;
+	Render *render = GameInfo.getRender();
 	sf::Event event{};
 public:
-	explicit SystemEvents(Render *render) { this->render = render; }
+	explicit SystemEvents() = default;
 
 	void listen() {
-		while (render->getWindow().pollEvent(event)) {
+		while (render->getWindowConfig().window->pollEvent(event)) {
 			switch (event.type) {
 				case sf::Event::Closed:
-					render->getWindow().close();
+					render->getWindowConfig().window->close();
 					PLOG_DEBUG << "Cancel the runcraft!";
 					break;
 				case sf::Event::Resized:
+					//GameInfo.getConstExternalData()->windowState.rendererPtr->updateScreenConfig();
+					//GameInfo.getExternalData()->windowState.resized=|0x11;
 					break;
 				case sf::Event::LostFocus:
+					GameInfo.getExternalData()->windowState.lostFocus = true;
+					GameInfo.getExternalData()->windowState.gainedFocus = false;
 					break;
 				case sf::Event::GainedFocus:
+					GameInfo.getExternalData()->windowState.lostFocus = false;
+					GameInfo.getExternalData()->windowState.gainedFocus = true;
 					break;
 				case sf::Event::TextEntered:
 					break;
 				case sf::Event::KeyPressed:
+
+					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
+
+					}
 					break;
 				case sf::Event::KeyReleased:
 					break;
 				case sf::Event::MouseWheelMoved:
+					//[[deprecated]]
 					break;
 				case sf::Event::MouseWheelScrolled:
+					GameInfo.getExternalData()->peripheralState.mouseWheelScrollDelta = event.mouseWheelScroll.delta;
+					GameInfo.getExternalData()->windowState.zoomSize += (short) event.mouseWheelScroll.delta;
+					if (GameInfo.getConstExternalData()->windowState.zoomSize > 100) {
+						GameInfo.getExternalData()->windowState.zoomSize = 100;
+					} else if (GameInfo.getConstExternalData()->windowState.zoomSize < 50)
+						GameInfo.getExternalData()->windowState.zoomSize = 50;
 					break;
 				case sf::Event::MouseButtonPressed:
 					break;
@@ -61,19 +78,25 @@ public:
 				case sf::Event::JoystickDisconnected:
 					break;
 				case sf::Event::TouchBegan:
+					GameInfo.getExternalData()->peripheralState.touchBegan = true;
+					GameInfo.getExternalData()->peripheralState.touchMoved = false;
+					GameInfo.getExternalData()->peripheralState.touchEnded = false;
 					break;
 				case sf::Event::TouchMoved:
+					GameInfo.getExternalData()->peripheralState.touchBegan = false;
+					GameInfo.getExternalData()->peripheralState.touchMoved = true;
+					GameInfo.getExternalData()->peripheralState.touchEnded = false;
+					//GameInfo.getExternalData()->peripheralState.mouseWheelScroll
 					break;
 				case sf::Event::TouchEnded:
+					GameInfo.getExternalData()->peripheralState.touchBegan = false;
+					GameInfo.getExternalData()->peripheralState.touchMoved = false;
+					GameInfo.getExternalData()->peripheralState.touchEnded = true;
 					break;
 				case sf::Event::SensorChanged:
 					break;
-				case sf::Event::Count:
+				case sf::Event::Count:// Dont use this
 					break;
-			}
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::Escape)) {
-				render->getWindow().close();
-				PLOG_DEBUG << "Cancel the runcraft!";
 			}
 		}
 	}

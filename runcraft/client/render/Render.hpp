@@ -13,37 +13,43 @@
 #include "client/GameInfo.hpp"
 #include "Init.h"
 
+typedef sf::View Camera;
+
 class Render {
 private:
-	sf::RenderWindow *window;
-	unsigned int screenWidth;
-	unsigned int screenHeight;
+	struct ScreenConfig {
+		sf::RenderWindow *window;
+		Camera camera;
+		unsigned int screenWidth;
+		unsigned int screenHeight;
+	} screenConfig{};
 
 public:
 	explicit Render(const std::string &windowName) {
-		screenWidth = (int) ((float) sf::VideoMode::getDesktopMode().width * 19 / 32);
-		screenHeight = (int) ((float) sf::VideoMode::getDesktopMode().height * 8 / 15);
-		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight),
-		                              windowName);
+		screenConfig.screenWidth = (int) ((float) sf::VideoMode::getDesktopMode().width * 19 / 32);
+		screenConfig.screenHeight = (int) ((float) sf::VideoMode::getDesktopMode().height * 8 / 15);
+		screenConfig.window = new sf::RenderWindow(sf::VideoMode(screenConfig.screenWidth, screenConfig.screenHeight),
+		                                           windowName);
+		screenConfig.camera = screenConfig.window->getDefaultView();
 
 		PLOG_DEBUG << "Initialize the runcraft main renderer. Parameters: Name: " + windowName + " Size: " +
-		              std::to_string(screenWidth) + "*" + std::to_string(screenHeight);
+		              std::to_string(screenConfig.screenWidth) + "*" + std::to_string(screenConfig.screenHeight);
 	}
 
-	[[maybe_unused]] Render(int screenWidth, int screenHeight, const std::string &windowName) {
-		this->screenWidth = screenWidth;
-		this->screenHeight = screenHeight;
-		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
+	~Render() {
+		delete screenConfig.window;
 	}
 
-	sf::RenderWindow &getWindow() { return *window; }
+	[[nodiscard]] ScreenConfig getWindowConfig() const { return screenConfig; }
+	Camera *getCamera(){return &screenConfig.camera;}
 
-	[[nodiscard]] unsigned int getScreenWidth() const { return window->getSize().x; }
+	void updateScreenConfig() {
+		screenConfig.screenWidth = sf::VideoMode::getDesktopMode().width;
+		screenConfig.screenHeight = sf::VideoMode::getDesktopMode().height;
+	}
 
-	[[nodiscard]] unsigned int getScreenHeight() const { return window->getSize().y; }
-
-	void render(const sf::Drawable &drawable, const sf::RenderStates &states = sf::RenderStates::Default) {
-		window->draw(drawable, states);
+	void render(const sf::Drawable &drawable, const sf::RenderStates &states = sf::RenderStates::Default) const {
+		screenConfig.window->draw(drawable, states);
 	}
 };
 

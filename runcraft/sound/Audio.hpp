@@ -40,7 +40,7 @@ public:
 		sound.play();
 	}
 
-	void changeVolume(game_data::SoundVolume volume) {
+	void changeVolume(internal_data::SoundVolume volume) {
 		sound.setVolume(volume);
 	}
 };

@@ -16,7 +16,7 @@ class Screen {
 private:
 	Background *background = nullptr;
 	std::list<Widget *> widgetsList;
-	InputState *inputStatePtr = nullptr;
+	external_data::PeripheralState *inputStatePtr = nullptr;
 
 	std::map<ButtonWidget *, Screen *> callbackScreenMap;
 	Screen *responseCallBackScreenPtr = nullptr;
@@ -34,8 +34,6 @@ public:
 		return *this;
 	}
 
-	//ScreenEvent getScreenEvent() const { return screenEvent; }
-
 	Screen &addCallbackScreen(Screen *callBackScreen, ButtonWidget *callBackButton) {
 		callbackScreenMap.insert({callBackButton, callBackScreen});
 		return *this;
@@ -43,12 +41,12 @@ public:
 
 	Screen *getResponseCallbackScreen() {return responseCallBackScreenPtr;}
 
-	void listen(InputState *inputState) { inputStatePtr = inputState; }
+	void listen(external_data::PeripheralState *inputState) { inputStatePtr = inputState; }
 
 	void render() {
 		background->render();
 		for (auto *widget_obj: widgetsList) {
-			widget_obj->listen(inputStatePtr->mousePosition, inputStatePtr->isPressed);
+			widget_obj->listen(inputStatePtr->mouseRelativeToGameWindowPos, inputStatePtr->isButtonPressedLeft);
 			if (widget_obj->isClicked()) {
 				audioPlayer.play();
 				for (auto & screen_map_obj : callbackScreenMap) {

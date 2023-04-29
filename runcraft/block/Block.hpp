@@ -13,22 +13,38 @@
 #include "BlockTextureLoader.hpp"
 #include "client/GameInfo.hpp"
 
-class Block {
-private:
-	std::string id;
-	BlockPos blockPos; //Pos,direction
-	BlockTextureLoader blockTexture;
-	sf::Sprite currentBlockTileSprite;
+namespace block {
 
-public:
-	explicit Block(const std::string &id) {
-		this->id = id;
-		blockTexture.loadBlockTiles(id);
-		currentBlockTileSprite.setTexture(*blockTexture.getBlockTextureTile(BlockDirectionType::UP));
-	}
+	class Block {
+	private:
+		std::string id;
+		//BlockPos blockPos; //Pos,direction
+		sf::Sprite currentBlockSprite;
 
-	void render() { GameInfo.getRender()->render(currentBlockTileSprite); }
-};
+		inline static BlockTextureLoader *blockTextureInstance;
+
+		static BlockTextureLoader *getTextureInstance(const std::string &id) {
+			if (!blockTextureInstance) {
+				blockTextureInstance = new BlockTextureLoader(id);
+				return blockTextureInstance;
+			} else return blockTextureInstance;
+		}
+
+		static void freeTexture() { if (!blockTextureInstance) delete blockTextureInstance; }
+
+	public:
+		explicit Block(const std::string &id) {
+			this->id = id;
+			currentBlockSprite.setTexture(*getTextureInstance(id)->getBlockTextureTile(OUT));
+		}
+
+		~Block() {
+			freeTexture();
+		}
+
+		sf::Sprite *getCurrentSprite() { return &currentBlockSprite; }
+	};
+}
 
 
 #endif //RUNCRAFT_BLOCK_HPP

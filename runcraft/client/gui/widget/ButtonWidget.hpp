@@ -31,7 +31,7 @@ private:
 	inline static std::shared_ptr<sf::IntRect> *intRectClicked = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 86, 200, 20));
 public:
-	explicit ButtonWidget(const std::string &id, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0): Widget(id) {
+	explicit ButtonWidget(const std::string &id, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0) : Widget(id) {
 		this->visible = visible;
 		widgetOutline.x = x;
 		widgetOutline.y = y;
@@ -46,14 +46,15 @@ public:
 		widgetCurrentSprite.setScale((float) width / 200, (float) height / 20);
 		widgetCurrentSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 
-		message.setFont(gui_style::MessageFont).setColor(gui_style::MessageColor).setMessage(
-				TranslatableText::getTranslatable(id, translatable::GUI_BUTTON))
-				.setPosition((float) widgetOutline.x + (float) widgetOutline.width / 2 - message.getGlobalBounds().width,
-		             (float) widgetOutline.y - (float) widgetOutline.height / 8 - 1.0f);
+		message.setFont(gui_style::MessageFont)
+		       .setColor(gui_style::MessageColor)
+		       .setMessage(TranslatableText::getTranslatable(id, translatable::GUI_BUTTON))
+		       .setPosition((float) widgetOutline.x + (float) widgetOutline.width / 2 - message.getGlobalBounds().width,
+		                    (float) widgetOutline.y - (float) widgetOutline.height / 8 - 1.0f);
 		message.setCharacterSize((int) ((float) widgetOutline.height / 80.0f * 64.0f));
 	}
 
-	void actionsToExecWhenClicked(ActionWhenActivated execFunc) { execFuncPtr = std::move(execFunc); }
+	void actionsToExecWhenClicked(const ActionWhenActivated &execFunc) { execFuncPtr = execFunc; }
 
 	void action() override { if (execFuncPtr != nullptr)execFuncPtr(); }
 

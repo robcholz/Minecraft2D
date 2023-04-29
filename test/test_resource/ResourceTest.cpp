@@ -4,10 +4,11 @@
 
 #include <iostream>
 #include "resource/FileHelper.hpp"
-#include "block/BlockTextureLoader.hpp"
+#include "gtest/gtest.h"
 
-int main(){
-	//runcraft:block/grass_block_side
-	std::cout << FileHelper::transferJsonPathToFilePath("runcraft:block/grass_block_side");
-	return 0;
+TEST(ResourceTest, BasicAssertions) {
+	EXPECT_STRNE("hello", "world");
+	EXPECT_EQ(7 * 6, 42);
 }
+
+//FileHelper::transferJsonPathToFilePath("runcraft:block/grass_block_side")

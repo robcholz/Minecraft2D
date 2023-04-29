@@ -1,0 +1,9 @@
+{
+  "south": "runcraft:block/dirt",
+  "north": "runcraft:block/dirt",
+  "up": "runcraft:block/dirt",
+  "down": "runcraft:block/dirt",
+  "in": "runcraft:block/dirt",
+  "out": "runcraft:block/dirt"
+}
+

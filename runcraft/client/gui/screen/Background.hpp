@@ -19,17 +19,17 @@ public:
 	}
 
 	Background &fitToScreen() {
-		textureAtlas.front()->scale((float) GameInfo.getScreenWidth() / static_cast<float>(sourceTexture.getSize().x),
-		                            (float) GameInfo.getScreenHeight() / static_cast<float>(sourceTexture.getSize().y));
+		textureAtlas.front()->scale((float) GameInfo.getConstExternalData()->windowState.getScreenWidth() / static_cast<float>(sourceTexture.getSize().x),
+		                            (float) GameInfo.getConstExternalData()->windowState.getScreenHeight() / static_cast<float>(sourceTexture.getSize().y));
 		return *this;
 	}
 
 	Background &composeToScreen() {
 		textureAtlas.clear();
-		float scale = roundf((float) GameInfo.getScreenWidth() / 200);
+		float scale = roundf((float) GameInfo.getConstExternalData()->windowState.getScreenWidth() / 200);
 		int texture_width = (int) ((float) sourceTexture.getSize().x * scale);
-		for (int image_x = 0; image_x < GameInfo.getScreenWidth(); image_x += texture_width) {
-			for (int image_y = 0; image_y < GameInfo.getScreenHeight(); image_y += texture_width) {
+		for (int image_x = 0; image_x < GameInfo.getConstExternalData()->windowState.getScreenWidth(); image_x += texture_width) {
+			for (int image_y = 0; image_y < GameInfo.getConstExternalData()->windowState.getScreenHeight(); image_y += texture_width) {
 				auto *texture_atlas = new sf::Sprite(sourceTexture);
 				texture_atlas->setScale(scale, scale);
 				texture_atlas->setPosition((float) image_x, (float) image_y);

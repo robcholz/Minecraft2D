@@ -12,13 +12,13 @@ class TextFieldWidget : public Widget {
 private:
 	RichText *text = new RichText(gui_style::MessageFont);
 
-	[[maybe_unused]] bool activated() { return false; }
+	[[maybe_unused]] static bool activated() { return false; }
 
-	[[maybe_unused]] bool stateChanged() { return false; }
+	[[maybe_unused]] static bool stateChanged() { return false; }
 
-	[[maybe_unused]] bool isPressed() { return false; }
+	[[maybe_unused]] static bool isPressed() { return false; }
 
-	[[maybe_unused]] bool isClicked() { return false; }
+	[[maybe_unused]] static bool isClicked() { return false; }
 
 	void updateState(bool state) override {}
 

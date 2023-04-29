@@ -12,6 +12,7 @@ class TexturedButtonWidget : public Widget {
 private:
 	ActionWhenActivated execFuncPtr = nullptr;
 	RichText message;
+	//TODO WTF IS THIS? a pointer pointed to a shared pointer??? FUCK THAT
 	inline static std::shared_ptr<sf::IntRect> *intRectNormal = new std::shared_ptr<sf::IntRect>(
 			new sf::IntRect(0, 106, 20, 20));
 	inline static std::shared_ptr<sf::IntRect> *intRectClicked = new std::shared_ptr<sf::IntRect>(
@@ -32,17 +33,17 @@ public:
 		widgetCurrentSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 	}
 
-	void actionsToExecWhenClicked(ActionWhenActivated execFunc) { execFuncPtr = std::move(execFunc); }
+	void actionsToExecWhenClicked(const ActionWhenActivated &execFunc) { execFuncPtr = execFunc; }
 
 	void action() override { if (execFuncPtr != nullptr)execFuncPtr(); }
 
 	TexturedButtonWidget &setScale(float factorX, float factorY) {
-
+		//TODO
 		return *this;
 	}
 
 	TexturedButtonWidget &setScale(sf::Vector2f &factors) {
-
+		//TODO
 		return *this;
 	}
 

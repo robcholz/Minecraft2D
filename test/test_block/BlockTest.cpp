@@ -3,9 +3,10 @@
 //
 
 #include <iostream>
-#include "block/BlockTextureLoader.hpp"
+#include "resource/FileHelper.hpp"
+#include "gtest/gtest.h"
 
-int main(){
-	//BlockTextureLoader loader("glass_block");
-	return 0;
+TEST(BlockTest, BasicAssertions) {
+	EXPECT_STRNE("hello", "world");
+	EXPECT_EQ(7 * 6, 42);
 }

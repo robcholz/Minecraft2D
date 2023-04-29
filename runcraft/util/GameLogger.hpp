@@ -67,10 +67,10 @@ public:
 		}
 
 		static plog::ColorConsoleAppender<plog::TxtFormatter> console_appender;
-		if(GameInfo.options.isLoggedToFile()) {
+		if(GameInfo.getExternalData()->logger.isLoggedToFile()) {
 			static plog::RollingFileAppender<plog::TxtFormatter> file_appender(getLogFileName().c_str(), 8000, 1);
-			plog::init(GameInfo.options.logSeverity(), &console_appender).addAppender(&file_appender);
-		} else plog::init(GameInfo.options.logSeverity(), &console_appender);
+			plog::init(GameInfo.getExternalData()->logger.logSeverity(), &console_appender).addAppender(&file_appender);
+		} else plog::init(GameInfo.getExternalData()->logger.logSeverity(), &console_appender);
 	}
 
 	~GameLogger() = default;

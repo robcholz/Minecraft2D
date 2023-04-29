@@ -12,7 +12,7 @@
 class SoundSliderWidget : public SliderWidget {
 private:
 	ActionWhenActivated execFuncPtr = nullptr;
-	game_data::SoundVolume *controlledValuePtr = nullptr;
+	internal_data::SoundVolume *controlledValuePtr = nullptr;
 public:
 	explicit SoundSliderWidget(const std::string &id, int width = 200, int height = 20, bool visible = true,
 	                           int x = 0, int y = 0)
@@ -32,9 +32,9 @@ public:
 				(float) widgetOutline.y);
 	}
 
-	SoundSliderWidget &varToChangeWhenMoved(game_data::SoundVolume *controlledValue = nullptr) { this->controlledValuePtr = controlledValue; return *this;}
+	SoundSliderWidget &varToChangeWhenMoved(internal_data::SoundVolume *controlledValue = nullptr) { this->controlledValuePtr = controlledValue; return *this;}
 
-	SoundSliderWidget &actionsToExecWhenMoved(ActionWhenActivated execFunc) { this->execFuncPtr = std::move(execFunc); return *this;}
+	SoundSliderWidget &actionsToExecWhenMoved(const ActionWhenActivated &execFunc) { this->execFuncPtr = execFunc; return *this;}
 
 	void action() override {
 		message.clear();

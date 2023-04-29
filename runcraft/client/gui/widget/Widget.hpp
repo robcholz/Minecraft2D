@@ -31,23 +31,14 @@ protected:
 	std::string id;
 public:
 	explicit Widget(const std::string &id) {
-		this->id=id;
+		this->id = id;
 		widgetSize = nullptr;
 	}
 
 	virtual void updateState(bool state) {
 		pressed = state;
-		if (lastState != state && state) { clickState = true; } else { clickState = false; }
+		clickState = lastState != state && state;
 		lastState = state;
-	}
-
-	bool static checkVectorBoundary(sf::Vector2i vector, Areai area) {
-		return ((vector.x > area.x && vector.x < area.x + area.width) &&
-		        (vector.y > area.y && vector.y < area.y + area.height));
-	}
-
-	bool static checkVectorBoundary(int x, int y, int left, int top, int width, int height) {
-		return ((x > left && x < left + width) && (y > top && y < top + height));
 	}
 
 	void setVisibility(bool visibility) { visible = visibility; }
@@ -71,7 +62,7 @@ public:
 		}
 	}
 
-	void render() override  {}
+	void render() override {}
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

@@ -2,7 +2,7 @@
   "south": "runcraft:block/grass_block_side",
   "north": "runcraft:block/grass_block_side",
   "up": "runcraft:block/grass_block_top",
-  "down": "runcraft:block/grass_block_side",
+  "down": "runcraft:block/dirt",
   "in": "runcraft:block/grass_block_side",
   "out": "runcraft:block/grass_block_side"
 }
