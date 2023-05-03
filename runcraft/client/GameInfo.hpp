@@ -61,7 +61,11 @@ namespace external_data {
 	struct WindowState {
 		Render *rendererPtr = nullptr;
 		Camera *camera = nullptr;
-		short zoomSize = 50;
+		typedef short ZoomT;
+		/**
+		 * @range [50,100]
+		 */
+		ZoomT zoomSize = 50;
 		bool gainedFocus{}, lostFocus{};
 		bool resized{};
 

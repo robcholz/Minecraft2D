@@ -13,7 +13,7 @@ namespace block {
 
 	enum BlockDirectionType : unsigned short { UP, DOWN, NORTH, SOUTH, IN, OUT };
 	typedef coordinate::BlockPositionT BlockPositionT;
-	typedef Vector2D<coordinate::BlockPositionT> BlockPosVecT;
+	typedef Vector2D<BlockPositionT> BlockPosVecT;
 
 	class BlockPos {
 	private:

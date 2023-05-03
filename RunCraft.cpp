@@ -3,19 +3,21 @@
 #include "client/Menu.hpp"
 #include "util/GameLogger.hpp"
 #include "client/player/Player.hpp"
-#include "client/scene/SceneManager.hpp"
 
 int main() {
 	GameLogger game_logger;
 	Render render("RunCrafts");
 	GameInfo.setRenderer(&render);
 	SystemEvents game_main_event;
-	Menu *menu_ptr;
-	chunk::Chunk *chunk;
-	SceneManager scene_manager;
-	scene_manager.newScene("game_menu", nullptr, [&menu_ptr] { menu_ptr = new Menu; }, [&menu_ptr] { menu_ptr->render(); }, [&menu_ptr] { delete menu_ptr; })
-	             .newScene("chunk", nullptr, [&chunk] { chunk = new chunk::Chunk; }, [&chunk] { chunk->render(); }, [&chunk] { delete chunk; })
-	             .setEntry("game_menu");
+	//Menu menu;
+	chunk::Chunk chunk(0);
+	chunk::Chunk chunk_1(1);
+	chunk::Chunk chunk_2(2);
+	chunk::Chunk chunk_3(3);
+	chunk::Chunk chunk_4(4);
+	chunk::Chunk chunk_5(5);
+	chunk::Chunk chunk_6(6);
+	//SceneManager scene_manager;
 
 	//Player player;
 
@@ -29,8 +31,14 @@ int main() {
 		GameInfo.getRender()->getWindowConfig().window->clear();
 
 
-		scene_manager.render();
-		//chunk.render(); // for-DEBUG only
+		//menu.render();
+		chunk.render(); // for-DEBUG only
+		chunk_1.render();
+		chunk_2.render();
+		chunk_3.render();
+		chunk_4.render();
+		chunk_5.render();
+		chunk_6.render();
 
 		GameInfo.getRender()->getWindowConfig().window->display();
 	}

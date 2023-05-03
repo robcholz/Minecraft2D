@@ -20,83 +20,18 @@
 #include "world/chunk/Chunk.hpp"
 #include "client/scene/Scene.hpp"
 
-class Menu : Scene {
-private:
-	int screenWidth = (int) GameInfo.getConstExternalData()->windowState.getScreenWidth();
-	int screenHeight = (int) GameInfo.getConstExternalData()->windowState.getScreenHeight();
-	AudioList backgroundMusic;
-	Once backgroundOnce;
-
-	Background backgroundTexture{"background.png"};
-	Background settingBackground{"options_background.png"};
-
-	/*main menu*/
-	ButtonWidget backgroundMenuSinglePlayer{"singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432};
-	ButtonWidget backgroundMenuOptions{"options", 800, 80, true, screenWidth / 2 - 800 / 2, 528};
-	ButtonWidget backgroundMenuWhat{"something_uncertain", 800, 80, true, screenWidth / 2 - 800 / 2, 624};
-	ButtonWidget backgroundMenuLanguage{"language", 380, 80, true, screenWidth / 2 - 800 / 2, 768};
-	ButtonWidget backgroundMenuQuitGame{"quit_game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768};
-	TexturedButtonWidget backgroundMenuLanguageTexturedButton{32, 32, true, screenWidth / 2 - 500, 768};
-	Screen backgroundMenuScreen{&backgroundTexture};
-
-	/*settings*/
-	ButtonWidget backgroundSettingBiomeSnowyPlains{"snowy_plains", 590, 80, true, screenWidth / 2 - 1200 / 2, 400};
-	ButtonWidget backgroundSettingBiomePlains{"plains", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 400};
-	ButtonWidget backgroundSettingBiomeForest{"forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 500};
-	ButtonWidget backgroundSettingBiomeDesert{"desert", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 500};
-	ButtonWidget backgroundSettingBiomeBirchForest{"birch_forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 600};
-	ButtonWidget backgroundSettingBiomeJungle{"jungle", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 600};
-	ButtonWidget backgroundSettingVolume{"music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200};
-	ButtonWidget backgroundSettingBack{"done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50};
-	Screen backgroundBiomeSettingScreen{&backgroundTexture};
-
-	/*music settings*/
-	TextFieldWidget settingVolumeSliderTitle{"music_sound_options", 70, true, screenWidth / 2 - 440 / 2, 20};
-	SoundSliderWidget settingVolumeSliderMasterVolume{"master_volume", 1240, 80, true, screenWidth / 2 - 620, 115};
-	SoundSliderWidget settingVolumeSliderMusic{"music_volume", 590, 80, true, screenWidth / 2 - 620, 225};
-	SoundSliderWidget settingVolumeSliderJukeboxNoteblocks{"jukebox_noteblocks_volume", 590, 80, true, screenWidth / 2 + 30, 225};
-	SoundSliderWidget settingVolumeSliderWeather{"weather_volume", 590, 80, true, screenWidth / 2 - 620, 335};
-	SoundSliderWidget settingVolumeSliderBlocks{"blocks_volume", 36, 590, 80, true, screenWidth / 2 + 30, 335};
-	SoundSliderWidget settingVolumeSliderHostileCreatures{"hostile_creatures_volume", 590, 80, true, screenWidth / 2 - 620, 445};
-	SoundSliderWidget settingVolumeSliderFriendlyCreatures{"friendly_creatures_volume", 590, 80, true, screenWidth / 2 + 30, 445};
-	SoundSliderWidget settingVolumeSliderPlayers{"players_volume", 590, 80, true, screenWidth / 2 - 620, 555};
-	SoundSliderWidget settingVolumeSliderAmbientEnvironment{"ambient_environment_volume", 590, 80, true, screenWidth / 2 + 30, 555};
-	ButtonWidget settingVolumeBack{"done", 790, 80, true, screenWidth / 2 - 390, 555 + 260};
-	Screen settingVolumeScreen{&settingBackground};
-
-	/*singleplayer page*/
-	ButtonWidget singleplayerGenerateWorld{"generate_experimental_world", 800, 80, true, screenWidth / 2 - 800 / 2, screenHeight / 2 + 80};
-	ButtonWidget singleplayerSettingBack{"done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50};
-	Screen singleplayerSettingScreen{&settingBackground};
-
-	ScreenManager screenManager;
-public:
-	explicit Menu() {
-		PLOG_DEBUG << "Menu started!";
-		initResource();
-	}
-
-	~Menu() {
-		backgroundMusic.stop();
-	}
-
-	void initResource() {
+class Menu {
+protected:
+	void onInitialize() {
+		backgroundTexture.fitToScreen();
+		settingBackground.composeToScreen();
+		screenManager.setInputStatePtr(&GameInfo.getExternalData()->peripheralState);
 		initAudio();
 		initWidget();
+		backgroundMusic.playRandomly();
 
+		PLOG_DEBUG << "Rendered main menu!";
 		PLOG_DEBUG << "Initialize assets.";
-	}
-
-	void render() {
-		if (backgroundOnce.runOnce()) {
-			backgroundTexture.fitToScreen();
-			settingBackground.composeToScreen();
-			backgroundMusic.playRandomly();
-			screenManager.setInputStatePtr(&GameInfo.getExternalData()->peripheralState);
-			PLOG_DEBUG << "Rendered main menu!";
-		}
-
-		screenManager.render();
 	}
 
 	void initAudio() {
@@ -177,6 +112,69 @@ public:
 		backgroundSettingBiomeJungle.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::JUNGLE; });
 
 		PLOG_DEBUG << "Initialize widget components";
+	}
+
+private:
+	int screenWidth = (int) GameInfo.getConstExternalData()->windowState.getScreenWidth();
+	int screenHeight = (int) GameInfo.getConstExternalData()->windowState.getScreenHeight();
+
+	AudioList backgroundMusic;
+
+	Background backgroundTexture{"background.png"};
+	Background settingBackground{"options_background.png"};
+
+	/*main menu*/
+	ButtonWidget backgroundMenuSinglePlayer{"singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432};
+	ButtonWidget backgroundMenuOptions{"options", 800, 80, true, screenWidth / 2 - 800 / 2, 528};
+	ButtonWidget backgroundMenuWhat{"something_uncertain", 800, 80, true, screenWidth / 2 - 800 / 2, 624};
+	ButtonWidget backgroundMenuLanguage{"language", 380, 80, true, screenWidth / 2 - 800 / 2, 768};
+	ButtonWidget backgroundMenuQuitGame{"quit_game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768};
+	TexturedButtonWidget backgroundMenuLanguageTexturedButton{32, 32, true, screenWidth / 2 - 500, 768};
+	Screen backgroundMenuScreen{&backgroundTexture};
+
+	/*settings*/
+	ButtonWidget backgroundSettingBiomeSnowyPlains{"snowy_plains", 590, 80, true, screenWidth / 2 - 1200 / 2, 400};
+	ButtonWidget backgroundSettingBiomePlains{"plains", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 400};
+	ButtonWidget backgroundSettingBiomeForest{"forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 500};
+	ButtonWidget backgroundSettingBiomeDesert{"desert", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 500};
+	ButtonWidget backgroundSettingBiomeBirchForest{"birch_forest", 590, 80, true, screenWidth / 2 - 1200 / 2, 600};
+	ButtonWidget backgroundSettingBiomeJungle{"jungle", 590, 80, true, screenWidth / 2 + 1200 / 2 - 590, 600};
+	ButtonWidget backgroundSettingVolume{"music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200};
+	ButtonWidget backgroundSettingBack{"done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50};
+	Screen backgroundBiomeSettingScreen{&backgroundTexture};
+
+	/*music settings*/
+	TextFieldWidget settingVolumeSliderTitle{"music_sound_options", 70, true, screenWidth / 2 - 440 / 2, 20};
+	SoundSliderWidget settingVolumeSliderMasterVolume{"master_volume", 1240, 80, true, screenWidth / 2 - 620, 115};
+	SoundSliderWidget settingVolumeSliderMusic{"music_volume", 590, 80, true, screenWidth / 2 - 620, 225};
+	SoundSliderWidget settingVolumeSliderJukeboxNoteblocks{"jukebox_noteblocks_volume", 590, 80, true, screenWidth / 2 + 30, 225};
+	SoundSliderWidget settingVolumeSliderWeather{"weather_volume", 590, 80, true, screenWidth / 2 - 620, 335};
+	SoundSliderWidget settingVolumeSliderBlocks{"blocks_volume", 36, 590, 80, true, screenWidth / 2 + 30, 335};
+	SoundSliderWidget settingVolumeSliderHostileCreatures{"hostile_creatures_volume", 590, 80, true, screenWidth / 2 - 620, 445};
+	SoundSliderWidget settingVolumeSliderFriendlyCreatures{"friendly_creatures_volume", 590, 80, true, screenWidth / 2 + 30, 445};
+	SoundSliderWidget settingVolumeSliderPlayers{"players_volume", 590, 80, true, screenWidth / 2 - 620, 555};
+	SoundSliderWidget settingVolumeSliderAmbientEnvironment{"ambient_environment_volume", 590, 80, true, screenWidth / 2 + 30, 555};
+	ButtonWidget settingVolumeBack{"done", 790, 80, true, screenWidth / 2 - 390, 555 + 260};
+	Screen settingVolumeScreen{&settingBackground};
+
+	/*singleplayer page*/
+	ButtonWidget singleplayerGenerateWorld{"generate_experimental_world", 800, 80, true, screenWidth / 2 - 800 / 2, screenHeight / 2 + 80};
+	ButtonWidget singleplayerSettingBack{"done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50};
+	Screen singleplayerSettingScreen{&settingBackground};
+
+	ScreenManager screenManager;
+public:
+	explicit Menu() {
+		PLOG_DEBUG << "Menu started!";
+		onInitialize();
+	}
+
+	~Menu() {
+		backgroundMusic.stop();
+	}
+
+	void render() {
+		screenManager.render();
 	}
 };
 

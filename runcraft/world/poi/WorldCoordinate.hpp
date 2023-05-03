@@ -14,22 +14,31 @@ namespace coordinate {
 	typedef int BlockPositionT;
 	typedef double WorldPositionT;
 
+	struct Coordinate{WorldPositionT x, y;};
+
 	class WorldCoordinate {
 	private:
-		BlockPositionT blockX, blockZ;
-		WorldPositionT worldX, worldZ;
+		Coordinate worldCoordinate;
 
 	public:
-		explicit WorldCoordinate(WorldPositionT x, WorldPositionT z) {
-			worldX = x;
-			worldZ = z;
+		explicit WorldCoordinate(WorldPositionT x, WorldPositionT y) {
+			worldCoordinate.x = x;
+			worldCoordinate.y = y;
 		}
 
-		WorldCoordinate &offset(WorldPositionT x, WorldPositionT z) {
-			worldX += x;
-			worldZ += z;
+		WorldCoordinate &offset(WorldPositionT x, WorldPositionT y) {
+			worldCoordinate.x += x;
+			worldCoordinate.y += y;
 			return *this;
 		}
+
+		[[nodiscard]] WorldPositionT getX() const { return worldCoordinate.x; }
+
+		[[nodiscard]] BlockPositionT getIntX() const { return (int) worldCoordinate.x; }
+
+		[[nodiscard]] WorldPositionT getY() const { return worldCoordinate.y; }
+
+		[[nodiscard]] BlockPositionT getIntY() const { return (int) worldCoordinate.y; }
 
 	};
 }

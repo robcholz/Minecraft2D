@@ -44,7 +44,7 @@ set(SOURCE_FILES
         runcraft/client/player/Player.hpp
         runcraft/client/scene/SceneManager.hpp
         runcraft/client/scene/Scene.hpp
-        )
+        runcraft/world/gen/WorldGeneration.hpp)
 add_executable(runcraft ${SOURCE_FILES})
 include_directories(/usr/local/include)
 include_directories(include/rapidjson)

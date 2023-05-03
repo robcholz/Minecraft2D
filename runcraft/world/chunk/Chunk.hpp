@@ -9,80 +9,108 @@
 #include "block/Block.hpp"
 #include "block/AirBlock.hpp"
 #include "block/DirtBlock.hpp"
+#include "block/BlockPos.hpp"
 
-#define TEST_CHUNK_HEIGHT 20
+#define TEST_CHUNK_HEIGHT 100
+#define TEST_BOTTOM 10
+#define ZOOMING_PROT 16
 
 namespace chunk {
 	typedef std::function<void()> IteratorExecFuncPtr;
-	typedef int in_chunk_block_pos_t;
-	struct ChunkConfig {
+	typedef block::BlockPositionT ChunkPositionT;
+	struct ChunkGenSettings {
 		const static int CHUNK_HEIGHT = 320 + 64;
 		const static int GROUND_LEVEL = 64;
 		const static int CHUNK_WIDTH = 16;
-
 		const static int CHUNK_UPPER_LIMIT = CHUNK_HEIGHT;
 		const static int CHUNK_BOTTOM_LIMIT = 0;
 	};
-
-	struct ChunkPosT { coordinate::BlockPositionT x, y; };
+	struct ChunkSettings { ChunkPositionT chunkPos;block::BlockPositionT blockPosX, blockPosY; };
+	struct BlockPos { coordinate::BlockPositionT x, y; };
 
 	class Chunk {
 	protected:
 		static void chunkIterator(const IteratorExecFuncPtr &funcPtr) {
-			for (int x_pos = 0; x_pos < ChunkConfig::CHUNK_WIDTH; ++x_pos)
-				for (int y_pos = ChunkConfig::CHUNK_BOTTOM_LIMIT; y_pos < ChunkConfig::CHUNK_HEIGHT; ++y_pos)
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos)
+				for (int y_pos = ChunkGenSettings::CHUNK_BOTTOM_LIMIT; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos)
 					funcPtr();
 		}
-		static void chunkIterator(in_chunk_block_pos_t x_from, in_chunk_block_pos_t y_from, in_chunk_block_pos_t x_to, in_chunk_block_pos_t y_to,
-		                          const IteratorExecFuncPtr &funcPtr) {
-			for (int x_pos = x_from; x_pos < x_to; ++x_pos)
-				for (int y_pos = y_from; y_pos < y_to; ++y_pos) funcPtr();
+
+		void onInitialize() {
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = TEST_BOTTOM; y_pos < TEST_CHUNK_HEIGHT; ++y_pos) {
+					setBlockPosition(BlockPos{x_pos, y_pos}, new block::blocks::DirtBlock());
+					setBlockOnScreenPosition(BlockPos{x_pos, y_pos}, ZOOMING_PROT);
+				}
+			}
+		}
+
+		void onRender() {
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = TEST_BOTTOM; y_pos < TEST_CHUNK_HEIGHT; ++y_pos) {
+					//getBlock(ChunkPosT{x_pos, y_pos})->getCurrentSprite()->setScale( prot/16.0f,  prot/16.0f);
+					//getBlock(ChunkPosT{x_pos, y_pos})->getCurrentSprite()->setPosition(x_pos * prot, y_pos * prot);
+					GameInfo.getRender()->render(*getBlockSprite(BlockPos{x_pos, y_pos}));
+				}
+			}
 		}
 
 	private:
-		block::Block *(chunkBlocks[ChunkConfig::CHUNK_WIDTH][ChunkConfig::CHUNK_HEIGHT]){};
+		ChunkPositionT chunkPos;
+		block::Block *(chunkBlocks[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]){};
 
-		block::Block *getBlock(ChunkPosT pos) { return chunkBlocks[pos.x][pos.y]; }
+		block::Block *getBlock(BlockPos pos) { return chunkBlocks[pos.x][pos.y]; }
 
-		static ChunkPosT transferBlockPosToChunkPos() {
+		sf::Sprite *getBlockSprite(BlockPos pos) { return getBlock(pos)->getCurrentSprite(); }
 
-		}
-
-	public:
-		explicit Chunk(){
-			for (int x_pos = 0; x_pos < ChunkConfig::CHUNK_WIDTH; ++x_pos) {
-				for (int y_pos = ChunkConfig::CHUNK_BOTTOM_LIMIT; y_pos < TEST_CHUNK_HEIGHT; ++y_pos) {
-					replaceBlock(ChunkPosT{x_pos, y_pos}, new block::blocks::DirtBlock());
-					getBlock(ChunkPosT{x_pos, y_pos})->getCurrentSprite()->setPosition(x_pos * 16, y_pos * 16);
-				}
-			}
-		}
-
-		~Chunk() {
-			for (int x_pos = 0; x_pos < ChunkConfig::CHUNK_WIDTH; ++x_pos) {
-				for (int y_pos = ChunkConfig::CHUNK_BOTTOM_LIMIT; y_pos < TEST_CHUNK_HEIGHT; ++y_pos) {
-					delete getBlock(ChunkPosT{x_pos, y_pos});
-				}
-			}
-		}
-
-		void replaceBlock(ChunkPosT pos, block::Block *block) {
+		void setBlockPosition(BlockPos pos, block::Block *block) {
 			if (chunkBlocks[pos.x][pos.y] != nullptr)
 				delete chunkBlocks[pos.x][pos.y];
 			chunkBlocks[pos.x][pos.y] = block;
 		}
 
-		void render() {
-			//float prot=GameInfo.getConstExternalData()->windowState.zoomSize;
-			//GameInfo.getExternalData()->windowState.camera->zoom(0.95f);
-			//GameInfo.getRender()->getWindowConfig().window->setView(*GameInfo.getExternalData()->windowState.camera);
-			for (int x_pos = 0; x_pos < ChunkConfig::CHUNK_WIDTH; ++x_pos) {
-				for (int y_pos = ChunkConfig::CHUNK_BOTTOM_LIMIT; y_pos < TEST_CHUNK_HEIGHT; ++y_pos) {
-					//getBlock(ChunkPosT{x_pos, y_pos})->getCurrentSprite()->setScale( prot/16.0f,  prot/16.0f);
-					//getBlock(ChunkPosT{x_pos, y_pos})->getCurrentSprite()->setPosition(x_pos * prot, y_pos * prot);
-					GameInfo.getRender()->render(*(getBlock(ChunkPosT{x_pos, y_pos})->getCurrentSprite()));
+		void setBlockOnScreenPosition(BlockPos pos, external_data::WindowState::ZoomT zoom) {
+			getBlockSprite(pos)->setPosition(+(float) (toWorldCoordinateSettings(chunkPos) + pos.x * zoom), (float) (+pos.y * zoom));
+		}
+
+	public:
+		explicit Chunk(ChunkPositionT chunkPos) {
+			this->chunkPos = chunkPos;
+			onInitialize();
+		}
+
+		~Chunk() {
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = TEST_BOTTOM; y_pos < TEST_CHUNK_HEIGHT; ++y_pos) {
+					delete getBlock(BlockPos{x_pos, y_pos});
 				}
 			}
+		}
+
+		static ChunkSettings toChunkSettings(const coordinate::WorldCoordinate &worldCoordinate) {
+			ChunkSettings chunk_settings{};
+			chunk_settings.chunkPos = worldCoordinate.getIntX() / 16;
+			chunk_settings.blockPosX = worldCoordinate.getIntX() % 16;
+			chunk_settings.blockPosY = worldCoordinate.getIntY();
+			return chunk_settings;
+		}
+
+		static coordinate::Coordinate toWorldCoordinateSettings(const ChunkSettings &chunkSettings) {
+			coordinate::Coordinate coordinate{};
+			coordinate.x = chunkSettings.blockPosX + 16 * chunkSettings.chunkPos;
+			coordinate.y = chunkSettings.blockPosY;
+			return coordinate;
+		}
+
+		static coordinate::WorldPositionT toWorldCoordinateSettings(ChunkPositionT chunkPosition) {
+			return chunkPosition * ZOOMING_PROT * ChunkGenSettings::CHUNK_WIDTH;
+		}
+
+		void render() {
+			//float prot = GameInfo.getConstExternalData()->windowState.zoomSize;
+			//GameInfo.getExternalData()->windowState.camera->setSize(prot*10,prot*10);
+			GameInfo.getRender()->getWindowConfig().window->setView(*GameInfo.getExternalData()->windowState.camera);
+			onRender();
 		}
 	};
 };

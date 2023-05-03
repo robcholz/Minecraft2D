@@ -51,6 +51,7 @@ public:
 	void render(const sf::Drawable &drawable, const sf::RenderStates &states = sf::RenderStates::Default) const {
 		screenConfig.window->draw(drawable, states);
 	}
+
 };
 
 #endif //RUNCRAFT_RENDER_HPP
