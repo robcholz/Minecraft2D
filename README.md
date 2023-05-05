@@ -13,8 +13,8 @@
 - [x] Multi-language support
 - [x] Widget components
 - [x] Sound manager
-- [ ] Block - In progress
-- [ ] World gen
+- [x] Block
+- [ ] World gen - In progress
 - [ ] Decoration Builder
 - [ ] Player
 - [ ] Cross-platform
