@@ -14,7 +14,8 @@
 - [x] Widget components
 - [x] Sound manager
 - [x] Block
-- [ ] World gen - In progress
+- [x] Binary Map File Load - In progress
+- [ ] World gen
 - [ ] Decoration Builder
 - [ ] Player
 - [ ] Cross-platform
