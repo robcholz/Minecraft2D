@@ -8,16 +8,25 @@
   
 
 ## Progress Tracker
+#### Essential Components
 - [x] Logger
-- [ ] Fullscreen Mode
 - [x] Multi-language support
-- [x] Widget components
+- [x] Widget GUI components
 - [x] Sound manager
+- [ ] Peripherals support - In testing
+- [ ] Binary map file loading - In progress
+#### Gameplay - Essentials
 - [x] Block
-- [x] Binary Map File Load - In progress
-- [ ] World gen
-- [ ] Decoration Builder
-- [ ] Player
+- [ ] Save - In testing
+- [ ] World generation
+- [ ] Decoration builder
+- [ ] In game GUI
+- [ ] Player - In progress
+#### Gameplay - Enhanced
+- [ ] Particle
+- [ ] Multiplayer
+#### Compatibility
+- [ ] Fullscreen mode
 - [ ] Cross-platform
     
 
