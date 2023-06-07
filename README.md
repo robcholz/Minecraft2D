@@ -9,25 +9,22 @@
 
 ## Progress Tracker
 #### Essential Components
-- [x] Logger
-- [x] Multi-language support
-- [x] Widget GUI components
-- [x] Sound manager
-- [ ] Peripherals support - In testing
-- [ ] Binary map file loading - In progress
+- [x] Logger/游戏日志
+- [x] Multi-language support/多语言支持
+- [x] Widget GUI components/GUI组件
+- [x] Sound manager/音频管理器
+- [x] Peripherals support/键盘鼠标支持
+- [ ] Binary map file loading/地图序列化、加载 - In progress
 #### Gameplay - Essentials
-- [x] Block
-- [ ] Save - In testing
-- [ ] World generation
-- [ ] Decoration builder
-- [ ] In game GUI
-- [ ] Player - In progress
+- [x] Block/方块
+- [ ] Save/存档 - In testing
+- [ ] World generation/世界生成
+- [ ] Decoration builder/地图装饰器
+- [ ] In-game GUI/游戏内交互GUI
+- [x] Player/玩家
 #### Gameplay - Enhanced
-- [ ] Particle
-- [ ] Multiplayer
+- [ ] Particle Effects/粒子效果
+- [ ] Multiplayer/多人游戏
 #### Compatibility
-- [ ] Fullscreen mode
-- [ ] Cross-platform
-    
-
-
+- [ ] Fullscreen mode/全屏模式
+- [ ] Cross-platform/游戏全平台支持

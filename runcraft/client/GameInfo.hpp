@@ -59,13 +59,16 @@ namespace external_data {
 	};
 
 	struct WindowState {
-		Render *rendererPtr = nullptr;
-		Camera *camera = nullptr;
+		Render* rendererPtr = nullptr;
+		Camera* camera = nullptr;
 		typedef short ZoomT;
 		/**
 		 * @range [50,100]
 		 */
 		ZoomT zoomSize = 50;
+
+		ZoomT pixelToBlock=25; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
+		ZoomT pixelProportion= (ZoomT)(pixelToBlock * 2);
 		bool gainedFocus{}, lostFocus{};
 		bool resized{};
 
@@ -73,15 +76,16 @@ namespace external_data {
 
 		[[nodiscard]] unsigned int getScreenHeight() const { return rendererPtr->getWindowConfig().screenHeight; }
 
-		[[nodiscard]] Render *getRender() const { return rendererPtr; }
+		[[nodiscard]] Render* getRender() const { return rendererPtr; }
 	};
 
 	struct Logging {
-		nlohmann::json optionsJson;
+		using Json=nlohmann::json;
+		Json optionsJson;
 
 		void load() {
 			std::ifstream file("../assets/options.json");
-			optionsJson = nlohmann::json::parse(file);
+			optionsJson = Json::parse(file);
 		}
 
 		bool isLoggedToFile() { return optionsJson["logging"]["file"]; }
@@ -115,21 +119,21 @@ public:
 		externalData.logger.load();
 	}
 
-	void setRenderer(Render *renderer) {
+	void setRenderer(Render* renderer) {
 		externalData.windowState.rendererPtr = renderer;
 		externalData.windowState.camera = renderer->getCamera();
 		PLOG_DEBUG << "Successfully set the renderer";
 	}
 
-	internal_data::Internal *getInternalData() { return &internalData; }
+	internal_data::Internal* getInternalData() { return &internalData; }
 
-	const internal_data::Internal *getConstInternalData() { return &internalData; }
+	const internal_data::Internal* getConstInternalData() { return &internalData; }
 
-	external_data::External *getExternalData() { return &externalData; }
+	external_data::External* getExternalData() { return &externalData; }
 
-	const external_data::External *getConstExternalData() { return &externalData; }
+	const external_data::External* getConstExternalData() { return &externalData; }
 
-	[[nodiscard]] Render *getRender() const { return externalData.windowState.rendererPtr; }
+	[[nodiscard]] Render* getRender() const { return externalData.windowState.rendererPtr; }
 };
 
 GameInfo GameInfo;

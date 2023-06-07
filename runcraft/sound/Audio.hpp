@@ -52,7 +52,7 @@ private:
 	// where all the sounds stored here
 	std::vector<std::string> playlist;
 
-	void load(int n) {
+	void load(unsigned int n) {
 		soundBuffer.loadFromFile(audioPath + playlist.at(n) + audioFileType);
 	}
 
@@ -86,7 +86,7 @@ public:
 	 */
 	void playRandomly() {
 		stop();
-		load(Random(0, (int) playlist.size()));
+		load(getRNG(0, (int) playlist.size()));
 		Audio::play();
 	}
 
@@ -122,7 +122,7 @@ public:
 	~AudioPlayer() = default;
 
 	/**
-	 * @brief add a single sound
+	 * @brief addToContainer a single sound
 	 * @return
 	 */
 	[[maybe_unused]] AudioPlayer &addAudio() {

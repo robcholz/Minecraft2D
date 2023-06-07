@@ -5,13 +5,14 @@
 #ifndef RUNCRAFT_MATHHELPER_HPP
 #define RUNCRAFT_MATHHELPER_HPP
 
-#pragma once
-
 #include <cmath>
 #include <random>
 
-int Random(int from, int to) {
-	return from + (rand() % to);
+auto getRNG(int a, int b){
+	std::random_device dev;
+	std::mt19937 rng(dev());
+	std::uniform_int_distribution<std::mt19937::result_type> dist6(a,b);
+	return dist6(rng);
 }
 
 template<typename vT>
@@ -42,6 +43,11 @@ bool static checkVectorBoundary(int x, int y, int left, int top, int width, int 
 	return ((x > left && x < left + width) && (y > top && y < top + height));
 }
 
+template<typename vT>
+bool static approxEqual(vT value, vT val) {
+	return (val + 1 > value) && (value > val - 1);
+}
+
 template<typename vT=double>
 class Vector2D {
 private:
@@ -69,14 +75,14 @@ public:
 
 	vT getY() { return this->j; }
 
-	Vector2D operator-(const Vector2D &that) {
+	Vector2D &operator-(const Vector2D &that) {
 		Vector2D result;
 		result.i = this->i - that.i;
 		result.j = this->j - that.j;
 		return result;
 	}
 
-	Vector2D operator+(const Vector2D &that) {
+	Vector2D &operator+(const Vector2D &that) {
 		Vector2D result;
 		result.i = this->i + that.i;
 		result.j = this->j + that.j;
@@ -123,7 +129,7 @@ public:
 
 	vT getZ() { return this->k; }
 
-	Vector3D operator-(Vector3D that) {
+	Vector3D &operator-(Vector3D that) {
 		Vector3D result;
 		result.i = this->i - that.i;
 		result.j = this->j - that.j;
@@ -131,7 +137,7 @@ public:
 		return result;
 	}
 
-	Vector3D operator+(const Vector3D &that) {
+	Vector3D &operator+(const Vector3D &that) {
 		Vector3D result;
 		result.i = this->i + that.i;
 		result.j = this->j + that.j;

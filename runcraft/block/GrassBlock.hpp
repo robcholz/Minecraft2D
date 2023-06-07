@@ -5,15 +5,18 @@
 #ifndef RUNCRAFT_GRASSBLOCK_HPP
 #define RUNCRAFT_GRASSBLOCK_HPP
 
-#include "Block.hpp"
+#include "block/attributes/Block.hpp"
 
-namespace block::blocks{
-	class GrassBlock: public block::Block{
+namespace block::blocks {
+	class GrassBlock : public block::Block {
 	private:
 	public:
-		GrassBlock(): Block("grass_block"){
+		explicit GrassBlock() : Block("grass_block") {
+		}
 
-	}
+		Block* getBlockInstance() override {
+			return new GrassBlock;
+		}
 	};
 }
 

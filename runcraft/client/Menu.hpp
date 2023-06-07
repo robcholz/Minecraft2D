@@ -17,8 +17,6 @@
 #include "client/gui/widget/TextFieldWidget.hpp"
 #include "client/gui/screen/ScreenManager.hpp"
 #include "sound/Audio.hpp"
-#include "world/chunk/Chunk.hpp"
-#include "client/scene/Scene.hpp"
 
 class Menu {
 protected:

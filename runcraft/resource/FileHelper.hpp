@@ -15,7 +15,7 @@
 
 class FileHelper {
 private:
-	std::__1::vector<std::string> directories;
+	std::vector<std::string> directories;
 	std::string directoryPath;
 public:
 	explicit FileHelper(const std::string &directoryPath) {
@@ -31,19 +31,37 @@ public:
 		else return false;
 	}
 
-	std::__1::vector<std::string> *getFilesInDirectory() {
+	std::vector<std::string>* getFilesInDirectory() {
 		directories.clear();
 		for (const auto &entry: std::filesystem::directory_iterator(directoryPath))
 			directories.push_back(entry.path());
 		return &directories;
 	}
 
-	bool static createFolder(const std::string &folderName) {
-		return mkdir(folderName.c_str(), 0777);
+	static bool createFolder(const std::string &folderName) {
+		return std::filesystem::create_directory(folderName);
 	}
 
-	void createFile(const std::string &filename) {
+	static bool createFolder(const std::string &directory, const std::string &folderName) {
+		return std::filesystem::create_directory(directory + "/" + folderName);
+	}
+
+	std::string createSubFolder(const std::string &folderName) {
+		std::filesystem::create_directory(directoryPath + "/" + folderName);
+		return directoryPath + "/" + folderName;
+	}
+
+	static void createFile(const std::string &filename) {
+		std::ofstream file(filename);
+	}
+
+	static void createFile(const std::string &directory, const std::string &filename) {
+		std::ofstream file(directory + "/" + filename);
+	}
+
+	std::string createSubFile(const std::string &filename) {
 		std::ofstream my_file(directoryPath + "/" + filename);
+		return directoryPath + "/" + filename;
 	}
 
 	bool isDirectoryEmpty() {

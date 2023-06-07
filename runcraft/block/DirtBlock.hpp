@@ -5,15 +5,17 @@
 #ifndef RUNCRAFT_DIRTBLOCK_HPP
 #define RUNCRAFT_DIRTBLOCK_HPP
 
-#include "Block.hpp"
+#include "block/attributes/Block.hpp"
 
-
-namespace block::blocks{
-
-	class DirtBlock: public block::Block{
+namespace block::blocks {
+	class DirtBlock : public block::Block {
+	private:
 	public:
-		DirtBlock(): Block("dirt_block"){
+		DirtBlock() : Block("dirt_block") {
+		}
 
+		Block* getBlockInstance() override {
+			return new DirtBlock;
 		}
 	};
 }

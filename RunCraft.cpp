@@ -3,21 +3,25 @@
 #include "client/Menu.hpp"
 #include "util/GameLogger.hpp"
 #include "client/player/Player.hpp"
+#include "world/World.hpp"
+#include "world/storage/SaveHelper.hpp"
+
+using namespace block;
 
 int main() {
 	GameLogger game_logger;
 	Render render("RunCrafts");
 	GameInfo.setRenderer(&render);
+	auto keyboard = input::PeripheralsFactory::getKeyboard();
 	SystemEvents game_main_event;
-	//Menu menu;
-	chunk::Chunk chunk(0);
-	chunk::Chunk chunk_1(1);
-	chunk::Chunk chunk_2(2);
-	chunk::Chunk chunk_3(3);
-	chunk::Chunk chunk_4(4);
-	chunk::Chunk chunk_5(5);
-	chunk::Chunk chunk_6(6);
-	//SceneManager scene_manager;
+	//block::blocks::Blocks Blocks;
+	Menu menu;
+
+	chunk::Chunk chunk_1(0);
+	SaveHelper save_helper{"TestChunkSave",SaveHelper::ModeType::CREATE};
+	save_helper.saveChunk(&chunk_1);
+	SaveHelper save_helper_1{"TestChunkSave",SaveHelper::ModeType::READ};
+	auto loadded=save_helper_1.loadChunk(0); // TODO: NOTE dataoverflowed while deserializing <- problem occurred here
 
 	//Player player;
 
@@ -28,17 +32,20 @@ int main() {
 		GameInfo.getExternalData()->peripheralState.listen(
 				sf::Mouse::getPosition(*GameInfo.getRender()->getWindowConfig().window),
 				sf::Mouse::isButtonPressed(sf::Mouse::Button::Left));
+
 		GameInfo.getRender()->getWindowConfig().window->clear();
 
+		keyboard->update();
 
-		//menu.render();
-		chunk.render(); // for-DEBUG only
-		chunk_1.render();
-		chunk_2.render();
-		chunk_3.render();
-		chunk_4.render();
-		chunk_5.render();
-		chunk_6.render();
+		menu.render();
+		//player.update();
+		//chunk_1.render();
+		//loadded->render();
+
+		//loaded_chunk->render();
+		//player.render();
+		//world.load();// for-DEBUG only
+		//world.render();
 
 		GameInfo.getRender()->getWindowConfig().window->display();
 	}

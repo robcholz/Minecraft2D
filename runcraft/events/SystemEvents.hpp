@@ -39,10 +39,6 @@ public:
 				case sf::Event::TextEntered:
 					break;
 				case sf::Event::KeyPressed:
-
-					if (sf::Keyboard::isKeyPressed(sf::Keyboard::Key::W)) {
-
-					}
 					break;
 				case sf::Event::KeyReleased:
 					break;

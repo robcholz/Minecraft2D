@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.24)
 project(runcraft)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 
 # source files
 set(SOURCE_FILES
@@ -27,18 +27,18 @@ set(SOURCE_FILES
         runcraft/util/MathHelper.hpp
         runcraft/util/GameLogger.hpp
         runcraft/util/Utils.hpp
-        runcraft/block/Blocks.hpp
-        runcraft/block/Block.hpp
+        runcraft/block/attributes/Blocks.hpp
+        runcraft/block/attributes/Block.hpp
         runcraft/sound/Audio.hpp
         runcraft/resource/FileHelper.hpp
         runcraft/events/SystemEvents.hpp
         runcraft/error/ErrorHandling.hpp
         runcraft/sound/BlockSoundGroup.hpp
-        runcraft/world/poi/WorldCoordinate.hpp
+        runcraft/world/poi/Coordinate.hpp
         runcraft/world/chunk/Chunk.hpp
         runcraft/block/GrassBlock.hpp
-        runcraft/block/BlockPosition.hpp
-        runcraft/block/BlockTextureLoader.hpp
+        runcraft/block/attributes/BlockPosition.hpp
+        runcraft/block/attributes/BlockTextureLoader.hpp
         runcraft/block/AirBlock.hpp
         runcraft/block/DirtBlock.hpp
         runcraft/client/player/Player.hpp
@@ -48,7 +48,9 @@ set(SOURCE_FILES
         runcraft/world/chunk/ChunkStream.hpp
         runcraft/world/World.hpp
         runcraft/world/storage/SaveHelper.hpp
-        runcraft/world/chunk/ChunkDataPacketAdapter.hpp runcraft/client/input/Input.hpp)
+        runcraft/world/chunk/ChunkDataPacketAdapter.hpp
+        runcraft/client/input/Input.hpp
+        runcraft/block/IronBlock.hpp runcraft/block/attributes/BlockIDLoader.hpp runcraft/block/attributes/BlockState.hpp)
 
 
 #includes
@@ -84,13 +86,12 @@ enable_testing()
 
 add_executable(
         RunCraftTest
-        test/test_block/BlockTest.cpp
         test/test_resource/ResourceTest.cpp
-        test/test_world/WorldGenerationTest.cpp
         test/test_bitsery/BitseryTest.cpp
         test/test_bitsery/BitseryStreamTest.cpp
         test/test_input/InputTest.cpp
-)
+        test/test_block/BlockIDTest.cpp
+        test/test_block/BlockTextureLoaderTest.hpp)
 target_link_libraries(
         RunCraftTest
         sfml-system

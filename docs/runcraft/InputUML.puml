@@ -1,0 +1,86 @@
+@startuml
+
+Peripherals <|-- Keyboard
+Peripherals <|-- Mouse
+
+enum MouseKeys {
+		Left,       ///< The left mouse button
+		Right,      ///< The right mouse button
+		Middle,     ///< The middle (wheel) mouse button
+		XButton1,   ///< The first extra mouse button
+		XButton2,   ///< The second extra mouse button
+		VerticalWheel,  ///< The vertical mouse wheel
+		HorizontalWheel ///< The horizontal mouse wheel
+}
+
+class Peripherals {
+		#using Json = nlohmann::json;
+		#using String = std::string;
+		#Json peripheralsMapJson;
+		#std::list<Element*> peripheralsList;
+		#std::deque<Element*> activePeripheralsQueue;
+		#std::map<String, MappedVT> keysMap;
+
+		#{static}  String peripheralsMapPath = "../assets/";
+		#{static} String peripheralsFilename = "game_configuration";
+
+		#{abstract} void listen()
+		#void reload(const String &filename)
+		#void reload()
+
+		-MappedVT toMappedVal(const String &val)
+}
+
+class Key {
+	-std::string keyName;
+	-KeyboardKeys toggleKey
+
+	+explicit Key(std::string name, KeyboardKeys key)
+	+std::string getName()
+	+void setKey(KeyboardKeys key)
+	+[[nodiscard]] KeyboardKeys getKey() const
+	+bool isPressed()
+}
+
+class Keyboard {
+	-void initEnumMap()
+
+	+explicit Keyboard()
+	+void listen() override
+	+bool isPressed(const String &name)
+}
+
+class MouseKey {
+	-std::string keyName;
+	-MouseKeys toggleKey{};
+
+	+explicit MouseKey(std::string name, MouseKeys key) {}
+	+[[nodiscard]] std::string getName() const {}
+	+void setKey(MouseKeys key) {}
+	+[[nodiscard]] MouseKeys getKey() const {}
+	+[[nodiscard]] bool isAnalog() const {}
+	+[[nodiscard]] bool isPressed() const {}
+
+	//TODO forget what to do here...
+}
+
+class Mouse{
+	-void initEnumMap() {}
+
+	+explicit Mouse() {}
+	+void listen() override {}
+}
+
+class PeripheralsFactory {
+	-{static} std::shared_ptr<T> getInstance() {}
+
+    +using Keyboard = std::shared_ptr<keyboard::Keyboard>;
+	+using Mouse = std::shared_ptr<mouse::Mouse>;
+
+	+PeripheralsFactory() = delete;
+	+~PeripheralsFactory() = delete;
+	+{static} Keyboard getKeyboard() {}
+	+{static} Mouse getMouse() {}
+}
+
+@enduml
