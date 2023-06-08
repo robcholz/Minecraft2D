@@ -15,15 +15,15 @@ int main() {
 	auto keyboard = input::PeripheralsFactory::getKeyboard();
 	SystemEvents game_main_event;
 	//block::blocks::Blocks Blocks;
-	Menu menu;
+	//Menu menu;
 
-	chunk::Chunk chunk_1(0);
+ 	//auto* chunk_1 =new chunk::Chunk(1);
 	SaveHelper save_helper{"TestChunkSave",SaveHelper::ModeType::CREATE};
-	save_helper.saveChunk(&chunk_1);
-	SaveHelper save_helper_1{"TestChunkSave",SaveHelper::ModeType::READ};
-	auto loadded=save_helper_1.loadChunk(0); // TODO: NOTE dataoverflowed while deserializing <- problem occurred here
+	//save_helper.saveChunk(chunk_1);
+	auto loadded=save_helper.loadChunk(0);
+	auto load=save_helper.loadChunk(1);
 
-	//Player player;
+	Player player;
 
 	GameInfo.getConstExternalData()->windowState.getRender()->getWindowConfig().window->setVerticalSyncEnabled(true);
 
@@ -37,13 +37,14 @@ int main() {
 
 		keyboard->update();
 
-		menu.render();
-		//player.update();
+		//menu.render();
+		player.update();
 		//chunk_1.render();
-		//loadded->render();
+		loadded->render();
+		load->render();
 
 		//loaded_chunk->render();
-		//player.render();
+		player.render();
 		//world.load();// for-DEBUG only
 		//world.render();
 

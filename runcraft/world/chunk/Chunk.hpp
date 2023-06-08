@@ -9,15 +9,13 @@
 #include "world/poi/Coordinate.hpp"
 #include "block/attributes/Block.hpp"
 #include "block/attributes/BlockPosition.hpp"
-#include "block/GrassBlock.hpp"
-#include "block/IronBlock.hpp"
-#include "block/AirBlock.hpp"
+#include "block/attributes/Blocks.hpp"
 
 #define TEST_CHUNK_HEIGHT 6
 #define TEST_BOTTOM 0
 
 namespace chunk {
-	namespace adapter {class ChunkDataPacketAdapter;}
+	namespace adapter { class ChunkDataPacketAdapter; }
 
 	struct ChunkGenSettings {
 		const static int CHUNK_HEIGHT = 16;
@@ -41,12 +39,12 @@ namespace chunk {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; y_pos++) {
 					if (y_pos < TEST_CHUNK_HEIGHT)
 						if (y_pos == TEST_CHUNK_HEIGHT - 1) {
-							setBlockPosition(InChunkBlockPos{x_pos, y_pos}, new block::blocks::GrassBlock);
+							setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance("grass_block"));
 						} else {
-							setBlockPosition(InChunkBlockPos{x_pos, y_pos}, new block::blocks::IronBlock);
+							setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance("iron_block"));
 						}
 					else
-						setBlockPosition(InChunkBlockPos{x_pos, y_pos}, new block::blocks::AirBlock);
+						setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance("air_block"));
 				}
 			}
 		}
@@ -54,8 +52,7 @@ namespace chunk {
 		void onRender() {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
-					if (isBlockExisted(InChunkBlockPos{x_pos, y_pos}))
-						GameInfo.getRender()->render(*getBlockSprite(InChunkBlockPos{x_pos, y_pos}));
+					GameInfo.getRender()->render(*getBlockSprite(InChunkBlockPos{x_pos, y_pos}));
 				}
 			}
 		}

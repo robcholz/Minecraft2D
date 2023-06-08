@@ -19,13 +19,21 @@ template<typename S>
 void serialize(S &s, MyStruct &o) {
 	s.value4b(o.i);
 	s.value2b(o.e);
-	s.container4b(o.fs, 10);
+	s.container4b(o.fs, 20000);
 }
 
-using Buffer = std::vector<uint8_t>;
+void fillData(MyStruct *myStruct){
+	for(int i=0;i<256*10;i++){
+		myStruct->fs.push_back((float)i);
+	}
+}
 
 TEST(BitseryStreamTest, BasicAssertion) {
-	MyStruct data{8941, MyEnum::V2, {15.0f, -8.5f, 0.045f}};
+	MyStruct data;
+	data.i=8941;
+	data.e=MyEnum::V2;
+	fillData(&data);
+
 	MyStruct res{};
 
 	// open file stream for writing and reading

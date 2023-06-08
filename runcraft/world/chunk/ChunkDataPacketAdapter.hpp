@@ -49,10 +49,11 @@ namespace chunk::adapter {
 			vector->at(toOneDimensionIndex(x, y)) = value;
 		}
 
-		ChunkDataPacketAdapter()=default;
-		~ChunkDataPacketAdapter()=default;
-
 	public:
+		ChunkDataPacketAdapter() = delete;
+
+		~ChunkDataPacketAdapter() = delete;
+
 		static void compress(Chunk* chunk, ChunkDataPacket* chunkDataPacket) {
 			chunkDataPacket->chunkPos = chunk->chunkPos;
 			// allocate the memory only once to save time
@@ -76,10 +77,7 @@ namespace chunk::adapter {
 					auto oneDimensionIndex = toOneDimensionIndex(x_pos, y_pos);
 					auto serialID = static_cast<int32_t>(chunkDataPacket->serialIDContainer[oneDimensionIndex]);
 					auto block = block::blocks::Blocks::getInstance()->getBlockInstance(serialID);
-					auto world_block_coordinate = Chunk::toWorldCoordinateSettings(chunkPos, InChunkBlockPos{x_pos, y_pos});
-					block->setParameter(world_block_coordinate.getX(), world_block_coordinate.getZ(),
-					                    static_cast<block::BlockDirectionType>(chunkDataPacket->blockDirectionContainer[oneDimensionIndex]));
-					chunk->chunkBlocks[x_pos][y_pos] = block;
+					chunk->setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block);
 				}
 			}
 			return chunk;

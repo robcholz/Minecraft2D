@@ -17,8 +17,8 @@ namespace block::blocks {
 	private:
 		using String = std::string;
 		using BlockSmartPtr = std::shared_ptr<Block>;
-		static inline std::map<String, BlockSmartPtr> blocksIDRegistry;
-		static inline std::map<int, BlockSmartPtr> blocksSerialIDRegistry;
+		std::map<String, BlockSmartPtr> blocksIDRegistry;
+		std::map<int, BlockSmartPtr> blocksSerialIDRegistry;
 
 		explicit Blocks() {
 			RegisterBlock(AirBlock);
@@ -27,7 +27,7 @@ namespace block::blocks {
 			RegisterBlock(IronBlock);
 		}
 	protected:
-		static void registerBlock(const BlockSmartPtr& block) {
+		void registerBlock(const BlockSmartPtr& block) {
 			blocksIDRegistry.insert({block->getID().id, block});
 			blocksSerialIDRegistry.insert({block->getID().serialID, block});
 		}
@@ -37,11 +37,11 @@ namespace block::blocks {
 			return instance;
 		}
 
-		static Block* getBlockInstance(const String &id) {
+		Block* getBlockInstance(const String &id) {
 			return blocksIDRegistry[id]->getBlockInstance();
 		}
 
-		static Block* getBlockInstance(int serialID) {
+		Block* getBlockInstance(int serialID) {
 			return blocksSerialIDRegistry[serialID]->getBlockInstance();
 		}
 

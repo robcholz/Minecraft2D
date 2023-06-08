@@ -38,14 +38,12 @@ protected:
 	}
 
 	chunk::Chunk* loadRegion(const String &filename) {
-		std::ofstream regionFile;
+		std::fstream regionFile;
 		regionFile.open(saveDirectory + "/region/" + filename + ".mca", std::ios::binary | std::ios::in);
 		ChunkDataPacket chunk_data_packet;
-		auto state = bitsery::quickDeserialization<bitsery::InputStreamAdapter>(regionFile, chunk_data_packet);
-		// TODO where is the fuckin problem?
-		chunk::adapter::ChunkDataPacketAdapter::decompress(&chunk_data_packet);
-		std::cout << (state.first == bitsery::ReaderError::NoError && state.second);
-		return nullptr;//chunk_data_input_adapter.getChunk();
+		bitsery::quickDeserialization<bitsery::InputStreamAdapter>(regionFile, chunk_data_packet);
+		regionFile.close();
+		return chunk::adapter::ChunkDataPacketAdapter::decompress(&chunk_data_packet);
 	}
 
 	void writeRegion(const String &filename, chunk::Chunk* chunk) {
@@ -82,8 +80,8 @@ public:
 		if (mode == ModeType::CREATE)
 			createSaveFolder(filename);
 		if (mode == ModeType::READ)
-			//loadSave(filename);
-			saveHelper = std::make_unique<FileHelper>(saveDirectory);
+			loadSave();
+		saveHelper = std::make_unique<FileHelper>(saveDirectory);
 		regionHelper = std::make_unique<FileHelper>(saveDirectory + "/region");
 		entitiesHelper = std::make_unique<FileHelper>(saveDirectory + "/entities");
 		playerdataHelper = std::make_unique<FileHelper>(saveDirectory + "/playerdata");
