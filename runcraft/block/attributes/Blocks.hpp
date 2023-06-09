@@ -10,9 +10,14 @@
 #include "block/DirtBlock.hpp"
 #include "block/GrassBlock.hpp"
 #include "block/IronBlock.hpp"
+#include "block/BirchLogBlock.hpp"
+#include "block/CoalOreBlock.hpp"
+#include "block/CobblestoneBlock.hpp"
+#include "block/DiamondBlock.hpp"
 
 namespace block::blocks {
-#define RegisterBlock(x) registerBlock(std::make_shared<x>())
+#define RegisterBlock(block) registerBlock(std::make_shared<block>())
+
 	class Blocks {
 	private:
 		using String = std::string;
@@ -22,22 +27,28 @@ namespace block::blocks {
 
 		explicit Blocks() {
 			RegisterBlock(AirBlock);
+			RegisterBlock(BirchLogBlock);
+			RegisterBlock(CoalOreBlock);
+			RegisterBlock(CobblestoneBlock);
+			RegisterBlock(DiamondBlock);
 			RegisterBlock(DirtBlock);
 			RegisterBlock(GrassBlock);
 			RegisterBlock(IronBlock);
 		}
+
 	protected:
 		void registerBlock(const BlockSmartPtr& block) {
 			blocksIDRegistry.insert({block->getID().id, block});
 			blocksSerialIDRegistry.insert({block->getID().serialID, block});
 		}
+
 	public:
-		static std::shared_ptr<Blocks> getInstance(){
+		static std::shared_ptr<Blocks> getInstance() {
 			static std::shared_ptr<Blocks> instance(new Blocks);
 			return instance;
 		}
 
-		Block* getBlockInstance(const String &id) {
+		Block* getBlockInstance(const String& id) {
 			return blocksIDRegistry[id]->getBlockInstance();
 		}
 

@@ -14,16 +14,9 @@ int main() {
 	GameInfo.setRenderer(&render);
 	auto keyboard = input::PeripheralsFactory::getKeyboard();
 	SystemEvents game_main_event;
-	//block::blocks::Blocks Blocks;
 	//Menu menu;
 
- 	//auto* chunk_1 =new chunk::Chunk(1);
-	SaveHelper save_helper{"TestChunkSave",SaveHelper::ModeType::CREATE};
-	//save_helper.saveChunk(chunk_1);
-	auto loadded=save_helper.loadChunk(0);
-	auto load=save_helper.loadChunk(1);
-
-	Player player;
+ 	world::World world;
 
 	GameInfo.getConstExternalData()->windowState.getRender()->getWindowConfig().window->setVerticalSyncEnabled(true);
 
@@ -38,15 +31,8 @@ int main() {
 		keyboard->update();
 
 		//menu.render();
-		player.update();
-		//chunk_1.render();
-		loadded->render();
-		load->render();
-
-		//loaded_chunk->render();
-		player.render();
-		//world.load();// for-DEBUG only
-		//world.render();
+		world.update();// for-DEBUG only
+		world.render();
 
 		GameInfo.getRender()->getWindowConfig().window->display();
 	}

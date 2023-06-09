@@ -127,7 +127,7 @@ public:
 	 */
 	[[maybe_unused]] AudioPlayer &addAudio() {
 		if (!soundBuffer.loadFromFile(audioPath)) {
-			std::cout << "CANNOT load .ogg file from the directory " + audioPath
+			std::cout << "CANNOT update .ogg file from the directory " + audioPath
 			          << " check the path again!"
 			          << std::endl;
 		}

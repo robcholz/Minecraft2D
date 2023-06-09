@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/cobblestone",
+  "west": "runcraft:block/cobblestone",
+  "up": "runcraft:block/cobblestone",
+  "down": "runcraft:block/cobblestone",
+  "in": "runcraft:block/cobblestone",
+  "out": "runcraft:block/cobblestone"
+}
+

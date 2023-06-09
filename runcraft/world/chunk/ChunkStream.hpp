@@ -5,131 +5,172 @@
 #ifndef RUNCRAFT_CHUNKSTREAM_HPP
 #define RUNCRAFT_CHUNKSTREAM_HPP
 
-#include <list>
+#include <utility>
 #include <vector>
+#include <list>
+#include <memory>
 #include "Chunk.hpp"
+#include "world/storage/SaveHelper.hpp"
+#include "util/Utils.hpp"
 
 namespace chunk {
 
 	class ChunkStream {
 	protected:
-		using IndexT = unsigned short;
-
+		using DistanceT = unsigned short;
 	private:
-		std::vector<Chunk*> chunkQueue; // the queue that stores the current loaded chunks
-		std::list<Chunk*> renderChunkList; // the list that stores the chunks that need to render
-		std::list<Chunk*> activeChunkList; // the list that stores the chunks that need to update but not render
-		IndexT chunkCapacity = 0, renderChunkCapacity = 0, activeChunkCapacity = 0;
-		Intervali renderChunkIndexInterval{};
+		using ChunkPtr = Chunk*;
+		using String = std::string;
+		using ChunkPosT = coordinate::ChunkPositionT;
+		std::map<ChunkPosT, ChunkPtr> chunkRenderingList; // chunks that will be rendered
+		std::map<ChunkPosT, ChunkPtr> chunkSimulationList; // chunks that will be updated
+		std::list<ChunkPosT> chunkDeletingList;
+		DistanceT renderDistance = 0, simulationDistance = 0;
+		Intervali renderInterval{}, simulationInterval{};
+		std::unique_ptr<SaveHelper> saveHelper;
+		std::unique_ptr<FileHelper> regionFileHelper;
+		std::function<Chunk*(ChunkPosT)> chunkGenerator = nullptr;
+		Player* player = nullptr;
+		ChunkPosT playerChunkPos = 0;
 
-		/**
- 		 * @param chunk Chunk pointer
-		 */
-		void push_front(Chunk* chunk) {
-			chunkQueue.insert(chunkQueue.begin(), chunk);
-			if (chunkQueue.size() == chunkCapacity)
-				chunkQueue.erase(chunkQueue.end());
+		/**/
+		std::set<ChunkPosT> cachedChunks;
+
+		void updateInterval() {
+			auto x_player = player->getPosition()->getX();
+			playerChunkPos = Chunk::convertToChunkPos((int)x_player);
+			renderInterval.lower = playerChunkPos - renderDistance;
+			renderInterval.upper = playerChunkPos + renderDistance;
+			simulationInterval.lower = playerChunkPos - simulationDistance;
+			simulationInterval.upper = playerChunkPos + simulationDistance;
 		}
 
-		/**
-		 * @param chunk Chunk pointer
-		 */
-		void push_back(Chunk* chunk) {
-			chunkQueue.push_back(chunk);
-			if (chunkQueue.size() == chunkCapacity)
-				chunkQueue.erase(chunkQueue.begin());
-		}
-
-		/**
-		 * @usage Set the capacity of the ChunkStream. \n
-		 * 		\n When the queue is less than the new capacity, the nonnull element will be moved to the middle of the queue. \n
-		 * 		\n When the queue is larger than the new capacity, the left and right side of the queue will be erased.
-		 * @param newCapacity the new capacity of the queue
-		 */
-		void resize(IndexT newCapacity) {
-			while (newCapacity > chunkCapacity) {
-				chunkQueue.resize(newCapacity, nullptr);
-				chunkCapacity = newCapacity;
-				// the size of elements that are null in the front of the container
-				unsigned short front_margin = 0;
-				// the size of elements that are null in the end of the container
-				unsigned short back_margin = chunkQueue.capacity() - front_margin - chunkQueue.size();
-
-				while (approxEqual(front_margin, back_margin)) {
-					front_margin++;
-					back_margin--;
-					for (int i = 0; i < chunkQueue.size(); i--)
-						chunkQueue[chunkQueue.size() - i] = chunkQueue[chunkQueue.size() - i - 1]; // move element 1 index to the right
-				} // quit the field if the front and end margin is around 1
-			}
-			bool erase_side = true; // right-true left-false
-			while (newCapacity < chunkCapacity) {
-				if (erase_side) // erase the right side of the queue
-					chunkQueue.erase(chunkQueue.end());
-				else // erase the left side of the queue
-					chunkQueue.erase(chunkQueue.begin());
-				chunkCapacity--;
-				erase_side = !erase_side;
+		void indexRegions() {
+			for (const auto& filepath: *regionFileHelper->getFilesInDirectory()) {
+				auto filename = filepath.substr(filepath.find_last_of("/\\") + 1);
+				auto second_dot_occur = utils::nthOccurrence(filename, ".", 2);
+				auto third_dot_occur = utils::nthOccurrence(filename, ".", 3);
+				coordinate::ChunkPositionT chunkPos = std::stoi(filename.substr(second_dot_occur + 1, third_dot_occur - second_dot_occur));
+				cachedChunks.insert(chunkPos);
 			}
 		}
 
-		/**
-		 * @Usage Update chunk queue(vector)
-		 */
-		void updateQueue() {
-			// TODO renderChunkIndexInterval
+		void addToIndexedRegions(ChunkPosT chunkPos) {
+			cachedChunks.insert(chunkPos);
+		}
+
+		Chunk* getChunk(ChunkPosT chunkPos) {
+			Chunk* chunk;
+			if (cachedChunks.count(chunkPos))
+				chunk = saveHelper->loadChunk(chunkPos);
+			else {
+				chunk = chunkGenerator(chunkPos);
+				addToIndexedRegions(chunkPos);
+			}
+			return chunk;
+		}
+
+		void addToSimulationChunks(ChunkPosT chunkPos) {
+			auto chunk_1 = getChunk(chunkPos);
+			chunkSimulationList.insert({chunkPos, chunk_1});
+		}
+
+		void removeFromSimulationChunks(ChunkPosT chunkPos) {
+			auto chunk = chunkSimulationList[chunkPos];
+			saveHelper->saveChunk(chunk);
+			chunkDeletingList.push_front(chunkPos);
+		}
+
+		void removeRedundantChunks(){
+			for (auto chunkPos:chunkDeletingList) {
+				delete chunkSimulationList[chunkPos];
+				chunkSimulationList.erase(chunkPos);
+			}
+			chunkDeletingList.clear();
 		}
 
 		/**
 		 * @Usage Update active queue(list)
 		 */
-		void updateActiveQueue() {
-			activeChunkList.clear();
-			for (int i = 0; i < activeChunkCapacity; i++) {
-				activeChunkList.push_front(chunkQueue[i]);
+		void updateSimulationChunks() {
+			for (auto v: chunkSimulationList) {
+				auto chunkPos = v.first;
+				if (!(simulationInterval.lower <= chunkPos && chunkPos <= simulationInterval.upper)) {
+					removeFromSimulationChunks(chunkPos); // chunk has been unloaded
+				}
 			}
+			for (auto chunkPos = simulationInterval.lower; chunkPos <= simulationInterval.upper; chunkPos++)
+				if (!chunkSimulationList.contains(chunkPos))
+					addToSimulationChunks(chunkPos); // load chunks
 		}
 
 		/**
 		 * @Usage Update render queue(list)
 		 */
-		void updateRenderQueue() {
+		void updateRenderingChunks() {
 			//TODO Should also depend on the zoom size
-			renderChunkList.clear();
-			for (int index = renderChunkIndexInterval.lower; index < renderChunkIndexInterval.upper + 1; index++) {
-				renderChunkList.push_front(chunkQueue[index]);
+			for(auto v:chunkDeletingList){
+				chunkRenderingList.erase(v);
+			}
+			for (auto v: chunkSimulationList) {
+				auto chunkPos = v.first;
+				auto chunk = v.second;
+				if (!(renderInterval.lower <= chunkPos && chunkPos <= renderInterval.upper)) {
+					chunkRenderingList.erase(chunkPos);
+				}// chunk has been de-rendered
+				else {
+					if (!chunkRenderingList.contains(chunkPos)) {
+						chunkRenderingList.insert({chunkPos, chunk});
+					} // not found
+				}// chunk should be rendered
 			}
 		}
 
-		/**
-		 * @Usage Just listen
-		 */
 		void onUpdate() {
-			updateQueue();
-			renderChunkIndexInterval.lower = chunkCapacity / 2 - renderChunkCapacity / 2;
-			renderChunkIndexInterval.upper = chunkCapacity / 2 + renderChunkCapacity / 2;
-			updateActiveQueue();
-			updateRenderQueue();
+			updateInterval();
+			updateSimulationChunks();
+			updateRenderingChunks();
+			removeRedundantChunks();
 		}
 
 	public:
-		explicit ChunkStream(IndexT capacity) {
-			this->chunkCapacity = capacity;
+		explicit ChunkStream(Player* playerPtr,DistanceT simulationDistance, DistanceT renderDistance) {
+			player = playerPtr;
+			saveHelper = std::make_unique<SaveHelper>("TestChunkSave");
+			regionFileHelper = std::make_unique<FileHelper>(saveHelper->getDirectory() + "/region");
+			setSimulationDistance(simulationDistance);
+			setRenderDistance(renderDistance);
+			indexRegions();
 		}
 
-		void setRenderDistance(IndexT distance) {
-			renderChunkCapacity = distance * 2;
-			activeChunkCapacity = chunkCapacity;
+		void setRenderDistance(DistanceT distance) {
+			if (distance >= simulationDistance)
+				renderDistance = simulationDistance;
+			else
+				renderDistance = distance;
 		}
 
-		void setSimulationDistance(IndexT distance) { resize(distance * 2); }
+		void setSimulationDistance(DistanceT distance) {
+			simulationDistance = distance;
+		}
 
+		void setChunkGenerator(std::function<Chunk*(ChunkPosT)> function) {
+			chunkGenerator = std::move(function);
+		}
 
-		[[nodiscard]] IndexT capacity() const { return chunkCapacity; }
+		void update() {
+			onUpdate();
+			for (const auto& v: chunkSimulationList) {
+				v.second->update();
+			}
+		}
 
 		void render() {
-
+			for (const auto& v: chunkRenderingList) {
+				v.second->render();
+			}
 		}
+
 	};
 }
 

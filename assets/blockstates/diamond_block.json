@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/diamond_block",
+  "west": "runcraft:block/diamond_block",
+  "up": "runcraft:block/diamond_block",
+  "down": "runcraft:block/diamond_block",
+  "in": "runcraft:block/diamond_block",
+  "out": "runcraft:block/diamond_block"
+}
+

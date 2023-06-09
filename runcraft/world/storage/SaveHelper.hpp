@@ -37,7 +37,7 @@ protected:
 		regionFile.close();
 	}
 
-	chunk::Chunk* loadRegion(const String &filename) {
+	chunk::Chunk* loadRegion(const String& filename) {
 		std::fstream regionFile;
 		regionFile.open(saveDirectory + "/region/" + filename + ".mca", std::ios::binary | std::ios::in);
 		ChunkDataPacket chunk_data_packet;
@@ -46,7 +46,7 @@ protected:
 		return chunk::adapter::ChunkDataPacketAdapter::decompress(&chunk_data_packet);
 	}
 
-	void writeRegion(const String &filename, chunk::Chunk* chunk) {
+	void writeRegion(const String& filename, chunk::Chunk* chunk) {
 		std::ofstream regionFile;
 		regionFile.open(saveDirectory + "/region/" + filename + ".mca", std::ios::binary | std::ios::trunc | std::ios::out);
 		bitsery::Serializer<bitsery::OutputBufferedStreamAdapter> serializer{regionFile};
@@ -58,7 +58,7 @@ protected:
 	}
 
 
-	void createSaveFolder(const String &saveName) {
+	void createSaveFolder(const String& saveName) {
 		saveDirectory = savesDirectoryHelper.createSubFolder(saveName);
 		FileHelper::createFolder(saveDirectory, "advancements"); //Stores the advancements and unlocked recipes of the players that have played on this level.
 		FileHelper::createFolder(saveDirectory, "region"); //Contains region files for the Overworld.
@@ -68,24 +68,25 @@ protected:
 		FileHelper::createFile(saveDirectory, "level.dat"); //Stores global information about the level.
 	}
 
+	bool isSaveFolderExisted() {
+		return FileHelper::isExisted(saveDirectory + "/advancements") && FileHelper::isExisted(saveDirectory + "/region")
+		       && FileHelper::isExisted(saveDirectory + "/entities") && FileHelper::isExisted(saveDirectory + "/playerdata") &&
+		       FileHelper::isExisted(saveDirectory + "/stats") && FileHelper::isExisted(saveDirectory + "/level.dat");
+	}
+
 	void loadSave() {}
 
 public:
-	enum class ModeType : uint8_t {
-		READ,
-		CREATE
-	};
-
-	explicit SaveHelper(const String &filename, ModeType mode) {
-		if (mode == ModeType::CREATE)
-			createSaveFolder(filename);
-		if (mode == ModeType::READ)
-			loadSave();
+	explicit SaveHelper(const String& filename) {
+		if (isSaveFolderExisted()) { saveDirectory = saveHelper->getDirectory() + "/" + filename; }
+		else { createSaveFolder(filename); }
 		saveHelper = std::make_unique<FileHelper>(saveDirectory);
 		regionHelper = std::make_unique<FileHelper>(saveDirectory + "/region");
 		entitiesHelper = std::make_unique<FileHelper>(saveDirectory + "/entities");
 		playerdataHelper = std::make_unique<FileHelper>(saveDirectory + "/playerdata");
 	}
+
+	String getDirectory() { return saveDirectory; }
 
 	~SaveHelper() = default;
 

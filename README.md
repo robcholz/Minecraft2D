@@ -14,12 +14,13 @@
 - [x] Widget GUI components/GUI组件
 - [x] Sound manager/音频管理器
 - [x] Peripherals support/键盘鼠标支持
-- [ ] Binary map file loading/地图序列化、加载 - In progress
+- [x] Binary map file loading/地图序列化、加载
 #### Gameplay - Essentials
 - [x] Block/方块
-- [ ] Save/存档 - In testing
+- [x] Save/存档
 - [ ] World generation/世界生成
 - [ ] Decoration builder/地图装饰器
+- [ ] Gravity/重力 - in progress
 - [ ] In-game GUI/游戏内交互GUI
 - [x] Player/玩家
 #### Gameplay - Enhanced

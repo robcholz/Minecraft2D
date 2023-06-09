@@ -12,6 +12,10 @@ namespace coordinate {
 	using EntityPositionT = float;
 	using BlockPositionT = int;
 	using ChunkPositionT = int;
+	using PixelPositonT = int;
+
+	template<typename vT>
+	struct CoordinateStruct { vT x, z; };
 
 	template<typename vT>
 	class Coordinate {
@@ -24,9 +28,16 @@ namespace coordinate {
 			coordinate.z = z;
 		}
 
-		void setCoordinate(vT x, vT z) {
+		Coordinate& setCoordinate(vT x, vT z) {
 			coordinate.x = x;
 			coordinate.z = z;
+			return *this;
+		}
+
+		Coordinate& offset(vT x, vT z) {
+			coordinate.x += x;
+			coordinate.z += z;
+			return *this;
 		}
 
 		[[nodiscard]] vT getX() const { return coordinate.x; }

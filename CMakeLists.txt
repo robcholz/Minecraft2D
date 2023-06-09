@@ -50,7 +50,11 @@ set(SOURCE_FILES
         runcraft/world/storage/SaveHelper.hpp
         runcraft/world/chunk/ChunkDataPacketAdapter.hpp
         runcraft/client/input/Input.hpp
-        runcraft/block/IronBlock.hpp runcraft/block/attributes/BlockIDLoader.hpp runcraft/block/attributes/BlockState.hpp)
+        runcraft/block/IronBlock.hpp
+        runcraft/block/attributes/BlockIDLoader.hpp
+        runcraft/block/attributes/BlockState.hpp
+        runcraft/world/poi/Direction.hpp
+        runcraft/block/BirchLogBlock.hpp)
 
 
 #includes

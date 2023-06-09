@@ -62,7 +62,7 @@ protected:
 
 public:
 	GameLogger() {
-		if (!FileHelper::isFileExisted(logPath)) {
+		if (!FileHelper::isExisted(logPath)) {
 			FileHelper::createFolder(logPath);
 		}
 

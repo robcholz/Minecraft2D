@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/birch_log",
+  "west": "runcraft:block/birch_log",
+  "up": "runcraft:block/birch_log_top",
+  "down": "runcraft:block/birch_log_top",
+  "in": "runcraft:block/birch_log",
+  "out": "runcraft:block/birch_log"
+}
+

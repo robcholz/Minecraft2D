@@ -1,6 +1,6 @@
 {
-  "south": "runcraft:block/air_block",
-  "north": "runcraft:block/air_block",
+  "east": "runcraft:block/air_block",
+  "west": "runcraft:block/air_block",
   "up": "runcraft:block/air_block",
   "down": "runcraft:block/air_block",
   "in": "runcraft:block/air_block",

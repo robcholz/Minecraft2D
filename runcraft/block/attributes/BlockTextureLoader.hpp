@@ -39,8 +39,8 @@ namespace block{
 			textureTiles.insert({BlockDirectionType::DOWN, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["down"]))});
 			textureTiles.insert({BlockDirectionType::IN, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["in"]))});
 			textureTiles.insert({BlockDirectionType::OUT, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["out"]))});
-			textureTiles.insert({BlockDirectionType::NORTH, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["north"]))});
-			textureTiles.insert({BlockDirectionType::SOUTH, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["south"]))});
+			textureTiles.insert({BlockDirectionType::WEST, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["west"]))});
+			textureTiles.insert({BlockDirectionType::EAST, loadTexture(FileHelper::transferJsonPathToFilePath(blockStateJson["east"]))});
 		}
 
 	public:

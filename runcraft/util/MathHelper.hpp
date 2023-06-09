@@ -44,8 +44,8 @@ bool static checkVectorBoundary(int x, int y, int left, int top, int width, int 
 }
 
 template<typename vT>
-bool static approxEqual(vT value, vT val) {
-	return (val + 1 > value) && (value > val - 1);
+bool static approxEqual(vT v1, vT v2) {
+	return (v2 + 1 > v1) && (v1 > v2 - 1);
 }
 
 template<typename vT=double>

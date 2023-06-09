@@ -24,7 +24,7 @@ public:
 
 	~FileHelper() = default;
 
-	bool static isFileExisted(const std::string &filename) {
+	bool static isExisted(const std::string &filename) {
 		std::ifstream file;
 		file.open(filename);
 		if (file) return true;
@@ -33,9 +33,14 @@ public:
 
 	std::vector<std::string>* getFilesInDirectory() {
 		directories.clear();
-		for (const auto &entry: std::filesystem::directory_iterator(directoryPath))
+		for (const auto &entry: std::filesystem::directory_iterator(directoryPath)) {
 			directories.push_back(entry.path());
+		}
 		return &directories;
+	}
+
+	std::string getDirectory(){
+		return directoryPath;
 	}
 
 	static bool createFolder(const std::string &folderName) {
@@ -68,7 +73,7 @@ public:
 		return std::filesystem::is_empty(directoryPath);
 	}
 
-	std::string static transferJsonPathToFilePath(const std::string &jsonPath) {
+	static std::string transferJsonPathToFilePath(const std::string &jsonPath) {
 		std::string field = jsonPath.substr(0, jsonPath.find(':'));
 		std::string type = jsonPath.substr(jsonPath.find(':') + 1, jsonPath.find('/') - jsonPath.find(':') - 1);
 		std::string filename = jsonPath.substr(jsonPath.find('/') + 1, jsonPath.length() - jsonPath.find(':'));
