@@ -53,11 +53,11 @@ namespace coordinate {
 			return *this;
 		}
 
-		[[nodiscard]] CoordinateStruct& getCoordinate() {
+		CoordinateStruct getCoordinate() {
 			return coordinate;
 		}
 
-		[[nodiscard]] CoordinateStruct& getOffset() {
+		 CoordinateStruct getOffset() {
 			return offsetCoordinate;
 		}
 

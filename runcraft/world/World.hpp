@@ -43,10 +43,6 @@ public:
 		chunkStream->update();
 		player->update();
 		updateCamera();
-		auto test = chunk::Chunk::toChunkSettings(player->getEntityPosition().getBlockPosition());
-		PLOG_DEBUG << "BlockPos X: " << player->getEntityPosition().getBlockPosition().getX()
-		           << " Y: " << player->getEntityPosition().getBlockPosition().getZ();
-		PLOG_DEBUG<<"ChunkPos: "<<test.chunkPos<<" X: "<<test.chunkBlockPos.getX()<<" Y: "<<test.chunkBlockPos.getZ();
 	}
 
 	void render() {

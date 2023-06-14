@@ -11,7 +11,7 @@
 #include "world/poi/Position.hpp"
 #include "block/attributes/Blocks.hpp"
 
-#define TEST_CHUNK_HEIGHT 13
+#define TEST_CHUNK_HEIGHT 12
 
 namespace chunk {
 	namespace adapter { class ChunkDataPacketAdapter; }
@@ -38,14 +38,17 @@ namespace chunk {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; y_pos++) {
 					setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("air_block"));
 					if (y_pos < TEST_CHUNK_HEIGHT) {
-						if (x_pos == 5)
-							setBlockPosition(x_pos, 0, block::blocks::Blocks::getInstance()->newBlock("diamond_block"));
-						else {
-							if (y_pos == TEST_CHUNK_HEIGHT - 1)
-								setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("grass_block"));
-							else
-								setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("cobblestone_block"));
-						}
+						if (y_pos == TEST_CHUNK_HEIGHT - 1)
+							setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("grass_block"));
+						else
+							setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("cobblestone_block"));
+					}
+					if(x_pos==5) {
+						setBlockPosition(x_pos, TEST_CHUNK_HEIGHT-1, block::blocks::Blocks::getInstance()->newBlock("air_block"));
+						setBlockPosition(x_pos, TEST_CHUNK_HEIGHT-2, block::blocks::Blocks::getInstance()->newBlock("air_block"));
+					}
+					if(x_pos==6) {
+						setBlockPosition(x_pos, TEST_CHUNK_HEIGHT-1, block::blocks::Blocks::getInstance()->newBlock("air_block"));
 					}
 				}
 			}

@@ -20,7 +20,7 @@
 - [x] Save/存档
 - [ ] World generation/世界生成
 - [ ] Decoration builder/地图装饰器
-- [ ] Gravity/重力 - in progress
+- [x] Gravity/重力
 - [ ] In-game GUI/游戏内交互GUI
 - [x] Player/玩家
 #### Gameplay - Enhanced

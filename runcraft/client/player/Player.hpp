@@ -13,15 +13,15 @@
 class Player : public entity::Entity {
 protected:
 	void onUpdate() override {
-		entity::Entity::onUpdate();
 		updateSkin();
+		entity::Entity::onUpdate();
 		_setPixelPosition(getEntityPosition().getPixelPosition().getX(), getEntityPosition().getPixelPosition().getZ());
 	}
 
 	void updateHitbox() override {
-		legHitbox.setHitbox(&legSprite);
-		armHitbox.setHitbox(&armSprite);
-		headHitbox.setHitbox(&headSprite);
+		entityHitbox.setHitbox(legSprite.getGlobalBounds().left, headSprite.getGlobalBounds().top, legSprite.getGlobalBounds().width,
+		                       headSprite.getGlobalBounds().height + armSprite.getGlobalBounds().height +
+		                       legSprite.getGlobalBounds().height);
 	}
 
 public:
@@ -33,9 +33,6 @@ public:
 		moveJump.attachKey(input::KeyboardKeyType::Space);
 		moveSniff.attachKey(input::KeyboardKeyType::LShift);
 		initSkin();
-		addHitbox(&legHitbox);
-		addHitbox(&armHitbox);
-		addHitbox(&headHitbox);
 	}
 
 	void onRender() override {
@@ -55,8 +52,7 @@ private:
 	Texture leftLeg, leftArm, leftHead;
 	Texture rightLeg, rightArm, rightHead;
 	Sprite legSprite, armSprite, headSprite;
-	Hitbox legHitbox{}, armHitbox{}, headHitbox{};
-	View _view;
+	View _view{};
 
 	void initSkin() {
 		leftLeg.loadFromFile(playerSkinAssetPath, sfRecti{24, 52, 4, 12}); // (24,52) (27,63)
