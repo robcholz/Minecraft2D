@@ -250,7 +250,7 @@ namespace entity {
 				acceleration.x = 0;
 				velocity.x = 0;
 				// TODO in line 260 setEntityPosition() is commented, why not do so in this line????? strange.
-				getEntityPosition().setPosition(getEntityPosition().getBlockPosition().getFloatX()+1,getEntityPosition().getPosition().getZ());
+				getEntityPosition().setPosition(getEntityPosition().getBlockPosition().getFloatX() + 1, getEntityPosition().getPosition().getZ());
 			}
 			if (isEntityCollidedToRight && getEntityPosition().isFacing(Direction::DirectionType::EAST)) {
 				acceleration.x = 0;
@@ -273,7 +273,7 @@ namespace entity {
 		}
 
 		void updateState() {
-
+		}
 	};
 }
 
