@@ -9,7 +9,7 @@
 #include <fstream>
 #include <map>
 #include "json.hpp"
-#include "block/attributes/BlockPosition.hpp"
+#include "world/poi/Position.hpp"
 #include "resource/FileHelper.hpp"
 
 namespace block{

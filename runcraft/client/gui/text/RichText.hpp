@@ -262,7 +262,7 @@ public:
 		 * @param text
 		 */
 		void updateTextAndGeometry(sf::Text &text) const {
-			// Set text offset
+			// Set text offsetPixel
 			text.setPosition(mBounds.width, 0.f);
 
 			// Update bounds

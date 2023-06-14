@@ -52,6 +52,8 @@ public:
 		screenConfig.window->draw(drawable, states);
 	}
 
+
+
 };
 
 #endif //RUNCRAFT_RENDER_HPP

@@ -14,7 +14,7 @@ namespace block::blocks {
 		BirchLogBlock() : Block("birch_log_block") {
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new BirchLogBlock;
 		}
 	};

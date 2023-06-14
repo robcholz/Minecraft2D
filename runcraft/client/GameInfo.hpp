@@ -52,10 +52,6 @@ namespace external_data {
 		bool isButtonPressedMiddle{};
 		bool touchBegan{}, touchMoved{}, touchEnded{};
 
-		[[maybe_unused]] void listen(sf::Vector2i mousePosition, bool isPressed) {
-			isButtonPressedLeft = isPressed;
-			mouseRelativeToGameWindowPos = mousePosition;
-		}
 	};
 
 	struct WindowState {
@@ -66,8 +62,7 @@ namespace external_data {
 		 * @range [50,100]
 		 */
 		ZoomT zoomSize = 50;
-
-		ZoomT pixelToBlock=25; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
+		ZoomT pixelToBlock=50; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
 		ZoomT pixelProportion= (ZoomT)(pixelToBlock * 2);
 		bool gainedFocus{}, lostFocus{};
 		bool resized{};

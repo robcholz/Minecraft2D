@@ -8,10 +8,10 @@
 #include <cmath>
 #include <random>
 
-auto getRNG(int a, int b){
+auto getRNG(int a, int b) {
 	std::random_device dev;
 	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> dist6(a,b);
+	std::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
 	return dist6(rng);
 }
 
@@ -21,13 +21,20 @@ struct Area {
 	vT width, height;
 };
 
+template<typename T>
+struct IntRect {
+	T x1, y1;
+	T x2, y2;
+};
+
 template<typename vT>
 struct Interval {
 	vT lower, upper;
 };
 
-typedef Interval<int> Intervali;
-typedef Area<int> Areai;
+using Intervali=Interval<int> ;
+using Areai=Area<int> ;
+using IntRecti=IntRect<int>;
 
 template<typename vT>
 bool static checkIntervalBoundary(vT value, Interval<vT> interval) {
@@ -59,7 +66,7 @@ public:
 		this->j = j;
 	}
 
-	Vector2D(const Vector2D &that) {
+	Vector2D(const Vector2D& that) {
 		this->i = that.i;
 		this->j = that.j;
 	}
@@ -75,21 +82,21 @@ public:
 
 	vT getY() { return this->j; }
 
-	Vector2D &operator-(const Vector2D &that) {
+	Vector2D& operator-(const Vector2D& that) {
 		Vector2D result;
 		result.i = this->i - that.i;
 		result.j = this->j - that.j;
 		return result;
 	}
 
-	Vector2D &operator+(const Vector2D &that) {
+	Vector2D& operator+(const Vector2D& that) {
 		Vector2D result;
 		result.i = this->i + that.i;
 		result.j = this->j + that.j;
 		return result;
 	}
 
-	Vector2D &operator=(const Vector2D &that) {
+	Vector2D& operator=(const Vector2D& that) {
 		this->i = that.i;
 		this->j = that.j;
 		return *this;
@@ -109,7 +116,7 @@ public:
 		this->k = k;
 	}
 
-	Vector3D(const Vector3D &that) {
+	Vector3D(const Vector3D& that) {
 		this->i = that.i;
 		this->j = that.j;
 		this->k = that.k;
@@ -129,7 +136,7 @@ public:
 
 	vT getZ() { return this->k; }
 
-	Vector3D &operator-(Vector3D that) {
+	Vector3D& operator-(Vector3D that) {
 		Vector3D result;
 		result.i = this->i - that.i;
 		result.j = this->j - that.j;
@@ -137,7 +144,7 @@ public:
 		return result;
 	}
 
-	Vector3D &operator+(const Vector3D &that) {
+	Vector3D& operator+(const Vector3D& that) {
 		Vector3D result;
 		result.i = this->i + that.i;
 		result.j = this->j + that.j;
@@ -145,17 +152,17 @@ public:
 		return result;
 	}
 
-	Vector3D &operator=(const Vector3D &that) {
+	Vector3D& operator=(const Vector3D& that) {
 		this->i = that.i;
 		this->j = that.j;
 		this->k = that.k;
 	}
 };
 
-typedef Vector2D<int> Vec2i;
-typedef Vector2D<double> Vec2d;
+using Vec2i=Vector2D<int> ;
+using Vec2d=Vector2D<double> ;
 
-typedef Vector3D<int> Vec3i;
-typedef Vector3D<double> Vec3d;
+using Vec3i=Vector3D<int> ;
+using Vec3d=Vector3D<double> ;
 
 #endif //RUNCRAFT_MATHHELPER_HPP

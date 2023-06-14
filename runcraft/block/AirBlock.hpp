@@ -12,9 +12,10 @@ namespace block::blocks {
 	private:
 	public:
 		explicit AirBlock() : Block("air_block") {
+			enableHitbox(false);
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new AirBlock;
 		}
 	};

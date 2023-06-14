@@ -14,51 +14,44 @@
 
 class Screen {
 private:
-	Background *background = nullptr;
-	std::list<Widget *> widgetsList;
-	external_data::PeripheralState *inputStatePtr = nullptr;
+	Background* background = nullptr;
+	std::list<Widget*> widgetsList;
 
-	std::map<ButtonWidget *, Screen *> callbackScreenMap;
-	Screen *responseCallBackScreenPtr = nullptr;
+	std::map<Widget*, Screen*> callbackScreenMap;
+	Screen* responseCallBackScreenPtr = nullptr;
 
 	AudioPlayer audioPlayer;
 public:
-	explicit Screen(Background *background) {
+	explicit Screen(Background* background) {
 		this->background = background;
 	}
 
 	~Screen() = default;
 
-	Screen &addWidget(Widget *widget) {
+	Screen& addWidget(Widget* widget) {
 		widgetsList.push_back(widget);
 		return *this;
 	}
 
-	Screen &addCallbackScreen(Screen *callBackScreen, ButtonWidget *callBackButton) {
+	Screen& addCallbackScreen(Screen* callBackScreen, Widget* callBackButton) {
 		callbackScreenMap.insert({callBackButton, callBackScreen});
 		return *this;
 	}
 
-	Screen *getResponseCallbackScreen() {return responseCallBackScreenPtr;}
-
-	void listen(external_data::PeripheralState *inputState) { inputStatePtr = inputState; }
+	Screen* getResponseCallbackScreen() { return responseCallBackScreenPtr; }
 
 	void render() {
 		background->render();
-		for (auto *widget_obj: widgetsList) {
-			widget_obj->listen(inputStatePtr->mouseRelativeToGameWindowPos, inputStatePtr->isButtonPressedLeft);
-			if (widget_obj->isClicked()) {
+		for (auto widget_obj: widgetsList) {
+			widget_obj->update();
+			if (widget_obj->isClicked() && widget_obj->isFocused()) {
 				audioPlayer.play();
-				for (auto & screen_map_obj : callbackScreenMap) {
-					if(screen_map_obj.first->isClicked()){
-						widget_obj->action();
-						screen_map_obj.first->updateState(false);
-						responseCallBackScreenPtr=screen_map_obj.second;
-						return;
-					}
+				widget_obj->executeCallbackFunc();
+				if (callbackScreenMap.contains(widget_obj)) {
+					responseCallBackScreenPtr = callbackScreenMap[widget_obj];
+					return;
 				}
-				widget_obj->action();
-			} else responseCallBackScreenPtr= nullptr;
+			} else responseCallBackScreenPtr = nullptr;
 			widget_obj->render();
 		}
 	}

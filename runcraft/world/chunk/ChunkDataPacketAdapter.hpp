@@ -63,7 +63,7 @@ namespace chunk::adapter {
 					auto block = chunk->chunkBlocks[x_pos][y_pos];
 					addToContainer<uint32_t>(&chunkDataPacket->serialIDContainer, x_pos, y_pos, block->getID().serialID);
 					addToContainer<uint8_t>(&chunkDataPacket->blockDirectionContainer, x_pos, y_pos,
-					                        static_cast<uint8_t>(block->getPositionPtr()->getDirection()));
+					                        static_cast<uint8_t>(block->getPosition()->getDirection()));
 				}
 			}
 		}
@@ -76,8 +76,8 @@ namespace chunk::adapter {
 				for (ChunkPosT y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
 					auto oneDimensionIndex = toOneDimensionIndex(x_pos, y_pos);
 					auto serialID = static_cast<int32_t>(chunkDataPacket->serialIDContainer[oneDimensionIndex]);
-					auto block = block::blocks::Blocks::getInstance()->getBlockInstance(serialID);
-					chunk->setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block);
+					auto block = block::blocks::Blocks::getInstance()->newBlock(serialID);
+					chunk->setBlockPosition(x_pos, y_pos, block);
 				}
 			}
 			return chunk;

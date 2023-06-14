@@ -14,7 +14,7 @@ namespace block::blocks {
 		DirtBlock() : Block("dirt_block") {
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new DirtBlock;
 		}
 	};

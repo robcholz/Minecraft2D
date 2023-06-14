@@ -14,6 +14,7 @@
 #include "block/CoalOreBlock.hpp"
 #include "block/CobblestoneBlock.hpp"
 #include "block/DiamondBlock.hpp"
+#include "block/ErrorBlock.hpp"
 
 namespace block::blocks {
 #define RegisterBlock(block) registerBlock(std::make_shared<block>())
@@ -34,6 +35,7 @@ namespace block::blocks {
 			RegisterBlock(DirtBlock);
 			RegisterBlock(GrassBlock);
 			RegisterBlock(IronBlock);
+			RegisterBlock(ErrorBlock);
 		}
 
 	protected:
@@ -48,13 +50,25 @@ namespace block::blocks {
 			return instance;
 		}
 
+		Block* newBlock(const String& id) {
+			return blocksIDRegistry[id]->newBlock();
+		}
+
+		Block* newBlock(int serialID) {
+			return blocksSerialIDRegistry[serialID]->newBlock();
+		}
+
 		Block* getBlockInstance(const String& id) {
-			return blocksIDRegistry[id]->getBlockInstance();
+			return blocksIDRegistry[id].get();
 		}
 
 		Block* getBlockInstance(int serialID) {
-			return blocksSerialIDRegistry[serialID]->getBlockInstance();
+			return blocksSerialIDRegistry[serialID].get();
 		}
+
+
+
+
 
 		~Blocks() = default;
 	};

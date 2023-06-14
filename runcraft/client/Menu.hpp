@@ -23,7 +23,6 @@ protected:
 	void onInitialize() {
 		backgroundTexture.fitToScreen();
 		settingBackground.composeToScreen();
-		screenManager.setInputStatePtr(&GameInfo.getExternalData()->peripheralState);
 		initAudio();
 		initWidget();
 		backgroundMusic.playRandomly();
@@ -58,7 +57,7 @@ protected:
 		                    .addWidget(&backgroundMenuWhat)
 		                    .addWidget(&backgroundMenuLanguageTexturedButton)
 		                    .addWidget(&backgroundMenuQuitGame);
-		backgroundMenuQuitGame.actionsToExecWhenClicked([] {
+		backgroundMenuQuitGame.executeFuncWhenActivated([] {
 			PLOG_DEBUG << "Cancel runcraft!";
 			GameInfo.getRender()->getWindowConfig().window->close();
 		});
@@ -82,14 +81,14 @@ protected:
 		settingVolumeSliderJukeboxNoteblocks.varToChangeWhenMoved(&GameInfo.getInternalData()->soundLevel.jukeBoxOrNoteblocks);
 		settingVolumeSliderMasterVolume.varToChangeWhenMoved(&GameInfo.getInternalData()->soundLevel.masterVolume);
 		settingVolumeSliderMusic.varToChangeWhenMoved(&GameInfo.getInternalData()->soundLevel.music)
-		                        .actionsToExecWhenMoved([this]() { backgroundMusic.changeVolume((GameInfo.getConstInternalData()->soundLevel.music)); });
+		                        .executeFuncWhenActivated([this]() { backgroundMusic.changeVolume((GameInfo.getConstInternalData()->soundLevel.music)); });
 		settingVolumeSliderPlayers.varToChangeWhenMoved(&GameInfo.getInternalData()->soundLevel.players);
 		settingVolumeSliderWeather.varToChangeWhenMoved(&GameInfo.getInternalData()->soundLevel.weather);
 
 		singleplayerSettingScreen.addCallbackScreen(&backgroundMenuScreen, &singleplayerSettingBack)
 		                         .addWidget(&singleplayerGenerateWorld)
 		                         .addWidget(&singleplayerSettingBack);
-		singleplayerGenerateWorld.actionsToExecWhenClicked([this] {});
+		singleplayerGenerateWorld.executeFuncWhenActivated([this] {});
 
 		backgroundBiomeSettingScreen.addCallbackScreen(&backgroundMenuScreen, &backgroundSettingBack)
 		                            .addCallbackScreen(&settingVolumeScreen, &backgroundSettingVolume)
@@ -102,12 +101,12 @@ protected:
 		                            .addWidget(&backgroundSettingBiomeJungle)
 		                            .addWidget(&backgroundSettingVolume);
 
-		backgroundSettingBiomeSnowyPlains.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::Biome::SNOWY_PLAINS; });
-		backgroundSettingBiomePlains.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::Biome::PLAINS; });
-		backgroundSettingBiomeForest.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::Biome::FOREST; });
-		backgroundSettingBiomeBirchForest.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::Biome::BIRCH_FOREST; });
-		backgroundSettingBiomeDesert.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::Biome::DESERT; });
-		backgroundSettingBiomeJungle.actionsToExecWhenClicked([] { GameInfo.getInternalData()->biome = internal_data::JUNGLE; });
+		backgroundSettingBiomeSnowyPlains.executeFuncWhenActivated([] { GameInfo.getInternalData()->biome = internal_data::Biome::SNOWY_PLAINS; });
+		backgroundSettingBiomePlains.executeFuncWhenActivated([] { GameInfo.getInternalData()->biome = internal_data::Biome::PLAINS; });
+		backgroundSettingBiomeForest.executeFuncWhenActivated([] { GameInfo.getInternalData()->biome = internal_data::Biome::FOREST; });
+		backgroundSettingBiomeBirchForest.executeFuncWhenActivated([] { GameInfo.getInternalData()->biome = internal_data::Biome::BIRCH_FOREST; });
+		backgroundSettingBiomeDesert.executeFuncWhenActivated([] { GameInfo.getInternalData()->biome = internal_data::Biome::DESERT; });
+		backgroundSettingBiomeJungle.executeFuncWhenActivated([] { GameInfo.getInternalData()->biome = internal_data::JUNGLE; });
 
 		PLOG_DEBUG << "Initialize widget components";
 	}

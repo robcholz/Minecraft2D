@@ -8,7 +8,8 @@
 #pragma once
 
 #include <SFML/Window/Event.hpp>
-#include "client/Menu.hpp"
+#include <memory>
+#include "client/GameInfo.hpp"
 
 class SystemEvents {
 private:
@@ -17,7 +18,9 @@ private:
 public:
 	explicit SystemEvents() = default;
 
-	void listen() {
+	sf::Event* getEvent(){return &event;}
+
+	void update() {
 		while (render->getWindowConfig().window->pollEvent(event)) {
 			switch (event.type) {
 				case sf::Event::Closed:
@@ -95,6 +98,11 @@ public:
 					break;
 			}
 		}
+	}
+
+	static std::shared_ptr<SystemEvents> getInstance(){
+		static std::shared_ptr<SystemEvents> instance(new SystemEvents);
+		return instance;
 	}
 };
 

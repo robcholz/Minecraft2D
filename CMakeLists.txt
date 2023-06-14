@@ -33,11 +33,10 @@ set(SOURCE_FILES
         runcraft/resource/FileHelper.hpp
         runcraft/events/SystemEvents.hpp
         runcraft/error/ErrorHandling.hpp
-        runcraft/sound/BlockSoundGroup.hpp
         runcraft/world/poi/Coordinate.hpp
         runcraft/world/chunk/Chunk.hpp
         runcraft/block/GrassBlock.hpp
-        runcraft/block/attributes/BlockPosition.hpp
+        runcraft/world/poi/Position.hpp
         runcraft/block/attributes/BlockTextureLoader.hpp
         runcraft/block/AirBlock.hpp
         runcraft/block/DirtBlock.hpp
@@ -54,7 +53,11 @@ set(SOURCE_FILES
         runcraft/block/attributes/BlockIDLoader.hpp
         runcraft/block/attributes/BlockState.hpp
         runcraft/world/poi/Direction.hpp
-        runcraft/block/BirchLogBlock.hpp)
+        runcraft/block/BirchLogBlock.hpp
+        runcraft/block/attributes/BlockSoundGroupLoader.hpp
+        runcraft/sound/SoundEvent.hpp
+        runcraft/entity/Entity.hpp
+        runcraft/world/WorldAccess.hpp runcraft/world/chunk/ChunkStreamAccess.hpp runcraft/block/attributes/BlockAccess.hpp runcraft/block/ErrorBlock.hpp runcraft/util/Hitbox.hpp)
 
 
 #includes

@@ -17,7 +17,7 @@
 
 class Audio {
 protected:
-	// sound player
+	// sounds player
 	sf::Sound sound;
 	sf::SoundBuffer soundBuffer;
 	// file path
@@ -58,10 +58,10 @@ private:
 
 public:
 	/**
-	 * @param folderPath the path of the audio stored in the assets/sound/ directory.
-	 * \n Default is ../assets/sound
+	 * @param folderPath the path of the audio stored in the assets/sounds/ directory.
+	 * \n Default is ../assets/sounds
 	 */
-	explicit AudioList(const std::string &folderPath = "../assets/sound/") {
+	explicit AudioList(const std::string &folderPath = "../assets/sounds/") {
 		audioPath = folderPath;
 	};
 
@@ -82,7 +82,7 @@ public:
 	}
 
 	/**
-	 * @brief randomly play a sound from the soundList
+	 * @brief randomly play a sounds from the soundList
 	 */
 	void playRandomly() {
 		stop();
@@ -91,8 +91,8 @@ public:
 	}
 
 	/**
-	 * @brief play a sound by its name
-	 * @param filename sound name
+	 * @brief play a sounds by its name
+	 * @param filename sounds name
 	 */
 	void play(const std::string &filename) {
 		for (auto &obj: playlist) {
@@ -110,19 +110,19 @@ private:
 	std::string filename = "effect/gui_button_click";
 public:
 	AudioPlayer() {
-		audioPath = "../assets/sound/" + filename + audioFileType;
+		audioPath = "../assets/sounds/" + filename + audioFileType;
 		addAudio();
 	}
 
 	explicit AudioPlayer(const std::string &filename) {
-		audioPath = "../assets/sound/" + filename + audioFileType;
+		audioPath = "../assets/sounds/" + filename + audioFileType;
 		addAudio();
 	};
 
 	~AudioPlayer() = default;
 
 	/**
-	 * @brief addToContainer a single sound
+	 * @brief addToContainer a single sounds
 	 * @return
 	 */
 	[[maybe_unused]] AudioPlayer &addAudio() {

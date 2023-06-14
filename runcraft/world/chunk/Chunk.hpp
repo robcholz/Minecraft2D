@@ -8,10 +8,10 @@
 #include "bitsery/brief_syntax.h"
 #include "world/poi/Coordinate.hpp"
 #include "block/attributes/Block.hpp"
-#include "block/attributes/BlockPosition.hpp"
+#include "world/poi/Position.hpp"
 #include "block/attributes/Blocks.hpp"
 
-#define TEST_CHUNK_HEIGHT 6
+#define TEST_CHUNK_HEIGHT 13
 
 namespace chunk {
 	namespace adapter { class ChunkDataPacketAdapter; }
@@ -29,22 +29,24 @@ namespace chunk {
 		coordinate::Coordinate<coordinate::BlockPositionT> chunkBlockPos{0, 0};
 	};// the position of the block inside a chunk
 
-	struct InChunkBlockPos { coordinate::BlockPositionT x, z; };
+	using ChunkBlockCoordinate = coordinate::Coordinate<coordinate::ChunkPositionT>;
 
 	class Chunk {
 	protected:
 		void onInitialize() {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; y_pos++) {
-					if (y_pos < TEST_CHUNK_HEIGHT)
-						if (y_pos == TEST_CHUNK_HEIGHT - 1) {
-							setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance("grass_block"));
-						} else {
-							setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance("iron_block"));
+					setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("air_block"));
+					if (y_pos < TEST_CHUNK_HEIGHT) {
+						if (x_pos == 5)
+							setBlockPosition(x_pos, 0, block::blocks::Blocks::getInstance()->newBlock("diamond_block"));
+						else {
+							if (y_pos == TEST_CHUNK_HEIGHT - 1)
+								setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("grass_block"));
+							else
+								setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("cobblestone_block"));
 						}
-					else
-						setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance("air_block"));
-					//setBlockPosition(InChunkBlockPos{x_pos, y_pos}, block::blocks::Blocks::getInstance()->getBlockInstance(std::abs(chunkPos)));
+					}
 				}
 			}
 		}
@@ -60,47 +62,27 @@ namespace chunk {
 		ChunkPosT chunkPos{};
 		block::Block* chunkBlocks[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]{};
 
-		// the chunk position
-		// the block stored inside a chunk
-		/**
-		 * @param pos The block position
-		 * @return The block object at that position
-		 */
-		block::Block* getBlock(InChunkBlockPos pos) { return chunkBlocks[pos.x][pos.z]; }
+		[[nodiscard]] sf::Sprite* getBlockSprite(ChunkBlockCoordinate chunkBlockPos) const { return getBlock(chunkBlockPos)->getSprite(); }
 
-		block::Block* getBlock(BlockPosT x, BlockPosT y) { return chunkBlocks[x][y]; }
+		[[nodiscard]] sf::Sprite* getBlockSprite(ChunkPosT x, ChunkPosT z) const { return getBlock(x, z)->getSprite(); }
 
-		bool isBlockExisted(InChunkBlockPos blockPos) { return getBlock(blockPos) != nullptr; }
-
-		/**
-		 * @param pos The block position
-		 * @return The sprite of the block on that position
-		 */
-		sf::Sprite* getBlockSprite(InChunkBlockPos pos) { return getBlock(pos)->getSpritePtr(); }
-
-		/**
-		 * @param pos The position of the block
-		 * @param block The block to set
-		 */
-		void setBlockPosition(InChunkBlockPos pos, block::Block* block) {
-			if (getBlock(pos) != nullptr)
-				delete getBlock(pos);
-			chunkBlocks[pos.x][pos.z] = block;
-			getBlock(pos)->getPositionPtr()->setPosition(toWorldCoordinateSettings(chunkPos, pos));
-			setBlockOnScreenPosition(InChunkBlockPos{pos.x, pos.z});
+		void setBlockPosition(const ChunkBlockCoordinate& chunkBlockPos, block::Block* block) {
+			if (getBlock(chunkBlockPos) != nullptr)
+				delete getBlock(chunkBlockPos);
+			setBlock(chunkBlockPos.getX(), chunkBlockPos.getZ(), block);
+			auto block_coordinate = toBlockCoordinate(chunkPos, chunkBlockPos);
+			getBlock(chunkBlockPos)->getPosition()->setPosition(block_coordinate.getX(), block_coordinate.getZ());
 		}
 
-		/**
-		 * @param pos The position of the block inside the chunk
-		 */
-		void setBlockOnScreenPosition(InChunkBlockPos pos) {
-			auto height = GameInfo.getConstExternalData()->windowState.getScreenHeight();
-			auto zoom = GameInfo.getConstExternalData()->windowState.pixelProportion;
-			getBlockSprite(pos)->setPosition((float) (convertToPixelPos(chunkPos) + pos.x * zoom),
-			                                 (float) (height - zoom - pos.z * zoom));
+		void setBlockPosition(ChunkPosT x, ChunkPosT z, block::Block* block) {
+			if (getBlock(x, z) != nullptr)
+				delete getBlock(x, z);
+			setBlock(x, z, block);
+			auto block_coordinate = toBlockCoordinate(chunkPos, ChunkBlockCoordinate{x, z});
+			getBlock(x, z)->getPosition()->setPosition(block_coordinate.getX(), block_coordinate.getZ());
 		}
 
-		explicit Chunk() = default;
+		Chunk() = default;
 
 	public:
 		explicit Chunk(ChunkPosT chunkPos) {
@@ -111,58 +93,79 @@ namespace chunk {
 		~Chunk() {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
-					delete getBlock(InChunkBlockPos{x_pos, y_pos});
+					delete getBlock(ChunkBlockCoordinate{x_pos, y_pos});
 				}
 			}
 		}
 
-		/**
-		 * @brief Convert from the world coordinate to the chunk coordinate
-		 * @param worldCoordinate The world coordinate
-		 * @return The coordinate parameters inside the chunk
-		 */
-		static ChunkCoordinate toChunkSettings(const coordinate::Coordinate<BlockPosT>& worldCoordinate) {
+		[[nodiscard]] block::Block* getBlock(const ChunkBlockCoordinate& chunkBlockPos) const {
+			return chunkBlocks[chunkBlockPos.getIntX()][chunkBlockPos.getIntZ()];
+		}
+
+		[[nodiscard]] block::Block* getBlock(BlockPosT x, BlockPosT z) const { return chunkBlocks[x][z]; }
+
+		[[nodiscard]] block::Block* getBlockWithBoundaryCheck(const ChunkBlockCoordinate& chunkBlockPos) const {
+			if ((chunkBlockPos.getIntZ() >= 0 && chunkBlockPos.getZ() < ChunkGenSettings::CHUNK_UPPER_LIMIT) &&
+			    (chunkBlockPos.getIntX() >= 0 && chunkBlockPos.getIntX() < ChunkGenSettings::CHUNK_WIDTH))
+				return getBlock(chunkBlockPos);
+			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
+		}
+
+		void setBlock(BlockPosT x, BlockPosT z, block::Block* block) { chunkBlocks[x][z] = block; }
+
+		[[nodiscard]] bool isBlockExisted(const ChunkBlockCoordinate& coordinate) const { return getBlock(coordinate) != nullptr; }
+
+		static ChunkCoordinate toChunkSettings(BlockPosT blockPosX, BlockPosT blockPosZ) {
 			ChunkCoordinate chunk_settings{};
-			chunk_settings.chunkPos = worldCoordinate.getIntX() / 16;
-			chunk_settings.chunkBlockPos.setCoordinate(worldCoordinate.getIntX() % 16, worldCoordinate.getIntZ());
+			if (blockPosX / 16 == 0) {
+				if (blockPosX < 0) chunk_settings.chunkPos = -1;
+				else chunk_settings.chunkPos = 0;
+			} else {
+				if (blockPosX < 0) chunk_settings.chunkPos = blockPosX / 16 - 1;
+				else chunk_settings.chunkPos = blockPosX / 16;
+			}
+			if (blockPosX < 0) {
+				auto x = blockPosX - ChunkGenSettings::CHUNK_WIDTH * chunk_settings.chunkPos;
+				if (x == 16) x = 0;
+				chunk_settings.chunkBlockPos.setCoordinate(x, blockPosZ);
+			} else chunk_settings.chunkBlockPos.setCoordinate(blockPosX % 16, blockPosZ);
 			return chunk_settings;
 		}
 
-		/**
-		 * @brief Convert from the chunk coordinate to the world coordinate
-		 * @param chunkCoordinate The chunk coordinate
-		 * @return The world coordinate
-		 */
-		static coordinate::Coordinate<BlockPosT> toWorldCoordinateSettings(ChunkPosT chunkPos, InChunkBlockPos blockPos) {
-			coordinate::Coordinate<BlockPosT> coordinate{blockPos.x + 16 * chunkPos, blockPos.z};
+		static ChunkCoordinate toChunkSettings(const BlockCoordinate& chunkBlockPos) {
+			return toChunkSettings(chunkBlockPos.getIntX(), chunkBlockPos.getIntZ());
+		}
+
+		static BlockCoordinate toBlockCoordinate(ChunkPosT chunkPos, const ChunkBlockCoordinate& chunkBlockPos) {
+			coordinate::Coordinate<BlockPosT> coordinate{chunkBlockPos.getX() + ChunkGenSettings::CHUNK_WIDTH * chunkPos, chunkBlockPos.getZ()};
 			return coordinate;
 		}
 
-		static coordinate::PixelPositonT convertToPixelPos(ChunkPosT chunkPos) {
+		static PixelPosT convertToPixelPos(ChunkPosT chunkPos) {
 			auto zoom = GameInfo.getConstExternalData()->windowState.pixelProportion;
 			return chunkPos * zoom * ChunkGenSettings::CHUNK_WIDTH;
 		}
 
 		static ChunkPosT convertToChunkPos(PixelPosT pixelPos) {
 			auto zoom = GameInfo.getConstExternalData()->windowState.pixelProportion;
-			return (int)(pixelPos / (double)(zoom * ChunkGenSettings::CHUNK_WIDTH));
+			return (int) (pixelPos / (double) (zoom * ChunkGenSettings::CHUNK_WIDTH));
 		}
 
 		[[nodiscard]] ChunkPosT getChunkPosition() const { return chunkPos; }
 
 		void update() {
-			// TODO TODO TODO TODO
+			// TODO
 		}
 
 		void render() {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
-					GameInfo.getRender()->render(*getBlockSprite(InChunkBlockPos{x_pos, y_pos}));
+					GameInfo.getRender()->render(*getBlockSprite(x_pos, y_pos));
+					getBlock(x_pos, y_pos)->renderHitbox();
 				}
 			}
 		}
 	};
-
 }
 
 

@@ -10,30 +10,27 @@
 
 class TextFieldWidget : public Widget {
 private:
-	RichText* text = new RichText(gui_style::MessageFont);
+	RichText text{gui_style::MessageFont};
 
-	void updateState(bool state) override {}
+	void executeCallbackFunc() override {}
 
-	void action() override {}
-
-	void listen(sf::Vector2i mousePosition, bool isPressed) override {}
+	void onUpdate() override {}
+protected:
+	void onRender() override {
+		GameInfo.getRender()->render(text);
+	}
 
 public:
-	explicit TextFieldWidget(const std::string &id, int size, bool visible, int x, int y) : Widget(id) {
-		this->visible = visible;
-		text->setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
+	explicit TextFieldWidget(const String& id, int size, bool visible, int x, int y) :
+			Widget(id, sf::Vector2i{0, 0}, visible) {
+		text.setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
 		    .setCharacterSize(size)
 		    .setColor(gui_style::MessageColor)
 		    .setPosition((float) x, (float) y);
-		widgetOutline.x = x;
-		widgetOutline.y = y;
-		widgetOutline.width = (int) text->getGlobalBounds().width;
-		widgetOutline.height = (int) text->getGlobalBounds().height;
+		setOutline(&widgetOutline, x, y, (int) text.getGlobalBounds().width, (int) text.getGlobalBounds().height);
 	}
 
-	~TextFieldWidget() {
-		delete text;
-	}
+	~TextFieldWidget() = default;
 
 	bool stateChanged() = delete;
 
@@ -42,12 +39,6 @@ public:
 	bool isPressed() = delete;
 
 	bool isClicked() = delete;
-
-	void render() override {
-		if (visible) {
-			GameInfo.getRender()->render(*text);
-		}
-	}
 };
 
 #endif //RUNCRAFT_TEXTFIELDWIDGET_HPP

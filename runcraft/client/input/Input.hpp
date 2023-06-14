@@ -7,38 +7,24 @@
 
 #include <string>
 #include <fstream>
-#include <list>
+#include <vector>
 #include <map>
 #include <SFML/Window/Event.hpp>
 #include "json.hpp"
 
 namespace input {
 	enum class MouseKeyType {
-		Left,       ///< The left mouse button
-		Right,      ///< The right mouse button
-		Middle,     ///< The middle (wheel) mouse button
-		XButton1,   ///< The first extra mouse button
-		XButton2,   ///< The second extra mouse button
+		Left = sf::Mouse::Button::Left,      ///< The left mouse button
+		Right = sf::Mouse::Button::Right,      ///< The right mouse button
+		Middle = sf::Mouse::Button::Middle,     ///< The middle (wheel) mouse button
+		XButton1 = sf::Mouse::Button::XButton1,   ///< The first extra mouse button
+		XButton2 = sf::Mouse::Button::XButton2,   ///< The second extra mouse button
 		VerticalWheel,  ///< The vertical mouse wheel
 		HorizontalWheel ///< The horizontal mouse wheel
 	};
 	using KeyboardKeyType = sf::Keyboard::Key;
 
 	namespace peripherals {
-		class IPeripheralObserver {
-		public:
-			virtual ~IPeripheralObserver() = default;
-		};
-
-		class IPeripheralSubject {
-		public:
-			virtual ~IPeripheralSubject() = default;
-
-			virtual void attach(IPeripheralObserver* observer) = 0;
-
-			virtual void detach(IPeripheralObserver* observer) = 0;
-		};
-
 		template<class Key, typename KeyType>
 		class Peripherals {
 		protected:
@@ -55,81 +41,95 @@ namespace input {
 			Key* getKey(KeyType keyType) {
 				return loadedPeripheralsList[keyType];
 			}
+
+			virtual void update() {
+				for (auto v: loadedPeripheralsList) { v.second->update(); }
+			}
+		};
+
+		template<typename KeyType>
+		class Key {
+		protected:
+			bool pressed = false;
+			KeyType toggleKey{};
+		public:
+			explicit Key(KeyType key) { toggleKey = key; }
+
+			[[nodiscard]] KeyType getKey() const { return toggleKey; }
+
+			virtual void update() = 0;
+
+			~Key() = default;
+
+			[[nodiscard]] bool isPressed() const { return pressed; }
 		};
 	}
 
 	namespace keyboard {
-		using namespace peripherals;
 
-		class KeyboardKey {
-		private:
-			KeyboardKeyType toggleKey{};
-			bool pressed = false;
+		class KeyboardKey : public peripherals::Key<KeyboardKeyType> {
 		public:
-			explicit KeyboardKey(KeyboardKeyType key) {
-				toggleKey = key;
-			}
+			explicit KeyboardKey(KeyboardKeyType key) : Key<KeyboardKeyType>(key) {}
 
-			[[nodiscard]] KeyboardKeyType getKey() const { return toggleKey; }
-
-			[[nodiscard]] bool isPressed() const { return pressed; }
-
-			void update() { pressed = sf::Keyboard::isKeyPressed(toggleKey); }
+			void update() override { pressed = sf::Keyboard::isKeyPressed(toggleKey); }
 
 			~KeyboardKey() = default;
 		};
 
-		class Keyboard : public Peripherals<KeyboardKey, KeyboardKeyType>, public IPeripheralSubject {
-		private:
-			std::list<IPeripheralObserver*> peripheralsMonitorList;
+		class Keyboard : public peripherals::Peripherals<KeyboardKey, KeyboardKeyType> {
 		public:
 			explicit Keyboard() = default;
-			void update() {
-				for (auto v: loadedPeripheralsList) { v.second->update(); }
-			}
 
-			void attach(IPeripheralObserver* observer) override { peripheralsMonitorList.push_back(observer); }
-			void detach(IPeripheralObserver* observer) override { peripheralsMonitorList.remove(observer); }
+			~Keyboard() = default;
 		};
 	}
 
 	namespace mouse {
-		class MouseKey {
+		class MouseKey : public peripherals::Key<MouseKeyType> {
 		private:
-			std::string keyName;
-			MouseKeyType toggleKey{};
+			std::shared_ptr<SystemEvents> event = SystemEvents::getInstance();
+			struct Wheel {
+				float delta;
+				float change;
+			} wheel{};
 		public:
-			explicit MouseKey(std::string name, MouseKeyType key) {
-				keyName = std::move(name);
-				toggleKey = key;
-			}
-
-			[[nodiscard]] std::string getName() const { return keyName; }
-
-			void setKey(MouseKeyType key) { toggleKey = key; }
-
-			[[nodiscard]] MouseKeyType getKey() const { return toggleKey; }
+			explicit MouseKey(MouseKeyType key) : Key<MouseKeyType>(key) {}
 
 			[[nodiscard]] bool isAnalog() const {
-				return toggleKey == MouseKeyType::HorizontalWheel || toggleKey == MouseKeyType::VerticalWheel;
+				return getKey() == MouseKeyType::HorizontalWheel || getKey() == MouseKeyType::VerticalWheel;
 			}
 
-			[[nodiscard]] bool isPressed() const {
-				if (!isAnalog())
-					return sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(toggleKey));
-				return false;
+			[[nodiscard]] Wheel getWheel() const {
+				return wheel;
 			}
 
-			//TODO forget what to do here...
+			void update() override {
+				if (isAnalog()) {
+					if (event->getEvent()->type == sf::Event::MouseWheelScrolled)
+						wheel.delta = event->getEvent()->mouseWheelScroll.delta;
+				} else {
+					pressed = sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(toggleKey));
+				}
+			}
 		};
 
-		class Mouse : protected input::peripherals::Peripherals<MouseKey, MouseKeyType> {
+		class Mouse : public input::peripherals::Peripherals<MouseKey, MouseKeyType> {
 		private:
-
+			sf::RenderWindow* window = GameInfo.getRender()->getWindowConfig().window;
+			sf::Vector2i position{};
 		public:
-			explicit Mouse() {
+			explicit Mouse() = default;
 
+			void update() override {
+				peripherals::Peripherals<MouseKey, MouseKeyType>::update();
+				position = sf::Mouse::getPosition(*window);
 			}
+
+			sf::Vector2i getPosition() {
+				return position;
+			}
+
+			~Mouse() = default;
 		};
 	}
 
@@ -158,21 +158,19 @@ namespace input {
 		}
 	};
 
-	class KeyboardObserver : public peripherals::IPeripheralObserver {
+	class KeyboardObserver {
 	private:
-		std::list<keyboard::KeyboardKey*> hotKeyList;
+		std::vector<keyboard::KeyboardKey*> hotKeyList;
 		Keyboard keyboard = PeripheralsFactory::getKeyboard();
 	public:
-		KeyboardObserver() {
-			keyboard->attach(this);
-		}
+		KeyboardObserver() = default;
 
-		KeyboardObserver &attachKey(KeyboardKeyType keyType) {
+		KeyboardObserver& attachKey(KeyboardKeyType keyType) {
 			auto key = keyboard->getKey(keyType);
 			if (key == nullptr)
-				hotKeyList.push_front(keyboard->addKey(keyType));
+				hotKeyList.push_back(keyboard->addKey(keyType));
 			else
-				hotKeyList.push_front(key);
+				hotKeyList.push_back(key);
 			return *this;
 		}
 
@@ -180,13 +178,34 @@ namespace input {
 			return std::all_of(hotKeyList.cbegin(), hotKeyList.cend(), [](keyboard::KeyboardKey* key) { return key->isPressed(); });
 		}
 
-		~KeyboardObserver() override {
-			keyboard->detach(this);
-		}
+		~KeyboardObserver()=default;
 	};
 
-	class MouseObserver{
-		//TODO
+	class MouseObserver {
+	private:
+		std::vector<mouse::MouseKey*> hotKeyList;
+		Mouse mouse=PeripheralsFactory::getMouse();
+	public:
+		MouseObserver()=default;
+
+		MouseObserver& attachKey(MouseKeyType keyType) {
+			auto key = mouse->getKey(keyType);
+			if (key == nullptr)
+				hotKeyList.push_back(mouse->addKey(keyType));
+			else
+				hotKeyList.push_back(key);
+			return *this;
+		}
+
+		[[nodiscard]] bool isActivated() const {
+			return std::all_of(hotKeyList.cbegin(), hotKeyList.cend(), [](mouse::MouseKey* key) { return key->isPressed(); });
+		}
+
+		sf::Vector2i getPosition() {
+			return mouse->getPosition();
+		}
+
+		~MouseObserver()=default;
 	};
 }
 

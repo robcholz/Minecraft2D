@@ -14,7 +14,7 @@ namespace block::blocks {
 		CobblestoneBlock() : Block("cobblestone_block") {
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new CobblestoneBlock;
 		}
 	};

@@ -8,21 +8,30 @@
 #include <memory>
 #include <string>
 #include <map>
+#include <limits>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
-#include "sound/BlockSoundGroup.hpp"
-#include "block/attributes/BlockPosition.hpp"
+#include "world/poi/Position.hpp"
 #include "block/attributes/BlockTextureLoader.hpp"
 #include "client/GameInfo.hpp"
 #include "block/attributes/BlockIDLoader.hpp"
 #include "BlockState.hpp"
+#include "BlockAccess.hpp"
+#include "util/Hitbox.hpp"
+
+#define BLOCK_POS_ERROR std::numeric_limits<coordinate::BlockPositionT>::max()
 
 namespace block::blocks { class Blocks; }
 
 namespace block {
-	class Block {
+	struct ID {
+		int serialID{};
+		std::string id;
+	};
+
+	class Block : public BlockAccess, public HitboxHandler{
 	protected:
-		virtual Block* getBlockInstance() = 0;
+		virtual Block* newBlock() = 0;
 
 	private:
 		friend class block::blocks::Blocks;
@@ -31,54 +40,51 @@ namespace block {
 		using BlockPosT = coordinate::BlockPositionT;
 		using PixelPosT = coordinate::PixelPositonT;
 
-		struct ID {
-			int serialID{};
-			std::string id;
-		} ID;
-
 		std::unique_ptr<sf::Sprite> blockSprite;
 		std::unique_ptr<BlockPosition> blockPosition;
 		std::unique_ptr<BlockTextureLoader> blockTexture;
 		std::unique_ptr<BlockState> blockState;
 
+		ID ID;
+		Hitbox hitbox;
+
 		void onInitialize() {
 			blockSprite->setTexture(*blockTexture->getBlockTextureTile(BlockDirectionType::OUT));
 			auto zoom = GameInfo.getConstExternalData()->windowState.pixelProportion;
 			blockSprite->setScale((float) zoom / 16.0f, (float) zoom / 16.0f);
+			hitbox.setHitbox(getSprite());
 		}
 
 	public:
 		explicit Block(const String& id) {
 			this->ID.id = id;
 			this->ID.serialID = BlockIDLoader::getBlockID(id);
-
 			blockTexture = std::make_unique<BlockTextureLoader>(id);
-			blockPosition = std::make_unique<BlockPosition>(0, 0);
+			blockPosition = std::make_unique<BlockPosition>(this, 0, 0);
 			blockState = std::make_unique<BlockState>();
 			blockSprite = std::make_unique<sf::Sprite>();
+			addHitbox(&hitbox);
 			onInitialize();
 		}
 
 		void setParameter(BlockPosT x, BlockPosT z, BlockDirectionType blockDirection) {
-			blockPosition = std::make_unique<BlockPosition>(x, z, blockDirection);
+			blockPosition = std::make_unique<BlockPosition>(this, x, z, blockDirection);
 			blockState = std::make_unique<BlockState>();
 		}
 
-		static coordinate::PixelPositonT convertToPixelPos(BlockPosT blockPos) {
-			auto zoom = GameInfo.getConstExternalData()->windowState.pixelProportion;
-			return zoom * blockPos;
+		BlockPosition* getPosition() override { return blockPosition.get(); }
+
+		[[nodiscard]] struct ID getID() const override { return this->ID; }
+
+		[[nodiscard]] sf::Sprite* getSprite() const override { return blockSprite.get(); }
+
+		void onPositionChange() override {
+			hitbox.setHitbox(getSprite());
 		}
 
-		static BlockPosT convertToBlockPos(PixelPosT pixelPos) {
-			auto zoom = GameInfo.getConstExternalData()->windowState.pixelProportion;
-			return (int) (pixelPos / (double) (zoom));
-		}
+		[[nodiscard]] bool isAir() const { return (this->getID().id == "air_block"); }
 
-		[[nodiscard]] struct ID getID() const { return this->ID; }
-
-		[[nodiscard]] BlockPosition* getPositionPtr() const { return blockPosition.get(); }
-
-		[[nodiscard]] sf::Sprite* getSpritePtr() const { return blockSprite.get(); }
+		[[nodiscard]] bool isError() const { return (this->getID().id == "error_block"); }
 
 		virtual ~Block() = default;
 	};

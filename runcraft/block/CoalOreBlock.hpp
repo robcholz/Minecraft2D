@@ -14,7 +14,7 @@ namespace block::blocks {
 		CoalOreBlock() : Block("coal_ore_block") {
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new CoalOreBlock;
 		}
 	};

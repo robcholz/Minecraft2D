@@ -15,7 +15,7 @@ namespace block::blocks{
 
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new IronBlock;
 		}
 	};

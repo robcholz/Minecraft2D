@@ -13,56 +13,146 @@ class Screen; /*fuck circular dependencies*/
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
 #include "util/MathHelper.hpp"
+#include "client/input/Input.hpp"
 
 class Widget : public GUI {
+private:
+	bool mouseButtonPressed{};
+	sf::Vector2i mousePosition{};
+
 protected:
-	typedef std::function<void()> ActionWhenActivated;
-
-	sf::Texture widgetNormalTexture;
-	sf::Texture widgetActivatedTexture;
-	sf::Sprite widgetCurrentSprite;
-	std::shared_ptr<sf::Vector2i> *widgetSize;
+	using CallbackFunc = std::function<void()>;
+	using String = std::string;
+	sf::Texture widgetNormalTexture, widgetFocusedTexture;
+	sf::IntRect widgetNormalIntRect, widgetFocusedIntRect;
+	sf::Sprite widgetSprite;
+	sf::Vector2i widgetSize;
 	Areai widgetOutline{};
-
-	std::string widgetAssetPath = guiFilePath + "widgets.png";
-
+	String widgetAssetPath = guiFilePath + "widgets.png";
+	String id;
+	CallbackFunc execFuncPtr = nullptr;
 	bool visible = true;
-	bool lastState = false, clickState = false, pressed = false;
-	std::string id;
+	bool lastClicked = false, clicked = false, pressed = false;
+	bool focus = false;
+	bool active = true;
+	bool stateChanged = false;
+	input::MouseObserver mouseObserver{};
+
+	static void setOutline(Areai* outline, int x, int y, int width, int height) {
+		outline->x = x;
+		outline->y = y;
+		outline->width = width;
+		outline->height = height;
+	}
+
+	void loadWidgetTexture(sf::IntRect widgetNormal, sf::IntRect widgetActivated) {
+		widgetNormalIntRect = widgetNormal;
+		widgetFocusedIntRect = widgetActivated;
+		widgetNormalTexture.loadFromFile(widgetAssetPath, widgetNormalIntRect);
+		widgetFocusedTexture.loadFromFile(widgetAssetPath, widgetFocusedIntRect);
+	}
+
+	virtual void setPressed(bool isPressed) {
+		pressed = isPressed;
+	}
+
+	virtual void setClicked(bool isClicked) {
+		setStateChanged(lastClicked != isClicked);
+		clicked = (isStateChanged() && isClicked);
+		if(isStateChanged())
+			std::cout<<isStateChanged()<<std::endl;
+		lastClicked = isClicked;
+	}
+
+	bool isMouseButtonPressed() const { return mouseButtonPressed; }
+
+	sf::Vector2i getMousePosition() const { return mousePosition; }
+
+	void setVisible(bool visibility) { visible = visibility; }
+
+	void setActive(bool activity) { active = activity; }
+
+	void setFocused(bool isFocused = true) {
+		focus = isFocused;
+		if (isFocused) widgetSprite.setTexture(widgetFocusedTexture);
+		else widgetSprite.setTexture(widgetNormalTexture);
+	}
+
+	void setStateChanged(bool isStateChanged) {stateChanged=isStateChanged;}
+
+	void updateMouse() {
+		mouseButtonPressed = mouseObserver.isActivated();
+		mousePosition = mouseObserver.getPosition();
+	}
+
+	virtual void onRender() {
+		GameInfo.getRender()->render(widgetSprite);
+	}
+
+	virtual void onUpdate() {
+		auto inInWidgetBoundary = checkVectorBoundary(getMousePosition(), widgetOutline);
+		setPressed(inInWidgetBoundary && isMouseButtonPressed());
+		setClicked( isMouseButtonPressed());
+		setFocused(inInWidgetBoundary);
+	}
+
 public:
-	explicit Widget(const std::string &id) {
+	explicit Widget(const String& id, sf::Vector2i size, bool visible) {
+		mouseObserver.attachKey(input::MouseKeyType::Left);
 		this->id = id;
-		widgetSize = nullptr;
+		this->visible = visible;
+		widgetSize = size;
 	}
 
-	virtual void updateState(bool state) {
-		pressed = state;
-		clickState = lastState != state && state;
-		lastState = state;
-	}
 
-	void setVisibility(bool visibility) { visible = visibility; }
+	bool isVisible() const { return visible; }
 
-	bool getVisibility() const { return visible; }
+	bool isActive() const { return active; }
 
-	virtual void action() = 0;
-
-	bool isClicked() const { return clickState; }
+	bool isClicked() const { return clicked; }
 
 	bool isPressed() const { return pressed; }
 
-	virtual void listen(sf::Vector2i mousePosition, bool isPressed) {
-		if (getVisibility()) {
-			if (checkVectorBoundary(mousePosition, widgetOutline)) {
-				updateState(isPressed);
-				widgetCurrentSprite.setTexture(widgetActivatedTexture);
-			} else {
-				widgetCurrentSprite.setTexture(widgetNormalTexture);
-			}
+	bool isFocused() const { return focus; }
+
+	bool isStateChanged() const { return stateChanged;}
+
+	virtual void executeCallbackFunc() { if (execFuncPtr != nullptr) execFuncPtr(); }
+
+	Widget& executeFuncWhenActivated(const CallbackFunc& execFunc) {
+		execFuncPtr = execFunc;
+		return *this;
+	}
+
+	void activate(){
+		setActive(true);
+	}
+
+	void deactivate(){
+		setActive(false);
+	}
+
+	void show() {
+		setActive(true);
+		setVisible(true);
+	}
+
+	void hide() {
+		setActive(false);
+		setVisible(false);
+	}
+
+	void update() {
+		if (isActive()) {
+			updateMouse();
+			onUpdate();
 		}
 	}
 
-	void render() override {}
+	void render() override {
+		if (isVisible())
+			onRender();
+	}
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

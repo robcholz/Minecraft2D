@@ -7,7 +7,7 @@
 #include "gtest/gtest.h"
 
 TEST(ResourceTest, BasicAssertions) {
-	EXPECT_STRNE("hello", "world");
+	EXPECT_STRNE("hello", "worldAccess");
 	EXPECT_EQ(7 * 6, 42);
 }
 

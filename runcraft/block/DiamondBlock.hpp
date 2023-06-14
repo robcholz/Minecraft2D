@@ -14,7 +14,7 @@ namespace block::blocks {
 		DiamondBlock() : Block("diamond_block") {
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new DiamondBlock;
 		}
 	};

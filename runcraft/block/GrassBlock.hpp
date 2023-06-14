@@ -14,7 +14,7 @@ namespace block::blocks {
 		explicit GrassBlock() : Block("grass_block") {
 		}
 
-		Block* getBlockInstance() override {
+		Block* newBlock() override {
 			return new GrassBlock;
 		}
 	};
