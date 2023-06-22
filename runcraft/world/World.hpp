@@ -6,16 +6,18 @@
 #define RUNCRAFT_WORLD_HPP
 
 #include <memory>
-#include "client/player/Player.hpp"
+#include "entity/player/PlayerEntity.hpp"
 #include "world/chunk/ChunkStream.hpp"
+#include "client/gui/hud/InGameBarHud.hpp"
 
-class World : public WorldAccess {
+class World : public WorldAccess, public SceneAccess {
 private:
 	float screenWidth = (float) GameInfo.getConstExternalData()->windowState.getScreenWidth();
 	float screenHeight = (float) GameInfo.getConstExternalData()->windowState.getScreenHeight();
 	sf::View view{sf::FloatRect{0.f, 0.f, screenWidth, screenHeight}};
-	std::unique_ptr<Player> player;
+	std::unique_ptr<PlayerEntity> player;
 	std::unique_ptr<chunk::ChunkStream> chunkStream;
+	std::unique_ptr<hud::InGameBarHud> hud;
 
 	void updateCamera() {
 		view.move((float) player->getEntityPosition().getPixelPosition().getOffset().x, (float) player->getEntityPosition().getPixelPosition().getOffset().z);
@@ -25,13 +27,16 @@ private:
 
 public:
 	explicit World() {
-		player = std::make_unique<Player>(this);
+		player = std::make_unique<PlayerEntity>(this);
 		player->getEntityPosition().setPosition(0, 8);
 		chunkStream = std::make_unique<chunk::ChunkStream>(this, 4, 2);
 		chunkStream->setChunkGenerator([](int chunkPos) { return new chunk::Chunk(chunkPos); });
+		hud = std::make_unique<hud::InGameBarHud>(this);
 	}
 
-	Player* getPlayer() override {
+	~World() override = default;
+
+	PlayerEntity* getPlayer() override {
 		return player.get();
 	}
 
@@ -39,15 +44,21 @@ public:
 		return chunkStream.get();
 	}
 
-	void update() {
+	sf::View& getView() override {
+		return view;
+	}
+
+	void onUpdate() override {
 		chunkStream->update();
 		player->update();
 		updateCamera();
+		hud->update();
 	}
 
-	void render() {
+	void onRender() override {
 		chunkStream->render();
 		player->render();
+		hud->render();
 	}
 
 

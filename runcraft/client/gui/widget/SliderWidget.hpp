@@ -50,7 +50,7 @@ protected:
 
 public:
 	explicit SliderWidget(const String& id, int width = 200, int height = 20, bool visible = true, int x = 0, int y = 0)
-			: Widget(id, sf::Vector2i{width, height}, visible) {
+			: Widget(id, visible) {
 		title = TranslatableText::getTranslatable(id, translatable::GUI_SLIDER);
 		/*background*/
 		sliderBackgroundTexture.loadFromFile(widgetAssetPath, intRectBackground);

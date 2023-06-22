@@ -37,19 +37,14 @@ namespace chunk {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; y_pos++) {
 					setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("air_block"));
-					if (y_pos < TEST_CHUNK_HEIGHT) {
-						if (y_pos == TEST_CHUNK_HEIGHT - 1)
-							setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("grass_block"));
-						else
-							setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("cobblestone_block"));
-					}
-					if(x_pos==5) {
-						setBlockPosition(x_pos, TEST_CHUNK_HEIGHT-1, block::blocks::Blocks::getInstance()->newBlock("air_block"));
-						setBlockPosition(x_pos, TEST_CHUNK_HEIGHT-2, block::blocks::Blocks::getInstance()->newBlock("air_block"));
-					}
-					if(x_pos==6) {
-						setBlockPosition(x_pos, TEST_CHUNK_HEIGHT-1, block::blocks::Blocks::getInstance()->newBlock("air_block"));
-					}
+				}
+			}
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
+				for (int y_pos = 0; y_pos < 5; y_pos++) {
+					setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("dirt_block"));
+				}
+				for (int y_pos = 5; y_pos < 6; y_pos++) {
+					setBlockPosition(x_pos, y_pos, block::blocks::Blocks::getInstance()->newBlock("grass_block"));
 				}
 			}
 		}
@@ -65,9 +60,11 @@ namespace chunk {
 		ChunkPosT chunkPos{};
 		block::Block* chunkBlocks[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]{};
 
-		[[nodiscard]] sf::Sprite* getBlockSprite(ChunkBlockCoordinate chunkBlockPos) const { return getBlock(chunkBlockPos)->getSprite(); }
+		[[nodiscard]]
+		sf::Sprite* getBlockSprite(ChunkBlockCoordinate chunkBlockPos) const { return getBlock(chunkBlockPos)->getSprite(); }
 
-		[[nodiscard]] sf::Sprite* getBlockSprite(ChunkPosT x, ChunkPosT z) const { return getBlock(x, z)->getSprite(); }
+		[[nodiscard]]
+		sf::Sprite* getBlockSprite(ChunkPosT x, ChunkPosT z) const { return getBlock(x, z)->getSprite(); }
 
 		void setBlockPosition(const ChunkBlockCoordinate& chunkBlockPos, block::Block* block) {
 			if (getBlock(chunkBlockPos) != nullptr)
@@ -101,13 +98,16 @@ namespace chunk {
 			}
 		}
 
-		[[nodiscard]] block::Block* getBlock(const ChunkBlockCoordinate& chunkBlockPos) const {
+		[[nodiscard]]
+		block::Block* getBlock(const ChunkBlockCoordinate& chunkBlockPos) const {
 			return chunkBlocks[chunkBlockPos.getIntX()][chunkBlockPos.getIntZ()];
 		}
 
-		[[nodiscard]] block::Block* getBlock(BlockPosT x, BlockPosT z) const { return chunkBlocks[x][z]; }
+		[[nodiscard]]
+		block::Block* getBlock(BlockPosT x, BlockPosT z) const { return chunkBlocks[x][z]; }
 
-		[[nodiscard]] block::Block* getBlockWithBoundaryCheck(const ChunkBlockCoordinate& chunkBlockPos) const {
+		[[nodiscard]]
+		block::Block* getBlockWithBoundaryCheck(const ChunkBlockCoordinate& chunkBlockPos) const {
 			if ((chunkBlockPos.getIntZ() >= 0 && chunkBlockPos.getZ() < ChunkGenSettings::CHUNK_UPPER_LIMIT) &&
 			    (chunkBlockPos.getIntX() >= 0 && chunkBlockPos.getIntX() < ChunkGenSettings::CHUNK_WIDTH))
 				return getBlock(chunkBlockPos);
@@ -116,7 +116,8 @@ namespace chunk {
 
 		void setBlock(BlockPosT x, BlockPosT z, block::Block* block) { chunkBlocks[x][z] = block; }
 
-		[[nodiscard]] bool isBlockExisted(const ChunkBlockCoordinate& coordinate) const { return getBlock(coordinate) != nullptr; }
+		[[nodiscard]]
+		bool isBlockExisted(const ChunkBlockCoordinate& coordinate) const { return getBlock(coordinate) != nullptr; }
 
 		static ChunkCoordinate toChunkSettings(BlockPosT blockPosX, BlockPosT blockPosZ) {
 			ChunkCoordinate chunk_settings{};
@@ -154,7 +155,8 @@ namespace chunk {
 			return (int) (pixelPos / (double) (zoom * ChunkGenSettings::CHUNK_WIDTH));
 		}
 
-		[[nodiscard]] ChunkPosT getChunkPosition() const { return chunkPos; }
+		[[nodiscard]]
+		ChunkPosT getChunkPosition() const { return chunkPos; }
 
 		void update() {
 			// TODO

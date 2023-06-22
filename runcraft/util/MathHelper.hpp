@@ -8,11 +8,25 @@
 #include <cmath>
 #include <random>
 
-auto getRNG(int a, int b) {
-	std::random_device dev;
-	std::mt19937 rng(dev());
-	std::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
-	return dist6(rng);
+namespace math {
+	class RandomNumGenerator {
+	public:
+		static auto getRange(int a, int b) {
+			std::random_device dev;
+			std::mt19937 rng(dev());
+			std::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
+			return dist6(rng);
+		}
+
+		static bool randomBool() {
+			return getRange(0, 1) == 1;
+		}
+
+		static bool randomBool(float probability) {
+			return (getRange(1, (int) lroundf(1.f / probability)) == 1);
+		}
+
+	};
 }
 
 template<typename vT>
@@ -32,9 +46,9 @@ struct Interval {
 	vT lower, upper;
 };
 
-using Intervali=Interval<int> ;
-using Areai=Area<int> ;
-using IntRecti=IntRect<int>;
+using Intervali = Interval<int>;
+using Areai = Area<int>;
+using IntRecti = IntRect<int>;
 
 template<typename vT>
 bool static checkIntervalBoundary(vT value, Interval<vT> interval) {
@@ -159,10 +173,10 @@ public:
 	}
 };
 
-using Vec2i=Vector2D<int> ;
-using Vec2d=Vector2D<double> ;
+using Vec2i = Vector2D<int>;
+using Vec2d = Vector2D<double>;
 
-using Vec3i=Vector3D<int> ;
-using Vec3d=Vector3D<double> ;
+using Vec3i = Vector3D<int>;
+using Vec3d = Vector3D<double>;
 
 #endif //RUNCRAFT_MATHHELPER_HPP

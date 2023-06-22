@@ -86,7 +86,7 @@ public:
 	 */
 	void playRandomly() {
 		stop();
-		load(getRNG(0, (int) playlist.size()));
+		load(math::RandomNumGenerator::getRange(0, (int) playlist.size()-1));
 		Audio::play();
 	}
 

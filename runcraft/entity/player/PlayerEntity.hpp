@@ -2,37 +2,26 @@
 // Created by robcholz on 4/29/23.
 //
 
-#ifndef RUNCRAFT_PLAYER_HPP
-#define RUNCRAFT_PLAYER_HPP
+#ifndef RUNCRAFT_PLAYERENTITY_HPP
+#define RUNCRAFT_PLAYERENTITY_HPP
 
 #include <memory>
 #include "client/input/Input.hpp"
 #include "block/attributes/Block.hpp"
 #include "entity/Entity.hpp"
 
-class Player : public entity::Entity {
+class PlayerEntity : public entity::Entity {
 protected:
-	void onUpdate() override {
-		updateSkin();
-		entity::Entity::onUpdate();
-		_setPixelPosition(getEntityPosition().getPixelPosition().getX(), getEntityPosition().getPixelPosition().getZ());
-	}
-
 	void updateHitbox() override {
-		entityHitbox.setHitbox(legSprite.getGlobalBounds().left, headSprite.getGlobalBounds().top, legSprite.getGlobalBounds().width,
+		entityHitbox.setHitbox(headSprite.getGlobalBounds().left, headSprite.getGlobalBounds().top, headSprite.getGlobalBounds().width,
 		                       headSprite.getGlobalBounds().height + armSprite.getGlobalBounds().height +
 		                       legSprite.getGlobalBounds().height);
 	}
 
-public:
-	enum class View : uint8_t { EAST, WEST };
-
-	explicit Player(WorldAccess* worldAccess) : Entity(worldAccess) {
-		moveLeft.attachKey(input::KeyboardKeyType::A);
-		moveRight.attachKey(input::KeyboardKeyType::D);
-		moveJump.attachKey(input::KeyboardKeyType::Space);
-		moveSniff.attachKey(input::KeyboardKeyType::LShift);
-		initSkin();
+	void onUpdate() override {
+		updateSkin();
+		entity::Entity::onUpdate();
+		_setPixelPosition(getEntityPosition().getPixelPosition().getX(), getEntityPosition().getPixelPosition().getZ());
 	}
 
 	void onRender() override {
@@ -40,6 +29,21 @@ public:
 		GameInfo.getRender()->render(armSprite);
 		GameInfo.getRender()->render(headSprite);
 		renderHitbox();
+	}
+
+public:
+	enum class View : uint8_t { EAST, WEST };
+
+	explicit PlayerEntity(WorldAccess* worldAccess) : Entity(worldAccess) {
+		moveLeft.attachKey(input::KeyboardKeyType::A);
+		moveRight.attachKey(input::KeyboardKeyType::D);
+		moveJump.attachKey(input::KeyboardKeyType::Space);
+		moveSniff.attachKey(input::KeyboardKeyType::LShift);
+		initSkin();
+	}
+
+	float getMaxHealth() override {
+		return 20.f;
 	}
 
 private:
@@ -69,7 +73,6 @@ private:
 		armSprite.scale(pixelToOne, pixelToOne);
 		headSprite.setTexture(rightHead);
 		headSprite.scale(pixelToOne, pixelToOne);
-		width = legSprite.getGlobalBounds().width;
 	}
 
 	void viewFrom(View view) {
@@ -110,7 +113,7 @@ private:
 			getEntityPosition().setDirection(Direction::DirectionType::EAST);
 		}
 		if (moveJump.isActivated()) {
-			if (onGround)
+			if (onGround())
 				velocity.z = JUMPING_VELOCITY;
 		}
 		if (moveSniff.isActivated()) {
@@ -118,4 +121,4 @@ private:
 	}
 };
 
-#endif //RUNCRAFT_PLAYER_HPP
+#endif //RUNCRAFT_PLAYERENTITY_HPP

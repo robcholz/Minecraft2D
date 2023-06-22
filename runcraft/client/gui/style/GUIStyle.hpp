@@ -13,7 +13,7 @@
 namespace initialization {
 	class GUIFont : public sf::Font, public GUI {
 	protected:
-		std::string fontAssetPath = fontFilePath + "runcraft.ttf";
+		std::string fontAssetPath = fontFilePath + "/runcraft.ttf";
 	private:
 		void render() override {}
 

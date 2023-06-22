@@ -17,8 +17,9 @@
 #include "client/gui/widget/TextFieldWidget.hpp"
 #include "client/gui/screen/ScreenManager.hpp"
 #include "sound/Audio.hpp"
+#include "client/scene/SceneAccess.hpp"
 
-class Menu {
+class Menu : public SceneAccess {
 protected:
 	void onInitialize() {
 		backgroundTexture.fitToScreen();
@@ -27,7 +28,6 @@ protected:
 		initWidget();
 		backgroundMusic.playRandomly();
 
-		PLOG_DEBUG << "Rendered main menu!";
 		PLOG_DEBUG << "Initialize assets.";
 	}
 
@@ -88,7 +88,7 @@ protected:
 		singleplayerSettingScreen.addCallbackScreen(&backgroundMenuScreen, &singleplayerSettingBack)
 		                         .addWidget(&singleplayerGenerateWorld)
 		                         .addWidget(&singleplayerSettingBack);
-		singleplayerGenerateWorld.executeFuncWhenActivated([this] {});
+		singleplayerGenerateWorld.executeFuncWhenActivated([this] { terminateScene(); });
 
 		backgroundBiomeSettingScreen.addCallbackScreen(&backgroundMenuScreen, &backgroundSettingBack)
 		                            .addCallbackScreen(&settingVolumeScreen, &backgroundSettingVolume)
@@ -166,11 +166,15 @@ public:
 		onInitialize();
 	}
 
-	~Menu() {
+    ~Menu() override {
 		backgroundMusic.stop();
 	}
 
-	void render() {
+	void onUpdate() override {
+
+	}
+
+	void onRender() override {
 		screenManager.render();
 	}
 };

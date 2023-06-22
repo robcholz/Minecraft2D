@@ -78,7 +78,7 @@ protected:
 
 public:
 	explicit SaveHelper(const String& filename) {
-		if (isSaveFolderExisted()) { saveDirectory = saveHelper->getDirectory() + "/" + filename; }
+		if (isSaveFolderExisted()) { saveDirectory = saveHelper->getDirectoryName() + "/" + filename; }
 		else { createSaveFolder(filename); }
 		saveHelper = std::make_unique<FileHelper>(saveDirectory);
 		regionHelper = std::make_unique<FileHelper>(saveDirectory + "/region");

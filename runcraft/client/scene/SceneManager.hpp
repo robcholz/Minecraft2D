@@ -5,39 +5,53 @@
 #ifndef RUNCRAFT_SCENEMANAGER_HPP
 #define RUNCRAFT_SCENEMANAGER_HPP
 
-#include <list>
 #include <map>
-#include <utility>
+#include <string>
+#include "SceneAccess.hpp"
 
 
 class SceneManager {
 private:
-	typedef std::function<void()> FuncPtr;
-	FuncPtr currentScenePtr = nullptr;
-	struct Scene { Scene *scene; FuncPtr onCreate = nullptr, onRender = nullptr, onDestroy = nullptr; };
-	std::map<std::string, Scene> sceneMap;
+	using String = std::string;
+	std::map<String, std::function<SceneAccess*()>> sceneCallableMap;
+	std::map<String, String> pairMap;
+
+	SceneAccess* scene = nullptr;
+	String sceneName;
+
 public:
 	explicit SceneManager() = default;
 
-	SceneManager &newScene(const std::string &id, Scene *scene, FuncPtr funcOnCreate, FuncPtr funcOnRender, FuncPtr funcOnDestroy) {
-		sceneMap.insert({id, Scene{scene, std::move(funcOnCreate), std::move(funcOnRender), std::move(funcOnDestroy)}});
+	SceneManager& setEntry(const String& name) {
+		scene = sceneCallableMap[name]();
+		sceneName = name;
 		return *this;
 	}
 
-	void setEntry(const std::string &id) {
-		sceneMap[id].onCreate();
-		currentScenePtr = sceneMap[id].onRender;
+	SceneManager& addScene(const String& name, std::function<SceneAccess*()> function) {
+		sceneCallableMap.insert({name, std::move(function)});
+		return *this;
 	}
 
-	void render() {
-		currentScenePtr();
-		/*
-		if (!currentScenePtr->nextScene().empty()) {
-			auto prevScenePtr = currentScenePtr;
-			currentScenePtr = sceneMap[currentScenePtr->nextScene()];
-			delete prevScenePtr;
+	SceneManager& setPair(const String& first, const String& second) {
+		pairMap.insert({first, second});
+		return *this;
+	}
+
+	void update() {
+		if (scene->isRunning()) {
+			scene->onUpdate();
+			scene->onRender();
+		} else {
+			if (scene->isPaused()) {
+				scene->onRender();
+			}
+			if (scene->isTerminated()) {
+				sceneName = pairMap[sceneName];
+				delete scene;
+				scene = sceneCallableMap[sceneName]();
+			}
 		}
-		 */
 	}
 };
 

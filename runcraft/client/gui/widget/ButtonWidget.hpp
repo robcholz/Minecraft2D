@@ -28,9 +28,10 @@ protected:
 		Widget::onRender();
 		GameInfo.getRender()->render(message);
 	}
+
 public:
 	explicit ButtonWidget(const std::string& id, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0)
-			: Widget(id, sf::Vector2i{width, height}, visible) {
+			: Widget(id, visible) {
 		setOutline(&widgetOutline, x, y, width, height);
 		loadWidgetTexture(sf::IntRect{0, 66, 200, 20},
 		                  sf::IntRect{0, 86, 200, 20});

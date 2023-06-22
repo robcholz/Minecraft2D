@@ -6,6 +6,7 @@
 #define RUNCRAFT_BLOCKS_HPP
 
 #include <memory>
+#include "block/attributes/Block.hpp"
 #include "block/AirBlock.hpp"
 #include "block/DirtBlock.hpp"
 #include "block/GrassBlock.hpp"
@@ -15,16 +16,15 @@
 #include "block/CobblestoneBlock.hpp"
 #include "block/DiamondBlock.hpp"
 #include "block/ErrorBlock.hpp"
+//#include "util/Registry.hpp"
 
-namespace block::blocks {
 #define RegisterBlock(block) registerBlock(std::make_shared<block>())
 
+namespace block::blocks {
 	class Blocks {
 	private:
 		using String = std::string;
 		using BlockSmartPtr = std::shared_ptr<Block>;
-		std::map<String, BlockSmartPtr> blocksIDRegistry;
-		std::map<int, BlockSmartPtr> blocksSerialIDRegistry;
 
 		explicit Blocks() {
 			RegisterBlock(AirBlock);
@@ -66,11 +66,11 @@ namespace block::blocks {
 			return blocksSerialIDRegistry[serialID].get();
 		}
 
-
-
-
-
 		~Blocks() = default;
+
+	private:
+		std::map<String, BlockSmartPtr> blocksIDRegistry;
+		std::map<int, BlockSmartPtr> blocksSerialIDRegistry;
 	};
 }
 

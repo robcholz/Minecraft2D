@@ -30,15 +30,11 @@ namespace block {
 	};
 
 	class Block : public BlockAccess, public HitboxHandler{
-	protected:
-		virtual Block* newBlock() = 0;
-
 	private:
 		friend class block::blocks::Blocks;
 
 		using String = std::string;
 		using BlockPosT = coordinate::BlockPositionT;
-		using PixelPosT = coordinate::PixelPositonT;
 
 		std::unique_ptr<sf::Sprite> blockSprite;
 		std::unique_ptr<BlockPosition> blockPosition;
@@ -46,7 +42,7 @@ namespace block {
 		std::unique_ptr<BlockState> blockState;
 
 		ID ID;
-		Hitbox hitbox;
+		Hitbox hitbox{};
 
 		void onInitialize() {
 			blockSprite->setTexture(*blockTexture->getBlockTextureTile(BlockDirectionType::OUT));
@@ -74,17 +70,21 @@ namespace block {
 
 		BlockPosition* getPosition() override { return blockPosition.get(); }
 
-		[[nodiscard]] struct ID getID() const override { return this->ID; }
+		[[nodiscard]]
+		struct ID getID() const override { return this->ID; }
 
-		[[nodiscard]] sf::Sprite* getSprite() const override { return blockSprite.get(); }
+		[[nodiscard]]
+		sf::Sprite* getSprite() const override { return blockSprite.get(); }
 
 		void onPositionChange() override {
 			hitbox.setHitbox(getSprite());
 		}
 
-		[[nodiscard]] bool isAir() const { return (this->getID().id == "air_block"); }
+		[[nodiscard]]
+		bool isAir() const { return (this->getID().id == "air_block"); }
 
-		[[nodiscard]] bool isError() const { return (this->getID().id == "error_block"); }
+		[[nodiscard]]
+		bool isError() const { return (this->getID().id == "error_block"); }
 
 		virtual ~Block() = default;
 	};

@@ -18,14 +18,14 @@
 
 namespace chunk {
 	class ChunkStream : public ChunkStreamAccess{
-	protected:
-		using DistanceT = unsigned short;
 	private:
+		using DistanceT = unsigned short;
 		using ChunkPtr = Chunk*;
 		using String = std::string;
 		using ChunkPosT = coordinate::ChunkPositionT;
 		using BlockPosT = coordinate::BlockPositionT;
 		using BlockCoordinate = coordinate::Coordinate<BlockPosT>;
+
 		std::map<ChunkPosT, ChunkPtr> chunkRenderingMap; // chunks that will be rendered
 		std::map<ChunkPosT, ChunkPtr> chunkSimulationMap; // chunks that will be updated
 		std::list<ChunkPosT> chunkDeletingList;

@@ -22,7 +22,7 @@ protected:
 
 public:
 	explicit TextFieldWidget(const String& id, int size, bool visible, int x, int y) :
-			Widget(id, sf::Vector2i{0, 0}, visible) {
+			Widget(id, visible) {
 		text.setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
 		    .setCharacterSize(size)
 		    .setColor(gui_style::MessageColor)

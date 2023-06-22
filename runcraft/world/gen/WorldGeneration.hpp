@@ -6,7 +6,7 @@
 #define RUNCRAFT_WORLDGENERATION_HPP
 
 class WorldGeneration{
-
+	// TODO
 };
 
 #endif //RUNCRAFT_WORLDGENERATION_HPP

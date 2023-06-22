@@ -7,14 +7,15 @@
 
 #include <string>
 #include <limits>
-#include "world/poi/Coordinate.hpp"
+#include "EntityAccess.hpp"
 #include "world/poi/Direction.hpp"
 #include "world/WorldAccess.hpp"
 #include "world/chunk/Chunk.hpp"
 #include "world/chunk/ChunkStreamAccess.hpp"
+#include "sound/Audio.hpp"
 
 namespace entity {
-	class Entity : public HitboxHandler {
+	class Entity : public EntityAccess, public HitboxHandler {
 	protected:
 		using String = std::string;
 		using EntityPosT = coordinate::EntityPositionT;
@@ -29,8 +30,6 @@ namespace entity {
 		HitboxHandler entityRightBlocksHitboxHandler;
 		HitboxHandler entityLeftBlocksHitboxHandler;
 
-		float width = 0.f;
-
 		// length unit is block. time unit is second
 		static constexpr float GRAVITY_ACCELERATION = -(1.0f / 60.f) * .8f;
 		static constexpr float TERMINAL_HORIZONTAL_VELOCITY = (1.0f / 60.0f) * 2.0f; // 2B/s
@@ -40,16 +39,11 @@ namespace entity {
 		static constexpr float JUMPING_VELOCITY = (1.0f / 60.0f) * 12;
 		static constexpr float DYNAMIC_FRICTION_ACCELERATION = -(1.0f / 60.0f) * 0.1f; // 0.1B/s-2
 
-		bool onGround = true, onGroundPrev = true;
-		bool onGroundStateChanged = false;
-		float prevZ = -1;
-		float fallDistance = 0.0f;
-		AudioPlayer audio{"entity/player/hurt/mdcnm"};
-
 		virtual void onUpdate() {
 			updateHitbox();
 			updateVelocity();
-			updateState();
+			updateFallDistance();
+			updateDamage();
 			getEntityPosition().offsetPosition(getVelocity().x, getVelocity().z); // apply the velocity to the entity
 		}
 
@@ -63,23 +57,35 @@ namespace entity {
 		explicit Entity(WorldAccess* worldAccess) {
 			this->worldAccess = worldAccess;
 			addHitbox(&entityHitbox);
-			audio.addAudio();
+			//audio.addAudio();
 		}
 
-		EntityPosition& getEntityPosition() {
+		EntityPosition& getEntityPosition() override {
 			return entityPosition;
 		}
 
-		coordinate::Velocity& getVelocity() { return velocity; }
+		coordinate::Velocity& getVelocity() override { return velocity; }
 
-		EntityPosT getHeight() {
+		EntityPosT getHeight() override {
 			auto zoom = (EntityPosT) GameInfo.getConstExternalData()->windowState.pixelProportion;
 			return (EntityPosT) entityHitbox.getHitbox().height / zoom;
 		}
 
-		EntityPosT getWidth() {
+		EntityPosT getWidth() override {
 			auto zoom = (EntityPosT) GameInfo.getConstExternalData()->windowState.pixelProportion;
 			return (EntityPosT) entityHitbox.getHitbox().width / zoom;
+		}
+
+		float getHealth() override {
+			return health;
+		}
+
+		bool isDamaged() override {
+			return damaged;
+		}
+
+		bool onGround() override {
+			return grounded;
 		}
 
 		void update() {
@@ -92,13 +98,22 @@ namespace entity {
 
 	private:
 		WorldAccess* worldAccess = nullptr;
+		float health = 20.f;
+		float last_health = health;
+		bool damaged = false;
+		bool grounded = true;
+		bool prevGrounded = false;
+		float fallDistance = 0.f;
+		float prevZ = 0.f;
 
 		BlockPosT predicateVerticalBarrierPos() {
 			for (int i = chunk::ChunkGenSettings::CHUNK_HEIGHT - 1; i >= 1; i--) {
 				auto chunk_stream = worldAccess->getChunkStream();
-				auto block_itr_upper = chunk_stream->getBlock(coordinate::Coordinate<BlockPosT>{getEntityPosition().getBlockPosition().getX(), i});
-				auto block_itr_lower = chunk_stream->getBlock(coordinate::Coordinate<BlockPosT>{getEntityPosition().getBlockPosition().getX(), i - 1});
-				if (!block_itr_upper->hasHitbox() && (block_itr_lower->hasHitbox()))
+				auto block_pos_upper = coordinate::Coordinate<BlockPosT>(getEntityPosition().getBlockPosition().getX(), i);
+				auto block_pos_lower = coordinate::Coordinate<BlockPosT>(getEntityPosition().getBlockPosition().getX(), i - 1);
+				auto block_itr_upper = chunk_stream->getBlock(block_pos_upper);
+				auto block_itr_lower = chunk_stream->getBlock(block_pos_lower);
+				if ((!block_itr_upper->hasHitbox() || block_itr_upper->isError()) && (block_itr_lower->hasHitbox()))
 					return block_itr_lower->getPosition()->getPosition().getZ();
 			}
 			return -1;
@@ -143,7 +158,7 @@ namespace entity {
 			if (barrier_block_pos != -1 && current_pos > barrier_block_pos) {
 				if (prevZ == -1)
 					prevZ = current_pos;
-				onGround = false;
+				grounded = false;
 				acceleration.z = GRAVITY_ACCELERATION - acceleration.z / AIR_DRAG_COEFFICIENT;// a=g-a/k
 			} // on air
 		}
@@ -220,7 +235,7 @@ namespace entity {
 
 			for (auto z_left = left_block_range_lower_z; z_left <= left_block_range_upper_z; ++z_left) {
 				//TODO in line 230 x should plus 1; why x stayed constant here??
-				auto block = getBlock_(bottom_block_range_lower_x, z_left);
+				auto block = getBlock_(bottom_block_range_lower_x - 1, z_left);
 				if (block->isAir())
 					block->getHitbox()->setHitbox(0, 0, 0, 0);
 				entityLeftBlocksHitboxHandler.addHitbox(block->getHitbox());
@@ -239,7 +254,7 @@ namespace entity {
 			if (isEntityCollidedToBottom().first &&
 			    (entity_stand_pos_z + predicted_velocity_z <= (EntityPosT) isEntityCollidedToBottom().second && velocity.z < 0)) {
 				// entity is falling; entity will go through the block that has a hitbox; entity will have a collision with that block;
-				onGround = true;
+				grounded = true;
 				acceleration.z = 0;
 				velocity.z = 0;
 				getEntityPosition().setPosition(entity_stand_pos_x, (EntityPosT) isEntityCollidedToBottom().second);
@@ -250,7 +265,7 @@ namespace entity {
 				acceleration.x = 0;
 				velocity.x = 0;
 				// TODO in line 260 setEntityPosition() is commented, why not do so in this line????? strange.
-				getEntityPosition().setPosition(getEntityPosition().getBlockPosition().getFloatX() + 1, getEntityPosition().getPosition().getZ());
+				//getEntityPosition().setPosition(getEntityPosition().getBlockPosition().getFloatX() + 1, getEntityPosition().getPosition().getZ());
 			}
 			if (isEntityCollidedToRight && getEntityPosition().isFacing(Direction::DirectionType::EAST)) {
 				acceleration.x = 0;
@@ -260,7 +275,6 @@ namespace entity {
 				//getEntityPosition().setPixelPosition(block->getHitbox()->getHitbox().x - getHitbox()->getHitbox().width,getEntityPosition().getPixelPosition().getZ());
 			}
 		}
-
 
 		void updateVelocity() {
 			velocity.x = exertFriction(velocity.x, DYNAMIC_FRICTION_ACCELERATION);
@@ -272,7 +286,21 @@ namespace entity {
 			velocity.z += acceleration.z;
 		}
 
-		void updateState() {
+		void updateFallDistance() {
+			auto z_pos = getEntityPosition().getPosition().getZ();
+			if (grounded && !prevGrounded) {
+				fallDistance = prevZ - z_pos;
+				prevZ = z_pos;
+			} else
+				fallDistance = 0.f;
+			prevGrounded = grounded;
+		}
+
+		void updateDamage() {
+			if (fallDistance >= 3)
+				health -= floor(((int)fallDistance - 3) / 2); // falling damage
+			damaged = (last_health > health);
+			last_health = health;
 		}
 	};
 }

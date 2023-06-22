@@ -39,7 +39,7 @@ public:
 		return &directories;
 	}
 
-	std::string getDirectory(){
+	std::string getDirectoryName(){
 		return directoryPath;
 	}
 

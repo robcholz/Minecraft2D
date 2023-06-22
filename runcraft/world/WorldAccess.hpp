@@ -7,12 +7,15 @@
 
 #include "world/chunk/ChunkStreamAccess.hpp"
 
-class Player;
+class PlayerEntity;
 
-class WorldAccess{
+class WorldAccess {
 public:
-	virtual Player* getPlayer()=0;
-	virtual chunk::ChunkStreamAccess* getChunkStream()=0;
+	virtual PlayerEntity* getPlayer() = 0;
+
+	virtual chunk::ChunkStreamAccess* getChunkStream() = 0;
+
+	virtual sf::View& getView() = 0;
 };
 
 #endif //RUNCRAFT_WORLDACCESS_HPP

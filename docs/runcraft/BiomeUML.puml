@@ -1,0 +1,32 @@
+@startuml
+
+Decorator <- TreeDecorator
+
+class Decorator{
+    +Decorator(float probability=)
+    #virtual void onGenerate()
+
+}
+
+class TreeDecorator{
+
+}
+
+class Registry{
+
+}
+
+class Biome{
+    +Biome(int weight,std::initializer_list<Block> surfaceBlockCategory,std::initializer_list<Decorator> surfaceDecorators)
+    #Block* getBlock(coordinate::Coordinate<ChunkBlockPositionT> chunkBlockPos) // return a block instance at given coordinate
+
+}
+
+class Chunk{
+     +void setSeed(long seed)
+     +long getSeed()
+     +void addBiome(Biome* biome)
+     +void generate() // call the function getBlock() from class Biome
+}
+
+@enduml

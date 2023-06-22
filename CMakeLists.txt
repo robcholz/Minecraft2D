@@ -21,7 +21,6 @@ set(SOURCE_FILES
         runcraft/client/gui/text/RichText.hpp
         runcraft/client/gui/GUI.hpp
         runcraft/client/GameInfo.hpp
-        runcraft/client/RunCraft.hpp
         runcraft/client/Menu.hpp
         runcraft/client/render/Render.hpp
         runcraft/util/MathHelper.hpp
@@ -40,9 +39,9 @@ set(SOURCE_FILES
         runcraft/block/attributes/BlockTextureLoader.hpp
         runcraft/block/AirBlock.hpp
         runcraft/block/DirtBlock.hpp
-        runcraft/client/player/Player.hpp
+        runcraft/entity/player/PlayerEntity.hpp
         runcraft/client/scene/SceneManager.hpp
-        runcraft/client/scene/Scene.hpp
+        runcraft/client/scene/SceneAccess.hpp
         runcraft/world/gen/WorldGeneration.hpp
         runcraft/world/chunk/ChunkStream.hpp
         runcraft/world/World.hpp
@@ -57,7 +56,22 @@ set(SOURCE_FILES
         runcraft/block/attributes/BlockSoundGroupLoader.hpp
         runcraft/sound/SoundEvent.hpp
         runcraft/entity/Entity.hpp
-        runcraft/world/WorldAccess.hpp runcraft/world/chunk/ChunkStreamAccess.hpp runcraft/block/attributes/BlockAccess.hpp runcraft/block/ErrorBlock.hpp runcraft/util/Hitbox.hpp)
+        runcraft/world/WorldAccess.hpp 
+        runcraft/world/chunk/ChunkStreamAccess.hpp
+        runcraft/block/attributes/BlockAccess.hpp
+        runcraft/block/ErrorBlock.hpp 
+        runcraft/util/Hitbox.hpp 
+        runcraft/client/gui/hud/InGameBarHud.hpp 
+        runcraft/client/RunCraftClient.hpp 
+        runcraft/entity/EntityAccess.hpp 
+        runcraft/client/toast/ToastAccess.hpp 
+        runcraft/client/toast/ToastManager.hpp 
+        runcraft/client/toast/SystemToast.hpp 
+        runcraft/client/toast/AdvancementToast.hpp 
+        runcraft/client/gui/hud/HungerBarHud.hpp 
+        runcraft/util/Registry.hpp 
+        runcraft/util/RegistryAccess.hpp
+        )
 
 
 #includes

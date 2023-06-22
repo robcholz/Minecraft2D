@@ -62,8 +62,9 @@ namespace external_data {
 		 * @range [50,100]
 		 */
 		ZoomT zoomSize = 50;
-		ZoomT pixelToBlock=50; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
-		ZoomT pixelProportion= (ZoomT)(pixelToBlock * 2);
+		ZoomT pixelToBlock = 40; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
+		ZoomT pixelProportion = (ZoomT) (pixelToBlock * 2);
+		float actualPixelToOnePixel = (float)pixelProportion / 16;
 		bool gainedFocus{}, lostFocus{};
 		bool resized{};
 
@@ -75,7 +76,7 @@ namespace external_data {
 	};
 
 	struct Logging {
-		using Json=nlohmann::json;
+		using Json = nlohmann::json;
 		Json optionsJson;
 
 		void load() {

@@ -26,9 +26,8 @@ protected:
 	sf::Texture widgetNormalTexture, widgetFocusedTexture;
 	sf::IntRect widgetNormalIntRect, widgetFocusedIntRect;
 	sf::Sprite widgetSprite;
-	sf::Vector2i widgetSize;
 	Areai widgetOutline{};
-	String widgetAssetPath = guiFilePath + "widgets.png";
+	String widgetAssetPath = guiFilePath + "/widgets.png";
 	String id;
 	CallbackFunc execFuncPtr = nullptr;
 	bool visible = true;
@@ -59,8 +58,6 @@ protected:
 	virtual void setClicked(bool isClicked) {
 		setStateChanged(lastClicked != isClicked);
 		clicked = (isStateChanged() && isClicked);
-		if(isStateChanged())
-			std::cout<<isStateChanged()<<std::endl;
 		lastClicked = isClicked;
 	}
 
@@ -97,11 +94,10 @@ protected:
 	}
 
 public:
-	explicit Widget(const String& id, sf::Vector2i size, bool visible) {
+	explicit Widget(const String& id, bool visible) {
 		mouseObserver.attachKey(input::MouseKeyType::Left);
 		this->id = id;
 		this->visible = visible;
-		widgetSize = size;
 	}
 
 

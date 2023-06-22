@@ -20,7 +20,7 @@ protected:
 public:
     Texture()= default;
     explicit Texture(const std::string &filename) : Sprite(sourceTexture) {
-        if (!sourceTexture.loadFromFile(guiFilePath + filename)){
+        if (!sourceTexture.loadFromFile(guiFilePath +"/"+ filename)){
             PLOG_DEBUG << ("CANNOT update sourceTexture from " + (guiFilePath + filename));
         }
 		textureAtlas.push_front(new sf::Sprite(sourceTexture));
