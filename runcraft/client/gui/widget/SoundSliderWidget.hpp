@@ -5,9 +5,8 @@
 #ifndef RUNCRAFT_SOUNDSLIDERWIDGET_HPP
 #define RUNCRAFT_SOUNDSLIDERWIDGET_HPP
 
-#include "SliderWidget.hpp"
-
 #include <utility>
+#include "SliderWidget.hpp"
 
 class SoundSliderWidget : public SliderWidget {
 private:

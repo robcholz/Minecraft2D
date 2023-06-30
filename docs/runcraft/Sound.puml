@@ -1,0 +1,53 @@
+@startuml
+
+class MusicSound{
+    // music
+    +MusicSound(SoundEvent sound, int minDelay, int maxDelay, bool replaceCurrentMusic)
+    +SoundEvent& getSound()
+    +int getMinDelay()
+    +int getMaxDelay()
+    +bool getReplaceCurrentMusic()
+}
+
+class BlockSoundGroup{
+    // block sound
+    -float volume
+    -float pitch
+    -SoundEvent breakSound
+    -SoundEvent stepSound
+    -SoundEvent placeSound
+    -SoundEvent hitSound
+    -SoundEvent fallSound
+
+    +BlockSoundGroup(float volume, float pitch, SoundEvent breakSound, SoundEvent stepSound, SoundEvent placeSound, SoundEvent hitSound, SoundEvent fallSound)
+    +float getVolume()
+    +float getPitch()
+    +SoundEvent& getBreakSound()
+    +SoundEvent& getStepSound()
+    +SoundEvent& getPlaceSound()
+    +SoundEvent& getHitSound()
+    +SoundEvent& getFallSound()
+}
+
+class SoundEvents{
+    // SoundEvent registry
+}
+
+class SoundEvent{
+    // entity sound
+    -Identifier id
+    +SoundEvent(Identifier id)
+    +Identifier& getID()
+}
+
+class SoundEventManager{
+    -std::queue<std::unique_ptr<MusicSound>> musicSoundQueue;
+    -std::queue<std::unique_ptr<SoundEvent>> soundEventQueue;
+
+    +SoundEventManager()
+    -void updateMusic()
+    -void updateSoundEvent()
+    +void update()
+}
+
+@enduml

@@ -10,6 +10,7 @@
 #include "world/poi/Coordinate.hpp"
 #include "world/poi/Direction.hpp"
 #include "block/attributes/BlockAccess.hpp"
+#include "client/GameInfo.hpp"
 
 namespace coordinate {
 	template<typename T>

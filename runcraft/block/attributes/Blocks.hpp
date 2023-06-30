@@ -24,7 +24,7 @@ namespace block::blocks {
 	class Blocks {
 	private:
 		using String = std::string;
-		using BlockSmartPtr = std::shared_ptr<Block>;
+		using BlockSmartPtr = std::__1::shared_ptr<Block>;
 
 		explicit Blocks() {
 			RegisterBlock(AirBlock);

@@ -12,7 +12,6 @@
 #include "world/WorldAccess.hpp"
 #include "world/chunk/Chunk.hpp"
 #include "world/chunk/ChunkStreamAccess.hpp"
-#include "sound/Audio.hpp"
 
 namespace entity {
 	class Entity : public EntityAccess, public HitboxHandler {
@@ -57,7 +56,10 @@ namespace entity {
 		explicit Entity(WorldAccess* worldAccess) {
 			this->worldAccess = worldAccess;
 			addHitbox(&entityHitbox);
-			//audio.addAudio();
+		}
+
+		WorldAccess* getWorld() override {
+			return worldAccess;
 		}
 
 		EntityPosition& getEntityPosition() override {
@@ -80,12 +82,16 @@ namespace entity {
 			return health;
 		}
 
-		bool isDamaged() override {
-			return damaged;
+		bool isWalking() override{
+			return velocity.x != 0;
 		}
 
 		bool onGround() override {
 			return grounded;
+		}
+
+		bool isDamaged() override {
+			return damaged;
 		}
 
 		void update() {

@@ -11,23 +11,11 @@
 #include "client/gui/hud/InGameBarHud.hpp"
 
 class World : public WorldAccess, public SceneAccess {
-private:
-	float screenWidth = (float) GameInfo.getConstExternalData()->windowState.getScreenWidth();
-	float screenHeight = (float) GameInfo.getConstExternalData()->windowState.getScreenHeight();
-	sf::View view{sf::FloatRect{0.f, 0.f, screenWidth, screenHeight}};
-	std::unique_ptr<PlayerEntity> player;
-	std::unique_ptr<chunk::ChunkStream> chunkStream;
-	std::unique_ptr<hud::InGameBarHud> hud;
-
-	void updateCamera() {
-		view.move((float) player->getEntityPosition().getPixelPosition().getOffset().x, (float) player->getEntityPosition().getPixelPosition().getOffset().z);
-		GameInfo.getConstExternalData()->windowState.getRender()->getWindowConfig().window->setView(view);
-		view.setCenter(player->getEntityPosition().getPixelPosition().getFloatX(), player->getEntityPosition().getPixelPosition().getFloatZ());
-	}
-
 public:
-	explicit World() {
-		player = std::make_unique<PlayerEntity>(this);
+	explicit World(RuncraftClientAccess* runcraftClientAccess) {
+		this->runcraftClientAccess = runcraftClientAccess;
+		runcraftClientAccess->getSoundManager()->stopCurrentPlaying();
+		player = std::make_unique<PlayerEntity>(runcraftClientAccess,this);
 		player->getEntityPosition().setPosition(0, 8);
 		chunkStream = std::make_unique<chunk::ChunkStream>(this, 4, 2);
 		chunkStream->setChunkGenerator([](int chunkPos) { return new chunk::Chunk(chunkPos); });
@@ -61,7 +49,20 @@ public:
 		hud->render();
 	}
 
+private:
+	float screenWidth = (float) GameInfo.getConstExternalData()->windowState.getScreenWidth();
+	float screenHeight = (float) GameInfo.getConstExternalData()->windowState.getScreenHeight();
+	sf::View view{sf::FloatRect{0.f, 0.f, screenWidth, screenHeight}};
+	std::unique_ptr<PlayerEntity> player;
+	std::unique_ptr<chunk::ChunkStream> chunkStream;
+	std::unique_ptr<hud::InGameBarHud> hud;
+	RuncraftClientAccess* runcraftClientAccess = nullptr;
 
+	void updateCamera() {
+		view.move((float) player->getEntityPosition().getPixelPosition().getOffset().x, (float) player->getEntityPosition().getPixelPosition().getOffset().z);
+		GameInfo.getConstExternalData()->windowState.getRender()->getWindowConfig().window->setView(view);
+		view.setCenter(player->getEntityPosition().getPixelPosition().getFloatX(), player->getEntityPosition().getPixelPosition().getFloatZ());
+	}
 };
 
 #endif //RUNCRAFT_WORLD_HPP

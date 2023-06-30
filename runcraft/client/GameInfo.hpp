@@ -9,7 +9,7 @@
 
 #include <fstream>
 #include "Log.h"
-#include "client/render/Render.hpp"
+#include "client/render/RenderSystem.hpp"
 #include "json.hpp"
 
 namespace internal_data {
@@ -55,7 +55,7 @@ namespace external_data {
 	};
 
 	struct WindowState {
-		Render* rendererPtr = nullptr;
+		RenderSystem* rendererPtr = nullptr;
 		Camera* camera = nullptr;
 		typedef short ZoomT;
 		/**
@@ -72,7 +72,7 @@ namespace external_data {
 
 		[[nodiscard]] unsigned int getScreenHeight() const { return rendererPtr->getWindowConfig().screenHeight; }
 
-		[[nodiscard]] Render* getRender() const { return rendererPtr; }
+		[[nodiscard]] RenderSystem* getRender() const { return rendererPtr; }
 	};
 
 	struct Logging {
@@ -115,7 +115,7 @@ public:
 		externalData.logger.load();
 	}
 
-	void setRenderer(Render* renderer) {
+	void setRenderer(RenderSystem* renderer) {
 		externalData.windowState.rendererPtr = renderer;
 		externalData.windowState.camera = renderer->getCamera();
 		PLOG_DEBUG << "Successfully set the renderer";
@@ -129,7 +129,7 @@ public:
 
 	const external_data::External* getConstExternalData() { return &externalData; }
 
-	[[nodiscard]] Render* getRender() const { return externalData.windowState.rendererPtr; }
+	[[nodiscard]] RenderSystem* getRender() const { return externalData.windowState.rendererPtr; }
 };
 
 GameInfo GameInfo;

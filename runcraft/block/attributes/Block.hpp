@@ -31,7 +31,7 @@ namespace block {
 
 	class Block : public BlockAccess, public HitboxHandler{
 	private:
-		friend class block::blocks::Blocks;
+		friend class Blocks;
 
 		using String = std::string;
 		using BlockPosT = coordinate::BlockPositionT;

@@ -9,6 +9,7 @@
 #include "client/input/Input.hpp"
 #include "block/attributes/Block.hpp"
 #include "entity/Entity.hpp"
+#include "block/attributes/Blocks.hpp"
 
 class PlayerEntity : public entity::Entity {
 protected:
@@ -22,6 +23,11 @@ protected:
 		updateSkin();
 		entity::Entity::onUpdate();
 		_setPixelPosition(getEntityPosition().getPixelPosition().getX(), getEntityPosition().getPixelPosition().getZ());
+		if (getWorld()->getChunkStream()->getBlock(getEntityPosition().getBlockPosition())->getID().id == "grass_block") {
+			if(entity::Entity::isWalking())
+			this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().STEP_SOUND_GRASS_1);
+			PLOG_DEBUG << "Yes";
+		}
 	}
 
 	void onRender() override {
@@ -34,7 +40,8 @@ protected:
 public:
 	enum class View : uint8_t { EAST, WEST };
 
-	explicit PlayerEntity(WorldAccess* worldAccess) : Entity(worldAccess) {
+	explicit PlayerEntity(RuncraftClientAccess* runcraftClientAccess, WorldAccess* worldAccess) : Entity(worldAccess) {
+		this->runcraftClientAccess = runcraftClientAccess;
 		moveLeft.attachKey(input::KeyboardKeyType::A);
 		moveRight.attachKey(input::KeyboardKeyType::D);
 		moveJump.attachKey(input::KeyboardKeyType::Space);
@@ -57,6 +64,7 @@ private:
 	Texture rightLeg, rightArm, rightHead;
 	Sprite legSprite, armSprite, headSprite;
 	View _view{};
+	RuncraftClientAccess* runcraftClientAccess;
 
 	void initSkin() {
 		leftLeg.loadFromFile(playerSkinAssetPath, sfRecti{24, 52, 4, 12}); // (24,52) (27,63)

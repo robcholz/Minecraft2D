@@ -20,4 +20,4 @@ namespace block::blocks {
 	};
 }
 
-#endif //RUNCRAFT_BIRCHLOGBLOCK_HPP
+#endif //RUNCRAFT_COBBLESTONEBLOCK_HPP

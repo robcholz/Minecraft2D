@@ -9,21 +9,14 @@
 
 #include <memory>
 #include "client/GameInfo.hpp"
-#include "sound/Audio.hpp"
+#include "sound/SoundEvents.hpp"
 
 
 class Screen {
-private:
-	Background* background = nullptr;
-	std::list<Widget*> widgetsList;
-
-	std::map<Widget*, Screen*> callbackScreenMap;
-	Screen* responseCallBackScreenPtr = nullptr;
-
-	AudioPlayer audioPlayer;
 public:
-	explicit Screen(Background* background) {
+	explicit Screen(RuncraftClientAccess* runcraftClientAccess, Background* background) {
 		this->background = background;
+		this->runcraftClientAccess = runcraftClientAccess;
 	}
 
 	~Screen() = default;
@@ -45,7 +38,7 @@ public:
 		for (auto widget_obj: widgetsList) {
 			widget_obj->update();
 			if (widget_obj->isClicked() && widget_obj->isFocused()) {
-				audioPlayer.play();
+				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().GUI_CLICK_SOUND_1);
 				widget_obj->executeCallbackFunc();
 				if (callbackScreenMap.contains(widget_obj)) {
 					responseCallBackScreenPtr = callbackScreenMap[widget_obj];
@@ -55,6 +48,13 @@ public:
 			widget_obj->render();
 		}
 	}
+
+private:
+	Background* background = nullptr;
+	std::list<Widget*> widgetsList;
+	std::map<Widget*, Screen*> callbackScreenMap;
+	Screen* responseCallBackScreenPtr = nullptr;
+	RuncraftClientAccess* runcraftClientAccess= nullptr;
 };
 
 #endif //RUNCRAFT_SCREEN_HPP

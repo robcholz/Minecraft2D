@@ -8,8 +8,12 @@
 #include "world/poi/Coordinate.hpp"
 #include "world/poi/Position.hpp"
 
+class WorldAccess;
+
 class EntityAccess {
 public:
+	virtual WorldAccess* getWorld() = 0;
+
 	virtual coordinate::Velocity& getVelocity() = 0;
 
 	virtual entity::EntityPosition& getEntityPosition() = 0;
@@ -21,6 +25,8 @@ public:
 	virtual float getHealth() = 0;
 
 	virtual float getMaxHealth() = 0;
+
+	virtual bool isWalking() = 0;
 
 	virtual bool onGround() = 0;
 

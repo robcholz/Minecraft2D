@@ -8,7 +8,7 @@
 #include "block/attributes/Block.hpp"
 
 namespace block::blocks {
-	class AirBlock : public block::Block {
+class AirBlock : public block::Block {
 	private:
 	public:
 		explicit AirBlock() : Block("air_block") {

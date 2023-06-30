@@ -22,13 +22,12 @@ set(SOURCE_FILES
         runcraft/client/gui/GUI.hpp
         runcraft/client/GameInfo.hpp
         runcraft/client/Menu.hpp
-        runcraft/client/render/Render.hpp
+        runcraft/client/render/RenderSystem.hpp
         runcraft/util/MathHelper.hpp
         runcraft/util/GameLogger.hpp
         runcraft/util/Utils.hpp
         runcraft/block/attributes/Blocks.hpp
         runcraft/block/attributes/Block.hpp
-        runcraft/sound/Audio.hpp
         runcraft/resource/FileHelper.hpp
         runcraft/events/SystemEvents.hpp
         runcraft/error/ErrorHandling.hpp
@@ -61,8 +60,8 @@ set(SOURCE_FILES
         runcraft/block/attributes/BlockAccess.hpp
         runcraft/block/ErrorBlock.hpp 
         runcraft/util/Hitbox.hpp 
-        runcraft/client/gui/hud/InGameBarHud.hpp 
-        runcraft/client/RunCraftClient.hpp 
+        runcraft/client/gui/hud/InGameBarHud.hpp
+        runcraft/client/RuncraftClient.hpp
         runcraft/entity/EntityAccess.hpp 
         runcraft/client/toast/ToastAccess.hpp 
         runcraft/client/toast/ToastManager.hpp 
@@ -71,8 +70,12 @@ set(SOURCE_FILES
         runcraft/client/gui/hud/HungerBarHud.hpp 
         runcraft/util/Registry.hpp 
         runcraft/util/RegistryAccess.hpp
-        )
-
+        runcraft/sound/SoundEvents.hpp
+        runcraft/sound/SoundManager.hpp
+        runcraft/sound/BlockSoundGroup.hpp
+        runcraft/sound/MusicSoundEvent.hpp
+        runcraft/util/Identifier.hpp
+        runcraft/client/RuncraftClientAccess.hpp)
 
 #includes
 add_executable(runcraft ${SOURCE_FILES})
@@ -107,12 +110,11 @@ enable_testing()
 
 add_executable(
         RunCraftTest
-        test/test_resource/ResourceTest.cpp
         test/test_bitsery/BitseryTest.cpp
         test/test_bitsery/BitseryStreamTest.cpp
-        test/test_input/InputTest.cpp
         test/test_block/BlockIDTest.cpp
-        test/test_block/BlockTextureLoaderTest.hpp)
+        test/test_util/IdentifierTest.cpp
+)
 target_link_libraries(
         RunCraftTest
         sfml-system

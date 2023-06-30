@@ -58,7 +58,7 @@ namespace utils {
 		return (int) round(v);
 	}
 
-	size_t nthOccurrence(const std::string& str, const std::string& findMe, int nth) {
+	int nthOccurrence(const std::string& str, const std::string& findMe, int nth) {
 		size_t pos = 0;
 		int cnt = 0;
 		while (cnt != nth) {
@@ -68,7 +68,7 @@ namespace utils {
 				return -1;
 			cnt++;
 		}
-		return pos;
+		return static_cast<int>(pos);
 	}
 
 	template<typename Iter>
@@ -76,8 +76,7 @@ namespace utils {
 		Iter it = std::search(first, last, first_, last_);
 		if (nth == 0) return it;
 		if (it == last) return it;
-		return nthOccurrence(it + std::distance(first_, last_), last,
-		                     first_, last_, nth - 1);
+		return nthOccurrence(it + std::distance(first_, last_), last, first_, last_, nth - 1);
 	}
 
 	template<typename T>

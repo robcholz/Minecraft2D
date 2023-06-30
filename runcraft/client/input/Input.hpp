@@ -11,6 +11,7 @@
 #include <map>
 #include <SFML/Window/Event.hpp>
 #include "json.hpp"
+#include "events/SystemEvents.hpp"
 
 namespace input {
 	enum class MouseKeyType {

@@ -13,7 +13,7 @@
 
 class SystemEvents {
 private:
-	Render *render = GameInfo.getRender();
+	RenderSystem *render = GameInfo.getRender();
 	sf::Event event{};
 public:
 	explicit SystemEvents() = default;

@@ -2,8 +2,8 @@
 // Created by robcholz on 3/11/23.
 //
 
-#ifndef RUNCRAFT_RENDER_HPP
-#define RUNCRAFT_RENDER_HPP
+#ifndef RUNCRAFT_RENDERSYSTEM_HPP
+#define RUNCRAFT_RENDERSYSTEM_HPP
 
 #pragma once
 
@@ -15,7 +15,7 @@
 
 typedef sf::View Camera;
 
-class Render {
+class RenderSystem {
 private:
 	struct ScreenConfig {
 		sf::RenderWindow *window;
@@ -25,7 +25,7 @@ private:
 	} screenConfig{};
 
 public:
-	explicit Render(const std::string &windowName) {
+	explicit RenderSystem(const std::string &windowName) {
 		screenConfig.screenWidth = (int) ((float) sf::VideoMode::getDesktopMode().width * 19 / 32);
 		screenConfig.screenHeight = (int) ((float) sf::VideoMode::getDesktopMode().height * 8 / 15);
 		screenConfig.window = new sf::RenderWindow(sf::VideoMode(screenConfig.screenWidth, screenConfig.screenHeight),
@@ -36,7 +36,7 @@ public:
 		              std::to_string(screenConfig.screenWidth) + "*" + std::to_string(screenConfig.screenHeight);
 	}
 
-	~Render() {
+	~RenderSystem() {
 		delete screenConfig.window;
 	}
 
@@ -56,4 +56,4 @@ public:
 
 };
 
-#endif //RUNCRAFT_RENDER_HPP
+#endif //RUNCRAFT_RENDERSYSTEM_HPP
