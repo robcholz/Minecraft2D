@@ -16,7 +16,12 @@
 #include "block/CobblestoneBlock.hpp"
 #include "block/DiamondBlock.hpp"
 #include "block/ErrorBlock.hpp"
-//#include "util/Registry.hpp"
+#include "block/StoneBlock.hpp"
+#include "block/BedrockBlock.hpp"
+#include "block/DeepslateBlock.hpp"
+#include "block/AndesiteBlock.hpp"
+#include "block/DioriteBlock.hpp"
+#include "block/GraniteBlock.hpp"
 
 #define RegisterBlock(block) registerBlock(std::make_shared<block>())
 
@@ -24,18 +29,24 @@ namespace block::blocks {
 	class Blocks {
 	private:
 		using String = std::string;
-		using BlockSmartPtr = std::__1::shared_ptr<Block>;
+		using BlockSmartPtr = std::shared_ptr<Block>;
 
 		explicit Blocks() {
 			RegisterBlock(AirBlock);
+			RegisterBlock(BedrockBlock);
 			RegisterBlock(BirchLogBlock);
 			RegisterBlock(CoalOreBlock);
 			RegisterBlock(CobblestoneBlock);
 			RegisterBlock(DiamondBlock);
 			RegisterBlock(DirtBlock);
+			RegisterBlock(ErrorBlock);
 			RegisterBlock(GrassBlock);
 			RegisterBlock(IronBlock);
-			RegisterBlock(ErrorBlock);
+			RegisterBlock(StoneBlock);
+			RegisterBlock(DeepslateBlock);
+			RegisterBlock(AndesiteBlock);
+			RegisterBlock(DioriteBlock);
+			RegisterBlock(GraniteBlock);
 		}
 
 	protected:
@@ -69,8 +80,8 @@ namespace block::blocks {
 		~Blocks() = default;
 
 	private:
-		std::map<String, BlockSmartPtr> blocksIDRegistry;
-		std::map<int, BlockSmartPtr> blocksSerialIDRegistry;
+		std::unordered_map<String, BlockSmartPtr> blocksIDRegistry;
+		std::unordered_map<int, BlockSmartPtr> blocksSerialIDRegistry;
 	};
 }
 

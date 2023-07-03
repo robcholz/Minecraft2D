@@ -34,6 +34,7 @@ protected:
 public:
 	RuncraftClient() {
 		onConfig();
+
 		sceneManager.addScene("menu", [this]() { return new Menu(this); })
 		            .addScene("world", [this]() { return new World(this); })
 					.setPair("menu", "world")
@@ -57,7 +58,6 @@ private:
 	input::Mouse mouse;
 	input::Keyboard keyboard;
 	std::shared_ptr<SystemEvents> gameEvents;
-
 	RenderSystem render{"RunCrafts"};
 
 	SoundManager* getSoundManager() override {

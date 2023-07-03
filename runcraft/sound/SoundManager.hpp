@@ -53,7 +53,6 @@ private:
 			musicSoundEventQueue.pop();
 			if (musicSoundEventQueue.empty()) {
 				musicSoundEventCurrent = nullptr;
-				PLOG_DEBUG << "What!";
 				return;
 			}
 		}
@@ -63,7 +62,7 @@ private:
 			musicSoundEventCurrent = musicSoundEventQueue.top().get();
 			musicSoundEventPlayer.setBuffer(musicSoundEventCurrent->getSoundEvent().getSound());
 			musicSoundEventPlayer.play();
-			PLOG_DEBUG << musicSoundEventCurrent->getSoundEvent().getID().toString();
+			PLOG_DEBUG << "Current playing: " << musicSoundEventCurrent->getSoundEvent().getID().toString();
 		}
 	}
 

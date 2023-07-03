@@ -23,7 +23,7 @@ set(SOURCE_FILES
         runcraft/client/GameInfo.hpp
         runcraft/client/Menu.hpp
         runcraft/client/render/RenderSystem.hpp
-        runcraft/util/MathHelper.hpp
+        runcraft/util/math/MathHelper.hpp
         runcraft/util/GameLogger.hpp
         runcraft/util/Utils.hpp
         runcraft/block/attributes/Blocks.hpp
@@ -75,7 +75,7 @@ set(SOURCE_FILES
         runcraft/sound/BlockSoundGroup.hpp
         runcraft/sound/MusicSoundEvent.hpp
         runcraft/util/Identifier.hpp
-        runcraft/client/RuncraftClientAccess.hpp)
+        runcraft/client/RuncraftClientAccess.hpp runcraft/util/math/noise/PerlinNoise.hpp runcraft/util/math/noise/SimplexNoise.hpp runcraft/util/math/Random.hpp runcraft/block/StoneBlock.hpp runcraft/block/BedrockBlock.hpp runcraft/block/DeepslateBlock.hpp runcraft/util/ppm.hpp runcraft/world/gen/carver/Carver.hpp runcraft/block/GraniteBlock.hpp runcraft/block/DioriteBlock.hpp runcraft/block/AndesiteBlock.hpp runcraft/world/gen/feature/OreFeature.hpp runcraft/world/gen/decorator/Decorator.hpp runcraft/world/gen/decorator/HeightDecorator.hpp)
 
 #includes
 add_executable(runcraft ${SOURCE_FILES})
@@ -114,7 +114,7 @@ add_executable(
         test/test_bitsery/BitseryStreamTest.cpp
         test/test_block/BlockIDTest.cpp
         test/test_util/IdentifierTest.cpp
-)
+        test/test_math/MathTest.cpp test/test_world_gen/CaveTest.cpp)
 target_link_libraries(
         RunCraftTest
         sfml-system

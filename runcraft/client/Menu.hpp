@@ -19,6 +19,7 @@
 #include "client/scene/SceneAccess.hpp"
 #include "sound/SoundEvents.hpp"
 #include "RuncraftClientAccess.hpp"
+#include "util/math/Random.hpp"
 
 class Menu : public SceneAccess {
 public:
@@ -174,7 +175,7 @@ private:
 	}
 
 	void playRandomMusic() {
-		switch (math::RandomNumGenerator::getRange(1, 6)) {
+		switch (math::Random::getRange(1, 6)) {
 			case 1:
 				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_1);
 				break;

@@ -10,7 +10,7 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include "Widget.hpp"
 #include "client/GameInfo.hpp"
-#include "util/MathHelper.hpp"
+#include "util/math/MathHelper.hpp"
 
 class SliderWidget : public Widget {
 protected:

@@ -6,7 +6,7 @@
 #define RUNCRAFT_POSITION_HPP
 
 #include <memory>
-#include "util/MathHelper.hpp"
+#include "util/math/MathHelper.hpp"
 #include "world/poi/Coordinate.hpp"
 #include "world/poi/Direction.hpp"
 #include "block/attributes/BlockAccess.hpp"

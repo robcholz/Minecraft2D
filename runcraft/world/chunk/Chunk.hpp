@@ -17,11 +17,11 @@ namespace chunk {
 	namespace adapter { class ChunkDataPacketAdapter; }
 
 	struct ChunkGenSettings {
-		const static int CHUNK_HEIGHT = 16;
-		const static int GROUND_LEVEL = 0;
+		const static int CHUNK_HEIGHT = 319;
+		const static int GROUND_LEVEL = 62;
 		const static int CHUNK_WIDTH = 16;
-		const static int CHUNK_UPPER_LIMIT = CHUNK_HEIGHT;
-		const static int CHUNK_BOTTOM_LIMIT = 0;
+		const static int CHUNK_BOTTOM_LIMIT = -64;
+		const static int CHUNK_UPPER_LIMIT = CHUNK_HEIGHT - CHUNK_BOTTOM_LIMIT;
 	};// chunk configurations
 
 	struct ChunkCoordinate {
@@ -66,28 +66,14 @@ namespace chunk {
 		[[nodiscard]]
 		sf::Sprite* getBlockSprite(ChunkPosT x, ChunkPosT z) const { return getBlock(x, z)->getSprite(); }
 
-		void setBlockPosition(const ChunkBlockCoordinate& chunkBlockPos, block::Block* block) {
-			if (getBlock(chunkBlockPos) != nullptr)
-				delete getBlock(chunkBlockPos);
-			setBlock(chunkBlockPos.getX(), chunkBlockPos.getZ(), block);
-			auto block_coordinate = toBlockCoordinate(chunkPos, chunkBlockPos);
-			getBlock(chunkBlockPos)->getPosition()->setPosition(block_coordinate.getX(), block_coordinate.getZ());
-		}
-
-		void setBlockPosition(ChunkPosT x, ChunkPosT z, block::Block* block) {
-			if (getBlock(x, z) != nullptr)
-				delete getBlock(x, z);
-			setBlock(x, z, block);
-			auto block_coordinate = toBlockCoordinate(chunkPos, ChunkBlockCoordinate{x, z});
-			getBlock(x, z)->getPosition()->setPosition(block_coordinate.getX(), block_coordinate.getZ());
-		}
+		void setBlock(BlockPosT x, BlockPosT z, block::Block* block) { chunkBlocks[x][z] = block; }
 
 		Chunk() = default;
 
 	public:
 		explicit Chunk(ChunkPosT chunkPos) {
 			this->chunkPos = chunkPos;
-			onInitialize();
+			//onInitialize();
 		}
 
 		~Chunk() {
@@ -108,13 +94,27 @@ namespace chunk {
 
 		[[nodiscard]]
 		block::Block* getBlockWithBoundaryCheck(const ChunkBlockCoordinate& chunkBlockPos) const {
-			if ((chunkBlockPos.getIntZ() >= 0 && chunkBlockPos.getZ() < ChunkGenSettings::CHUNK_UPPER_LIMIT) &&
+			if ((chunkBlockPos.getIntZ() >= 0 && chunkBlockPos.getZ() < ChunkGenSettings::CHUNK_HEIGHT) &&
 			    (chunkBlockPos.getIntX() >= 0 && chunkBlockPos.getIntX() < ChunkGenSettings::CHUNK_WIDTH))
 				return getBlock(chunkBlockPos);
 			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
 		}
 
-		void setBlock(BlockPosT x, BlockPosT z, block::Block* block) { chunkBlocks[x][z] = block; }
+		void setBlockPosition(ChunkPosT x, ChunkPosT z, block::Block* block) {
+			if (getBlock(x, z) != nullptr)
+				delete getBlock(x, z);
+			setBlock(x, z, block);
+			auto block_coordinate = toBlockCoordinate(chunkPos, ChunkBlockCoordinate{x, z});
+			getBlock(x, z)->getPosition()->setPosition(block_coordinate.getX(), block_coordinate.getZ());
+		}
+
+		void setBlockPosition(const ChunkBlockCoordinate& chunkBlockPos, block::Block* block) {
+			if (getBlock(chunkBlockPos) != nullptr)
+				delete getBlock(chunkBlockPos);
+			setBlock(chunkBlockPos.getX(), chunkBlockPos.getZ(), block);
+			auto block_coordinate = toBlockCoordinate(chunkPos, chunkBlockPos);
+			getBlock(chunkBlockPos)->getPosition()->setPosition(block_coordinate.getX(), block_coordinate.getZ());
+		}
 
 		[[nodiscard]]
 		bool isBlockExisted(const ChunkBlockCoordinate& coordinate) const { return getBlock(coordinate) != nullptr; }
@@ -166,7 +166,6 @@ namespace chunk {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
 					GameInfo.getRender()->render(*getBlockSprite(x_pos, y_pos));
-					getBlock(x_pos, y_pos)->renderHitbox();
 				}
 			}
 		}

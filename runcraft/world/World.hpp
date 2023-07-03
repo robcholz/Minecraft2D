@@ -8,6 +8,7 @@
 #include <memory>
 #include "entity/player/PlayerEntity.hpp"
 #include "world/chunk/ChunkStream.hpp"
+#include "gen/WorldGeneration.hpp"
 #include "client/gui/hud/InGameBarHud.hpp"
 
 class World : public WorldAccess, public SceneAccess {
@@ -16,9 +17,10 @@ public:
 		this->runcraftClientAccess = runcraftClientAccess;
 		runcraftClientAccess->getSoundManager()->stopCurrentPlaying();
 		player = std::make_unique<PlayerEntity>(runcraftClientAccess,this);
-		player->getEntityPosition().setPosition(0, 8);
-		chunkStream = std::make_unique<chunk::ChunkStream>(this, 4, 2);
-		chunkStream->setChunkGenerator([](int chunkPos) { return new chunk::Chunk(chunkPos); });
+		player->getEntityPosition().setPosition(0, 90);
+		worldGeneration=std::make_unique<WorldGeneration>(1234567);
+		chunkStream = std::make_unique<chunk::ChunkStream>(this, 4, 4);
+		chunkStream->setChunkGenerator([this](int chunkPos) { return worldGeneration->getChunk(chunkPos); });
 		hud = std::make_unique<hud::InGameBarHud>(this);
 	}
 
@@ -54,6 +56,7 @@ private:
 	float screenHeight = (float) GameInfo.getConstExternalData()->windowState.getScreenHeight();
 	sf::View view{sf::FloatRect{0.f, 0.f, screenWidth, screenHeight}};
 	std::unique_ptr<PlayerEntity> player;
+	std::unique_ptr<WorldGeneration> worldGeneration;
 	std::unique_ptr<chunk::ChunkStream> chunkStream;
 	std::unique_ptr<hud::InGameBarHud> hud;
 	RuncraftClientAccess* runcraftClientAccess = nullptr;

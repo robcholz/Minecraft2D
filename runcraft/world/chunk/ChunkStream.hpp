@@ -26,8 +26,8 @@ namespace chunk {
 		using BlockPosT = coordinate::BlockPositionT;
 		using BlockCoordinate = coordinate::Coordinate<BlockPosT>;
 
-		std::map<ChunkPosT, ChunkPtr> chunkRenderingMap; // chunks that will be rendered
-		std::map<ChunkPosT, ChunkPtr> chunkSimulationMap; // chunks that will be updated
+		std::unordered_map<ChunkPosT, ChunkPtr> chunkRenderingMap; // chunks that will be rendered
+		std::unordered_map<ChunkPosT, ChunkPtr> chunkSimulationMap; // chunks that will be updated
 		std::list<ChunkPosT> chunkDeletingList;
 		DistanceT renderDistance = 0, simulationDistance = 0;
 		Intervali renderInterval{}, simulationInterval{};
@@ -76,6 +76,7 @@ namespace chunk {
 
 		void addToSimulationChunks(ChunkPosT chunkPos){
 			auto chunk = loadChunk(chunkPos);
+			saveHelper->saveChunk(chunk);
 			chunkSimulationMap.insert({chunkPos, chunk});
 		}
 

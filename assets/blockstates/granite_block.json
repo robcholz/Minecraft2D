@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/granite",
+  "west": "runcraft:block/granite",
+  "up": "runcraft:block/granite",
+  "down": "runcraft:block/granite",
+  "in": "runcraft:block/granite",
+  "out": "runcraft:block/granite"
+}
+

@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/diorite",
+  "west": "runcraft:block/diorite",
+  "up": "runcraft:block/diorite",
+  "down": "runcraft:block/diorite",
+  "in": "runcraft:block/diorite",
+  "out": "runcraft:block/diorite"
+}
+

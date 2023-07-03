@@ -12,7 +12,7 @@
 
 class GUI {
 protected:
-	std::string guiFilePath = "../assets/gui";
+	std::string guiFilePath = "../assets/textures/gui";
 	std::string fontFilePath = "../assets/font";
 public:
 	virtual void render() = 0;

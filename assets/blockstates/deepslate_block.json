@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/deepslate_block",
+  "west": "runcraft:block/deepslate_block",
+  "up": "runcraft:block/deepslate_block",
+  "down": "runcraft:block/deepslate_block",
+  "in": "runcraft:block/deepslate_block",
+  "out": "runcraft:block/deepslate_block"
+}
+

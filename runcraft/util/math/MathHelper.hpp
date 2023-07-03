@@ -5,28 +5,64 @@
 #ifndef RUNCRAFT_MATHHELPER_HPP
 #define RUNCRAFT_MATHHELPER_HPP
 
+#include <SFML/System/Vector2.hpp>
 #include <cmath>
 #include <random>
 
 namespace math {
-	class RandomNumGenerator {
+	class Math {
+	private:
+		static const int SINE_TABLE_LENGTH = 65536;
+		float SINE_TABLE[SINE_TABLE_LENGTH]{};
+		double ARCSINE_TABLE[257]{};
+		double COSINE_TABLE[257]{};
 	public:
-		static auto getRange(int a, int b) {
-			std::random_device dev;
-			std::mt19937 rng(dev());
-			std::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
-			return dist6(rng);
+		static constexpr float PI = M_PI;
+		static constexpr float SQUARE_ROOT_OF_TWO = M_SQRT2;
+		static constexpr float SQUARE_ROOT_OF_THREE = 1.73205080757f;
+		static constexpr float DEGREES_TO_RADIANS = PI / 180.0f;
+
+		Math() {
+			for (auto i = 0; i < SINE_TABLE_LENGTH; i++) {
+				SINE_TABLE[i] = (float) std::sin((double) i * 2.0 * PI / 65536.0);
+			}
 		}
 
-		static bool randomBool() {
-			return getRange(0, 1) == 1;
+		float sin(float value) {
+			return SINE_TABLE[(int) (value * 10430.378f) & 0xFFFF];
 		}
 
-		static bool randomBool(float probability) {
-			return (getRange(1, (int) lroundf(1.f / probability)) == 1);
+		float cos(float value) {
+			return SINE_TABLE[(int) (value * 10430.378f + 16384.0f) & 0xFFFF];
 		}
 
-	};
+		static int floor(float value) {
+			int i = (int) value;
+			return value < (float) i ? i - 1 : i;
+		}
+
+		static int fastFloor(double value) {
+			return (int) (value + 1024.0) - 1024;
+		}
+
+		static int floor(double value) {
+			int i = (int) value;
+			return value < (double) i ? i - 1 : i;
+		}
+
+		static long lfloor(double value) {
+			long l = (long) value;
+			return value < (double) l ? l - 1L : l;
+		}
+
+		static float lerp(float t,float a, float b) {
+			return a + t * (b - a);
+		}
+
+		static double lerp(double t,double a, double b) {
+			return a + t * (b - a);
+		}
+	} Math;
 }
 
 template<typename vT>

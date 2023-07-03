@@ -1,0 +1,9 @@
+{
+  "east": "runcraft:block/andesite",
+  "west": "runcraft:block/andesite",
+  "up": "runcraft:block/andesite",
+  "down": "runcraft:block/andesite",
+  "in": "runcraft:block/andesite",
+  "out": "runcraft:block/andesite"
+}
+

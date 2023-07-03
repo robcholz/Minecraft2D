@@ -6,7 +6,7 @@
 #define RUNCRAFT_BLOCKACCESS_HPP
 
 #include <SFML/Graphics/Sprite.hpp>
-#include "util/MathHelper.hpp"
+#include "util/math/MathHelper.hpp"
 
 
 namespace block {

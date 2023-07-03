@@ -22,7 +22,7 @@ struct ChunkDataPacket {
 
 template<typename vT>
 // serialization func implementation
-void serialize(vT &s, ChunkDataPacket &o) {
+void serialize(vT& s, ChunkDataPacket& o) {
 	constexpr auto container_size = chunk::ChunkGenSettings::CHUNK_WIDTH * chunk::ChunkGenSettings::CHUNK_HEIGHT;
 	s.value4b(o.chunkPos);
 	s.container4b(o.serialIDContainer, container_size);
@@ -51,6 +51,8 @@ namespace chunk::adapter {
 
 	public:
 		ChunkDataPacketAdapter() = delete;
+
+		ChunkDataPacketAdapter(const ChunkDataPacketAdapter&) = delete;
 
 		~ChunkDataPacketAdapter() = delete;
 

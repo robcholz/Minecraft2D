@@ -12,7 +12,7 @@ class Screen; /*fuck circular dependencies*/
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transformable.hpp>
 #include <vector>
-#include "util/MathHelper.hpp"
+#include "util/math/MathHelper.hpp"
 #include "client/input/Input.hpp"
 
 class Widget : public GUI {
