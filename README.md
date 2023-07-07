@@ -4,7 +4,14 @@
 
 - Features: Original soundtracks and textures used(All the resources are updated to 1.19.4).
 - The game is designed to be compatible with vanilla Minecraft resourcepacks(Yes it will support resourcepacks). 
-  ![menu.png](docs%2Freadme%2Fmenu_july_2023.png)
+  ![menu.png](docs%2Freadme%2Fmenu_july_2023.png
+
+## Installations
+
+### CMake: requires 3.24 and above
+### SFML: requires 2.5.1 
+### Boost: requires 1.81.0
+### C++: requires C++20
 
 
 ## Progress Tracker - Stage One: RunCraft-Nostalgia
