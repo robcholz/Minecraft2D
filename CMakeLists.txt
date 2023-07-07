@@ -75,7 +75,7 @@ set(SOURCE_FILES
         runcraft/sound/BlockSoundGroup.hpp
         runcraft/sound/MusicSoundEvent.hpp
         runcraft/util/Identifier.hpp
-        runcraft/client/RuncraftClientAccess.hpp runcraft/util/math/noise/PerlinNoise.hpp runcraft/util/math/noise/SimplexNoise.hpp runcraft/util/math/Random.hpp runcraft/block/StoneBlock.hpp runcraft/block/BedrockBlock.hpp runcraft/block/DeepslateBlock.hpp runcraft/util/ppm.hpp runcraft/world/gen/carver/Carver.hpp runcraft/block/GraniteBlock.hpp runcraft/block/DioriteBlock.hpp runcraft/block/AndesiteBlock.hpp runcraft/world/gen/feature/OreFeature.hpp runcraft/world/gen/decorator/Decorator.hpp runcraft/world/gen/decorator/HeightDecorator.hpp)
+        runcraft/client/RuncraftClientAccess.hpp runcraft/util/math/noise/PerlinNoise.hpp runcraft/util/math/noise/SimplexNoise.hpp runcraft/util/math/Random.hpp runcraft/block/StoneBlock.hpp runcraft/block/BedrockBlock.hpp runcraft/block/DeepslateBlock.hpp runcraft/util/ppm.hpp runcraft/world/gen/carver/Carver.hpp runcraft/block/GraniteBlock.hpp runcraft/block/DioriteBlock.hpp runcraft/block/AndesiteBlock.hpp runcraft/world/gen/feature/OreFeature.hpp runcraft/world/gen/decorator/Decorator.hpp runcraft/world/gen/decorator/HeightDecorator.hpp runcraft/client/gui/widget/TextureWidget.hpp runcraft/client/gui/widget/SplashingTextFieldWidget.hpp)
 
 #includes
 add_executable(runcraft ${SOURCE_FILES})

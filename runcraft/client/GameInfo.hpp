@@ -62,17 +62,20 @@ namespace external_data {
 		 * @range [50,100]
 		 */
 		ZoomT zoomSize = 50;
-		ZoomT pixelToBlock = 30; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
+		ZoomT pixelToBlock = 10; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
 		ZoomT pixelProportion = (ZoomT) (pixelToBlock * 2);
 		float actualPixelToOnePixel = (float)pixelProportion / 16;
 		bool gainedFocus{}, lostFocus{};
 		bool resized{};
 
-		[[nodiscard]] unsigned int getScreenWidth() const { return rendererPtr->getWindowConfig().screenWidth; }
+		[[nodiscard]]
+		unsigned int getScreenWidth() const { return rendererPtr->getWindowConfig().screenWidth; }
 
-		[[nodiscard]] unsigned int getScreenHeight() const { return rendererPtr->getWindowConfig().screenHeight; }
+		[[nodiscard]]
+		unsigned int getScreenHeight() const { return rendererPtr->getWindowConfig().screenHeight; }
 
-		[[nodiscard]] RenderSystem* getRender() const { return rendererPtr; }
+		[[nodiscard]]
+		RenderSystem* getRender() const { return rendererPtr; }
 	};
 
 	struct Logging {

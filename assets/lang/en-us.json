@@ -1,8 +1,8 @@
 {
   "gui.button.singleplayer": "Singleplayer",
   "gui.button.options": "Options...",
-  "gui.button.something_uncertain": "Something Uncertain",
-  "gui.button.language": "Language",
+  "gui.button.something_uncertain": "Subscribe robcholz on Github",
+  "gui.button.language": "github.com/robcholz",
   "gui.button.quit_game": "Quit Game",
   "gui.button.done": "Done",
   "gui.button.snowy_plains": "Snowy Plains",
@@ -22,6 +22,7 @@
   "gui.slider.friendly_creatures_volume": "Friendly Creatures",
   "gui.slider.players_volume": "Players",
   "gui.slider.ambient_environment_volume": "Ambient/Environment",
+  "gui.button.generate_experimental_world": "Generate Experimental World",
 
-  "gui.button.generate_experimental_world": "Generate Experimental World"
+  "gui.textfield.splashing_text": "Wow! Build with CMake!"
 }

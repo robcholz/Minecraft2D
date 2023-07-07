@@ -53,21 +53,16 @@ public:
 			: Widget(id, visible) {
 		title = TranslatableText::getTranslatable(id, translatable::GUI_SLIDER);
 		/*background*/
-		sliderBackgroundTexture.loadFromFile(widgetAssetPath, intRectBackground);
-		/* sliders*/
-		loadWidgetTexture(sf::IntRect{0, 66, 200, 20},
-		                  {0, 86, 200, 20});
-
+		sliderBackgroundTexture.loadFromFile(widgetPath, intRectBackground);
 		sliderBackgroundSprite.setTexture(sliderBackgroundTexture); // background
 		sliderBackgroundSprite.setScale((float) width / 200, (float) height / 20);
 		sliderBackgroundSprite.setPosition((float) x, (float) y);
 
-		widgetSprite.setTexture(widgetNormalTexture);
 		widgetSprite.scale((float) 0.15f, (float) height / 20);
 		widgetSprite.setPosition((float) x * 1.5f, (float) y);
 
-		setOutline(&widgetBackgroundOutline, x, y, width, height);
-		setOutline(&widgetOutline, (int) widgetSprite.getGlobalBounds().left, (int) widgetSprite.getGlobalBounds().top,
+		setOutline(&widgetBackgroundOutline,sliderBackgroundSprite, x, y, width, height);
+		setOutline(&widgetOutline,widgetSprite, (int) widgetSprite.getGlobalBounds().left, (int) widgetSprite.getGlobalBounds().top,
 		           (int) widgetSprite.getGlobalBounds().width, (int) widgetSprite.getGlobalBounds().height);
 
 		widgetOutlineBound.lower = (int) sliderBackgroundSprite.getPosition().x + 4;

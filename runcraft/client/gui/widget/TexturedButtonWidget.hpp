@@ -14,12 +14,11 @@ private:
 	RichText message;
 public:
 	explicit TexturedButtonWidget(int width = 32, int height = 32, bool visible = true, int x = 0, int y = 0)
-			: Widget("",  visible) {
-		loadWidgetTexture(sf::IntRect{0, 106, 20, 20},
-		                  {0, 126, 20, 20});
-		widgetSprite.setTexture(widgetNormalTexture);
+			: Widget("", visible, widgetPath,
+			         {0, 106, 20, 20},
+			         {0, 126, 20, 20}) {
 		widgetSprite.setScale((float) width / 8, (float) height / 8);
-		setOutline(&widgetOutline, x, y, (int) widgetSprite.getGlobalBounds().width, (int) widgetSprite.getGlobalBounds().height);
+		setOutline(&widgetOutline, widgetSprite, x, y, (int) widgetSprite.getGlobalBounds().width, (int) widgetSprite.getGlobalBounds().height);
 		widgetSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 	}
 };

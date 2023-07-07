@@ -25,7 +25,8 @@ namespace initialization {
 }
 
 namespace gui_style {
-	sf::Color MessageColor(220, 220, 220, 255);
+	sf::Color MessageColor(220, 220, 220);
+	sf::Color Yellow(255,255,0);
 	initialization::GUIFont MessageFont;
 }
 

@@ -32,11 +32,8 @@ protected:
 public:
 	explicit ButtonWidget(const std::string& id, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0)
 			: Widget(id, visible) {
-		setOutline(&widgetOutline, x, y, width, height);
-		loadWidgetTexture(sf::IntRect{0, 66, 200, 20},
-		                  sf::IntRect{0, 86, 200, 20});
-		widgetSprite.setTexture(widgetNormalTexture);
 		widgetSprite.setScale((float) width / 200, (float) height / 20);
+		setOutline(&widgetOutline, widgetSprite,x, y, width, height);
 		widgetSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 
 		message.setFont(gui_style::MessageFont)
@@ -45,21 +42,6 @@ public:
 		       .setPosition((float) widgetOutline.x + (float) widgetOutline.width / 2 - message.getGlobalBounds().width,
 		                    (float) widgetOutline.y - (float) widgetOutline.height / 8 - 1.0f);
 		message.setCharacterSize((int) ((float) widgetOutline.height / 80.0f * 64.0f));
-	}
-
-	ButtonWidget& setScale(float factorX, float factorY) {
-		message.setScale(factorX, factorY);
-		return *this;
-	}
-
-	ButtonWidget& setScale(sf::Vector2f& factors) {
-		message.setScale(factors);
-		return *this;
-	}
-
-	ButtonWidget& setText(const std::string& words) {
-		message.setMessage(words);
-		return *this;
 	}
 };
 

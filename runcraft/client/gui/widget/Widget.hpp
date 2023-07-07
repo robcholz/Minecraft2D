@@ -7,7 +7,7 @@
 
 #pragma once
 
-class Screen; /*fuck circular dependencies*/
+class Screen;
 
 #include <SFML/Graphics/Text.hpp>
 #include <SFML/Graphics/Transformable.hpp>
@@ -27,8 +27,8 @@ protected:
 	sf::IntRect widgetNormalIntRect, widgetFocusedIntRect;
 	sf::Sprite widgetSprite;
 	Areai widgetOutline{};
-	String widgetAssetPath = guiFilePath + "/widgets.png";
-	String id;
+	static inline String widgetPath = Identifier::guiPath + "widgets.png";
+	std::unique_ptr<Identifier> identifier;
 	CallbackFunc execFuncPtr = nullptr;
 	bool visible = true;
 	bool lastClicked = false, clicked = false, pressed = false;
@@ -37,18 +37,28 @@ protected:
 	bool stateChanged = false;
 	input::MouseObserver mouseObserver{};
 
-	static void setOutline(Areai* outline, int x, int y, int width, int height) {
+	static void setOutline(Areai* outline, const sf::Sprite& sprite, int x, int y, int width, int height) {
 		outline->x = x;
 		outline->y = y;
-		outline->width = width;
-		outline->height = height;
+		outline->width = (int) sprite.getGlobalBounds().width;
+		outline->height = (int) sprite.getGlobalBounds().height;
 	}
 
-	void loadWidgetTexture(sf::IntRect widgetNormal, sf::IntRect widgetActivated) {
+	static void setSpriteScale(sf::Sprite& sprite) {
+		auto mapVal = GameInfo.getConstExternalData()->windowState.actualPixelToOnePixel;
+		sprite.setScale(mapVal, mapVal);
+	}
+
+	void loadWidgetTexture(const sf::IntRect& widgetNormal, const sf::IntRect& widgetActivated, const String& path) {
 		widgetNormalIntRect = widgetNormal;
 		widgetFocusedIntRect = widgetActivated;
-		widgetNormalTexture.loadFromFile(widgetAssetPath, widgetNormalIntRect);
-		widgetFocusedTexture.loadFromFile(widgetAssetPath, widgetFocusedIntRect);
+		widgetNormalTexture.loadFromFile(path, widgetNormalIntRect);
+		widgetFocusedTexture.loadFromFile(path, widgetFocusedIntRect);
+	}
+
+	void loadWidgetTexture(const String& path) {
+		widgetNormalTexture.loadFromFile(path);
+		widgetFocusedTexture.loadFromFile(path);
 	}
 
 	virtual void setPressed(bool isPressed) {
@@ -75,7 +85,7 @@ protected:
 		else widgetSprite.setTexture(widgetNormalTexture);
 	}
 
-	void setStateChanged(bool isStateChanged) {stateChanged=isStateChanged;}
+	void setStateChanged(bool isStateChanged) { stateChanged = isStateChanged; }
 
 	void updateMouse() {
 		mouseButtonPressed = mouseObserver.isActivated();
@@ -89,15 +99,25 @@ protected:
 	virtual void onUpdate() {
 		auto inInWidgetBoundary = checkVectorBoundary(getMousePosition(), widgetOutline);
 		setPressed(inInWidgetBoundary && isMouseButtonPressed());
-		setClicked( isMouseButtonPressed());
+		setClicked(isMouseButtonPressed());
 		setFocused(inInWidgetBoundary);
 	}
 
 public:
-	explicit Widget(const String& id, bool visible) {
+	explicit Widget(const String& id, bool visible, const String& widgetAssetPath = widgetPath,
+	                const sf::IntRect& widgetNormal = {0, 66, 200, 20},
+	                const sf::IntRect& widgetActivated = {0, 86, 200, 20}) {
 		mouseObserver.attachKey(input::MouseKeyType::Left);
-		this->id = id;
+		this->identifier = std::make_unique<Identifier>(id, Identifier::Category::GUI);
 		this->visible = visible;
+		loadWidgetTexture(widgetNormal, widgetActivated, widgetAssetPath);
+		widgetSprite.setTexture(widgetNormalTexture);
+	}
+
+	explicit Widget(const String& id) {
+		mouseObserver.attachKey(input::MouseKeyType::Left);
+		this->identifier = std::make_unique<Identifier>(id, Identifier::Category::GUI);
+		this->visible = true;
 	}
 
 
@@ -111,7 +131,7 @@ public:
 
 	bool isFocused() const { return focus; }
 
-	bool isStateChanged() const { return stateChanged;}
+	bool isStateChanged() const { return stateChanged; }
 
 	virtual void executeCallbackFunc() { if (execFuncPtr != nullptr) execFuncPtr(); }
 
@@ -120,11 +140,11 @@ public:
 		return *this;
 	}
 
-	void activate(){
+	void activate() {
 		setActive(true);
 	}
 
-	void deactivate(){
+	void deactivate() {
 		setActive(false);
 	}
 

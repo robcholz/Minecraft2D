@@ -27,6 +27,13 @@ protected:
 	}
 
 public:
+	static inline String blockStatePath = "../assets/blockstates";
+	static inline String fontPath = "../assets/font";
+	static inline String guiPath = "../assets/textures/gui/";
+	static inline String langPath = "../assets/lang/";
+	static inline String soundPath = "../assets/sounds/";
+	static inline String texturePath = "../assets/textures/";
+
 	enum class Category {
 		SOUND,
 		BLOCKSTATES,
@@ -125,13 +132,6 @@ private:
 	Category category{};
 	static inline String defaultNamespace = "runcraft";
 
-	static inline String blockStatePath = "../assets/blockstates";
-	static inline String fontPath = "../assets/font";
-	static inline String guiPath = "../assets/gui";
-	static inline String langPath = "../assets/lang";
-	static inline String soundPath = "../assets/sounds/";
-	static inline String texturePath = "../assets/textures";
-
 	static inline String blockStateSuffix = ".json";
 	static inline String fontSuffix = ".ttf";
 	static inline String guiSuffix = ".png";
@@ -158,6 +158,7 @@ private:
 			case Category::TEXTURE:
 				return texturePath + getRelativePath() + textureSuffix;
 			case Category::GUI:
+				return guiPath + getRelativePath() + guiSuffix;
 				break;
 		}
 		PLOG_ERROR << "You should do that";

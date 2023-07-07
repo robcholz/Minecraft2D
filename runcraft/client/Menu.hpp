@@ -15,20 +15,22 @@
 #include "client/gui/widget/TexturedButtonWidget.hpp"
 #include "client/gui/widget/SoundSliderWidget.hpp"
 #include "client/gui/widget/TextFieldWidget.hpp"
+#include "client/gui/widget/TextureWidget.hpp"
 #include "client/gui/screen/ScreenManager.hpp"
 #include "client/scene/SceneAccess.hpp"
 #include "sound/SoundEvents.hpp"
 #include "RuncraftClientAccess.hpp"
 #include "util/math/Random.hpp"
+#include "client/gui/widget/SplashingTextFieldWidget.hpp"
 
 class Menu : public SceneAccess {
 public:
 	explicit Menu(RuncraftClientAccess* runcraftClientAccess) {
 		this->runcraftClientAccess = runcraftClientAccess;
 		backgroundMenuScreen = std::make_unique<Screen>(runcraftClientAccess, &backgroundTexture);
-		backgroundBiomeSettingScreen=std::make_unique<Screen>(runcraftClientAccess,&backgroundTexture);
-		settingVolumeScreen=std::make_unique<Screen>(runcraftClientAccess,&settingBackground);
-		settingSingleplayerScreen=std::make_unique<Screen>(runcraftClientAccess, &backgroundTexture);
+		backgroundBiomeSettingScreen = std::make_unique<Screen>(runcraftClientAccess, &backgroundTexture);
+		settingVolumeScreen = std::make_unique<Screen>(runcraftClientAccess, &settingBackground);
+		settingSingleplayerScreen = std::make_unique<Screen>(runcraftClientAccess, &backgroundTexture);
 
 		PLOG_DEBUG << "Menu started!";
 		onInitialize();
@@ -57,11 +59,13 @@ private:
 
 	/*main menu*/
 	ButtonWidget backgroundMenuSinglePlayer{"singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432};
-	ButtonWidget backgroundMenuOptions{"options", 800, 80, true, screenWidth / 2 - 800 / 2, 528};
+	ButtonWidget backgroundMenuLanguage{"language", 800, 80, true, screenWidth / 2 - 800 / 2, 528};
 	ButtonWidget backgroundMenuWhat{"something_uncertain", 800, 80, true, screenWidth / 2 - 800 / 2, 624};
-	ButtonWidget backgroundMenuLanguage{"language", 380, 80, true, screenWidth / 2 - 800 / 2, 768};
+	ButtonWidget backgroundMenuOptions{"options", 380, 80, true, screenWidth / 2 - 800 / 2, 768};//
 	ButtonWidget backgroundMenuQuitGame{"quit_game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768};
 	TexturedButtonWidget backgroundMenuLanguageTexturedButton{32, 32, true, screenWidth / 2 - 500, 768};
+	TextureWidget backgroundRuncraftTitle{"title.runcraft", true, screenWidth / 2 - 982 / 2, 128};
+	SplashingTextFieldWidget backgroundSplashingText{"splashing_text", 70, 5, -30};
 	std::unique_ptr<Screen> backgroundMenuScreen;
 
 	/*settings*/
@@ -119,7 +123,9 @@ private:
 		                    .addWidget(&backgroundMenuLanguage)
 		                    .addWidget(&backgroundMenuWhat)
 		                    .addWidget(&backgroundMenuLanguageTexturedButton)
-		                    .addWidget(&backgroundMenuQuitGame);
+		                    .addWidget(&backgroundMenuQuitGame)
+		                    .addWidget(&backgroundRuncraftTitle)
+		                    .addWidget(&backgroundSplashingText);
 		backgroundMenuQuitGame.executeFuncWhenActivated([] {
 			PLOG_DEBUG << "Cancel runcraft!";
 			GameInfo.getRender()->getWindowConfig().window->close();

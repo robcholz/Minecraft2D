@@ -21,7 +21,6 @@ protected:
 		for (int x_pos = 0; x_pos < chunk::ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
 			for (int z_pos = 0; z_pos < chunk::ChunkGenSettings::CHUNK_HEIGHT; z_pos++) {
 				chunkBlocksBuffer[x_pos][z_pos] = block::blocks::Blocks::getInstance()->getBlockInstance("air_block")->getID().serialID;
-
 				//heightDecorator
 			}
 		}

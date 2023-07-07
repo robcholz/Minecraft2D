@@ -31,6 +31,7 @@ namespace hud {
 			loadSprite(&fullExperienceBarTexture, &fullExperienceBarSprite, sf::IntRect{0, 69, 182, 5});
 			// empty experience slot (1,70) (9,72)
 			//loadSprite(&leftExperienceSlotTexture, &leftExperienceSlotSprite, sf::IntRect{0, 0, 0, 0});
+			PLOG_DEBUG<<"Loaded ExperienceBar HUD!";
 		}
 
 		void update() {

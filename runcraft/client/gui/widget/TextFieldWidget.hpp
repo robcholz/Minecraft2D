@@ -15,6 +15,7 @@ private:
 	void executeCallbackFunc() override {}
 
 	void onUpdate() override {}
+
 protected:
 	void onRender() override {
 		GameInfo.getRender()->render(text);
@@ -23,11 +24,11 @@ protected:
 public:
 	explicit TextFieldWidget(const String& id, int size, bool visible, int x, int y) :
 			Widget(id, visible) {
-		text.setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
+		text.setColor(gui_style::MessageColor)
+		    .setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
 		    .setCharacterSize(size)
-		    .setColor(gui_style::MessageColor)
 		    .setPosition((float) x, (float) y);
-		setOutline(&widgetOutline, x, y, (int) text.getGlobalBounds().width, (int) text.getGlobalBounds().height);
+		setOutline(&widgetOutline, widgetSprite, x, y, (int) text.getGlobalBounds().width, (int) text.getGlobalBounds().height);
 	}
 
 	~TextFieldWidget() = default;

@@ -20,7 +20,7 @@ namespace util {
 		explicit Registry() = default;
 
 		void registerObject(const SmartPtr& block) {
-			IDRegistry.insert({block->getID().id, block});
+			IDRegistry.insert({block->getID().identifier, block});
 			serialIDRegistry.insert({block->getID().serialID, block});
 		}
 
