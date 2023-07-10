@@ -14,13 +14,14 @@ class Path {
 private:
 	using String = std::string;
 protected:
-	static inline String getRoot(){
-		boost::filesystem::path program_location(boost::system::error_code & ec);
-		auto raw_dir=boost::dll::program_location().string();
-		raw_dir=raw_dir.substr(0, raw_dir.find_last_of("\\/"));
-		raw_dir=raw_dir.substr(0, raw_dir.find_last_of("\\/"));
+	static inline String getRoot() {
+		boost::filesystem::path program_location(boost::system::error_code& ec);
+		auto raw_dir = boost::dll::program_location().string();
+		raw_dir = raw_dir.substr(0, raw_dir.find_last_of("\\/"));
+		raw_dir = raw_dir.substr(0, raw_dir.find_last_of("\\/"));
 		return raw_dir;
 	}
+
 public:
 	static inline String rootDirectory = getRoot();
 
@@ -28,6 +29,7 @@ public:
 	static inline String widgetPath = rootDirectory + "/assets/textures/gui/widgets.png";
 	static inline String currentLangPath = rootDirectory + "/assets/lang/en-us.json";
 	static inline String optionsPath = rootDirectory + "/assets/options.json";
+	static inline String currentPlayerPath = rootDirectory + "/assets/textures/player/steve.png";
 
 	static inline String directory = rootDirectory + "/assets/";
 	static inline String blockStatePath = rootDirectory + "/assets/blockstates/";

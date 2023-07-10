@@ -58,7 +58,7 @@ public:
 
 private:
 	input::KeyboardObserver moveLeft, moveRight, moveJump, moveSniff;
-	String playerSkinAssetPath = "../assets/textures/player/steve.png";
+	String playerSkinAssetPath = Path::currentPlayerPath;
 
 	using sfRecti = sf::IntRect;
 	using Texture = sf::Texture;
