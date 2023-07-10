@@ -93,10 +93,11 @@ public:
 	chunk::Chunk* loadChunk(coordinate::ChunkPositionT chunkPos) {
 		return loadRegion(getRegionName(chunkPos));
 	}
+
 private:
 	String saveDirectory;
 
-	FileHelper savesDirectoryHelper{Path::rootDirectory+"/external/saves"};
+	FileHelper savesDirectoryHelper{Path::rootDirectory + "/saves"};
 	std::unique_ptr<FileHelper> saveHelper, regionHelper, entitiesHelper, playerdataHelper;
 };
 
