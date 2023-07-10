@@ -8,19 +8,23 @@
 #include "Widget.hpp"
 #include "util/Identifier.hpp"
 
-class TextureWidget: public Widget{
+class TextureWidget : public Widget {
 protected:
-	void onUpdate() override{}
+	void onUpdate() override {}
 public:
 	explicit TextureWidget(const String& id, bool visible = true, int x = 0, int y = 0)
 			: Widget(id) {
-		this->visible=visible;
+		this->visible = visible;
 		loadWidgetTexture(identifier->getAbsolutePath());
 		widgetSprite.setTexture(widgetNormalTexture);
-		setOutline(&widgetOutline, widgetSprite,x, y, widgetSprite.getGlobalBounds().width, widgetSprite.getGlobalBounds().height);
-		widgetSprite.setScale(2.1,2.1);
+		auto width = (int) widgetSprite.getGlobalBounds().width;
+		auto height = (int) widgetSprite.getGlobalBounds().height;
+		setOutline(&widgetOutline, widgetSprite, x, y, width, height);
+		widgetSprite.setScale(2.1, 2.1);
 		widgetSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 	}
+
+	~TextureWidget() override=default;
 };
 
 #endif //RUNCRAFT_TEXTUREWIDGET_HPP

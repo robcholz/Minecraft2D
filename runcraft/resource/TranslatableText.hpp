@@ -7,49 +7,26 @@
 
 #include <fstream>
 #include <string>
+#include <util/Identifier.hpp>
 #include "json.hpp"
 #include "error/ErrorHandling.hpp"
 
-using Json = nlohmann::json;
-
-namespace translatable {
-	enum GUICategory : unsigned char {
-		GUI_BUTTON,
-		GUI_SLIDER,
-		GUI_TEXTFIELD,
-
-		GUI_INDEX_LAST
-	};
-	enum GameCategory : unsigned short {
-		GAME_BLOCK,
-		GAME_ITEM,
-		GAME_MOB,
-		GAME_PLAYER,
-		GAME_SUBTITLE,
-
-		GAME_INDEX_LAST
-	};
-	std::string GUIJsonMap[GUICategory::GUI_INDEX_LAST] = {"gui.button.", "gui.slider.", "gui.textfield."};
-	std::string GameJsonMap[GameCategory::GAME_INDEX_LAST] = {"runcraft.block.", "runcraft.item.", "runcraft.mob.", "runcraft.player.", "runcraft.subtitle."};
-}
 
 class TranslatableText {
-protected:
-	inline static std::string langPath = "../assets/lang/en-us.json";
 private:
+	using Json = nlohmann::json;
+	using String = std::string;
 public:
 	TranslatableText() = default;
 
-	static std::string getTranslatable(const std::string &id, translatable::GUICategory category) {
-		std::ifstream file(langPath);
-		Json lang_json = Json::parse(file);
-		return lang_json[translatable::GUIJsonMap[category] + id];
-	}
+	TranslatableText(const TranslatableText& other) = delete;
 
-	static std::string getTranslatable(const std::string &id, translatable::GameCategory category) {
-		std::ifstream file(langPath);
+	~TranslatableText() = default;
+
+	static String getTranslatable(Identifier& identifier) {
+		std::ifstream file(Path::currentLangPath);
 		Json lang_json = Json::parse(file);
-		return lang_json[translatable::GameJsonMap[category] + id];
+		return lang_json[identifier.getPath()];
 	}
 };
 

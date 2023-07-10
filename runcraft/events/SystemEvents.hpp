@@ -1,20 +1,17 @@
 //
 // Created by robcholz on 3/25/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_SYSTEMEVENTS_HPP
 #define RUNCRAFT_SYSTEMEVENTS_HPP
 
-#pragma once
 
 #include <SFML/Window/Event.hpp>
 #include <memory>
 #include "client/GameInfo.hpp"
 
 class SystemEvents {
-private:
-	RenderSystem *render = GameInfo.getRender();
-	sf::Event event{};
 public:
 	explicit SystemEvents() = default;
 
@@ -104,6 +101,10 @@ public:
 		static std::shared_ptr<SystemEvents> instance(new SystemEvents);
 		return instance;
 	}
+
+private:
+	RenderSystem *render = GameInfo.getRender();
+	sf::Event event{};
 };
 
 #endif //RUNCRAFT_SYSTEMEVENTS_HPP

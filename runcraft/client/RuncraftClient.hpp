@@ -13,6 +13,7 @@
 #include "util/GameLogger.hpp"
 #include "GameInfo.hpp"
 
+
 class RuncraftClient : public RuncraftClientAccess {
 protected:
 	void onConfig() {

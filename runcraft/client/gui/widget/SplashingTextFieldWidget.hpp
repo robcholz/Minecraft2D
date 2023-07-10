@@ -18,16 +18,16 @@ protected:
 
 public:
 	explicit SplashingTextFieldWidget(const String& id, int size, int center, float angle) :
-			Widget(id, true) {
+			Widget("textfield."+id) {
 		this->center = center;
 		text.setColor(gui_style::Yellow)
-		    .setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
+		    .setMessage(TranslatableText::getTranslatable(*identifier))
 		    .setCharacterSize(size)
 		    .rotate(-20);
 		text.setPosition(1000, 300);
 	}
 
-	~SplashingTextFieldWidget() = default;
+	~SplashingTextFieldWidget() override = default;
 
 	bool stateChanged() = delete;
 
@@ -39,10 +39,10 @@ public:
 
 private:
 	RichText text{gui_style::MessageFont};
-	int center;
 	static constexpr float changingSpeed=0.0035f;
 	static constexpr float lower = 1.f;
 	static constexpr float upper = 1.05f;
+	int center;
 	float scale = 1.f;
 
 	void executeCallbackFunc() override {}

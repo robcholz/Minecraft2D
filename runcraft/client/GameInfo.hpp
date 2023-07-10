@@ -1,11 +1,11 @@
 //
 // Created by robcholz on 3/11/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_GAMEINFO_HPP
 #define RUNCRAFT_GAMEINFO_HPP
 
-#pragma once
 
 #include <fstream>
 #include "Log.h"
@@ -56,7 +56,7 @@ namespace external_data {
 
 	struct WindowState {
 		RenderSystem* rendererPtr = nullptr;
-		Camera* camera = nullptr;
+		sf::View* camera = nullptr;
 		typedef short ZoomT;
 		/**
 		 * @range [50,100]
@@ -83,7 +83,7 @@ namespace external_data {
 		Json optionsJson;
 
 		void load() {
-			std::ifstream file("../assets/options.json");
+			std::ifstream file(Path::optionsPath);
 			optionsJson = Json::parse(file);
 		}
 

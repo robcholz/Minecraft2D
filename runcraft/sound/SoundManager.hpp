@@ -15,6 +15,7 @@
 class SoundManager {
 protected:
 public:
+	SoundManager()=default;
 	~SoundManager() {
 		musicSoundEventPlayer.stop();
 		soundEventPlayer.stop();

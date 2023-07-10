@@ -23,6 +23,5 @@
   "gui.slider.players_volume": "Players",
   "gui.slider.ambient_environment_volume": "Ambient/Environment",
   "gui.button.generate_experimental_world": "Generate Experimental World",
-
   "gui.textfield.splashing_text": "Wow! Build with CMake!"
 }

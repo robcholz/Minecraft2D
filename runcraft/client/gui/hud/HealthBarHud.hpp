@@ -22,11 +22,11 @@ namespace hud {
 		using String = std::string;
 		using PixelPosT = coordinate::PixelPositonT;
 		using SpriteSmartPtr = std::unique_ptr<sf::Sprite>;
-	protected:
-		String iconAssetPath = guiFilePath + "/icons.png";
 	public:
 		explicit HealthBarHud(WorldAccess* worldAccess) {
 			this->worldAccess = worldAccess;
+			identifier=std::make_unique<Identifier>("icons",Identifier::Category::GUI);
+			iconAssetPath=identifier->getAbsolutePath();
 			// (16,0) (24,8)
 			darkOutlineHeartTexture.loadFromFile(iconAssetPath, sf::IntRect{16, 0, 9, 9});
 			// (25,0) (33,8)
@@ -41,7 +41,6 @@ namespace hud {
 			halfPinkHeartTexture.loadFromFile(iconAssetPath, sf::IntRect{80, 1, 7, 7});
 			// (180,1) (186,7)
 			emptyHeartTexture.loadFromFile(iconAssetPath, sf::IntRect{180, 1, 7, 7});
-
 			createCombinedHeart();
 			setHeartCapacity(MAX_HEARTS);
 			for (auto i = 0; i < MAX_HEARTS; ++i) loadHeartOutline(i, &darkOutlineHeartTexture);
@@ -54,7 +53,7 @@ namespace hud {
 			z_pos = z;
 		}
 
-		void update() {
+		void update() override {
 			updateHudPosition();
 			updateHealth();
 		}
@@ -67,6 +66,7 @@ namespace hud {
 		}
 
 	private:
+		std::unique_ptr<Identifier> identifier;
 		// pair.first is the outline sprite; pair.second is the heart sprite
 		std::vector<std::pair<std::optional<SpriteSmartPtr>, std::optional<SpriteSmartPtr>>> healthBarSpritesContainer; // 10 by default is 20 health value
 		sf::Texture darkOutlineHeartTexture;
@@ -81,6 +81,7 @@ namespace hud {
 		static constexpr int MAX_HEARTS = 10;
 		static constexpr int DAMAGE_EFFECT_DURATION = 60 * 3; // seconds
 		short last_health = 0;
+		String iconAssetPath;
 		PixelPosT x_pos = 0;
 		PixelPosT z_pos = 0;
 

@@ -9,8 +9,6 @@
 #include "SliderWidget.hpp"
 
 class SoundSliderWidget : public SliderWidget {
-private:
-	internal_data::SoundVolume* controlledValuePtr = nullptr;
 public:
 	explicit SoundSliderWidget(const std::string& id, int width = 200, int height = 20, bool visible = true,
 	                           int x = 0, int y = 0) : SliderWidget(id, width, height, visible, x, y) {
@@ -25,6 +23,8 @@ public:
 		widgetSprite.setPosition((float) widgetOutlineBound.lower
 		                         + ((float) defaultValue / 100) * (float) (widgetOutlineBound.upper - widgetOutlineBound.lower), (float) widgetOutline.y);
 	}
+
+	~SoundSliderWidget() override=default;
 
 	SoundSliderWidget& varToChangeWhenMoved(internal_data::SoundVolume* controlledValue = nullptr) {
 		this->controlledValuePtr = controlledValue;
@@ -42,6 +42,9 @@ public:
 			msg = title + ": " + std::to_string(getValue()) + "%";
 		message.setMessage(msg);
 	}
+
+private:
+	internal_data::SoundVolume* controlledValuePtr = nullptr;
 };
 
 #endif //RUNCRAFT_SOUNDSLIDERWIDGET_HPP

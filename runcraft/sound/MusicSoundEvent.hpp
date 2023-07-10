@@ -18,6 +18,8 @@ public:
 		this->replaceCurrentMusic = replaceCurrentMusic;
 	}
 
+	~MusicSoundEvent()=default;
+
 	SoundEvent& getSoundEvent() { return soundEvent; }
 
 	[[nodiscard]]

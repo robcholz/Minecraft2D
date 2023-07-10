@@ -6,7 +6,6 @@ set(CMAKE_CXX_STANDARD 20)
 # source files
 set(SOURCE_FILES
         RunCraft.cpp
-        runcraft/client/gui/widget/texture/SingleTextureComponent.hpp
         runcraft/client/gui/widget/TexturedButtonWidget.hpp
         runcraft/client/gui/widget/SoundSliderWidget.hpp
         runcraft/client/gui/widget/TextFieldWidget.hpp
@@ -52,7 +51,6 @@ set(SOURCE_FILES
         runcraft/block/attributes/BlockState.hpp
         runcraft/world/poi/Direction.hpp
         runcraft/block/BirchLogBlock.hpp
-        runcraft/block/attributes/BlockSoundGroupLoader.hpp
         runcraft/sound/SoundEvent.hpp
         runcraft/entity/Entity.hpp
         runcraft/world/WorldAccess.hpp 
@@ -90,7 +88,10 @@ set(SOURCE_FILES
         runcraft/world/gen/decorator/Decorator.hpp
         runcraft/world/gen/decorator/HeightDecorator.hpp
         runcraft/client/gui/widget/TextureWidget.hpp
-        runcraft/client/gui/widget/SplashingTextFieldWidget.hpp)
+        runcraft/client/gui/widget/SplashingTextFieldWidget.hpp
+        runcraft/util/Path.hpp)
+
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/bin)
 
 #includes
 add_executable(runcraft ${SOURCE_FILES})
@@ -102,14 +103,16 @@ include_directories(include)
 
 include_directories(runcraft)
 
+
 #boost
-#find_package(Boost 1.81.0 REQUIRED)
+find_package(Boost 1.81.0 COMPONENTS system filesystem REQUIRED)
+include_directories(${Boost_INCLUDE_DIRS})
+target_link_libraries(runcraft ${Boost_LIBRARIES})
 
 #sfml
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
 include_directories(${SFML_INCLUDE_DIRS})
 target_link_libraries(runcraft sfml-system sfml-window sfml-graphics sfml-audio sfml-network)
-
 
 #unit test
 include(FetchContent)

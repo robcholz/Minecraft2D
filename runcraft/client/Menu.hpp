@@ -1,11 +1,11 @@
 //
 // Created by robcholz on 3/31/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_MENU_HPP
 #define RUNCRAFT_MENU_HPP
 
-#pragma once
 
 #include "util/Utils.hpp"
 #include "client/GameInfo.hpp"
@@ -54,8 +54,8 @@ private:
 
 	RuncraftClientAccess* runcraftClientAccess;
 
-	Background backgroundTexture{"background.png"};
-	Background settingBackground{"options_background.png"};
+	Background backgroundTexture{"background"};
+	Background settingBackground{"options_background"};
 
 	/*main menu*/
 	ButtonWidget backgroundMenuSinglePlayer{"singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432};

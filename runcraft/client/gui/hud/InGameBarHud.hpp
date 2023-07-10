@@ -30,7 +30,7 @@ namespace hud {
 			hungerBarHud = std::make_unique<HungerBarHud>(worldAccess);
 		}
 
-		void update() {
+		void update() override {
 			healthBar->update();
 			itemBar->update();
 			experienceBar->update();

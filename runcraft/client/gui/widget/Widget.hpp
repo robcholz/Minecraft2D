@@ -14,20 +14,17 @@ class Screen;
 #include <vector>
 #include "util/math/MathHelper.hpp"
 #include "client/input/Input.hpp"
+#include "util/Path.hpp"
 
 class Widget : public GUI {
-private:
-	bool mouseButtonPressed{};
-	sf::Vector2i mousePosition{};
-
 protected:
 	using CallbackFunc = std::function<void()>;
 	using String = std::string;
+
 	sf::Texture widgetNormalTexture, widgetFocusedTexture;
 	sf::IntRect widgetNormalIntRect, widgetFocusedIntRect;
 	sf::Sprite widgetSprite;
 	Areai widgetOutline{};
-	static inline String widgetPath = Identifier::guiPath + "widgets.png";
 	std::unique_ptr<Identifier> identifier;
 	CallbackFunc execFuncPtr = nullptr;
 	bool visible = true;
@@ -104,22 +101,23 @@ protected:
 	}
 
 public:
-	explicit Widget(const String& id, bool visible, const String& widgetAssetPath = widgetPath,
+	explicit Widget(const String& id, bool visible,
 	                const sf::IntRect& widgetNormal = {0, 66, 200, 20},
 	                const sf::IntRect& widgetActivated = {0, 86, 200, 20}) {
-		mouseObserver.attachKey(input::MouseKeyType::Left);
-		this->identifier = std::make_unique<Identifier>(id, Identifier::Category::GUI);
 		this->visible = visible;
-		loadWidgetTexture(widgetNormal, widgetActivated, widgetAssetPath);
+		mouseObserver.attachKey(input::MouseKeyType::Left);
+		identifier = std::make_unique<Identifier>(id, Identifier::Category::GUI);
+		loadWidgetTexture(widgetNormal, widgetActivated, Path::widgetPath);
 		widgetSprite.setTexture(widgetNormalTexture);
 	}
 
 	explicit Widget(const String& id) {
-		mouseObserver.attachKey(input::MouseKeyType::Left);
-		this->identifier = std::make_unique<Identifier>(id, Identifier::Category::GUI);
 		this->visible = true;
+		mouseObserver.attachKey(input::MouseKeyType::Left);
+		identifier = std::make_unique<Identifier>(id, Identifier::Category::GUI);
 	}
 
+	virtual ~Widget() {};
 
 	bool isVisible() const { return visible; }
 
@@ -158,7 +156,7 @@ public:
 		setVisible(false);
 	}
 
-	void update() {
+	void update() override {
 		if (isActive()) {
 			updateMouse();
 			onUpdate();
@@ -169,6 +167,10 @@ public:
 		if (isVisible())
 			onRender();
 	}
+
+private:
+	bool mouseButtonPressed{};
+	sf::Vector2i mousePosition{};
 };
 
 #endif //RUNCRAFT_WIDGET_HPP

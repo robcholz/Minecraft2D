@@ -1,11 +1,11 @@
 //
 // Created by robcholz on 3/26/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_SLIDERWIDGET_HPP
 #define RUNCRAFT_SLIDERWIDGET_HPP
 
-#pragma once
 
 #include <SFML/Graphics/Sprite.hpp>
 #include "Widget.hpp"
@@ -50,10 +50,10 @@ protected:
 
 public:
 	explicit SliderWidget(const String& id, int width = 200, int height = 20, bool visible = true, int x = 0, int y = 0)
-			: Widget(id, visible) {
-		title = TranslatableText::getTranslatable(id, translatable::GUI_SLIDER);
+			: Widget("slider."+id,visible) {
+		title = TranslatableText::getTranslatable(*identifier);
 		/*background*/
-		sliderBackgroundTexture.loadFromFile(widgetPath, intRectBackground);
+		sliderBackgroundTexture.loadFromFile(Path::widgetPath, intRectBackground);
 		sliderBackgroundSprite.setTexture(sliderBackgroundTexture); // background
 		sliderBackgroundSprite.setScale((float) width / 200, (float) height / 20);
 		sliderBackgroundSprite.setPosition((float) x, (float) y);
@@ -74,6 +74,8 @@ public:
 		updateMessagePosition();
 		message.setCharacterSize((int) ((float) height / 80.0f * 64.0f));
 	}
+
+	~SliderWidget() override=default;
 
 	ButtonValue getValue() const { return sliderValue; }
 

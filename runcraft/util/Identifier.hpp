@@ -8,12 +8,13 @@
 #include <algorithm>
 #include <plog/Log.h>
 #include "util/Utils.hpp"
+#include "Path.hpp"
 
 class Identifier {
 private:
 	using String = std::string;
 protected:
-	// namespace, path
+	// namespace, relativePath
 	static std::pair<String, String> split(const String& id, char delimiter) {
 		String namespace_;
 		String path;
@@ -27,16 +28,9 @@ protected:
 	}
 
 public:
-	static inline String blockStatePath = "../assets/blockstates";
-	static inline String fontPath = "../assets/font";
-	static inline String guiPath = "../assets/textures/gui/";
-	static inline String langPath = "../assets/lang/";
-	static inline String soundPath = "../assets/sounds/";
-	static inline String texturePath = "../assets/textures/";
-
 	enum class Category {
 		SOUND,
-		BLOCKSTATES,
+		BLOCK,
 		LANG,
 		ITEM,
 		ENTITY,
@@ -53,9 +47,10 @@ public:
 			PLOG_ERROR << "Identifier " << id << " namespace is invalid: " << strings.first;
 		}
 		if (!isPathValid(strings.second)) {
-			PLOG_ERROR << "Identifier " << id << " path is invalid: " << strings.second;
+			PLOG_ERROR << "Identifier " << id << " relativePath is invalid: " << strings.second;
 		}
 		namespace_ = strings.first;
+		relativePath = _getRelativePath(strings.second);
 		path = _getPath(strings.second);
 		absolutePath = _getAbsolutePath();
 	}
@@ -65,23 +60,27 @@ public:
 			PLOG_ERROR << "Identifier " << namespace_ + ":" + path << " namespace is invalid: " << namespace_;
 		}
 		if (!isPathValid(path)) {
-			PLOG_ERROR << "Identifier " << namespace_ + ":" + path << " path is invalid: " << path;
+			PLOG_ERROR << "Identifier " << namespace_ + ":" + path << " relativePath is invalid: " << path;
 		}
 		this->category = category;
 		this->namespace_ = namespace_;
+		this->relativePath = _getRelativePath(path);
 		this->path = _getPath(path);
 	}
 
 	Identifier(const Identifier& identifier) {
 		this->namespace_ = identifier.namespace_;
-		this->path = identifier.path;
+		this->relativePath = identifier.relativePath;
 		this->absolutePath = identifier.absolutePath;
+		this->path = identifier.path;
 		this->category = identifier.category;
 	}
 
 	~Identifier() = default;
 
-	String getRelativePath() { return path; }
+	String getRelativePath() { return relativePath; }
+
+	String getPath() { return path; }
 
 	String getAbsolutePath() { return absolutePath; }
 
@@ -89,18 +88,18 @@ public:
 
 	Category getCategory() { return category; }
 
-	String toString() { return namespace_ + ":" + path; }
+	String toString() { return namespace_ + ":" + relativePath; }
 
 	bool operator<(const Identifier& identifier) {
-		return (this->path < identifier.path && this->namespace_ < identifier.namespace_);
+		return (this->relativePath < identifier.relativePath && this->namespace_ < identifier.namespace_);
 	}
 
 	bool operator>(const Identifier& identifier) {
-		return (this->path > identifier.path && this->namespace_ > identifier.namespace_);
+		return (this->relativePath > identifier.relativePath && this->namespace_ > identifier.namespace_);
 	}
 
 	bool operator==(const Identifier& identifier) {
-		return (this->path == identifier.path && this->namespace_ == identifier.namespace_);
+		return (this->relativePath == identifier.relativePath && this->namespace_ == identifier.namespace_);
 	}
 
 	static bool isCharValid(char c) {
@@ -127,17 +126,11 @@ public:
 
 private:
 	String namespace_;
-	String path;
+	String relativePath;
 	String absolutePath;
+	String path;
 	Category category{};
 	static inline String defaultNamespace = "runcraft";
-
-	static inline String blockStateSuffix = ".json";
-	static inline String fontSuffix = ".ttf";
-	static inline String guiSuffix = ".png";
-	static inline String langSuffix = ".json";
-	static inline String soundSuffix = ".ogg";
-	static inline String textureSuffix = ".png";
 
 	static bool isNamespaceCharacterValid(char character) {
 		return character == '_' || character == '-' || character >= 'a' && character <= 'z' || character >= '0' && character <= '9' || character == '.';
@@ -146,8 +139,39 @@ private:
 	String _getAbsolutePath() {
 		switch (category) {
 			case Category::SOUND:
-				return soundPath + getRelativePath() + soundSuffix;
-			case Category::BLOCKSTATES:
+				return Path::soundPath + getRelativePath() + Path::soundSuffix;
+			case Category::BLOCK:
+				return Path::blockStatePath + getRelativePath() + Path::blockStateSuffix;
+			case Category::LANG:
+				break;
+			case Category::ITEM:
+				break;
+			case Category::ENTITY:
+				break;
+			case Category::TEXTURE:
+				return Path::texturePath + getRelativePath() + Path::textureSuffix;
+			case Category::GUI:
+				return Path::guiPath + getRelativePath() + Path::guiSuffix;
+		}
+		PLOG_ERROR << "You should do that";
+		return "s";
+	}
+
+	static String _getRelativePath(const String& path_) {
+		String temp = path_;
+		std::replace(temp.begin(), temp.end(), '.', '/');
+		return temp;
+	}
+
+	String _getPath(const String& path_) {
+		String temp = path_;
+		String prefix_;
+		switch (category) {
+			case Category::SOUND:
+				prefix_ = "sound";
+				break;
+			case Category::BLOCK:
+				prefix_ = "blockstates";
 				break;
 			case Category::LANG:
 				break;
@@ -156,19 +180,13 @@ private:
 			case Category::ENTITY:
 				break;
 			case Category::TEXTURE:
-				return texturePath + getRelativePath() + textureSuffix;
+				break;
 			case Category::GUI:
-				return guiPath + getRelativePath() + guiSuffix;
+				prefix_ = "gui";
 				break;
 		}
-		PLOG_ERROR << "You should do that";
-		return "s";
-	}
-
-	static String _getPath(const String& path_) {
-		String temp = path_;
-		std::replace(temp.begin(), temp.end(), '.', '/');
-		return temp;
+		std::replace(temp.begin(), temp.end(), '/', '.');
+		return prefix_ + "." + temp;
 	}
 };
 

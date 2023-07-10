@@ -16,6 +16,7 @@
       <file path="$PROJECT_DIR$/cmake-build-debug-coverage" />
       <file path="$PROJECT_DIR$/external" />
       <file path="$PROJECT_DIR$/log" />
+      <file path="$PROJECT_DIR$/tools" />
     </excludeRoots>
   </component>
 </project>

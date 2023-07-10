@@ -9,14 +9,12 @@
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
 #include "client/gui/GUI.hpp"
+#include "util/Path.hpp"
 
 namespace initialization {
-	class GUIFont : public sf::Font, public GUI {
+	class GUIFont : public sf::Font {
 	protected:
-		std::string fontAssetPath = fontFilePath + "/runcraft.ttf";
-	private:
-		void render() override {}
-
+		std::string fontAssetPath = Path::fontFilePath + "/runcraft.ttf";
 	public:
 		GUIFont() : sf::Font() {
 			loadFromFile(fontAssetPath);

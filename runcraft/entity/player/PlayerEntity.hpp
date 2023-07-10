@@ -11,6 +11,7 @@
 #include "entity/Entity.hpp"
 #include "block/attributes/Blocks.hpp"
 
+
 class PlayerEntity : public entity::Entity {
 protected:
 	void updateHitbox() override {
@@ -48,6 +49,8 @@ public:
 		moveSniff.attachKey(input::KeyboardKeyType::LShift);
 		initSkin();
 	}
+
+	~PlayerEntity() override = default;
 
 	float getMaxHealth() override {
 		return 20.f;

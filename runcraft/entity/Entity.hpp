@@ -58,6 +58,8 @@ namespace entity {
 			addHitbox(&entityHitbox);
 		}
 
+		virtual ~Entity() {}
+
 		WorldAccess* getWorld() override {
 			return worldAccess;
 		}
@@ -82,7 +84,7 @@ namespace entity {
 			return health;
 		}
 
-		bool isWalking() override{
+		bool isWalking() override {
 			return velocity.x != 0;
 		}
 
@@ -304,7 +306,7 @@ namespace entity {
 
 		void updateDamage() {
 			if (fallDistance >= 3)
-				health -= floor(((int)fallDistance - 3) / 2); // falling damage
+				health -= floor(((int) fallDistance - 3) / 2); // falling damage
 			damaged = (last_health > health);
 			last_health = health;
 		}

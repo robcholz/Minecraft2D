@@ -1,6 +1,7 @@
 //
 // Created by robcholz on 3/11/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_FILEHELPER_HPP
 #define RUNCRAFT_FILEHELPER_HPP
@@ -9,60 +10,59 @@
 #include <filesystem>
 #include <fstream>
 
-#pragma once
 
 class FileHelper {
 private:
-	std::vector<std::string> directories;
-	std::string directoryPath;
+	using String = std::string;
 public:
-	explicit FileHelper(const std::string &directoryPath) {
+	explicit FileHelper(const String& directoryPath) {
 		this->directoryPath = directoryPath;
 	}
 
 	~FileHelper() = default;
 
-	bool static isExisted(const std::string &filename) {
-		std::ifstream file;
+	bool static isExisted(const String& filename) {
+		static std::ifstream file;
 		file.open(filename);
-		if (file) return true;
-		else return false;
+		bool flag = (bool) file;
+		file.close();
+		return flag;
 	}
 
-	std::vector<std::string>* getFilesInDirectory() {
+	std::vector<String>* getFilesInDirectory() {
 		directories.clear();
-		for (const auto &entry: std::filesystem::directory_iterator(directoryPath)) {
+		for (const auto& entry: std::filesystem::directory_iterator(directoryPath)) {
 			directories.push_back(entry.path());
 		}
 		return &directories;
 	}
 
-	std::string getDirectoryName(){
+	String getDirectoryName() {
 		return directoryPath;
 	}
 
-	static bool createFolder(const std::string &folderName) {
+	static bool createFolder(const String& folderName) {
 		return std::filesystem::create_directory(folderName);
 	}
 
-	static bool createFolder(const std::string &directory, const std::string &folderName) {
+	static bool createFolder(const String& directory, const String& folderName) {
 		return std::filesystem::create_directory(directory + "/" + folderName);
 	}
 
-	std::string createSubFolder(const std::string &folderName) {
+	String createSubFolder(const String& folderName) {
 		std::filesystem::create_directory(directoryPath + "/" + folderName);
 		return directoryPath + "/" + folderName;
 	}
 
-	static void createFile(const std::string &filename) {
+	static void createFile(const String& filename) {
 		std::ofstream file(filename);
 	}
 
-	static void createFile(const std::string &directory, const std::string &filename) {
+	static void createFile(const String& directory, const String& filename) {
 		std::ofstream file(directory + "/" + filename);
 	}
 
-	std::string createSubFile(const std::string &filename) {
+	String createSubFile(const String& filename) {
 		std::ofstream my_file(directoryPath + "/" + filename);
 		return directoryPath + "/" + filename;
 	}
@@ -71,12 +71,16 @@ public:
 		return std::filesystem::is_empty(directoryPath);
 	}
 
-	static std::string transferJsonPathToFilePath(const std::string &jsonPath) {
-		std::string field = jsonPath.substr(0, jsonPath.find(':'));
-		std::string type = jsonPath.substr(jsonPath.find(':') + 1, jsonPath.find('/') - jsonPath.find(':') - 1);
-		std::string filename = jsonPath.substr(jsonPath.find('/') + 1, jsonPath.length() - jsonPath.find(':'));
-		return "../assets/textures/" + type + "s/" + filename + ".png";
+	static String transferJsonPathToFilePath(const String& jsonPath) {
+		String field = jsonPath.substr(0, jsonPath.find(':'));
+		String type = jsonPath.substr(jsonPath.find(':') + 1, jsonPath.find('/') - jsonPath.find(':') - 1);
+		String filename = jsonPath.substr(jsonPath.find('/') + 1, jsonPath.length() - jsonPath.find(':'));
+		return Path::rootDirectory + "/assets/textures/" + type + "s/" + filename + ".png";
 	}
+
+private:
+	std::vector<String> directories;
+	String directoryPath;
 };
 
 #endif //RUNCRAFT_FILEHELPER_HPP

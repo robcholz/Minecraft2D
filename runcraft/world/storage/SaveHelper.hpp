@@ -19,11 +19,6 @@ class SaveHelper {
 private:
 	using String = std::string;
 	using Buffer = std::vector<uint8_t>;
-	String saveDirectory;
-
-	FileHelper savesDirectoryHelper{"../external/saves"};
-	std::unique_ptr<FileHelper> saveHelper, regionHelper, entitiesHelper, playerdataHelper;
-
 protected:
 	static String getRegionName(coordinate::ChunkPositionT chunkPos) { return "r.0." + std::to_string(chunkPos); }
 
@@ -98,6 +93,11 @@ public:
 	chunk::Chunk* loadChunk(coordinate::ChunkPositionT chunkPos) {
 		return loadRegion(getRegionName(chunkPos));
 	}
+private:
+	String saveDirectory;
+
+	FileHelper savesDirectoryHelper{"../external/saves"};
+	std::unique_ptr<FileHelper> saveHelper, regionHelper, entitiesHelper, playerdataHelper;
 };
 
 #endif //RUNCRAFT_SAVEHELPER_HPP

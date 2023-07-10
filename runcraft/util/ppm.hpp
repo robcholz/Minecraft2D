@@ -13,12 +13,12 @@
 #include <exception>
 
 class ppm {
-public:
+private:
 	//arrays for storing the R,G,B values
 	std::vector<unsigned char> r;
 	std::vector<unsigned char> g;
 	std::vector<unsigned char> b;
-
+public:
 	ppm(){
 		init();
 	}
@@ -41,6 +41,8 @@ public:
 		g.resize(size);
 		b.resize(size);
 	}
+	~ppm()=default;
+
 	//read the PPM image from fname
 	void read(const std::string &fname){
 		std::ifstream inp(fname.c_str(), std::ios::in | std::ios::binary);

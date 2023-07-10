@@ -21,11 +21,11 @@ namespace hud {
 		using String = std::string;
 		using PixelPosT = coordinate::PixelPositonT;
 		using SpriteSmartPtr = std::unique_ptr<sf::Sprite>;
-	protected:
-		String iconAssetPath = guiFilePath + "/icons.png";
 	public:
 		explicit HungerBarHud(WorldAccess* worldAccess) {
 			this->worldAccess = worldAccess;
+			identifier=std::make_unique<Identifier>("icons",Identifier::Category::GUI);
+			iconAssetPath=identifier->getAbsolutePath();
 			// (16,27) (24,35)
 			darkOutlineHungerTexture.loadFromFile(iconAssetPath, sf::IntRect{16, 27, 8, 8});
 			// (25,27) (33,35)
@@ -53,7 +53,7 @@ namespace hud {
 			z_pos = z;
 		}
 
-		void update() {
+		void update() override {
 			updateHudPosition();
 			//updateHunger();
 		}
@@ -66,6 +66,7 @@ namespace hud {
 		}
 
 	private:
+		std::unique_ptr<Identifier> identifier;
 		// pair.first is the outline sprite; pair.second is the heart sprite
 		std::vector<std::pair<std::optional<SpriteSmartPtr>, std::optional<SpriteSmartPtr>>> hungerBarSpritesContainer;
 		sf::Texture darkOutlineHungerTexture;
@@ -80,6 +81,7 @@ namespace hud {
 		static constexpr int MAX_HUNGER = 10;
 		static constexpr int HUNGER_EFFECT_DURATION = 60 * 3; // seconds
 		short last_hunger = 0;
+		String iconAssetPath;
 		PixelPosT x_pos = 0;
 		PixelPosT z_pos = 0;
 

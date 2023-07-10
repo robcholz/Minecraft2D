@@ -1,20 +1,18 @@
 //
 // Created by robcholz on 3/17/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_GUI_HPP
 #define RUNCRAFT_GUI_HPP
 
-#pragma once
 
 #include <string>
 #include <SFML/Graphics/Drawable.hpp>
 
 class GUI {
-protected:
-	std::string guiFilePath = "../assets/textures/gui";
-	std::string fontFilePath = "../assets/font";
 public:
+	virtual void update() = 0;
 	virtual void render() = 0;
 };
 

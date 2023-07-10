@@ -12,6 +12,7 @@
 class SoundEvent {
 public:
 	SoundEvent() = default;
+	~SoundEvent()=default;
 
 	explicit SoundEvent(const Identifier& id) {
 		this->id = id;

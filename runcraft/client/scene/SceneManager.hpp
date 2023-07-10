@@ -14,14 +14,10 @@
 class SceneManager {
 private:
 	using String = std::string;
-	std::map<String, std::function<SceneAccess*()>> sceneCallableMap;
-	std::map<String, String> pairMap;
-
-	SceneAccess* scene = nullptr;
-	String sceneName;
-
 public:
 	explicit SceneManager() = default;
+
+	~SceneManager() = default;
 
 	SceneManager& setEntry(const String& name) {
 		scene = sceneCallableMap[name]();
@@ -54,6 +50,12 @@ public:
 			}
 		}
 	}
+
+private:
+	std::map<String, std::function<SceneAccess*()>> sceneCallableMap;
+	std::map<String, String> pairMap;
+	SceneAccess* scene = nullptr;
+	String sceneName;
 };
 
 #endif //RUNCRAFT_SCENEMANAGER_HPP

@@ -12,12 +12,7 @@
 
 class Hitbox {
 private:
-	struct Box { int x, y, width, height; } box;
-
-	static bool intersectionOverlap(int value, int min, int max) { return (value > min) && (value < max); }
-
-	static bool contactOverlap(int value, int min, int max) { return (value >= min) && (value <= max); }
-
+	struct Box;
 public:
 	/*
     * p1---------*
@@ -91,6 +86,14 @@ public:
 	Box& getBox() {
 		return box;
 	}
+
+private:
+	struct Box { int x, y, width, height; } box;
+
+	static bool intersectionOverlap(int value, int min, int max) { return (value > min) && (value < max); }
+
+	static bool contactOverlap(int value, int min, int max) { return (value >= min) && (value <= max); }
+
 };
 
 class HitboxHandler {

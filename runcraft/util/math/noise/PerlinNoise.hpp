@@ -1,17 +1,16 @@
 //
 // Created by robcholz on 7/1/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_PERLINNOISE_HPP
 #define RUNCRAFT_PERLINNOISE_HPP
 
-#pragma once
 
 #include <vector>
 #include "util/math/MathHelper.hpp"
 
 namespace math {
-
 	class PerlinNoise {
 	public:
 		PerlinNoise() {
@@ -33,6 +32,7 @@ namespace math {
 		explicit PerlinNoise(unsigned int seed) {
 			initialize(seed);
 		}
+		~PerlinNoise()=default;
 
 		void initialize(unsigned int seed){
 			p.resize(256);

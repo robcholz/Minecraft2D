@@ -18,7 +18,8 @@ enum ExceptionType : unsigned char {
 
 class Exception : public std::exception {
 public:
-	[[nodiscard]] const char *what() const noexcept override {
+	[[nodiscard]]
+	const char *what() const noexcept override {
 		return m.what();
 	}
 

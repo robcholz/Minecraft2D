@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include "util/math/MathHelper.hpp"
+#include "Block.hpp"
 
 
 namespace block {
@@ -17,7 +18,7 @@ namespace block {
 		virtual BlockPosition* getPosition() = 0;
 
 		[[nodiscard]]
-		virtual struct ID getID() const = 0;
+		virtual struct ID getID() const  = 0;
 
 		[[nodiscard]]
 		virtual sf::Sprite* getSprite() const = 0;

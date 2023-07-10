@@ -24,6 +24,8 @@ public:
 		currentRenderingScreen = entryScreen;
 	}
 
+	void update() override{}
+
 	void render() override {
 		currentRenderingScreen->render();
 		if (currentRenderingScreen->getResponseCallbackScreen() != nullptr) {

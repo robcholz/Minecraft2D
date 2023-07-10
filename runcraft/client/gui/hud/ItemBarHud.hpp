@@ -14,22 +14,22 @@
 #include "Log.h"
 #include "client/gui/GUI.hpp"
 
-namespace hud{
+namespace hud {
 	class ItemBarHud : public GUI {
 	private:
 		using String = std::string;
 		using PixelPosT = coordinate::PixelPositonT;
-	protected:
-		String iconAssetPath = guiFilePath + "/widgets.png";
 	public:
 		explicit ItemBarHud(WorldAccess* worldAccess) {
 			this->worldAccess = worldAccess;
+			identifier = std::make_unique<Identifier>("widgets", Identifier::Category::GUI);
+			iconAssetPath = identifier->getAbsolutePath();
 			itemBarTexture.loadFromFile(iconAssetPath, sf::IntRect{0, 0, 182, 21}); // (0,0) (181,21)
 			onFocusedItemTexture.loadFromFile(iconAssetPath, sf::IntRect{0, 22, 24, 24}); // (0,22) (24,46)
 			scale();
 		}
 
-		void update() {
+		void update() override {
 			updatePosition();
 			focus(8);
 		}
@@ -40,11 +40,13 @@ namespace hud{
 		}
 
 	private:
+		std::unique_ptr<Identifier> identifier;
 		sf::Texture itemBarTexture;
 		sf::Texture onFocusedItemTexture;
 		sf::Sprite itemBarSprite;
 		sf::Sprite onFocusedItemSprite;
 		WorldAccess* worldAccess = nullptr;
+		String iconAssetPath;
 		PixelPosT x_pos = 0;
 		PixelPosT z_pos = 0;
 

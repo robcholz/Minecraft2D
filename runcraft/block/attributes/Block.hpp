@@ -11,6 +11,7 @@
 #include <limits>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include "util/Identifier.hpp"
 #include "world/poi/Position.hpp"
 #include "block/attributes/BlockTextureLoader.hpp"
 #include "client/GameInfo.hpp"
@@ -24,24 +25,14 @@ namespace block::blocks { class Blocks; }
 
 namespace block {
 	struct ID {
-		int serialID{};
+		int serialID = -1;
 		std::string id;
 	};
 
-	class Block : public BlockAccess, public HitboxHandler{
+	class Block : public BlockAccess, public HitboxHandler {
 	private:
-		friend class Blocks;
-
 		using String = std::string;
 		using BlockPosT = coordinate::BlockPositionT;
-
-		std::unique_ptr<sf::Sprite> blockSprite;
-		std::unique_ptr<BlockPosition> blockPosition;
-		std::unique_ptr<BlockTextureLoader> blockTexture;
-		std::unique_ptr<BlockState> blockState;
-
-		struct ID ID;
-		Hitbox hitbox{};
 
 		void onInitialize() {
 			blockSprite->setTexture(*blockTexture->getBlockTextureTile(BlockDirectionType::OUT));
@@ -54,12 +45,17 @@ namespace block {
 		explicit Block(const String& id) {
 			this->ID.id = id;
 			this->ID.serialID = BlockIDLoader::getBlockID(id);
-			blockTexture = std::make_unique<BlockTextureLoader>(id);
+			identifier=std::make_unique<Identifier>(id,Identifier::Category::BLOCK);
+			blockTexture = std::make_unique<BlockTextureLoader>(*identifier);
 			blockPosition = std::make_unique<BlockPosition>(this, 0, 0);
 			blockState = std::make_unique<BlockState>();
 			blockSprite = std::make_unique<sf::Sprite>();
 			addHitbox(&hitbox);
 			onInitialize();
+		}
+
+		Block(const Block& block){
+
 		}
 
 		void setParameter(BlockPosT x, BlockPosT z, BlockDirectionType blockDirection) {
@@ -86,6 +82,17 @@ namespace block {
 		bool isError() const { return (this->getID().id == "error_block"); }
 
 		virtual ~Block() = default;
+
+	private:
+		std::unique_ptr<Identifier> identifier;
+		std::unique_ptr<sf::Sprite> blockSprite;
+		std::unique_ptr<BlockPosition> blockPosition;
+		std::unique_ptr<BlockTextureLoader> blockTexture;
+		std::unique_ptr<BlockState> blockState;
+		Hitbox hitbox{};
+		struct ID ID;
+
+		friend class Blocks;
 	};
 }
 

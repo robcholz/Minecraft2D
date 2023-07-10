@@ -1,6 +1,7 @@
 //
 // Created by robcholz on 5/19/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_INPUT_HPP
 #define RUNCRAFT_INPUT_HPP

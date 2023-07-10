@@ -22,7 +22,7 @@
 
 class ButtonWidget : public Widget {
 private:
-	RichText message;
+	using String = std::string;
 protected:
 	void onRender() override {
 		Widget::onRender();
@@ -30,19 +30,24 @@ protected:
 	}
 
 public:
-	explicit ButtonWidget(const std::string& id, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0)
-			: Widget(id, visible) {
+	explicit ButtonWidget(const String& id, int width = 400, int height = 80, bool visible = true, int x = 0, int y = 0)
+			: Widget("button." + id, visible) {
 		widgetSprite.setScale((float) width / 200, (float) height / 20);
-		setOutline(&widgetOutline, widgetSprite,x, y, width, height);
+		setOutline(&widgetOutline, widgetSprite, x, y, width, height);
 		widgetSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
 
 		message.setFont(gui_style::MessageFont)
 		       .setColor(gui_style::MessageColor)
-		       .setMessage(TranslatableText::getTranslatable(id, translatable::GUI_BUTTON))
+		       .setMessage(TranslatableText::getTranslatable(*identifier))
 		       .setPosition((float) widgetOutline.x + (float) widgetOutline.width / 2 - message.getGlobalBounds().width,
 		                    (float) widgetOutline.y - (float) widgetOutline.height / 8 - 1.0f);
 		message.setCharacterSize((int) ((float) widgetOutline.height / 80.0f * 64.0f));
 	}
+
+	~ButtonWidget() override = default;
+
+private:
+	RichText message;
 };
 
 #endif //RUNCRAFT_BUTTONWIDGET_HPP

@@ -37,7 +37,6 @@ public:
 
 	virtual ~SceneAccess()=default;
 private:
-private:
 	State state{};
 };
 

@@ -9,13 +9,6 @@
 #include "client/GameInfo.hpp"
 
 class TextFieldWidget : public Widget {
-private:
-	RichText text{gui_style::MessageFont};
-
-	void executeCallbackFunc() override {}
-
-	void onUpdate() override {}
-
 protected:
 	void onRender() override {
 		GameInfo.getRender()->render(text);
@@ -23,15 +16,15 @@ protected:
 
 public:
 	explicit TextFieldWidget(const String& id, int size, bool visible, int x, int y) :
-			Widget(id, visible) {
+			Widget("textfield."+id,visible) {
 		text.setColor(gui_style::MessageColor)
-		    .setMessage(TranslatableText::getTranslatable(id, translatable::GUI_TEXTFIELD))
+		    .setMessage(TranslatableText::getTranslatable(*identifier))
 		    .setCharacterSize(size)
 		    .setPosition((float) x, (float) y);
 		setOutline(&widgetOutline, widgetSprite, x, y, (int) text.getGlobalBounds().width, (int) text.getGlobalBounds().height);
 	}
 
-	~TextFieldWidget() = default;
+	~TextFieldWidget() override = default;
 
 	bool stateChanged() = delete;
 
@@ -40,6 +33,13 @@ public:
 	bool isPressed() = delete;
 
 	bool isClicked() = delete;
+
+private:
+	RichText text{gui_style::MessageFont};
+
+	void executeCallbackFunc() override {}
+
+	void onUpdate() override {}
 };
 
 #endif //RUNCRAFT_TEXTFIELDWIDGET_HPP

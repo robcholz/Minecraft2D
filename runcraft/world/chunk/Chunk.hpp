@@ -11,7 +11,6 @@
 #include "world/poi/Position.hpp"
 #include "block/attributes/Blocks.hpp"
 
-#define TEST_CHUNK_HEIGHT 12
 
 namespace chunk {
 	namespace adapter { class ChunkDataPacketAdapter; }

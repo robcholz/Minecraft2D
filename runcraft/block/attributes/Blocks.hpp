@@ -31,24 +31,6 @@ namespace block::blocks {
 		using String = std::string;
 		using BlockSmartPtr = std::shared_ptr<Block>;
 
-		explicit Blocks() {
-			RegisterBlock(AirBlock);
-			RegisterBlock(BedrockBlock);
-			RegisterBlock(BirchLogBlock);
-			RegisterBlock(CoalOreBlock);
-			RegisterBlock(CobblestoneBlock);
-			RegisterBlock(DiamondBlock);
-			RegisterBlock(DirtBlock);
-			RegisterBlock(ErrorBlock);
-			RegisterBlock(GrassBlock);
-			RegisterBlock(IronBlock);
-			RegisterBlock(StoneBlock);
-			RegisterBlock(DeepslateBlock);
-			RegisterBlock(AndesiteBlock);
-			RegisterBlock(DioriteBlock);
-			RegisterBlock(GraniteBlock);
-		}
-
 	protected:
 		void registerBlock(const BlockSmartPtr& block) {
 			blocksIDRegistry.insert({block->getID().id, block});
@@ -82,6 +64,24 @@ namespace block::blocks {
 	private:
 		std::unordered_map<String, BlockSmartPtr> blocksIDRegistry;
 		std::unordered_map<int, BlockSmartPtr> blocksSerialIDRegistry;
+
+		explicit Blocks() {
+			RegisterBlock(AirBlock);
+			RegisterBlock(BedrockBlock);
+			RegisterBlock(BirchLogBlock);
+			RegisterBlock(CoalOreBlock);
+			RegisterBlock(CobblestoneBlock);
+			RegisterBlock(DiamondBlock);
+			RegisterBlock(DirtBlock);
+			RegisterBlock(ErrorBlock);
+			RegisterBlock(GrassBlock);
+			RegisterBlock(IronBlock);
+			RegisterBlock(StoneBlock);
+			RegisterBlock(DeepslateBlock);
+			RegisterBlock(AndesiteBlock);
+			RegisterBlock(DioriteBlock);
+			RegisterBlock(GraniteBlock);
+		}
 	};
 }
 

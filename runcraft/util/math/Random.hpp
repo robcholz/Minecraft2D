@@ -12,8 +12,8 @@ namespace math {
 	class Random {
 	public:
 		static auto getRange(int a, int b) {
-			std::random_device dev;
-			std::mt19937 rng(dev());
+			static std::random_device dev;
+			static std::mt19937 rng(dev());
 			std::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
 			return dist6(rng);
 		}

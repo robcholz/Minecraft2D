@@ -2,16 +2,15 @@
 // Cloned by robcholz on 3/25/23.
 // Credits: https://github.com/skyrpex/RichText
 //
+#pragma once
 
 #ifndef RUNCRAFT_RICHTEXT_HPP
 #define RUNCRAFT_RICHTEXT_HPP
 
-#pragma once
 
 #include <cassert>
 #include <cmath>
 #include <vector>
-
 #include <SFML/Graphics/Font.hpp>
 #include <SFML/Graphics/Rect.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>

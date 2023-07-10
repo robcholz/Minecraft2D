@@ -76,8 +76,10 @@ public:
 private:
 	unsigned int seed;
 	BlockPosT baseHeight;
+
 	static constexpr int DEEPSLATE_BASE_HEIGHT = -chunk::ChunkGenSettings::CHUNK_BOTTOM_LIMIT;
 	static constexpr int BEDROCK_BASE_HEIGHT = 5;
+
 	std::unique_ptr<Carver> carver;
 	std::unique_ptr<HeightDecorator> heightDecorator;
 

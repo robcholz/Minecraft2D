@@ -17,7 +17,7 @@
 #include "ChunkStreamAccess.hpp"
 
 namespace chunk {
-	class ChunkStream : public ChunkStreamAccess{
+	class ChunkStream : public ChunkStreamAccess {
 	private:
 		using DistanceT = unsigned short;
 		using ChunkPtr = Chunk*;
@@ -25,22 +25,81 @@ namespace chunk {
 		using ChunkPosT = coordinate::ChunkPositionT;
 		using BlockPosT = coordinate::BlockPositionT;
 		using BlockCoordinate = coordinate::Coordinate<BlockPosT>;
+	public:
+		explicit ChunkStream(WorldAccess* worldAccess, DistanceT simulationDistance, DistanceT renderDistance) {
+			this->worldAccess = worldAccess;
+			saveHelper = std::make_unique<SaveHelper>("TestChunkSave");
+			regionFileHelper = std::make_unique<FileHelper>(saveHelper->getDirectory() + "/region");
+			setSimulationDistance(simulationDistance);
+			setRenderDistance(renderDistance);
+			indexRegions();
+		}
 
+		virtual ~ChunkStream() {
+			for (auto v: chunkSimulationMap)
+				saveHelper->saveChunk(v.second);
+		}
+
+		void setRenderDistance(DistanceT distance) {
+			if (distance >= simulationDistance)
+				renderDistance = simulationDistance;
+			else
+				renderDistance = distance;
+		}
+
+		void setSimulationDistance(DistanceT distance) {
+			simulationDistance = distance;
+		}
+
+		void setChunkGenerator(std::function<Chunk*(ChunkPosT)> function) {
+			chunkGenerator = std::move(function);
+		}
+
+		Chunk* getChunk(ChunkPosT chunkPos) {
+			if (chunkSimulationMap.contains(chunkPos))
+				return chunkSimulationMap[chunkPos];
+			return nullptr;
+		}
+
+		block::Block* getBlock(BlockCoordinate blockCoordinate) override {
+			// convert to chunk position and search in stream
+			// locate the block pointer in a specific chunk
+			auto chunkSettings = Chunk::toChunkSettings(blockCoordinate);
+			auto chunk = this->getChunk(chunkSettings.chunkPos);
+			if (chunk != nullptr)
+				return chunk->getBlockWithBoundaryCheck(chunkSettings.chunkBlockPos);
+			PLOG_ERROR << "Given block doesn't exist in the loaded chunks: ChunkPosition: " << chunkSettings.chunkPos;
+			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
+		}
+
+		void update() {
+			onUpdate();
+			for (const auto& v: chunkSimulationMap) {
+				v.second->update();
+			}
+		}
+
+		void render() {
+			for (const auto& v: chunkRenderingMap) {
+				v.second->render();
+			}
+		}
+
+	private:
+		WorldAccess* worldAccess = nullptr;
 		std::unordered_map<ChunkPosT, ChunkPtr> chunkRenderingMap; // chunks that will be rendered
 		std::unordered_map<ChunkPosT, ChunkPtr> chunkSimulationMap; // chunks that will be updated
-		std::list<ChunkPosT> chunkDeletingList;
-		DistanceT renderDistance = 0, simulationDistance = 0;
-		Intervali renderInterval{}, simulationInterval{};
+		std::set<ChunkPosT> cachedChunks; // chunks that have been cached
+		std::list<ChunkPosT> chunkDeletingList; // chunks that will be deleted
 		std::unique_ptr<SaveHelper> saveHelper;
 		std::unique_ptr<FileHelper> regionFileHelper;
 		std::function<Chunk*(ChunkPosT)> chunkGenerator = nullptr;
-		WorldAccess* worldAccess= nullptr;
+		DistanceT renderDistance = 0, simulationDistance = 0;
+		Intervali renderInterval{}, simulationInterval{};
 		ChunkPosT playerChunkPos = 0;
 
-		/**/
-		std::set<ChunkPosT> cachedChunks;
 
-		void updateInterval(){
+		void updateInterval() {
 			auto x_player = worldAccess->getPlayer()->getEntityPosition().getPixelPosition().getCoordinate().x;
 			playerChunkPos = Chunk::convertToChunkPos(x_player);
 			renderInterval.lower = playerChunkPos - renderDistance;
@@ -49,7 +108,7 @@ namespace chunk {
 			simulationInterval.upper = playerChunkPos + simulationDistance;
 		}
 
-		void indexRegions(){
+		void indexRegions() {
 			for (const auto& filepath: *regionFileHelper->getFilesInDirectory()) {
 				auto filename = filepath.substr(filepath.find_last_of("/\\") + 1);
 				auto second_dot_occur = utils::nthOccurrence(filename, ".", 2);
@@ -59,11 +118,11 @@ namespace chunk {
 			}
 		}
 
-		void addToIndexedRegions(ChunkPosT chunkPos){
+		void addToIndexedRegions(ChunkPosT chunkPos) {
 			cachedChunks.insert(chunkPos);
 		}
 
-		Chunk* loadChunk(ChunkPosT chunkPos){
+		Chunk* loadChunk(ChunkPosT chunkPos) {
 			Chunk* chunk;
 			if (cachedChunks.count(chunkPos))
 				chunk = saveHelper->loadChunk(chunkPos);
@@ -74,27 +133,27 @@ namespace chunk {
 			return chunk;
 		}
 
-		void addToSimulationChunks(ChunkPosT chunkPos){
+		void addToSimulationChunks(ChunkPosT chunkPos) {
 			auto chunk = loadChunk(chunkPos);
 			saveHelper->saveChunk(chunk);
 			chunkSimulationMap.insert({chunkPos, chunk});
 		}
 
-		void removeFromSimulationChunks(ChunkPosT chunkPos){
+		void removeFromSimulationChunks(ChunkPosT chunkPos) {
 			auto chunk = chunkSimulationMap[chunkPos];
 			saveHelper->saveChunk(chunk);
 			chunkDeletingList.push_front(chunkPos);
 		}
 
-		void removeRedundantChunks(){
-			for (auto chunkPos:chunkDeletingList) {
+		void removeRedundantChunks() {
+			for (auto chunkPos: chunkDeletingList) {
 				delete chunkSimulationMap[chunkPos];
 				chunkSimulationMap.erase(chunkPos);
 			}
 			chunkDeletingList.clear();
 		}
 
-		void updateSimulationChunks(){
+		void updateSimulationChunks() {
 			for (auto v: chunkSimulationMap) {
 				auto chunkPos = v.first;
 				if (!(simulationInterval.lower <= chunkPos && chunkPos <= simulationInterval.upper)) {
@@ -106,8 +165,8 @@ namespace chunk {
 					addToSimulationChunks(chunkPos); // load chunks
 		}
 
-		void updateRenderingChunks(){
-			for(auto v:chunkDeletingList){
+		void updateRenderingChunks() {
+			for (auto v: chunkDeletingList) {
 				chunkRenderingMap.erase(v);
 			}
 			for (auto v: chunkSimulationMap) {
@@ -124,73 +183,12 @@ namespace chunk {
 			}
 		}
 
-		void onUpdate(){
+		void onUpdate() {
 			updateInterval();
 			updateSimulationChunks();
 			updateRenderingChunks();
 			removeRedundantChunks();
 		}
-
-	public:
-		explicit ChunkStream(WorldAccess* worldAccess, DistanceT simulationDistance, DistanceT renderDistance){
-			this->worldAccess=worldAccess;
-			saveHelper = std::make_unique<SaveHelper>("TestChunkSave");
-			regionFileHelper = std::make_unique<FileHelper>(saveHelper->getDirectory() + "/region");
-			setSimulationDistance(simulationDistance);
-			setRenderDistance(renderDistance);
-			indexRegions();
-		}
-
-		~ChunkStream(){
-			for(auto v:chunkSimulationMap)
-				saveHelper->saveChunk(v.second);
-		}
-
-		void setRenderDistance(DistanceT distance){
-			if (distance >= simulationDistance)
-				renderDistance = simulationDistance;
-			else
-				renderDistance = distance;
-		}
-
-		void setSimulationDistance(DistanceT distance){
-			simulationDistance = distance;
-		}
-
-		void setChunkGenerator(std::function<Chunk*(ChunkPosT)> function){
-			chunkGenerator = std::move(function);
-		}
-
-		Chunk* getChunk(ChunkPosT chunkPos){
-			if(chunkSimulationMap.contains(chunkPos))
-				return chunkSimulationMap[chunkPos];
-			return nullptr;
-		}
-
-		block::Block* getBlock(BlockCoordinate blockCoordinate) override {
-			// convert to chunk position and search in stream
-			// locate the block pointer in a specific chunk
-			auto chunkSettings = Chunk::toChunkSettings(blockCoordinate);
-			auto chunk = this->getChunk(chunkSettings.chunkPos);
-			if (chunk != nullptr)
-				return chunk->getBlockWithBoundaryCheck(chunkSettings.chunkBlockPos);
-			PLOG_ERROR << "Given block doesn't exist in the loaded chunks: ChunkPosition: "<<chunkSettings.chunkPos;
-			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
-		}
-
-		void update(){
-			onUpdate();
-			for (const auto& v: chunkSimulationMap) {
-				v.second->update();
-			}
-		}
-
-		void render(){
-			for (const auto& v: chunkRenderingMap) {
-				v.second->render();
-			}
-		}
-
 	};
 }
 

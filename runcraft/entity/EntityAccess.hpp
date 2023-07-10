@@ -8,6 +8,7 @@
 #include "world/poi/Coordinate.hpp"
 #include "world/poi/Position.hpp"
 
+
 class WorldAccess;
 
 class EntityAccess {
