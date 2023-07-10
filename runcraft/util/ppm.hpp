@@ -13,12 +13,12 @@
 #include <exception>
 
 class ppm {
-private:
+public:
 	//arrays for storing the R,G,B values
 	std::vector<unsigned char> r;
 	std::vector<unsigned char> g;
 	std::vector<unsigned char> b;
-public:
+
 	ppm(){
 		init();
 	}
