@@ -96,7 +96,7 @@ public:
 private:
 	String saveDirectory;
 
-	FileHelper savesDirectoryHelper{"../external/saves"};
+	FileHelper savesDirectoryHelper{Path::rootDirectory+"/external/saves"};
 	std::unique_ptr<FileHelper> saveHelper, regionHelper, entitiesHelper, playerdataHelper;
 };
 
