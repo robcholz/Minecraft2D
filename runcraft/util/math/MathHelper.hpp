@@ -8,6 +8,7 @@
 #include <SFML/System/Vector2.hpp>
 #include <cmath>
 #include <random>
+#include <boost/math/constants/constants.hpp>
 
 namespace math {
 	class Math {
@@ -17,10 +18,10 @@ namespace math {
 		double ARCSINE_TABLE[257]{};
 		double COSINE_TABLE[257]{};
 	public:
-		static constexpr float PI = M_PI;
-		static constexpr float SQUARE_ROOT_OF_TWO = M_SQRT2;
-		static constexpr float SQUARE_ROOT_OF_THREE = 1.73205080757f;
-		static constexpr float DEGREES_TO_RADIANS = PI / 180.0f;
+		static constexpr float PI = boost::math::constants::pi<float>();
+		static constexpr float SQUARE_ROOT_OF_TWO = boost::math::constants::root_two<float>();
+		static constexpr float SQUARE_ROOT_OF_THREE = boost::math::constants::root_three<float>();
+		static constexpr float DEGREES_TO_RADIANS = (float) (boost::math::constants::pi<double>() / 180.0f);
 
 		Math() {
 			for (auto i = 0; i < SINE_TABLE_LENGTH; i++) {
@@ -55,11 +56,11 @@ namespace math {
 			return value < (double) l ? l - 1L : l;
 		}
 
-		static float lerp(float t,float a, float b) {
+		static float lerp(float t, float a, float b) {
 			return a + t * (b - a);
 		}
 
-		static double lerp(double t,double a, double b) {
+		static double lerp(double t, double a, double b) {
 			return a + t * (b - a);
 		}
 	} Math;

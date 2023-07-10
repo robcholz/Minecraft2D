@@ -14,7 +14,7 @@ namespace math {
 		static auto getRange(int a, int b) {
 			std::random_device dev;
 			std::mt19937 rng(dev());
-			std::__1::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
+			std::uniform_int_distribution<std::mt19937::result_type> dist6(a, b);
 			return dist6(rng);
 		}
 

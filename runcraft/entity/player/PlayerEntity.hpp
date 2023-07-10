@@ -20,15 +20,15 @@ protected:
 	}
 
 	void onUpdate() override {
-		//entity::Entity::onUpdate();
+		entity::Entity::onUpdate();
 		_setPixelPosition(getEntityPosition().getPixelPosition().getX(), getEntityPosition().getPixelPosition().getZ());
 		updateSkin();
-		/*
+
 		if (getWorld()->getChunkStream()->getBlock(getEntityPosition().getBlockPosition())->getID().id == "grass_block") {
 			if (entity::Entity::isWalking() && entity::Entity::onGround())
 				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().STEP_SOUND_GRASS_1);
 		}
-		 */
+
 	}
 
 	void onRender() override {
@@ -112,25 +112,25 @@ private:
 		acceleration.z = 0;
 		if (moveLeft.isActivated()) {
 			viewFrom(View::WEST);
-			//acceleration.x = -WALKING_ACCELERATION;
+			acceleration.x = -WALKING_ACCELERATION;
 			getEntityPosition().setDirection(Direction::DirectionType::WEST);
-			entity::Entity::getEntityPosition().getPixelPosition().offset(-5,0);
+			//entity::Entity::getEntityPosition().getPixelPosition().offset(-5,0);
 		}
 		if (moveRight.isActivated()) {
 			viewFrom(View::EAST);
-			//acceleration.x = WALKING_ACCELERATION;
+			acceleration.x = WALKING_ACCELERATION;
 			getEntityPosition().setDirection(Direction::DirectionType::EAST);
-			entity::Entity::getEntityPosition().getPixelPosition().offset(5,0);
+			//entity::Entity::getEntityPosition().getPixelPosition().offset(5,0);
 		}
 		if (moveJump.isActivated()) {
-			/*
+
 			if (onGround())
 				velocity.z = JUMPING_VELOCITY;
-			 */
-			entity::Entity::getEntityPosition().getPixelPosition().offset(0,-5);
+
+			//entity::Entity::getEntityPosition().getPixelPosition().offset(0,-5);
 		}
 		if (moveSniff.isActivated()) {
-			entity::Entity::getEntityPosition().getPixelPosition().offset(0,5);
+			//entity::Entity::getEntityPosition().getPixelPosition().offset(0,5);
 		}
 	}
 };

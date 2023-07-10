@@ -6,6 +6,7 @@
 #define RUNCRAFT_UTILS_HPP
 
 #include <string>
+#include <cmath>
 
 namespace utils {
 	bool approximatelyEqual(float a, float b, float epsilon) {

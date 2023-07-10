@@ -8,6 +8,7 @@
 #pragma once
 
 #include <memory>
+#include <map>
 #include "client/GameInfo.hpp"
 #include "sound/SoundEvents.hpp"
 

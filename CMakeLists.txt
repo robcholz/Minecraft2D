@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.24)
+cmake_minimum_required(VERSION 3.25)
 project(runcraft)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -75,7 +75,22 @@ set(SOURCE_FILES
         runcraft/sound/BlockSoundGroup.hpp
         runcraft/sound/MusicSoundEvent.hpp
         runcraft/util/Identifier.hpp
-        runcraft/client/RuncraftClientAccess.hpp runcraft/util/math/noise/PerlinNoise.hpp runcraft/util/math/noise/SimplexNoise.hpp runcraft/util/math/Random.hpp runcraft/block/StoneBlock.hpp runcraft/block/BedrockBlock.hpp runcraft/block/DeepslateBlock.hpp runcraft/util/ppm.hpp runcraft/world/gen/carver/Carver.hpp runcraft/block/GraniteBlock.hpp runcraft/block/DioriteBlock.hpp runcraft/block/AndesiteBlock.hpp runcraft/world/gen/feature/OreFeature.hpp runcraft/world/gen/decorator/Decorator.hpp runcraft/world/gen/decorator/HeightDecorator.hpp runcraft/client/gui/widget/TextureWidget.hpp runcraft/client/gui/widget/SplashingTextFieldWidget.hpp)
+        runcraft/client/RuncraftClientAccess.hpp
+        runcraft/util/math/noise/PerlinNoise.hpp
+        runcraft/util/math/Random.hpp
+        runcraft/block/StoneBlock.hpp
+        runcraft/block/BedrockBlock.hpp
+        runcraft/block/DeepslateBlock.hpp
+        runcraft/util/ppm.hpp
+        runcraft/world/gen/carver/Carver.hpp
+        runcraft/block/GraniteBlock.hpp
+        runcraft/block/DioriteBlock.hpp
+        runcraft/block/AndesiteBlock.hpp
+        runcraft/world/gen/feature/OreFeature.hpp
+        runcraft/world/gen/decorator/Decorator.hpp
+        runcraft/world/gen/decorator/HeightDecorator.hpp
+        runcraft/client/gui/widget/TextureWidget.hpp
+        runcraft/client/gui/widget/SplashingTextFieldWidget.hpp)
 
 #includes
 add_executable(runcraft ${SOURCE_FILES})
@@ -88,7 +103,7 @@ include_directories(include)
 include_directories(runcraft)
 
 #boost
-find_package(Boost 1.81.0 REQUIRED)
+#find_package(Boost 1.81.0 REQUIRED)
 
 #sfml
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
@@ -127,4 +142,3 @@ target_link_libraries(
 
 include(GoogleTest)
 gtest_discover_tests(RunCraftTest)
-

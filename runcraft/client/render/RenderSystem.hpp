@@ -11,7 +11,6 @@
 #include <iostream>
 #include "Log.h"
 #include "client/GameInfo.hpp"
-#include "Init.h"
 
 typedef sf::View Camera;
 

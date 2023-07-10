@@ -8,6 +8,7 @@
 #include <queue>
 #include <SFML/Audio/Sound.hpp>
 #include <utility>
+#include <memory>
 #include "MusicSoundEvent.hpp"
 #include "SoundEvent.hpp"
 

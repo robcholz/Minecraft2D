@@ -7,18 +7,12 @@
 
 #pragma once
 
-#include "ctime"
-#include "Logger.h"
+#include <ctime>
 #include <filesystem>
 #include <iostream>
-#include "resource/FileHelper.hpp"
+#include "Logger.h"
 #include "Appenders/RollingFileAppender.h"
 #include "Formatters/TxtFormatter.h"
-#include "Appenders/ColorConsoleAppender.h"
-#include "Init.h"
-#include "resource/FileHelper.hpp"
-#include <string>
-#include "client/GameInfo.hpp"
 
 
 class GameLogger {

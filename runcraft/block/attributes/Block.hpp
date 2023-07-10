@@ -19,7 +19,6 @@
 #include "BlockAccess.hpp"
 #include "util/Hitbox.hpp"
 
-#define BLOCK_POS_ERROR std::numeric_limits<coordinate::BlockPositionT>::max()
 
 namespace block::blocks { class Blocks; }
 
@@ -41,7 +40,7 @@ namespace block {
 		std::unique_ptr<BlockTextureLoader> blockTexture;
 		std::unique_ptr<BlockState> blockState;
 
-		ID ID;
+		struct ID ID;
 		Hitbox hitbox{};
 
 		void onInitialize() {
