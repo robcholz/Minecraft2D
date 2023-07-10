@@ -13,6 +13,17 @@
 ### Boost: requires 1.81.0
 ### C++: requires C++20
 
+## Build
+```sh
+git clone https://github.com/robcholz/RunCrafts-Nostalgia.git
+cd RunCrafts-Nostalgia
+mkdir build&&cd build
+cmake -G "Unix Makefiles" ..
+make
+cd ..
+./bin/runcraft #run the game
+```
+
 
 ## Progress Tracker - Stage One: RunCraft-Nostalgia
 #### Essential Components
