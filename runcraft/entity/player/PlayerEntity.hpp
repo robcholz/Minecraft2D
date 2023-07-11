@@ -27,7 +27,7 @@ protected:
 
 		if (getWorld()->getChunkStream()->getBlock(getEntityPosition().getBlockPosition())->getID().id == "grass_block") {
 			if (entity::Entity::isWalking() && entity::Entity::onGround())
-				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().STEP_SOUND_GRASS_1);
+				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().STEP_SOUND_GRASS);
 		}
 
 	}

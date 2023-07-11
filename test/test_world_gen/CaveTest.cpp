@@ -3,7 +3,7 @@
 //
 #include "gtest/gtest.h"
 #include "util/math/noise/PerlinNoise.hpp"
-#include "util/ppm.hpp"
+#include "util/image/ppm.hpp"
 
 TEST(CaveTest,BasicAssertion){
 	// Define the size of the image

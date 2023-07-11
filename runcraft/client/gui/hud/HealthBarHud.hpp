@@ -171,7 +171,7 @@ namespace hud {
 				}
 				updateHeartPos(number);
 			}; // tremble the given heart
-			for (auto i = 0; i < MAX_HEARTS; ++i) move_up_down(i, math::Random::randomBool(1.f / 20));
+			for (auto i = 0; i < MAX_HEARTS; ++i) move_up_down(i, Random::randomBool(1.f / 20));
 		}
 
 		void setHealthValue(short health) {

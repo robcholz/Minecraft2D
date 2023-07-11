@@ -79,7 +79,7 @@ set(SOURCE_FILES
         runcraft/block/StoneBlock.hpp
         runcraft/block/BedrockBlock.hpp
         runcraft/block/DeepslateBlock.hpp
-        runcraft/util/ppm.hpp
+        runcraft/util/image/ppm.hpp
         runcraft/world/gen/carver/Carver.hpp
         runcraft/block/GraniteBlock.hpp
         runcraft/block/DioriteBlock.hpp

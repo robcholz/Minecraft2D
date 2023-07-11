@@ -22,13 +22,14 @@ protected:
 		mouse = input::PeripheralsFactory::getMouse();
 		keyboard = input::PeripheralsFactory::getKeyboard();
 		gameEvents = SystemEvents::getInstance();
+		sceneManager=std::make_unique<SceneManager>(this);
 	}
 
 	void onUpdate() {
 		gameEvents->update();
 		keyboard->update();
 		mouse->update();
-		sceneManager.update();
+		sceneManager->update();
 		soundManager.update();
 	}
 
@@ -36,7 +37,7 @@ public:
 	RuncraftClient() {
 		onConfig();
 
-		sceneManager.addScene("menu", [this]() { return new Menu(this); })
+		sceneManager->addScene("menu", [this]() { return new Menu(this); })
 		            .addScene("world", [this]() { return new World(this); })
 					.setPair("menu", "world")
 		            .setEntry("menu");
@@ -55,7 +56,7 @@ public:
 private:
 	GameLogger gameLogger;
 	SoundManager soundManager;
-	SceneManager sceneManager;
+	std::unique_ptr<SceneManager> sceneManager;
 	input::Mouse mouse;
 	input::Keyboard keyboard;
 	std::shared_ptr<SystemEvents> gameEvents;

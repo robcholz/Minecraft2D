@@ -8,11 +8,10 @@
 #include "SoundEvent.hpp"
 
 class MusicSoundEvent {
-private:
-protected:
 public:
+	using MusicSoundEventPtr = std::shared_ptr<MusicSoundEvent>;
 	MusicSoundEvent(const SoundEvent& soundEvent, int minDelay, int maxDelay, bool replaceCurrentMusic= false) {
-		this->soundEvent = soundEvent;
+		this->soundEvent = std::make_unique<SoundEvent>(soundEvent);
 		this->minDelay = minDelay;
 		this->maxDelay = maxDelay;
 		this->replaceCurrentMusic = replaceCurrentMusic;
@@ -20,7 +19,11 @@ public:
 
 	~MusicSoundEvent()=default;
 
-	SoundEvent& getSoundEvent() { return soundEvent; }
+	SoundEvent& getSoundEvent() { return *soundEvent; }
+
+	sf::SoundBuffer& getSound() {
+		return soundEvent->getSound();
+	}
 
 	[[nodiscard]]
 	int getMinDelay() const { return minDelay; }
@@ -32,7 +35,7 @@ public:
 	bool getReplaceCurrentMusic() const { return replaceCurrentMusic; }
 
 private:
-	SoundEvent soundEvent;
+	std::unique_ptr<SoundEvent> soundEvent;
 	int minDelay = 0;
 	int maxDelay = 0;
 	bool replaceCurrentMusic = false;

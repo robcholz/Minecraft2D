@@ -15,13 +15,14 @@ class World : public WorldAccess, public SceneAccess {
 public:
 	explicit World(RuncraftClientAccess* runcraftClientAccess) {
 		this->runcraftClientAccess = runcraftClientAccess;
-		runcraftClientAccess->getSoundManager()->stopCurrentPlaying();
 		player = std::make_unique<PlayerEntity>(runcraftClientAccess,this);
 		player->getEntityPosition().setPosition(0, 90);
 		worldGeneration=std::make_unique<WorldGeneration>(1234567);
 		chunkStream = std::make_unique<chunk::ChunkStream>(this, 4, 4);
 		chunkStream->setChunkGenerator([this](int chunkPos) { return worldGeneration->getChunk(chunkPos); });
 		hud = std::make_unique<hud::InGameBarHud>(this);
+
+		this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().MUSIC_HAL);
 	}
 
 	~World() override = default;

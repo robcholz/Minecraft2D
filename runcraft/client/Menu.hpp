@@ -181,25 +181,7 @@ private:
 	}
 
 	void playRandomMusic() {
-		switch (math::Random::getRange(1, 6)) {
-			case 1:
-				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_1);
-				break;
-			case 2:
-				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_2);
-				break;
-			case 3:
-				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_3);
-				break;
-			case 4:
-				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_4);
-				break;
-			case 5:
-				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_5);
-				break;
-			case 6:
-				runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().BACKGROUND_MUSIC_6);
-		}
+		this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().MUSIC_MENU);
 	}
 };
 

@@ -42,10 +42,12 @@ namespace block {
 		}
 
 	public:
+		using BlockPtr = std::shared_ptr<Block>;
+
 		explicit Block(const String& id) {
 			this->ID.id = id;
 			this->ID.serialID = BlockIDLoader::getBlockID(id);
-			identifier=std::make_unique<Identifier>(id,Identifier::Category::BLOCK);
+			identifier = std::make_unique<Identifier>(id, Identifier::Category::BLOCK);
 			blockTexture = std::make_unique<BlockTextureLoader>(*identifier);
 			blockPosition = std::make_unique<BlockPosition>(this, 0, 0);
 			blockState = std::make_unique<BlockState>();
@@ -54,8 +56,14 @@ namespace block {
 			onInitialize();
 		}
 
-		Block(const Block& block){
-
+		Block(const Block& block)  : HitboxHandler(block) {
+			this->identifier = std::make_unique<Identifier>(*block.identifier);
+			this->blockState = std::make_unique<BlockState>(*block.blockState);
+			this->blockSprite = std::make_unique<sf::Sprite>(*block.blockSprite);
+			this->blockPosition = std::make_unique<BlockPosition>(*block.blockPosition);
+			this->blockTexture = std::make_unique<BlockTextureLoader>(*block.blockTexture);
+			this->hitbox = block.hitbox;
+			this->ID = block.ID;
 		}
 
 		void setParameter(BlockPosT x, BlockPosT z, BlockDirectionType blockDirection) {

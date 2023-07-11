@@ -38,7 +38,7 @@ public:
 		GUI
 	};
 
-	Identifier() = default;
+
 
 	explicit Identifier(const String& id, Category category) {
 		this->category = category;

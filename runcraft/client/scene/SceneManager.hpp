@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include <functional>
+#include "client/RuncraftClientAccess.hpp"
 #include "SceneAccess.hpp"
 
 
@@ -15,7 +16,9 @@ class SceneManager {
 private:
 	using String = std::string;
 public:
-	explicit SceneManager() = default;
+	explicit SceneManager(RuncraftClientAccess* runcraftClientAccess){
+		this->runcraftClientAccess=runcraftClientAccess;
+	}
 
 	~SceneManager() = default;
 
@@ -44,6 +47,7 @@ public:
 				scene->onRender();
 			}
 			if (scene->isTerminated()) {
+				this->runcraftClientAccess->getSoundManager()->clearQueue();
 				sceneName = pairMap[sceneName];
 				delete scene;
 				scene = sceneCallableMap[sceneName]();
@@ -52,6 +56,7 @@ public:
 	}
 
 private:
+	RuncraftClientAccess* runcraftClientAccess= nullptr;
 	std::map<String, std::function<SceneAccess*()>> sceneCallableMap;
 	std::map<String, String> pairMap;
 	SceneAccess* scene = nullptr;

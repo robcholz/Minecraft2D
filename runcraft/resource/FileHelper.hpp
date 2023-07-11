@@ -22,11 +22,10 @@ public:
 	~FileHelper() = default;
 
 	bool static isExisted(const String& filename) {
-		static std::ifstream file;
+		std::ifstream file;
 		file.open(filename);
-		bool flag = (bool) file;
-		file.close();
-		return flag;
+		if (file) return true;
+		else return false;
 	}
 
 	std::vector<String>* getFilesInDirectory() {
@@ -76,6 +75,10 @@ public:
 		String type = jsonPath.substr(jsonPath.find(':') + 1, jsonPath.find('/') - jsonPath.find(':') - 1);
 		String filename = jsonPath.substr(jsonPath.find('/') + 1, jsonPath.length() - jsonPath.find(':'));
 		return Path::rootDirectory + "/assets/textures/" + type + "s/" + filename + ".png";
+	}
+
+	static String appendFilename(const String& filename,const String& append){
+		return filename.substr(0,filename.find_last_of('.')) + append + filename.substr(filename.find_last_of('.'));
 	}
 
 private:

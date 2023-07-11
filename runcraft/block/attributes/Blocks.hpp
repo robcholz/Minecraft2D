@@ -23,21 +23,30 @@
 #include "block/DioriteBlock.hpp"
 #include "block/GraniteBlock.hpp"
 
-#define RegisterBlock(block) registerBlock(std::make_shared<block>())
+#define registerBlock(block) _registerBlock(std::make_shared<block>())
 
 namespace block::blocks {
 	class Blocks {
 	private:
 		using String = std::string;
-		using BlockSmartPtr = std::shared_ptr<Block>;
-
-	protected:
-		void registerBlock(const BlockSmartPtr& block) {
-			blocksIDRegistry.insert({block->getID().id, block});
-			blocksSerialIDRegistry.insert({block->getID().serialID, block});
-		}
-
+		using BlockPtr = Block::BlockPtr;
 	public:
+		BlockPtr AIR_BLOCK;
+		BlockPtr BEDROCK_BLOCK;
+		BlockPtr BIRCH_LOG_BLOCK;
+		BlockPtr COAL_ORE_BLOCK;
+		BlockPtr COBBLESTONE_BLOCK;
+		BlockPtr DIAMOND_BLOCK;
+		BlockPtr DIRT_BLOCK;
+		BlockPtr ERROR_BLOCK;
+		BlockPtr GRASS_BLOCK;
+		BlockPtr IRON_BLOCK;
+		BlockPtr STONE_BLOCK;
+		BlockPtr DEEPSLATE_BLOCK;
+		BlockPtr ANDESITE_BLOCK;
+		BlockPtr DIORITE_BLOCK;
+		BlockPtr GRANITE_BLOCK;
+
 		static std::shared_ptr<Blocks> getInstance() {
 			static std::shared_ptr<Blocks> instance(new Blocks);
 			return instance;
@@ -62,25 +71,32 @@ namespace block::blocks {
 		~Blocks() = default;
 
 	private:
-		std::unordered_map<String, BlockSmartPtr> blocksIDRegistry;
-		std::unordered_map<int, BlockSmartPtr> blocksSerialIDRegistry;
+		std::unordered_map<String, Block::BlockPtr> blocksIDRegistry;
+		std::unordered_map<int, Block::BlockPtr> blocksSerialIDRegistry;
 
 		explicit Blocks() {
-			RegisterBlock(AirBlock);
-			RegisterBlock(BedrockBlock);
-			RegisterBlock(BirchLogBlock);
-			RegisterBlock(CoalOreBlock);
-			RegisterBlock(CobblestoneBlock);
-			RegisterBlock(DiamondBlock);
-			RegisterBlock(DirtBlock);
-			RegisterBlock(ErrorBlock);
-			RegisterBlock(GrassBlock);
-			RegisterBlock(IronBlock);
-			RegisterBlock(StoneBlock);
-			RegisterBlock(DeepslateBlock);
-			RegisterBlock(AndesiteBlock);
-			RegisterBlock(DioriteBlock);
-			RegisterBlock(GraniteBlock);
+			AIR_BLOCK = registerBlock(AirBlock);
+			BEDROCK_BLOCK = registerBlock(BedrockBlock);
+			BIRCH_LOG_BLOCK = registerBlock(BirchLogBlock);
+			COAL_ORE_BLOCK = registerBlock(CoalOreBlock);
+			COBBLESTONE_BLOCK = registerBlock(CobblestoneBlock);
+			DIAMOND_BLOCK = registerBlock(DiamondBlock);
+			DIRT_BLOCK = registerBlock(DirtBlock);
+			ERROR_BLOCK = registerBlock(ErrorBlock);
+			GRASS_BLOCK = registerBlock(GrassBlock);
+			IRON_BLOCK = registerBlock(IronBlock);
+			STONE_BLOCK = registerBlock(StoneBlock);
+			DEEPSLATE_BLOCK = registerBlock(DeepslateBlock);
+			ANDESITE_BLOCK = registerBlock(AndesiteBlock);
+			DIORITE_BLOCK = registerBlock(DioriteBlock);
+			GRANITE_BLOCK = registerBlock(GraniteBlock);
+		}
+
+	private:
+		const Block::BlockPtr& _registerBlock(const Block::BlockPtr& block) {
+			blocksIDRegistry.insert({block->getID().id, block});
+			blocksSerialIDRegistry.insert({block->getID().serialID, block});
+			return block;
 		}
 	};
 }

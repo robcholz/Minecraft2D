@@ -1,11 +1,11 @@
 //
 // Created by robcholz on 3/25/23.
 //
+#pragma once
 
 #ifndef RUNCRAFT_SCREEN_HPP
 #define RUNCRAFT_SCREEN_HPP
 
-#pragma once
 
 #include <memory>
 #include <map>
@@ -38,7 +38,7 @@ public:
 		for (auto widget_obj: widgetsList) {
 			widget_obj->update();
 			if (widget_obj->isClicked() && widget_obj->isFocused()) {
-				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().GUI_CLICK_SOUND_1);
+				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().CLICK_SOUND_GUI);
 				widget_obj->executeCallbackFunc();
 				if (callbackScreenMap.contains(widget_obj)) {
 					responseCallBackScreenPtr = callbackScreenMap[widget_obj];

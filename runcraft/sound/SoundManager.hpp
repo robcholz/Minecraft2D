@@ -10,7 +10,7 @@
 #include <utility>
 #include <memory>
 #include "MusicSoundEvent.hpp"
-#include "SoundEvent.hpp"
+#include "SoundEvents.hpp"
 
 class SoundManager {
 protected:
@@ -21,15 +21,25 @@ public:
 		soundEventPlayer.stop();
 	}
 
-	SoundManager& addSound(std::shared_ptr<MusicSoundEvent> musicSoundEvent) {
-		musicSoundEventQueue.push(std::shared_ptr<MusicSoundEvent>(std::move(musicSoundEvent)));
+	SoundManager& addSound(const MusicSoundEvent::MusicSoundEventPtr& musicSoundEvent) {
+		musicSoundEventQueue.push(musicSoundEvent.get());
 		return *this;
 	}
 
-	SoundManager& addSound(std::shared_ptr<SoundEvent> soundEvent) {
+	SoundManager& addSound(const SoundEvent::SoundEventPtr& soundEvent) {
 		if (soundEvent.get() != soundEventCurrent)
-			soundEventQueue.push(std::shared_ptr<SoundEvent>(std::move(soundEvent)));
+			soundEventQueue.push(soundEvent.get());
 		return *this;
+	}
+
+	void clearQueue(){
+		stopCurrentPlaying();
+		while (musicSoundEventQueue.empty())
+			musicSoundEventQueue.pop();
+		while (soundEventQueue.empty())
+			soundEventQueue.pop();
+		musicSoundEventCurrent= nullptr;
+		soundEventCurrent= nullptr;
 	}
 
 	void stopCurrentPlaying() {
@@ -43,8 +53,8 @@ public:
 	}
 
 private:
-	std::priority_queue<std::shared_ptr<MusicSoundEvent>> musicSoundEventQueue;
-	std::priority_queue<std::shared_ptr<SoundEvent>> soundEventQueue;
+	std::priority_queue<MusicSoundEvent*> musicSoundEventQueue;
+	std::priority_queue<SoundEvent*> soundEventQueue;
 	MusicSoundEvent* musicSoundEventCurrent = nullptr;
 	SoundEvent* soundEventCurrent = nullptr;
 	sf::Sound musicSoundEventPlayer;
@@ -61,7 +71,7 @@ private:
 		if (musicSoundEventPlayer.getStatus() == sf::Sound::Status::Stopped) {
 			if (musicSoundEventQueue.empty()) return;
 			musicSoundEventQueue.top()->getSoundEvent().loadSound();
-			musicSoundEventCurrent = musicSoundEventQueue.top().get();
+			musicSoundEventCurrent = musicSoundEventQueue.top();
 			musicSoundEventPlayer.setBuffer(musicSoundEventCurrent->getSoundEvent().getSound());
 			musicSoundEventPlayer.play();
 			PLOG_DEBUG << "Current playing: " << musicSoundEventCurrent->getSoundEvent().getID().toString();
@@ -79,7 +89,7 @@ private:
 		if (soundEventPlayer.getStatus() == sf::Sound::Status::Stopped) {
 			if (soundEventQueue.empty()) return;
 			soundEventQueue.top()->loadSound();
-			soundEventCurrent = soundEventQueue.top().get();
+			soundEventCurrent = soundEventQueue.top();
 			soundEventPlayer.setBuffer(soundEventCurrent->getSound());
 			soundEventPlayer.play();
 		}

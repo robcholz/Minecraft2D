@@ -171,7 +171,7 @@ namespace hud {
 				}
 				updateHungerPos(number);
 			}; // tremble the given hunger
-			for (auto i = 0; i < MAX_HUNGER; ++i) move_up_down(i, math::Random::randomBool(1.f / 20));
+			for (auto i = 0; i < MAX_HUNGER; ++i) move_up_down(i, Random::randomBool(1.f / 20));
 		}
 
 		void setHungerValue(short hunger) {
