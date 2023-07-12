@@ -4,7 +4,7 @@
 
 - Features: Original soundtracks and textures used(All the resources are updated to 1.19.4).
 - The game is designed to be compatible with vanilla Minecraft resourcepacks(Yes it will support resourcepacks). 
-  ![menu.png](docs%2Freadme%2Fmenu_july_2023.png
+  ![menu.png](docs%2Freadme%2Fmenu_july_2023.png)
 
 ## Installations
 

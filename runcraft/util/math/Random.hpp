@@ -29,7 +29,7 @@ public:
 	}
 
 	template<typename T>
-	static T randomElement(std::vector<T> vector) {
+	static T randomElement(const std::vector<T>& vector) {
 		return vector.at(getRange(0, vector.size() - 1));
 	}
 };
