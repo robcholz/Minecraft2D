@@ -33,9 +33,8 @@ public:
 
 	Screen* getResponseCallbackScreen() { return responseCallBackScreenPtr; }
 
-	void render() {
-		background->render();
-		for (auto widget_obj: widgetsList) {
+	void update(){
+		for (const auto widget_obj: widgetsList) {
 			widget_obj->update();
 			if (widget_obj->isClicked() && widget_obj->isFocused()) {
 				this->runcraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().CLICK_SOUND_GUI);
@@ -44,17 +43,24 @@ public:
 					responseCallBackScreenPtr = callbackScreenMap[widget_obj];
 					return;
 				}
-			} else responseCallBackScreenPtr = nullptr;
+			} else
+				responseCallBackScreenPtr = nullptr;
+		}
+	}
+
+	void render() {
+		background->render();
+		for (const auto widget_obj: widgetsList) {
 			widget_obj->render();
 		}
 	}
 
 private:
+	RuncraftClientAccess* runcraftClientAccess= nullptr;
+	Screen* responseCallBackScreenPtr = nullptr;
 	Background* background = nullptr;
 	std::list<Widget*> widgetsList;
 	std::map<Widget*, Screen*> callbackScreenMap;
-	Screen* responseCallBackScreenPtr = nullptr;
-	RuncraftClientAccess* runcraftClientAccess= nullptr;
 };
 
 #endif //RUNCRAFT_SCREEN_HPP

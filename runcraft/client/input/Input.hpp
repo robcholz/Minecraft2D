@@ -44,8 +44,12 @@ namespace input {
 				return loadedPeripheralsList[keyType];
 			}
 
-			virtual void update() {
+			virtual void onUpdate() {
 				for (auto v: loadedPeripheralsList) { v.second->update(); }
+			}
+
+			void update() {
+				onUpdate();
 			}
 		};
 
@@ -57,13 +61,15 @@ namespace input {
 		public:
 			explicit Key(KeyType key) { toggleKey = key; }
 
-			[[nodiscard]] KeyType getKey() const { return toggleKey; }
+			[[nodiscard]]
+			KeyType getKey() const { return toggleKey; }
 
 			virtual void update() = 0;
 
 			~Key() = default;
 
-			[[nodiscard]] bool isPressed() const { return pressed; }
+			[[nodiscard]]
+			bool isPressed() const { return pressed; }
 		};
 	}
 
@@ -73,7 +79,9 @@ namespace input {
 		public:
 			explicit KeyboardKey(KeyboardKeyType key) : Key<KeyboardKeyType>(key) {}
 
-			void update() override { pressed = sf::Keyboard::isKeyPressed(toggleKey); }
+			void update() override {
+				pressed = sf::Keyboard::isKeyPressed(toggleKey);
+			}
 
 			~KeyboardKey() = default;
 		};
@@ -89,7 +97,7 @@ namespace input {
 	namespace mouse {
 		class MouseKey : public peripherals::Key<MouseKeyType> {
 		private:
-			std::shared_ptr<SystemEvents> event = SystemEvents::getInstance();
+			SystemEvents* event = SystemEvents::getInstance();
 			struct Wheel {
 				float delta;
 				float change;
@@ -97,11 +105,13 @@ namespace input {
 		public:
 			explicit MouseKey(MouseKeyType key) : Key<MouseKeyType>(key) {}
 
-			[[nodiscard]] bool isAnalog() const {
+			[[nodiscard]]
+			bool isAnalog() const {
 				return getKey() == MouseKeyType::HorizontalWheel || getKey() == MouseKeyType::VerticalWheel;
 			}
 
-			[[nodiscard]] Wheel getWheel() const {
+			[[nodiscard]]
+			Wheel getWheel() const {
 				return wheel;
 			}
 
@@ -122,12 +132,12 @@ namespace input {
 		public:
 			explicit Mouse() = default;
 
-			void update() override {
-				peripherals::Peripherals<MouseKey, MouseKeyType>::update();
+			void onUpdate() override {
+				peripherals::Peripherals<MouseKey, MouseKeyType>::onUpdate();
 				position = sf::Mouse::getPosition(*window);
 			}
 
-			sf::Vector2i getPosition() {
+			sf::Vector2i& getPosition() {
 				return position;
 			}
 
@@ -148,6 +158,8 @@ namespace input {
 
 	public:
 		PeripheralsFactory() = delete;
+
+		PeripheralsFactory(const PeripheralsFactory&) = delete;
 
 		~PeripheralsFactory() = delete;
 
@@ -176,19 +188,20 @@ namespace input {
 			return *this;
 		}
 
-		[[nodiscard]] bool isActivated() const {
+		[[nodiscard]]
+		bool isActivated() const {
 			return std::all_of(hotKeyList.cbegin(), hotKeyList.cend(), [](keyboard::KeyboardKey* key) { return key->isPressed(); });
 		}
 
-		~KeyboardObserver()=default;
+		~KeyboardObserver() = default;
 	};
 
 	class MouseObserver {
 	private:
 		std::vector<mouse::MouseKey*> hotKeyList;
-		Mouse mouse=PeripheralsFactory::getMouse();
+		Mouse mouse = PeripheralsFactory::getMouse();
 	public:
-		MouseObserver()=default;
+		MouseObserver() = default;
 
 		MouseObserver& attachKey(MouseKeyType keyType) {
 			auto key = mouse->getKey(keyType);
@@ -199,7 +212,8 @@ namespace input {
 			return *this;
 		}
 
-		[[nodiscard]] bool isActivated() const {
+		[[nodiscard]]
+		bool isActivated() const {
 			return std::all_of(hotKeyList.cbegin(), hotKeyList.cend(), [](mouse::MouseKey* key) { return key->isPressed(); });
 		}
 
@@ -207,7 +221,7 @@ namespace input {
 			return mouse->getPosition();
 		}
 
-		~MouseObserver()=default;
+		~MouseObserver() = default;
 	};
 }
 

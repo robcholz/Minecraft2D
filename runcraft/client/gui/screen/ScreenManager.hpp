@@ -24,13 +24,15 @@ public:
 		currentRenderingScreen = entryScreen;
 	}
 
-	void update() override{}
-
-	void render() override {
-		currentRenderingScreen->render();
+	void update() override{
 		if (currentRenderingScreen->getResponseCallbackScreen() != nullptr) {
 			currentRenderingScreen = currentRenderingScreen->getResponseCallbackScreen();
 		}
+		currentRenderingScreen->update();
+	}
+
+	void render() override {
+		currentRenderingScreen->render();
 	}
 
 };

@@ -16,12 +16,13 @@
 #include "client/gui/widget/SoundSliderWidget.hpp"
 #include "client/gui/widget/TextFieldWidget.hpp"
 #include "client/gui/widget/TextureWidget.hpp"
+#include "client/gui/widget/SplashingTextFieldWidget.hpp"
 #include "client/gui/screen/ScreenManager.hpp"
 #include "client/scene/SceneAccess.hpp"
 #include "sound/SoundEvents.hpp"
 #include "RuncraftClientAccess.hpp"
 #include "util/math/Random.hpp"
-#include "client/gui/widget/SplashingTextFieldWidget.hpp"
+
 
 class Menu : public SceneAccess {
 public:
@@ -41,7 +42,7 @@ public:
 	}
 
 	void onUpdate() override {
-
+		screenManager.update();
 	}
 
 	void onRender() override {

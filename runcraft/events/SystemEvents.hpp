@@ -9,13 +9,19 @@
 
 #include <SFML/Window/Event.hpp>
 #include <memory>
+#include <functional>
 #include "client/GameInfo.hpp"
+#include "client/RuncraftClientAccess.hpp"
+#include "client/input/Input.hpp"
 
 class SystemEvents {
 public:
-	explicit SystemEvents() = default;
+	explicit SystemEvents(RuncraftClientAccess* runcraftClientAccess) {
+		this->runcraftClientAccess = runcraftClientAccess;
+		SystemEvents::instance = this;
+	}
 
-	sf::Event* getEvent(){return &event;}
+	sf::Event* getEvent() { return &event; }
 
 	void update() {
 		while (render->getWindowConfig().window->pollEvent(event)) {
@@ -29,12 +35,10 @@ public:
 					//GameInfo.getExternalData()->windowState.resized=|0x11;
 					break;
 				case sf::Event::LostFocus:
-					GameInfo.getExternalData()->windowState.lostFocus = true;
-					GameInfo.getExternalData()->windowState.gainedFocus = false;
+					onLostFocus();
 					break;
 				case sf::Event::GainedFocus:
-					GameInfo.getExternalData()->windowState.lostFocus = false;
-					GameInfo.getExternalData()->windowState.gainedFocus = true;
+					onGainedFocus();
 					break;
 				case sf::Event::TextEntered:
 					break;
@@ -97,14 +101,37 @@ public:
 		}
 	}
 
-	static std::shared_ptr<SystemEvents> getInstance(){
-		static std::shared_ptr<SystemEvents> instance(new SystemEvents);
-		return instance;
+	void onGamePause(std::function<void()> ppauseGame) {
+		this->pauseGame =  std::move(ppauseGame);
+	}
+
+	void onGameResume(std::function<void()> presumeGame) {
+		this->resumeGame = std::move(presumeGame);
+	}
+
+	static SystemEvents* getInstance() {
+		return SystemEvents::instance;
 	}
 
 private:
-	RenderSystem *render = GameInfo.getRender();
+	RuncraftClientAccess* runcraftClientAccess = nullptr;
+	static inline SystemEvents* instance = nullptr;
+	RenderSystem* render = GameInfo.getRender();
 	sf::Event event{};
+	std::function<void()> resumeGame;
+	std::function<void()> pauseGame;
+
+	void onGainedFocus() {
+		GameInfo.getExternalData()->windowState.lostFocus = false;
+		GameInfo.getExternalData()->windowState.gainedFocus = true;
+		resumeGame();
+	}
+
+	void onLostFocus() {
+		GameInfo.getExternalData()->windowState.lostFocus = true;
+		GameInfo.getExternalData()->windowState.gainedFocus = false;
+		pauseGame();
+	}
 };
 
 #endif //RUNCRAFT_SYSTEMEVENTS_HPP

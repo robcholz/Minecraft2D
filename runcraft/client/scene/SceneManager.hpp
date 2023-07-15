@@ -16,8 +16,8 @@ class SceneManager {
 private:
 	using String = std::string;
 public:
-	explicit SceneManager(RuncraftClientAccess* runcraftClientAccess){
-		this->runcraftClientAccess=runcraftClientAccess;
+	explicit SceneManager(RuncraftClientAccess* runcraftClientAccess) {
+		this->runcraftClientAccess = runcraftClientAccess;
 	}
 
 	~SceneManager() = default;
@@ -38,28 +38,45 @@ public:
 		return *this;
 	}
 
+	void pause() {
+		this->isPaused = true;
+	}
+
+	void resume() {
+		this->isPaused = false;
+	}
+
 	void update() {
+		if (!this->isPaused) {
+			if (scene->isRunning()) {
+				scene->onUpdate();
+			} else {
+				if (scene->isTerminated()) {
+					this->runcraftClientAccess->getSoundManager()->clearQueue();
+					sceneName = pairMap[sceneName];
+					delete scene;
+					scene = sceneCallableMap[sceneName]();
+				}
+			}
+		}
+	}
+
+	void render() {
 		if (scene->isRunning()) {
-			scene->onUpdate();
 			scene->onRender();
 		} else {
 			if (scene->isPaused()) {
 				scene->onRender();
 			}
-			if (scene->isTerminated()) {
-				this->runcraftClientAccess->getSoundManager()->clearQueue();
-				sceneName = pairMap[sceneName];
-				delete scene;
-				scene = sceneCallableMap[sceneName]();
-			}
 		}
 	}
 
 private:
-	RuncraftClientAccess* runcraftClientAccess= nullptr;
+	RuncraftClientAccess* runcraftClientAccess = nullptr;
 	std::map<String, std::function<SceneAccess*()>> sceneCallableMap;
 	std::map<String, String> pairMap;
 	SceneAccess* scene = nullptr;
+	bool isPaused = false;
 	String sceneName;
 };
 
