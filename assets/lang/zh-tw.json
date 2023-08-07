@@ -1,0 +1,22 @@
+{
+  "gui.button.singleplayer": "單人遊戲",
+  "gui.button.options": "選項",
+  "gui.button.multiplayer": "多人遊戲",
+  "gui.button.language": "語言",
+  "gui.button.quit_game": "退出遊戲",
+  "gui.button.done": "完成",
+  "gui.button.music": "音樂",
+  "gui.textfield.music_sound_options": "音樂與音頻設置",
+  "gui.slider.master_volume": "主音量",
+  "gui.slider.music_volume": "音乐",
+  "gui.slider.jukebox_noteblocks_volume": "音符盒",
+  "gui.slider.weather_volume": "天气",
+  "gui.slider.blocks_volume": "方块",
+  "gui.slider.hostile_creatures_volume": "敌对生物",
+  "gui.slider.friendly_creatures_volume": "友好生物",
+  "gui.slider.players_volume": "玩家",
+  "gui.slider.ambient_environment_volume": "环境",
+
+  "gui.button.generate_experimental_world": "生成实验性世界",
+  "gui.textfield.splashing_text": "Wow! Build with CMake!"
+}

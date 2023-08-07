@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/stone_block",
-  "west": "runcraft:block/stone_block",
-  "up": "runcraft:block/stone_block",
-  "down": "runcraft:block/stone_block",
-  "in": "runcraft:block/stone_block",
-  "out": "runcraft:block/stone_block"
+  "east": "minecraft:block/stone_block",
+  "west": "minecraft:block/stone_block",
+  "up": "minecraft:block/stone_block",
+  "down": "minecraft:block/stone_block",
+  "in": "minecraft:block/stone_block",
+  "out": "minecraft:block/stone_block"
 }
 

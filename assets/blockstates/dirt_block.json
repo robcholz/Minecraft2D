@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/dirt",
-  "west": "runcraft:block/dirt",
-  "up": "runcraft:block/dirt",
-  "down": "runcraft:block/dirt",
-  "in": "runcraft:block/dirt",
-  "out": "runcraft:block/dirt"
+  "east": "minecraft:block/dirt",
+  "west": "minecraft:block/dirt",
+  "up": "minecraft:block/dirt",
+  "down": "minecraft:block/dirt",
+  "in": "minecraft:block/dirt",
+  "out": "minecraft:block/dirt"
 }
 

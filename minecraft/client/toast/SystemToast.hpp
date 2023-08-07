@@ -1,0 +1,8 @@
+//
+// Created by robcholz on 6/16/23.
+//
+
+#ifndef MINECRAFT_SYSTEMTOAST_HPP
+#define MINECRAFT_SYSTEMTOAST_HPP
+
+#endif //MINECRAFT_SYSTEMTOAST_HPP

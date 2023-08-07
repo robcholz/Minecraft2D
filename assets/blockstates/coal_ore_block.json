@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/coal_ore",
-  "west": "runcraft:block/coal_ore",
-  "up": "runcraft:block/coal_ore",
-  "down": "runcraft:block/coal_ore",
-  "in": "runcraft:block/coal_ore",
-  "out": "runcraft:block/coal_ore"
+  "east": "minecraft:block/coal_ore",
+  "west": "minecraft:block/coal_ore",
+  "up": "minecraft:block/coal_ore",
+  "down": "minecraft:block/coal_ore",
+  "in": "minecraft:block/coal_ore",
+  "out": "minecraft:block/coal_ore"
 }
 

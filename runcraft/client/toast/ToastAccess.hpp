@@ -1,8 +1,0 @@
-//
-// Created by robcholz on 6/16/23.
-//
-
-#ifndef RUNCRAFT_TOASTACCESS_HPP
-#define RUNCRAFT_TOASTACCESS_HPP
-
-#endif //RUNCRAFT_TOASTACCESS_HPP

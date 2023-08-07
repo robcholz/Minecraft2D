@@ -1,0 +1,23 @@
+//
+// Created by robcholz on 7/2/23.
+//
+
+#ifndef MINECRAFT_GRANITEBLOCK_HPP
+#define MINECRAFT_GRANITEBLOCK_HPP
+
+#include "block/attributes/Block.hpp"
+
+namespace block::blocks {
+	class GraniteBlock : public block::Block {
+	private:
+	public:
+		GraniteBlock() : Block("granite_block") {
+		}
+
+		Block* newBlock() override {
+			return new GraniteBlock;
+		}
+	};
+}
+
+#endif //MINECRAFT_GRANITEBLOCK_HPP

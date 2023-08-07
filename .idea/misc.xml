@@ -5,7 +5,7 @@
     <sourceRoots>
       <file path="$PROJECT_DIR$/assets" />
       <file path="$PROJECT_DIR$/game" />
-      <file path="$PROJECT_DIR$/runcraft" />
+      <file path="$PROJECT_DIR$/minecraft" />
       <file path="$PROJECT_DIR$/test" />
     </sourceRoots>
     <libraryRoots>

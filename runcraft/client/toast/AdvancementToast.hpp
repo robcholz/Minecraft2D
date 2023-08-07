@@ -1,8 +1,0 @@
-//
-// Created by robcholz on 6/16/23.
-//
-
-#ifndef RUNCRAFT_ADVANCEMENTTOAST_HPP
-#define RUNCRAFT_ADVANCEMENTTOAST_HPP
-
-#endif //RUNCRAFT_ADVANCEMENTTOAST_HPP

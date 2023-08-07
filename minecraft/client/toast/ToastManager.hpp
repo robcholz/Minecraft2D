@@ -1,0 +1,8 @@
+//
+// Created by robcholz on 6/16/23.
+//
+
+#ifndef MINECRAFT_TOASTMANAGER_HPP
+#define MINECRAFT_TOASTMANAGER_HPP
+
+#endif //MINECRAFT_TOASTMANAGER_HPP

@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/bedrock_block",
-  "west": "runcraft:block/bedrock_block",
-  "up": "runcraft:block/bedrock_block",
-  "down": "runcraft:block/bedrock_block",
-  "in": "runcraft:block/bedrock_block",
-  "out": "runcraft:block/bedrock_block"
+  "east": "minecraft:block/bedrock_block",
+  "west": "minecraft:block/bedrock_block",
+  "up": "minecraft:block/bedrock_block",
+  "down": "minecraft:block/bedrock_block",
+  "in": "minecraft:block/bedrock_block",
+  "out": "minecraft:block/bedrock_block"
 }
 

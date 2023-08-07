@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/error_block",
-  "west": "runcraft:block/error_block",
-  "up": "runcraft:block/error_block",
-  "down": "runcraft:block/error_block",
-  "in": "runcraft:block/error_block",
-  "out": "runcraft:block/error_block"
+  "east": "minecraft:block/error_block",
+  "west": "minecraft:block/error_block",
+  "up": "minecraft:block/error_block",
+  "down": "minecraft:block/error_block",
+  "in": "minecraft:block/error_block",
+  "out": "minecraft:block/error_block"
 }
 

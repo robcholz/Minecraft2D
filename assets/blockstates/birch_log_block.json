@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/birch_log",
-  "west": "runcraft:block/birch_log",
-  "up": "runcraft:block/birch_log_top",
-  "down": "runcraft:block/birch_log_top",
-  "in": "runcraft:block/birch_log",
-  "out": "runcraft:block/birch_log"
+  "east": "minecraft:block/birch_log",
+  "west": "minecraft:block/birch_log",
+  "up": "minecraft:block/birch_log_top",
+  "down": "minecraft:block/birch_log_top",
+  "in": "minecraft:block/birch_log",
+  "out": "minecraft:block/birch_log"
 }
 

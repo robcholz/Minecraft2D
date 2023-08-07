@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/grass_block_side",
-  "west": "runcraft:block/grass_block_side",
-  "up": "runcraft:block/grass_block_top",
-  "down": "runcraft:block/dirt",
-  "in": "runcraft:block/grass_block_side",
-  "out": "runcraft:block/grass_block_side"
+  "east": "minecraft:block/grass_block_side",
+  "west": "minecraft:block/grass_block_side",
+  "up": "minecraft:block/grass_block_top",
+  "down": "minecraft:block/dirt",
+  "in": "minecraft:block/grass_block_side",
+  "out": "minecraft:block/grass_block_side"
 }
 

@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/air_block",
-  "west": "runcraft:block/air_block",
-  "up": "runcraft:block/air_block",
-  "down": "runcraft:block/air_block",
-  "in": "runcraft:block/air_block",
-  "out": "runcraft:block/air_block"
+  "east": "minecraft:block/air_block",
+  "west": "minecraft:block/air_block",
+  "up": "minecraft:block/air_block",
+  "down": "minecraft:block/air_block",
+  "in": "minecraft:block/air_block",
+  "out": "minecraft:block/air_block"
 }
 

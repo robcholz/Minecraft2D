@@ -1,8 +1,0 @@
-//
-// Created by robcholz on 6/16/23.
-//
-
-#ifndef RUNCRAFT_TOASTMANAGER_HPP
-#define RUNCRAFT_TOASTMANAGER_HPP
-
-#endif //RUNCRAFT_TOASTMANAGER_HPP

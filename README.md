@@ -21,7 +21,7 @@ mkdir build&&cd build
 cmake -G "Unix Makefiles" ..
 make
 cd ..
-./bin/runcraft #run the game
+./bin/minecraft #run the game
 ```
 
 

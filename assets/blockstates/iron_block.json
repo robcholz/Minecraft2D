@@ -1,9 +1,9 @@
 {
-  "east": "runcraft:block/iron_block",
-  "west": "runcraft:block/iron_block",
-  "up": "runcraft:block/iron_block",
-  "down": "runcraft:block/iron_block",
-  "in": "runcraft:block/iron_block",
-  "out": "runcraft:block/iron_block"
+  "east": "minecraft:block/iron_block",
+  "west": "minecraft:block/iron_block",
+  "up": "minecraft:block/iron_block",
+  "down": "minecraft:block/iron_block",
+  "in": "minecraft:block/iron_block",
+  "out": "minecraft:block/iron_block"
 }
 
