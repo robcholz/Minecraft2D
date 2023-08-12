@@ -31,8 +31,8 @@ protected:
 		gameEvents->onGameResume([this]() {
 			this->sceneManager->resume();
 		});
-		gameEvents->onWindowResize([](){
-			PLOG_DEBUG<<"Yes";
+		gameEvents->onWindowResize([]() {
+			PLOG_DEBUG << "Yes";
 			//sf::FloatRect visibleArea(0, 0, , RenderSystem::getScreenHeight());
 			//RenderSystem::getWindow()->setView(sf::View(visibleArea));
 		});
@@ -51,7 +51,7 @@ protected:
 	}
 
 public:
-	MinecraftClient() {
+	MinecraftClient(){
 		onConfig();
 		sceneManager->addScene("menu", [this]() { return new Menu(this); })
 		            .addScene("world", [this]() { return new World(this); })
@@ -59,13 +59,13 @@ public:
 		            .setEntry("menu");
 	}
 
-	~MinecraftClient(){
+	~MinecraftClient() {
 		RenderSystem::exit();
 	};
 
 	void run() {
 		while (RenderSystem::getWindow()->isOpen()) {
-			RenderSystem::clearWindow(sf::Color(120,167,255));
+			RenderSystem::clearWindow(sf::Color(120, 167, 255));
 			RenderSystem::updateScreenData();
 			onUpdate();
 			onRender();

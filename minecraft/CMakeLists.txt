@@ -82,7 +82,12 @@ set(SOURCE_FILES_CLIENT
         client/gui/widget/TextureWidget.hpp
         client/gui/widget/SplashingTextFieldWidget.hpp
         util/Path.hpp
-        resource/System.hpp command/CommandLine.hpp MinecraftVersion.hpp util/Date.hpp)
+        resource/System.hpp
+        command/CommandLineExecutable.hpp
+        MinecraftVersion.hpp
+        util/Date.hpp
+        block/attributes/BlockSoundGroup.hpp
+        client/render/TileColor.hpp block/GlowstoneBlock.hpp world/chunk/ChunkManager.hpp world/chunk/ChunkManagerAccess.hpp)
 
 add_executable(MinecraftClient ${SOURCE_FILES_CLIENT})
 

@@ -13,6 +13,10 @@
 
 
 namespace coordinate {
+	/**
+	 * @brief stores the direction position and converts the position of the targets
+	 * @tparam DefaultPosT accepts coordinate::EntityPos, coordinate::BlockPos, and coordinate::PixelPos only
+	 */
 	template<typename DefaultPosT>
 	class Position {
 	private:
@@ -24,8 +28,7 @@ namespace coordinate {
 		Position() = default;
 
 		explicit Position(typename DefaultPosT::type x, typename DefaultPosT::type z, Direction::DirectionType edirection = Direction::DirectionType::OUT) {
-			pixelPosition.x = x;
-			pixelPosition.z = z;
+			pixelPosition = convertToPixelPos<DefaultPosT>(DefaultPosT(x, z));
 			pixelPositionOffset.x = 0;
 			pixelPositionOffset.z = 0;
 			direction.setDirection(edirection);
@@ -36,14 +39,22 @@ namespace coordinate {
 			setDirection(direction);
 		}
 
+
+		/**
+		 *
+		 * @tparam SrcPosT struct that will be converted from
+		 * @tparam DesPosT struct that will be converted to
+		 * @param position struct that will be converted from
+		 * @return struct that will be converted to
+		 */
 		template<typename SrcPosT, typename DesPosT>
 		static DesPosT convertTo(SrcPosT position) {
 			static_assert(std::is_same<SrcPosT, EntityPos>::value || std::is_same<SrcPosT, BlockPos>::value
 			              || std::is_same<SrcPosT, PixelPos>::value,
-			              "convertTo() only accepts parameters: EntityPos, BlockPos, ChunkPos, and PixelPos as source types");
+			              "convertTo() only accepts parameters: EntityPos, BlockPos, and PixelPos as source types");
 			static_assert(std::is_same<DesPosT, EntityPos>::value || std::is_same<DesPosT, BlockPos>::value
 			              || std::is_same<DesPosT, PixelPos>::value,
-			              "convertTo() only accepts parameters: EntityPos, BlockPos, ChunkPos, and PixelPos as destination types");
+			              "convertTo() only accepts parameters: EntityPos, BlockPos, and PixelPos as destination types");
 			if constexpr (std::is_same<SrcPosT, BlockPos>::value && std::is_same<PixelPos, DesPosT>::value) {
 				auto zoom = RenderSystem::Settings::pixelProportion;
 				return PixelPos(position.x * zoom, -position.z * zoom);
@@ -132,7 +143,6 @@ namespace coordinate {
 	using EntityPosition = Position<EntityPos>;
 	using PixelPosition = Position<PixelPos>;
 	using DirectionType = Direction::DirectionType;
-	BlockPosition d(0,1);
 }
 
 

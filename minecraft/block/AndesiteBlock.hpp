@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class AndesiteBlock : public block::Block {
 	private:
 	public:
 		AndesiteBlock() : Block("andesite_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new AndesiteBlock;
 		}
 	};

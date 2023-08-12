@@ -70,6 +70,16 @@ namespace math {
 		}
 	} Math;
 
+	template<typename T>
+	static T abs(T val) {
+		return val < 0 ? -val : val;
+	}
+
+	template<typename T>
+	static T clamp(T val, T min, T max) {
+		return val < min ? min : (val > max ? max : val);
+	}
+
 	static int floor(float value) {
 		int i = (int) value;
 		return value < (float) i ? i - 1 : i;
@@ -94,12 +104,25 @@ namespace math {
 		return value < (double) l ? l - 1L : l;
 	}
 
+	template<typename T>
+	static T lerp(int t, int a, int b) {
+		return a + t * (b - a);
+	}
+
 	static float lerp(float t, float a, float b) {
 		return a + t * (b - a);
 	}
 
 	static double lerp(double t, double a, double b) {
 		return a + t * (b - a);
+	}
+
+	template<typename T>
+	static T map(T value, T inputMin, T inputMax, T outputMin, T outputMax) {
+		value= clamp(value,inputMin, inputMax);
+		float normalizedValue = (value - inputMin) / (inputMax - inputMin);
+		float mappedValue = outputMin + (normalizedValue * (outputMax - outputMin));
+		return floor(mappedValue);
 	}
 }
 

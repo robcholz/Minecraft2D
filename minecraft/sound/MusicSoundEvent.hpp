@@ -9,7 +9,7 @@
 
 class MusicSoundEvent {
 public:
-	using MusicSoundEventPtr = std::shared_ptr<MusicSoundEvent>;
+	using MusicSoundEventPtr = MusicSoundEvent*;
 	MusicSoundEvent(const SoundEvent& soundEvent, int minDelay, int maxDelay, bool replaceCurrentMusic= false) {
 		this->soundEvent = std::make_unique<SoundEvent>(soundEvent);
 		this->minDelay = minDelay;

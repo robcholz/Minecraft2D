@@ -24,7 +24,7 @@ public:
 		double n = 2 * noise.noise(x * 5, y * 5, 0.8);
 		auto grey_channel = (uint8_t) floor(255 * n);
 		if (grey_channel > curveThresholdConstant && condition)
-			blockBuffer[chunkBlockPosX][chunkBlockPos] = block::blocks::Blocks::getInstance()->getBlockInstance("air_block")->getID().serialID;
+			blockBuffer[chunkBlockPosX][chunkBlockPos] = block::Blocks::getInstance().getObjectInstance(block::Blocks::getInstance().AIR_BLOCK)->getSerialID();
 	}
 
 

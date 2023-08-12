@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class DirtBlock : public block::Block {
 	private:
 	public:
 		DirtBlock() : Block("dirt_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new DirtBlock;
 		}
 	};

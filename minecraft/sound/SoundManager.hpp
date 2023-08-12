@@ -34,14 +34,23 @@ public:
 		soundEventPlayer.stop();
 	}
 
-	SoundManager& addSound(const MusicSoundEvent::MusicSoundEventPtr& musicSoundEvent) {
-		musicSoundEventQueue.push(musicSoundEvent.get());
+	SoundManager& addSound(MusicSoundEvent::MusicSoundEventPtr musicSoundEvent) {
+		musicSoundEventQueue.push(musicSoundEvent);
 		return *this;
 	}
 
-	SoundManager& addSound(const SoundEvent::SoundEventPtr& soundEvent) {
-		if (soundEvent.get() != soundEventCurrent)
-			soundEventQueue.push(soundEvent.get());
+	SoundManager& addSound(SoundEvent::SoundEventPtr soundEvent) {
+		if (soundEvent != soundEventCurrent)
+			soundEventQueue.push(soundEvent);
+		return *this;
+	}
+
+	// using std::optional<> here since some of the blocks might not have yet bound to a sound object
+	SoundManager& addSound(std::optional<SoundEvent::SoundEventPtr> soundEvent) {
+		if (soundEvent == std::nullopt)
+			return *this;
+		if (soundEvent != soundEventCurrent)
+			soundEventQueue.push(soundEvent.value());
 		return *this;
 	}
 

@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class BedrockBlock : public block::Block {
 	private:
 	public:
 		BedrockBlock() : Block("bedrock_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new BedrockBlock;
 		}
 	};

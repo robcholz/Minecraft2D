@@ -2,8 +2,8 @@
 // Created by robcholz on 8/6/23.
 //
 
-#ifndef MINECRAFT_2D_COMMANDLINE_HPP
-#define MINECRAFT_2D_COMMANDLINE_HPP
+#ifndef MINECRAFT_2D_COMMANDLINEEXECUTABLE_HPP
+#define MINECRAFT_2D_COMMANDLINEEXECUTABLE_HPP
 
 
 #include <string>
@@ -12,11 +12,11 @@
 namespace cmd {
 	namespace po = boost::program_options;
 
-	class CommandLine {
+	class CommandLineExecutable {
 	private:
 		using String = std::string;
 	public:
-		CommandLine(){
+		CommandLineExecutable(){
 			description.add_options()
 				("help", "produce help message")
 				("version", "print version string")
@@ -30,4 +30,4 @@ namespace cmd {
 	};
 }
 
-#endif //MINECRAFT_2D_COMMANDLINE_HPP
+#endif //MINECRAFT_2D_COMMANDLINEEXECUTABLE_HPP

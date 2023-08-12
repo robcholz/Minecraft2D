@@ -12,6 +12,8 @@
 #include "world/WorldAccess.hpp"
 #include "world/chunk/Chunk.hpp"
 #include "world/chunk/ChunkStreamAccess.hpp"
+#include "util/math/MathHelper.hpp"
+#include "block/attributes/BlockSoundGroup.hpp"
 
 namespace entity {
 	class Entity : public EntityAccess, public HitboxHandler {
@@ -23,6 +25,7 @@ namespace entity {
 		using EntityPos = coordinate::EntityPosition;
 		using BlockPos = coordinate::BlockPosition;
 	protected:
+		MinecraftClientAccess* minecraftClientAccess = nullptr;
 		EntityPos entityPosition{0, 0};
 		coordinate::Velocity velocity{0, 0};
 		coordinate::Acceleration acceleration{0, 0};
@@ -40,22 +43,17 @@ namespace entity {
 		static constexpr float JUMPING_VELOCITY = (1.0f / 60.0f) * 12;
 		static constexpr float DYNAMIC_FRICTION_ACCELERATION = -(1.0f / 60.0f) * 0.1f; // 0.1B/s-2
 
-		virtual void onUpdate() {
-			updateHitbox();
-			updateVelocity();
-			updateFallDistance();
-			updateDamage();
-			getEntityPosition().offset(getVelocity().x, getVelocity().z); // apply the velocity to the entity
-		}
+		virtual void onUpdate() {}
 
 		virtual void onRender() = 0;
 
-		virtual void updateHitbox() = 0;
+		virtual void onHitboxUpdate() = 0;
 
 	public:
 		Entity() = delete;
 
-		explicit Entity(WorldAccess* worldAccess) {
+		explicit Entity(MinecraftClientAccess* minecraftClientAccess, WorldAccess* worldAccess) {
+			this->minecraftClientAccess = minecraftClientAccess;
 			this->worldAccess = worldAccess;
 			addHitbox(&entityHitbox);
 		}
@@ -70,16 +68,22 @@ namespace entity {
 			return entityPosition;
 		}
 
-		coordinate::Velocity& getVelocity() override { return velocity; }
+		coordinate::Velocity& getVelocity() override {
+			return velocity;
+		}
+
+		coordinate::Acceleration& getAcceleration() override {
+			return acceleration;
+		}
 
 		EntityPosT getHeight() override {
 			auto zoom = (EntityPosT) RenderSystem::Settings::pixelProportion;
-			return (EntityPosT) entityHitbox.getHitbox().height / zoom;
+			return (EntityPosT) entityHitbox.getBox().height / zoom;
 		}
 
 		EntityPosT getWidth() override {
 			auto zoom = (EntityPosT) RenderSystem::Settings::pixelProportion;
-			return (EntityPosT) entityHitbox.getHitbox().width / zoom;
+			return (EntityPosT) entityHitbox.getBox().width / zoom;
 		}
 
 		float getHealth() override {
@@ -99,7 +103,13 @@ namespace entity {
 		}
 
 		void update() {
+			//onHitboxUpdate();
+			//updateVelocity();
+			//updateFallDistance();
+			//updateDamage();
+			getEntityPosition().offset(getVelocity().x, getVelocity().z); // apply the velocity to the entity
 			onUpdate();
+			updateSound();
 		}
 
 		void render() {
@@ -118,7 +128,7 @@ namespace entity {
 
 		BlockPosT predicateVerticalBarrierPos() {
 			for (int i = getEntityPosition().getZ<coordinate::BlockPos>() - 1; i >= 1; i--) {
-				auto chunk_stream = worldAccess->getChunkStream();
+				auto chunk_stream = worldAccess->getChunkManager();
 				auto x = getEntityPosition().get<coordinate::BlockPos>().x;
 				auto block_pos_upper = BlockPos(x, i);
 				auto block_pos_lower = BlockPos(x, i - 1);
@@ -140,10 +150,10 @@ namespace entity {
 			auto current_pos_z = getEntityPosition().get<coordinate::BlockPos>().z;
 			coordinate_right.set(current_pos_x + 1, current_pos_z + 1);
 			coordinate_left.set(current_pos_x - 1, current_pos_z + 1);
-			auto block_right = worldAccess->getChunkStream()->getBlock(coordinate_right);
-			auto block_left = worldAccess->getChunkStream()->getBlock(coordinate_left);
+			auto block_right = worldAccess->getChunkManager()->getBlock(coordinate_right);
+			auto block_left = worldAccess->getChunkManager()->getBlock(coordinate_left);
 			coordinate_left.offset(1, 0);
-			auto block_inside_entity = worldAccess->getChunkStream()->getBlock(coordinate_left);
+			auto block_inside_entity = worldAccess->getChunkManager()->getBlock(coordinate_left);
 			block::Block* block_distance_left = nullptr, * block_distance_right = nullptr;
 			if (!block_inside_entity->hasHitbox()) {
 				if (block_right->hasHitbox()) block_distance_right = block_right;
@@ -152,14 +162,13 @@ namespace entity {
 				block_distance_left = block_inside_entity;
 				block_distance_right = block_inside_entity;
 			}
-
 			return std::make_pair(block_distance_left, block_distance_right);
 		}
 
 		static float exertFriction(float v, float acceleration) {
 			if (v > 0)v += acceleration;
 			if (v < 0)v -= acceleration;
-			if (abs(v) < -acceleration) v = 0;
+			if (math::abs(v) < -acceleration) v = 0;
 			return v;
 		}
 
@@ -204,7 +213,7 @@ namespace entity {
 			auto right_block_range_upper_z = entity_stand_block_pos_z + (BlockPosT) std::ceil(getHeight());
 
 			auto getBlock_ = [&](BlockPosT x, BlockPosT z) {
-				return worldAccess->getChunkStream()->getBlock(BlockPos(x, z));
+				return worldAccess->getChunkManager()->getBlock(BlockPos(x, z));
 			};
 
 			// find the position of a block with hitbox that has the largest z position; this block must be lower than the pos of entity
@@ -213,7 +222,7 @@ namespace entity {
 					auto block_itr_upper = getBlock_(blockPosX, i);
 					auto block_itr_lower = getBlock_(blockPosX, i - 1);
 					if (!block_itr_upper->hasHitbox() && (block_itr_lower->hasHitbox())) {
-						if ((float)block_itr_lower->getPosition().get().z < entity_stand_pos_z)
+						if ((float) block_itr_lower->getPosition().get().z < entity_stand_pos_z)
 							return block_itr_lower->getPosition().get().z;
 					} // has hitbox
 				}
@@ -235,10 +244,10 @@ namespace entity {
 				if (maximum_z != -1) {
 					//PLOG_DEBUG << "Bottom Range: " << x << " " << entity_stand_block_pos_z;
 					// set entity position to the barrier pos for a moment...
-					auto hitbox = entityHitbox.getHitbox();
+					auto hitbox = entityHitbox.getBox();
 					auto blockHitbox = getBlock_(maximum_x, maximum_z)->getHitbox();
-					auto entityFutureHitbox = Hitbox(hitbox.x, blockHitbox->getHitbox().y - hitbox.height / 2, hitbox.width, hitbox.height);
-					isCollided = Hitbox::isCollided(Hitbox(*blockHitbox), entityFutureHitbox, true);
+					auto entityFutureHitbox = Hitbox(hitbox.left, blockHitbox.getBox().top - hitbox.height / 2, hitbox.width, hitbox.height);
+					isCollided = Hitbox::isCollided(blockHitbox, entityFutureHitbox);
 					z_pos = maximum_z;
 				} // such a block exists; add it to the collision detection list and handle it.
 				return std::make_pair(isCollided, z_pos);
@@ -248,19 +257,19 @@ namespace entity {
 				//TODO in line 230 x should plus 1; why x stayed constant here??
 				auto block = getBlock_(bottom_block_range_lower_x - 1, z_left);
 				if (block->isAir())
-					block->getHitbox()->setHitbox(0, 0, 0, 0);
-				entityLeftBlocksHitboxHandler.addHitbox(block->getHitbox());
+					block->getHitbox().setHitbox(0, 0, 0, 0);
+				entityLeftBlocksHitboxHandler.addHitbox(&block->getHitbox());
 			}
 
 			for (auto z_right = right_block_range_lower_z; z_right <= right_block_range_upper_z; ++z_right) {
 				auto block = getBlock_(bottom_block_range_upper_x + 1, z_right); //TODO pretty wried!
 				if (block->isAir())
-					block->getHitbox()->setHitbox(0, 0, 0, 0);
-				entityRightBlocksHitboxHandler.addHitbox(block->getHitbox());
+					block->getHitbox().setHitbox(0, 0, 0, 0);
+				entityRightBlocksHitboxHandler.addHitbox(&block->getHitbox());
 			}
 
-			auto isEntityCollidedToLeft = isCollided(&entityLeftBlocksHitboxHandler, true);
-			auto isEntityCollidedToRight = isCollided(&entityRightBlocksHitboxHandler, true);
+			auto isEntityCollidedToLeft = isCollided(&entityLeftBlocksHitboxHandler);
+			auto isEntityCollidedToRight = isCollided(&entityRightBlocksHitboxHandler);
 
 			if (isEntityCollidedToBottom().first &&
 			    ((float) entity_stand_pos_z + predicted_velocity_z <= (EntityPosT) isEntityCollidedToBottom().second && velocity.z < 0)) {
@@ -312,6 +321,13 @@ namespace entity {
 				health -= floor(((int) fallDistance - 3) / 2); // falling damage
 			damaged = (last_health > health);
 			last_health = health;
+		}
+
+		void updateSound() {
+			if (isWalking() && onGround()) {
+				auto block = getWorld()->getChunkManager()->getBlock(getEntityPosition().get<coordinate::BlockPos>());
+				this->minecraftClientAccess->getSoundManager()->addSound(BlockSoundGroup::get(block));
+			}
 		}
 	};
 }

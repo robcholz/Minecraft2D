@@ -8,14 +8,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class DioriteBlock : public block::Block {
 	private:
 	public:
 		DioriteBlock() : Block("diorite_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new DioriteBlock;
 		}
 	};

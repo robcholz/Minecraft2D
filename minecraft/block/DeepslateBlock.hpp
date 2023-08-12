@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class DeepslateBlock : public block::Block {
 	private:
 	public:
 		DeepslateBlock() : Block("deepslate_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new DeepslateBlock;
 		}
 	};

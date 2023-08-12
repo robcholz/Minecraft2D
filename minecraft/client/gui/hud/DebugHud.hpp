@@ -34,7 +34,7 @@ namespace hud {
 				).str();
 			});
 			messageStackLeft.addMessage("fps", [&]() -> String {
-				auto chunk_updates = this->worldAccess->getChunkStream()->getUpdatedChunks();
+				auto chunk_updates = this->worldAccess->getChunkManager()->getChunkStream()->getUpdatedChunks();
 				return (boost::format("%d/%f fps (%d chunk updates)")
 				        % RenderSystem::getMaxFrameRate()
 				        % (int) RenderSystem::getFrameRate()
@@ -50,9 +50,9 @@ namespace hud {
 			});
 			messageStackLeft.addMessage("block", [&]() -> String {
 				auto pos = this->worldAccess->getPlayer()->getEntityPosition().get<coordinate::BlockPos>();
-				auto stream = this->worldAccess->getChunkStream();
-				auto block_id = stream->getBlock(pos)->getID().identifier;
-				auto id = block_id->getNamespace() + ':' + block_id->getRelativePath();
+				auto stream = this->worldAccess->getChunkManager();
+				auto block_id = stream->getBlock(pos)->getID();
+				auto id = block_id.toString();
 				return (boost::format("Block: %d / %d %s") % pos.x % pos.z % id).str();
 			});
 
@@ -61,6 +61,7 @@ namespace hud {
 			messageStackRight.addMessage("os", [&]() -> String {
 				return (boost::format("System: %s %s %s") % OS::getOSName() % OS::getOSVersion() % OS::getOSArch()).str();
 			});
+
 			messageStackRight.addMessage("cpu_model", [&]() -> String {
 				return OS::getCPUModelName();
 			});

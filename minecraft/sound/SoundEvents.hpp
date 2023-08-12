@@ -10,7 +10,7 @@
 #include "MusicSoundEvent.hpp"
 
 
-class SoundEvents {
+class SoundEvents{
 private:
 	using SoundEventPtr = SoundEvent::SoundEventPtr;
 	using MusicSoundEventPtr = MusicSoundEvent::MusicSoundEventPtr;
@@ -21,21 +21,31 @@ public:
 	MusicSoundEventPtr MUSIC_NUANCE;
 	SoundEventPtr STEP_SOUND_GRASS;
 	SoundEventPtr STEP_SOUND_STONE;
+	SoundEventPtr STEP_SOUND_BEDROCK;
 	SoundEventPtr CLICK_SOUND_GUI;
 
 	SoundEvents(const SoundEvents&) = delete;
 
 	void operator=(const SoundEvents&) = delete;
 
+	/**
+	 * @brief singleton here. this is thread-safe since c++11.
+	 * @return unique instance
+	 */
 	static SoundEvents& getInstance() {
 		static SoundEvents sound_events;
 		return sound_events;
 	}
 
 private:
+	// TODO need to implement an essential sound pool here to save mm
+	std::list<SoundEventPtr> soundEventsRegistryList;
+	std::list<MusicSoundEventPtr> musicSoundEventsRegistryList;
+
 	SoundEvents() {
 		STEP_SOUND_GRASS = registerSoundEvent("step.grass");
 		STEP_SOUND_STONE = registerSoundEvent("step.stone");
+		STEP_SOUND_BEDROCK = registerSoundEvent("step.grass");
 		CLICK_SOUND_GUI = registerSoundEvent("effect.gui_button_click");
 
 		MUSIC_MENU = registerMusicSoundEvent("menu.menu");
@@ -43,12 +53,23 @@ private:
 		MUSIC_NUANCE = registerMusicSoundEvent("game.nuance");
 	}
 
-	static SoundEventPtr registerSoundEvent(const String& id) {
-		return std::make_shared<SoundEvent>(Identifier(id, Identifier::Category::SOUND));
+	~SoundEvents() {
+		for (auto v: soundEventsRegistryList)
+			delete v;
+		for (auto v: musicSoundEventsRegistryList)
+			delete v;
 	}
 
-	static MusicSoundEventPtr registerMusicSoundEvent(const String& id) {
-		return std::make_shared<MusicSoundEvent>(SoundEvent(Identifier("music." + id, Identifier::Category::SOUND)), 0.5f, 1.0f);
+	SoundEventPtr registerSoundEvent(const String& id) {
+		auto sound_event = new SoundEvent(Identifier(id, Identifier::Category::SOUND));
+		soundEventsRegistryList.push_back(sound_event);
+		return sound_event;
+	}
+
+	MusicSoundEventPtr registerMusicSoundEvent(const String& id) {
+		auto music_sound_event = new MusicSoundEvent(SoundEvent(Identifier("music." + id, Identifier::Category::SOUND)), 1, 1.0f);
+		musicSoundEventsRegistryList.push_back(music_sound_event);
+		return music_sound_event;
 	}
 };
 

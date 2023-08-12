@@ -1,5 +1,5 @@
 #include "resource/System.hpp"
-#include "command/CommandLine.hpp"
+#include "command/CommandLineExecutable.hpp"
 #include "client/MinecraftClient.hpp"
 
 

@@ -19,7 +19,7 @@ public:
 		noise.initialize(seed);
 	}
 
-	void curve(int (blockBuffer)[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT], BlockPosT blockPosX, BlockPosT chunkBlockPosX,
+	void curve(block::ID::SerialIDT (blockBuffer)[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT], BlockPosT blockPosX, BlockPosT chunkBlockPosX,
 	           BlockPosT chunkBlockPos,
 	           int curveThresholdConstant, bool condition) {
 		double x = (double) blockPosX / ((double) 100);
@@ -27,7 +27,7 @@ public:
 		double n = 2 * noise.noise(x * 5, y * 5, 0.8);
 		auto grey_channel = (uint8_t) floor(255 * n);
 		if (grey_channel > curveThresholdConstant && condition)
-			blockBuffer[chunkBlockPosX][chunkBlockPos] = block::blocks::Blocks::getInstance()->getBlockInstance("air_block")->getID().serialID;
+			blockBuffer[chunkBlockPosX][chunkBlockPos] = block::Blocks::getInstance().getObjectInstance("minecraft:air_block")->getSerialID();
 	}
 
 	~Carver() = default;

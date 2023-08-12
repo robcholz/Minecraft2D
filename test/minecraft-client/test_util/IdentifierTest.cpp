@@ -14,6 +14,8 @@ TEST(IdentifierTest,BasicAssertion){
 	ASSERT_EQ(identifier_1.getNamespace(),"minecraft");
 	ASSERT_EQ(identifier_1.getRelativePath(), "block/air_block");
 	ASSERT_EQ(identifier_3.getRelativePath(),"block/blockstates/dirt_block");
+	std::cout << identifier_1.getDotPath() << std::endl;
+	std::cout<<identifier_1.getAbsolutePath();
 	ASSERT_EQ(identifier_1.getNamespace(),identifier_2.getNamespace());
 	ASSERT_NE(identifier_1.getRelativePath(), identifier_2.getRelativePath());
 }

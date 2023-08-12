@@ -7,23 +7,34 @@
 
 #include "world/poi/Coordinate.hpp"
 #include "world/poi/Position.hpp"
+#include "util/RegistryAccess.hpp"
 
 
-namespace sf{class Sprite;}
+namespace sf { class Sprite; }
+class Hitbox;
 
 namespace block {
 	class Block;
-	class BlockAccess {
+
+	class BlockAccess : public utils::RegistryAccess<Block> {
 	public:
 		virtual coordinate::BlockPosition& getPosition() = 0;
 
 		[[nodiscard]]
-		virtual struct ID getID() const  = 0;
+		virtual Identifier& getID() const = 0;
 
 		[[nodiscard]]
-		virtual sf::Sprite* getSprite() const = 0;
+		virtual unsigned int getSerialID() const = 0;
 
-		virtual Block* newBlock() = 0;
+		virtual Hitbox& getHitbox() = 0;
+
+		virtual int getLuminance() = 0;
+
+		virtual uint8_t getLightLevel() = 0;
+
+		virtual bool isAir() = 0;
+
+		virtual bool isError() = 0;
 	};
 }
 

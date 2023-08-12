@@ -27,7 +27,7 @@ public:
 	static std::wstring getTranslatable(Identifier& identifier) {
 		std::ifstream file(Path::currentLangPath);
 		Json lang_json = Json::parse(file);
-		std::string literal = lang_json[identifier.getPath()];
+		std::string literal = lang_json[identifier.getDotPath()];
 		return convert(literal);
 	}
 

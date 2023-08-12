@@ -7,7 +7,7 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class ErrorBlock : public block::Block {
 	private:
 	public:
@@ -15,7 +15,7 @@ namespace block::blocks {
 			enableHitbox(false);
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new ErrorBlock;
 		}
 	};

@@ -19,13 +19,31 @@
 namespace chunk {
 	class ChunkStream : public ChunkStreamAccess {
 	private:
-		using DistanceT = unsigned short;
 		using ChunkPtr = Chunk*;
 		using String = std::string;
 		using ChunkPosT = coordinate::ChunkPositionT;
-		using BlockPosT = coordinate::BlockPositionT;
 		using BlockPosition = coordinate::BlockPosition;
+	protected:
+		using DistanceT = unsigned short;
+
+		int getRenderedChunks() override {
+			return (int) chunkRenderingMap.size();
+		}
+
+		int getUpdatedChunks() override {
+			return (int) chunkSimulationMap.size();
+		}
+
+		int getDeletedChunks() override {
+			return (int) chunkDeletingList.size();
+		}
+
+		int getCachedChunks() override {
+			return (int) cachedChunks.size();
+		}
 	public:
+		ChunkStream() = delete;
+
 		explicit ChunkStream(WorldAccess* worldAccess, DistanceT simulationDistance, DistanceT renderDistance) {
 			this->worldAccess = worldAccess;
 			saveHelper = std::make_unique<SaveHelper>("TestChunkSave");
@@ -55,48 +73,10 @@ namespace chunk {
 			chunkGenerator = std::move(function);
 		}
 
-		Chunk* getChunk(ChunkPosT chunkPos) {
+		Chunk* getChunk(ChunkPosT chunkPos){
 			if (chunkSimulationMap.contains(chunkPos))
 				return chunkSimulationMap[chunkPos];
 			return nullptr;
-		}
-
-		block::Block* getBlock(const BlockPosition& blockCoordinate) override {
-			// convert to chunk position and search in stream
-			// locate the block pointer in a specific chunk
-			auto chunkSettings = Chunk::toChunkSettings(blockCoordinate.getX(),blockCoordinate.getZ());
-			auto chunk = this->getChunk(chunkSettings.chunkPos);
-			if (chunk != nullptr)
-				return chunk->getBlockWithBoundaryCheck(chunkSettings);
-			PLOG_ERROR << "Given block doesn't exist in the loaded chunks: ChunkPosition: " << chunkSettings.chunkPos;
-			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
-		}
-
-		block::Block* getBlock(const coordinate::BlockPos& blockCoordinate) override {
-			// convert to chunk position and search in stream
-			// locate the block pointer in a specific chunk
-			auto chunkSettings = Chunk::toChunkSettings(blockCoordinate.x,blockCoordinate.z);
-			auto chunk = this->getChunk(chunkSettings.chunkPos);
-			if (chunk != nullptr)
-				return chunk->getBlockWithBoundaryCheck(chunkSettings);
-			PLOG_ERROR << "Given block doesn't exist in the loaded chunks: ChunkPosition: " << chunkSettings.chunkPos;
-			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
-		}
-
-		int getRenderedChunks() override {
-			return (int) chunkRenderingMap.size();
-		}
-
-		int getUpdatedChunks() override {
-			return (int) chunkSimulationMap.size();
-		}
-
-		int getDeletedChunks() override {
-			return (int) chunkDeletingList.size();
-		}
-
-		int getCachedChunks() override {
-			return (int) cachedChunks.size();
 		}
 
 		void update() {

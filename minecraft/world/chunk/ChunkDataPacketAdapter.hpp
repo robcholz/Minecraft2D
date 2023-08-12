@@ -15,9 +15,10 @@
 struct ChunkDataPacket {
 	// note: since we know the position of the chunk and all the blocks in vector are stored linearly
 	// we don't need to specify the position of each block
-	uint32_t chunkPos; // the position of the chunk
-	std::vector<uint32_t> serialIDContainer; // to identify the type of the block
-	std::vector<uint8_t> blockDirectionContainer; // to identify the direction of the block
+	coordinate::ChunkPositionT chunkPos; // the position of the chunk
+	std::vector<block::ID::SerialIDT> serialIDContainer; // to identify the type of the block
+	std::vector<Direction::DirectionT> blockDirectionContainer; // to identify the direction of the block
+	std::vector<TileColor::TileColorT> tileColorContainer; // to store the light level
 };
 
 template<typename vT>
@@ -27,12 +28,17 @@ void serialize(vT& s, ChunkDataPacket& o) {
 	s.value4b(o.chunkPos);
 	s.container4b(o.serialIDContainer, container_size);
 	s.container1b(o.blockDirectionContainer, container_size);
+	s.container4b(o.tileColorContainer, container_size);
 }
 
 namespace chunk::adapter {
 	class ChunkDataPacketAdapter {
-	protected:
+	private:
+		using Chunk = chunk::Chunk;
 		using ChunkPosT = coordinate::ChunkPositionT;
+		using SerialIDT = block::ID::SerialIDT;
+		using DirectionT = Direction::DirectionT;
+		using TileColorT = TileColor::TileColorT;
 
 		static ChunkPosT toOneDimensionIndex(ChunkPosT x, ChunkPosT y) { return y * ChunkGenSettings::CHUNK_WIDTH + x; }
 
@@ -42,6 +48,7 @@ namespace chunk::adapter {
 		static void allocateContainerMemory(ChunkDataPacket* chunkDataPacket, ChunkPosT capacity) {
 			chunkDataPacket->serialIDContainer.resize(capacity);
 			chunkDataPacket->blockDirectionContainer.resize(capacity);
+			chunkDataPacket->tileColorContainer.resize(capacity);
 		}
 
 		template<typename vT>
@@ -63,25 +70,31 @@ namespace chunk::adapter {
 			for (ChunkPosT x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
 				for (ChunkPosT y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; y_pos++) {
 					auto block = chunk->chunkBlocks[x_pos][y_pos];
-					addToContainer<uint32_t>(&chunkDataPacket->serialIDContainer, x_pos, y_pos, block->getID().serialID);
-					addToContainer<uint8_t>(&chunkDataPacket->blockDirectionContainer, x_pos, y_pos,
-					                        static_cast<uint8_t>(block->getPosition().getDirection().getDirection()));
+					addToContainer<SerialIDT>(&chunkDataPacket->serialIDContainer, x_pos, y_pos, block->getSerialID());
+					addToContainer<DirectionT>(&chunkDataPacket->blockDirectionContainer, x_pos, y_pos,
+					                           static_cast<Direction::DirectionT>(block->getPosition().getDirection().getDirection()));
+					addToContainer<TileColorT>(&chunkDataPacket->tileColorContainer, x_pos, y_pos,
+					                           chunk->gerRGBA(x_pos, y_pos));
 				}
 			}
 		}
 
 		static chunk::Chunk* decompress(ChunkDataPacket* chunkDataPacket) {
-			auto chunk = new Chunk;
 			auto chunkPos = static_cast<int32_t>(chunkDataPacket->chunkPos);
-			chunk->chunkPos = chunkPos;
+			block::Block* blocks[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT];
+			Direction::DirectionT directions[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT];
+			TileColor::TileColorT tile_colors[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT];
 			for (ChunkPosT x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
 				for (ChunkPosT y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
 					auto oneDimensionIndex = toOneDimensionIndex(x_pos, y_pos);
-					auto serialID = static_cast<int32_t>(chunkDataPacket->serialIDContainer[oneDimensionIndex]);
-					auto block = block::blocks::Blocks::getInstance()->newBlock(serialID);
-					chunk->setBlockPosition(x_pos, y_pos, block);
+					auto serialID = static_cast<block::ID::SerialIDT>(chunkDataPacket->serialIDContainer[oneDimensionIndex]);
+					auto block = block::Blocks::getInstance().createObject(serialID);
+					blocks[x_pos][y_pos] = block;
+					directions[x_pos][y_pos] = chunkDataPacket->blockDirectionContainer[oneDimensionIndex];
+					tile_colors[x_pos][y_pos] = chunkDataPacket->tileColorContainer[oneDimensionIndex];
 				}
 			}
+			auto chunk = new Chunk(chunkPos, &blocks,&directions, &tile_colors);
 			return chunk;
 		}
 	};

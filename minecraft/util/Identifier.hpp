@@ -38,6 +38,18 @@ public:
 		GUI
 	};
 
+	const Category DEFAULT_CATEGORY = static_cast<const Category>(-1);
+	const String DEFAULT_NAMESPACE = "minecraft";
+	const String DEFAULT_PATH = "UNDEFINED";
+
+	Identifier() {
+		this->category = DEFAULT_CATEGORY;
+		this->namespace_ = DEFAULT_NAMESPACE;
+		this->relativePath = DEFAULT_PATH;
+		this->path = _getPath(DEFAULT_PATH);
+		this->absolutePath = _getAbsolutePath();
+	}
+
 	explicit Identifier(const String& id, Category category) {
 		this->category = category;
 		auto strings = split(id, ':');
@@ -76,27 +88,48 @@ public:
 
 	~Identifier() = default;
 
+	/**
+	 * @example for id "minecraft:block.air_block", this returns "block.air_block"
+	 * @return a specific path used to represent a given resource
+	 */
+	String getDotPath() { return path; }
+
+	/**
+	 * @return the path of the resource relative to ../assets
+	 */
 	String getRelativePath() { return relativePath; }
 
-	String getPath() { return path; }
-
+	/**
+	 * @return The system path pointing to the resource.
+	 */
 	String getAbsolutePath() { return absolutePath; }
 
+	/**
+	 * @example for id "minecraft:block.air_block", this returns "minecraft"
+	 * @return the namespace the resource belongs to.
+	 */
 	String getNamespace() { return namespace_; }
 
+	/**
+	 * @return the category the resource belongs to
+	 */
 	Category getCategory() { return category; }
 
+	/**
+	 * @example for id "minecraft:block.air_block", this returns "minecraft:air_block"
+	 * @return a short id used in game
+	 */
 	String toString() { return namespace_ + ":" + relativePath; }
 
-	bool operator<(const Identifier& identifier) {
+	bool operator<(const Identifier& identifier) const {
 		return (this->relativePath < identifier.relativePath && this->namespace_ < identifier.namespace_);
 	}
 
-	bool operator>(const Identifier& identifier) {
+	bool operator>(const Identifier& identifier) const {
 		return (this->relativePath > identifier.relativePath && this->namespace_ > identifier.namespace_);
 	}
 
-	bool operator==(const Identifier& identifier) {
+	bool operator==(const Identifier& identifier) const {
 		return (this->relativePath == identifier.relativePath && this->namespace_ == identifier.namespace_);
 	}
 
@@ -141,6 +174,7 @@ private:
 			case Category::BLOCK:
 				return Path::blockStatePath + getRelativePath() + Path::blockStateSuffix;
 			case Category::LANG:
+				return Path::langPath + getRelativePath() + Path::langSuffix;
 				break;
 			case Category::ITEM:
 				break;
@@ -172,12 +206,16 @@ private:
 				prefix_ = "blockstates";
 				break;
 			case Category::LANG:
+				prefix_ = "lang";
 				break;
 			case Category::ITEM:
+				prefix_ = "item";
 				break;
 			case Category::ENTITY:
+				prefix_ = "entity";
 				break;
 			case Category::TEXTURE:
+				prefix_ = "textures";
 				break;
 			case Category::GUI:
 				prefix_ = "gui";

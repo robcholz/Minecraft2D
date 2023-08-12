@@ -104,7 +104,8 @@ namespace hud {
 		void loadHeartOutline(int number, sf::Texture* outlineTexture) {
 			auto sprite_outline = std::make_unique<sf::Sprite>(*outlineTexture);
 			setSpriteScale(sprite_outline.get());
-			sprite_outline->setPosition((float) getScreenCornerX() + (float) number * (sprite_outline->getGlobalBounds().width - mapTo(1)), (float) getScreenCornerZ());
+			sprite_outline->setPosition((float) getScreenCornerX() + (float) number * (sprite_outline->getGlobalBounds().width - mapTo(1)),
+			                            (float) getScreenCornerZ());
 			healthBarSpritesContainer[number].first = std::move(sprite_outline);
 		}
 
@@ -120,7 +121,8 @@ namespace hud {
 		void updateHeartOutlinePos(int number) {
 			auto sprite_outline = healthBarSpritesContainer[number].first->get();
 			setSpriteScale(sprite_outline);
-			sprite_outline->setPosition((float) getScreenCornerX() + (float) number * (sprite_outline->getGlobalBounds().width - mapTo(1)), (float) getScreenCornerZ());
+			sprite_outline->setPosition((float) getScreenCornerX() + (float) number * (sprite_outline->getGlobalBounds().width - mapTo(1)),
+			                            (float) getScreenCornerZ());
 		}
 
 		void updateHeartPos(int number) {
@@ -165,6 +167,12 @@ namespace hud {
 		void setHealthValue(short health) {
 			auto hearts_num = health / 2;
 			auto half_heart_num = health - hearts_num * 2;
+			if (health <= 0) {
+				for (auto i = 0; i < MAX_HEARTS; ++i)
+					setHeartTexture(i, &emptyHeartTexture);
+				setHeartOutlineTexture(&darkOutlineHeartTexture);
+				return;
+			}
 			if (health != last_health || delay_timer == 0)
 				for (auto i = 0; i < MAX_HEARTS; ++i)
 					setHeartTexture(i, &emptyHeartTexture);
@@ -200,7 +208,7 @@ namespace hud {
 			auto damaged = this->worldAccess->getPlayer()->isDamaged();
 			auto health = this->worldAccess->getPlayer()->getHealth();
 			if (damaged) delay_timer = DAMAGE_EFFECT_DURATION;
-			if (health <= worldAccess->getPlayer()->getMaxHealth() / 3)
+			if (health <= worldAccess->getPlayer()->getMaxHealth() / 3 || health <= 0)
 				shakeHearts();
 			setHealthValue(floor(health));
 			if (delay_timer >= 0) delay_timer--;

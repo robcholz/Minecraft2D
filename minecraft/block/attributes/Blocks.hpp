@@ -7,6 +7,8 @@
 
 #include <memory>
 #include "block/attributes/Block.hpp"
+#include "block/attributes/BlockSoundGroup.hpp"
+#include "util/Registry.hpp"
 #include "block/AirBlock.hpp"
 #include "block/DirtBlock.hpp"
 #include "block/GrassBlock.hpp"
@@ -22,81 +24,73 @@
 #include "block/AndesiteBlock.hpp"
 #include "block/DioriteBlock.hpp"
 #include "block/GraniteBlock.hpp"
+#include "block/GlowstoneBlock.hpp"
 
-#define registerBlock(block) _registerBlock(std::make_shared<block>())
 
-namespace block::blocks {
-	class Blocks {
+#define DeclareBlock(block) BlockPtr block=nullptr
+
+namespace block {
+	class Blocks:public utils::Registry<Block>{
 	private:
 		using String = std::string;
 		using BlockPtr = Block::BlockPtr;
 	public:
-		BlockPtr AIR_BLOCK;
-		BlockPtr BEDROCK_BLOCK;
-		BlockPtr BIRCH_LOG_BLOCK;
-		BlockPtr COAL_ORE_BLOCK;
-		BlockPtr COBBLESTONE_BLOCK;
-		BlockPtr DIAMOND_BLOCK;
-		BlockPtr DIRT_BLOCK;
-		BlockPtr ERROR_BLOCK;
-		BlockPtr GRASS_BLOCK;
-		BlockPtr IRON_BLOCK;
-		BlockPtr STONE_BLOCK;
-		BlockPtr DEEPSLATE_BLOCK;
-		BlockPtr ANDESITE_BLOCK;
-		BlockPtr DIORITE_BLOCK;
-		BlockPtr GRANITE_BLOCK;
+		DeclareBlock (AIR_BLOCK);
+		DeclareBlock (BEDROCK_BLOCK);
+		DeclareBlock (BIRCH_LOG_BLOCK);
+		DeclareBlock (COAL_ORE_BLOCK);
+		DeclareBlock (COBBLESTONE_BLOCK);
+		DeclareBlock (DIAMOND_BLOCK);
+		DeclareBlock (DIRT_BLOCK);
+		DeclareBlock (ERROR_BLOCK);
+		DeclareBlock (GRASS_BLOCK);
+		DeclareBlock (IRON_BLOCK);
+		DeclareBlock (STONE_BLOCK);
+		DeclareBlock (DEEPSLATE_BLOCK);
+		DeclareBlock (ANDESITE_BLOCK);
+		DeclareBlock (DIORITE_BLOCK);
+		DeclareBlock (GRANITE_BLOCK);
+		DeclareBlock (GLOWSTONE_BLOCK);
 
-		static std::shared_ptr<Blocks> getInstance() {
-			static std::shared_ptr<Blocks> instance(new Blocks);
+		static Blocks& getInstance() {
+			static Blocks instance;
 			return instance;
 		}
 
-		Block* newBlock(const String& id) {
-			return blocksIDRegistry[id]->newBlock();
-		}
-
-		Block* newBlock(int serialID) {
-			return blocksSerialIDRegistry[serialID]->newBlock();
-		}
-
-		Block* getBlockInstance(const String& id) {
-			return blocksIDRegistry[id].get();
-		}
-
-		Block* getBlockInstance(int serialID) {
-			return blocksSerialIDRegistry[serialID].get();
-		}
-
-		~Blocks() = default;
-
 	private:
-		std::unordered_map<String, Block::BlockPtr> blocksIDRegistry;
-		std::unordered_map<int, Block::BlockPtr> blocksSerialIDRegistry;
+		Blocks(){
+			onRegister();
+		}
+		~Blocks() override = default;
 
-		explicit Blocks() {
-			AIR_BLOCK = registerBlock(AirBlock);
-			BEDROCK_BLOCK = registerBlock(BedrockBlock);
-			BIRCH_LOG_BLOCK = registerBlock(BirchLogBlock);
-			COAL_ORE_BLOCK = registerBlock(CoalOreBlock);
-			COBBLESTONE_BLOCK = registerBlock(CobblestoneBlock);
-			DIAMOND_BLOCK = registerBlock(DiamondBlock);
-			DIRT_BLOCK = registerBlock(DirtBlock);
-			ERROR_BLOCK = registerBlock(ErrorBlock);
-			GRASS_BLOCK = registerBlock(GrassBlock);
-			IRON_BLOCK = registerBlock(IronBlock);
-			STONE_BLOCK = registerBlock(StoneBlock);
-			DEEPSLATE_BLOCK = registerBlock(DeepslateBlock);
-			ANDESITE_BLOCK = registerBlock(AndesiteBlock);
-			DIORITE_BLOCK = registerBlock(DioriteBlock);
-			GRANITE_BLOCK = registerBlock(GraniteBlock);
+		void onRegister() {
+			regBlock();
+			regBlockSound();
 		}
 
-	private:
-		const Block::BlockPtr& _registerBlock(const Block::BlockPtr& block) {
-			blocksIDRegistry.insert({block->getID().tempID, block});
-			blocksSerialIDRegistry.insert({block->getID().serialID, block});
-			return block;
+		void regBlock() {
+			AIR_BLOCK = registerObject<AirBlock>();
+			BEDROCK_BLOCK = registerObject<BedrockBlock>();
+			BIRCH_LOG_BLOCK = registerObject<BirchLogBlock>();
+			COAL_ORE_BLOCK = registerObject<CoalOreBlock>();
+			COBBLESTONE_BLOCK = registerObject<CobblestoneBlock>();
+			DIAMOND_BLOCK = registerObject<DiamondBlock>();
+			DIRT_BLOCK = registerObject<DirtBlock>();
+			ERROR_BLOCK = registerObject<ErrorBlock>();
+			GRASS_BLOCK = registerObject<GrassBlock>();
+			IRON_BLOCK = registerObject<IronBlock>();
+			STONE_BLOCK = registerObject<StoneBlock>();
+			DEEPSLATE_BLOCK = registerObject<DeepslateBlock>();
+			ANDESITE_BLOCK = registerObject<AndesiteBlock>();
+			DIORITE_BLOCK = registerObject<DioriteBlock>();
+			GRANITE_BLOCK = registerObject<GraniteBlock>();
+			GLOWSTONE_BLOCK= registerObject<GlowstoneBlock>();
+		}
+
+		void regBlockSound() const {
+			BlockSoundGroup::bind(STONE_BLOCK, SoundEvents::getInstance().STEP_SOUND_STONE);
+			BlockSoundGroup::bind(GRASS_BLOCK, SoundEvents::getInstance().STEP_SOUND_GRASS);
+			BlockSoundGroup::bind(BEDROCK_BLOCK, SoundEvents::getInstance().STEP_SOUND_GRASS);
 		}
 	};
 }

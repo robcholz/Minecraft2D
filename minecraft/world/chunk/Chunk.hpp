@@ -5,11 +5,14 @@
 #ifndef MINECRAFT_CHUNK_HPP
 #define MINECRAFT_CHUNK_HPP
 
+#include <array>
+#include <algorithm>
 #include "bitsery/brief_syntax.h"
 #include "world/poi/Coordinate.hpp"
 #include "block/attributes/Block.hpp"
 #include "world/poi/Position.hpp"
 #include "block/attributes/Blocks.hpp"
+#include "client/render/TileColor.hpp"
 
 
 namespace chunk {
@@ -28,9 +31,38 @@ namespace chunk {
 		using ChunkPosT = coordinate::ChunkPositionT;
 		using BlockPosT = coordinate::BlockPositionT;
 		using PixelPosT = coordinate::PixelPositonT;
+	private:
+		class Iterator;
+
 	public:
-		explicit Chunk(ChunkPosT chunkPos) {
+		Chunk() = delete;
+
+		// for world generation - only need to store the block type
+		explicit Chunk(ChunkPosT chunkPos, block::Block* (* blocks)[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]) {
 			this->chunkPos = chunkPos;
+			copyArray(*blocks, chunkBlocks);
+			initPosition();
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
+					setBlockLightLevel(x_pos, y_pos, 0);
+				}
+			}
+			updateHeightMap();
+			updateDaylightSource();
+		}
+
+		// for loading from file - need to store the block type, direction and light level
+		explicit Chunk(ChunkPosT chunkPos, block::Block* (* blocks)[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT],
+		               Direction::DirectionT (* blockDirection)[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT],
+		               TileColor::TileColorT (* tileColors)[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]) {
+			this->chunkPos = chunkPos;
+			copyArray(*blocks, chunkBlocks);
+			copyArray(*tileColors, blockLight);
+			initPosition();
+			initDirection(blockDirection);
+			initLight(tileColors);
+			updateHeightMap();
+			updateDaylightSource();
 		}
 
 		~Chunk() {
@@ -52,17 +84,27 @@ namespace chunk {
 		}
 
 		[[nodiscard]]
+		uint32_t gerRGBA(BlockPosT x, BlockPosT z) const {
+			return blockLight[x][z];
+		}
+
+		[[nodiscard]]
+		bool isBlockExposedToDaylight(BlockPosT x, BlockPosT z) const {
+			return heightMap[x] <= z;
+		}
+
+		[[nodiscard]]
 		block::Block* getBlockWithBoundaryCheck(const coordinate::ChunkPos& chunkBlockPos) const {
 			if ((chunkBlockPos.blockPos.z >= 0 && chunkBlockPos.blockPos.z < ChunkGenSettings::CHUNK_HEIGHT) &&
 			    (chunkBlockPos.blockPos.x >= 0 && chunkBlockPos.blockPos.x < ChunkGenSettings::CHUNK_WIDTH))
 				return getBlock(chunkBlockPos.blockPos);
-			return block::blocks::Blocks::getInstance()->getBlockInstance("error_block");
+			return block::Blocks::getInstance().getObjectInstance("minecraft:error_block");
 		}
 
 		void setBlockPosition(ChunkPosT x, ChunkPosT z, block::Block* block) {
 			if (getBlock(x, z) != nullptr)
 				delete getBlock(x, z);
-			setBlock(x, z, block);
+			chunkBlocks[x][z] = block;
 			auto block_position = toBlockPosition(chunkPos, coordinate::BlockPos(x, z));
 			getBlock(x, z)->setPosition(block_position);
 		}
@@ -93,47 +135,216 @@ namespace chunk {
 			return position;
 		}
 
-		static PixelPosT convertToPixelPos(ChunkPosT chunkPos) {
-			auto zoom = RenderSystem::Settings::pixelProportion;
-			return chunkPos * zoom * ChunkGenSettings::CHUNK_WIDTH;
-		}
-
 		static ChunkPosT convertToChunkPos(PixelPosT pixelPos) {
 			auto zoom = RenderSystem::Settings::pixelProportion;
 			return (int) (pixelPos / (double) (zoom * ChunkGenSettings::CHUNK_WIDTH));
 		}
 
 		[[nodiscard]]
-		ChunkPosT getChunkPosition() const { return chunkPos; }
-
-		void update() {
-			// TODO
+		ChunkPosT getChunkPosition() const {
+			return chunkPos;
 		}
 
-		void render() {
+		void update() {
 			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
 				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
-					RenderSystem::render(*getBlockSprite(x_pos, y_pos));
+					spreadLight(x_pos, y_pos, getBlockLightLevel(x_pos, y_pos));
 				}
 			}
+		}
+
+		void render() const {
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
+					RenderSystem::render(*getBlock(x_pos, y_pos));
+				}
+			}
+		}
+
+		Iterator begin() {
+			return {chunkBlocks[0][0], ChunkGenSettings::CHUNK_WIDTH, ChunkGenSettings::CHUNK_HEIGHT};
+		}
+
+		static Iterator end() {
+			return {nullptr, ChunkGenSettings::CHUNK_WIDTH, ChunkGenSettings::CHUNK_HEIGHT};
 		}
 
 	private:
 		friend class adapter::ChunkDataPacketAdapter;
 
+		// the position index of the chunk
 		ChunkPosT chunkPos = -1;
+		// store the pointer of each block in the chunk
 		block::Block* chunkBlocks[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]{};
+		// the tile color(light) on each block
+		TileColor::TileColorT blockLight[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]{};
+		// record the light source in the chunk
+		std::map<coordinate::BlockPos, uint8_t> lightSourceMap;
+		// record the highest point in the chunk-> use to calculate the blocks influenced by daylight
+		std::array<BlockPosT, ChunkGenSettings::CHUNK_WIDTH> heightMap{};
 
-		[[nodiscard]]
-		sf::Sprite* getBlockSprite(ChunkPosT x, ChunkPosT z) const {
-			return getBlock(x, z)->getSprite();
+		template<typename T>
+		void copyArray(T src, T dest) {
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
+					dest[x_pos][y_pos] = src[x_pos][y_pos];
+				}
+			}
 		}
 
-		void setBlock(BlockPosT x, BlockPosT z, block::Block* block) {
-			chunkBlocks[x][z] = block;
+		// configure the block position
+		void initPosition() const {
+			for (auto x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (auto z_pos = 0; z_pos < ChunkGenSettings::CHUNK_HEIGHT; ++z_pos) {
+					auto block_position = toBlockPosition(chunkPos, coordinate::BlockPos(x_pos, z_pos));
+					getBlock(x_pos, z_pos)->setPosition(block_position);
+				}
+			}
 		}
 
-		Chunk() = default;
+		// configure the block direction
+		void initDirection(Direction::DirectionT (* blockDirection)[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]) const {
+			for (int x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (int y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT; ++y_pos) {
+					getBlock(x_pos, y_pos)->setDirection((Direction::DirectionType) (*blockDirection)[x_pos][y_pos]);
+				}
+			}
+		}
+
+		// load the block light level
+		void initLight(uint32_t (* lights)[ChunkGenSettings::CHUNK_WIDTH][ChunkGenSettings::CHUNK_HEIGHT]) const {
+			for (auto x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (auto z_pos = 0; z_pos < ChunkGenSettings::CHUNK_HEIGHT; ++z_pos) {
+					getBlock(x_pos, z_pos)->setTileColor((*lights)[x_pos][z_pos]);
+				}
+			}
+		}
+
+		void updateLight(BlockPosT x, BlockPosT z) {
+			auto light_level = getBlockLightLevel(x, z);
+			if (light_level == 0)
+				return;
+			//updateLightSource(x, z, light_level);
+			spreadLight(x, z, light_level - 1);
+		}
+
+		/**
+		 * @brief update the height map
+		 * @param x
+		 * @param z
+		 */
+		void updateHeightMap(BlockPosT x, BlockPosT z) {
+			if (heightMap[x] < z)
+				heightMap[x] = z;
+		}
+
+		void updateHeightMap() {
+			for (auto x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				for (auto z_pos = ChunkGenSettings::CHUNK_HEIGHT - 1; z_pos >= 0; --z_pos) {
+					if (!getBlock(x_pos, z_pos)->isAir()) {
+						updateHeightMap(x_pos, z_pos);
+						continue;
+					}
+				}
+			}
+		}
+
+		void updateDaylightSource() {
+			for (auto x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; ++x_pos) {
+				// set the all the air blocks exposed to daylight to the max light level
+				for (auto z_pos = heightMap[x_pos] + 1; z_pos < ChunkGenSettings::CHUNK_HEIGHT; ++z_pos)
+					setBlockLightLevel(x_pos, z_pos, 15);
+				// add the lowest air block exposed to daylight to the light source map
+				//updateLightSource(x_pos, heightMap[x_pos], 15);
+				spreadLight(x_pos, heightMap[x_pos], 15);
+			}
+		}
+
+		void updateLightSource(BlockPosT x, BlockPosT z, uint8_t lightLevel) {
+			//coordinate::BlockPos block_pos(x, z);
+			//lightSourceMap.insert({block_pos, lightLevel});
+		}
+
+		void spreadLight(BlockPosT x, BlockPosT z, uint8_t lightLevel) {
+			if(x < 0 || x >= ChunkGenSettings::CHUNK_WIDTH || z < 0 || z >= ChunkGenSettings::CHUNK_HEIGHT)
+				return;
+			if (lightLevel <= 0)
+				return;
+			int currentLightLevel = getBlockLightLevel(x, z);
+			if (lightLevel > currentLightLevel) {
+				setBlockLightLevel(x, z, lightLevel);
+				spreadLight(x + 1, z, lightLevel - 1);
+				spreadLight(x - 1, z, lightLevel - 1);
+				spreadLight(x, z + 1, lightLevel - 1);
+				spreadLight(x, z - 1, lightLevel - 1);
+			}
+		}
+
+		/**
+		 * @brief set the light level of the block
+		 * @param x pos
+		 * @param z pos
+		 * @param light brightness, from 0-15
+		 */
+		void setBlockLightLevel(BlockPosT x, BlockPosT z, uint8_t light) {
+			auto brightness = light * 17; // 255/15=17
+			auto rgba = TileColor::convertToRGBA(brightness, brightness, brightness, 255);
+			getBlock(x, z)->setTileColor(rgba);
+			blockLight[x][z] = rgba;
+			//if (light != 0)
+			//	updateLightSource(x, z, light);
+		}
+
+		uint8_t getBlockLightLevel(BlockPosT x, BlockPosT z) {
+			return TileColor::convertToR(blockLight[x][z]) / 17;
+		}
+
+		class Iterator {
+		private:
+			block::Block* current;
+			block::Block* start;
+			int rows;
+			int cols;
+
+		public:
+			using iterator_category = std::forward_iterator_tag;
+			using value_type = block::Block;
+			using difference_type = std::ptrdiff_t;
+			using pointer = block::Block*;
+			using reference = block::Block&;
+
+			Iterator(block::Block* start, int rows, int cols) : current(start), start(start), rows(rows), cols(cols) {}
+
+			bool operator==(const Iterator& other) const {
+				return current == other.current;
+			}
+
+			bool operator!=(const Iterator& other) const {
+				return !(*this == other);
+			}
+
+			reference operator*() const {
+				return *current;
+			}
+
+			pointer operator->() const {
+				return current;
+			}
+
+			Iterator& operator++() {
+				current++;
+				if (reinterpret_cast<char*>(current) - reinterpret_cast<char*>(start) >= rows * cols * sizeof(block::Block)) {
+					current = nullptr;
+				}
+				return *this;
+			}
+
+			Iterator operator++(int) {
+				Iterator temp = *this;
+				++(*this);
+				return temp;
+			}
+		};
 	};
 }
 

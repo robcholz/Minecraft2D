@@ -7,7 +7,7 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks{
+namespace block{
 
 	class IronBlock: public block::Block{
 	public:
@@ -15,7 +15,7 @@ namespace block::blocks{
 
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new IronBlock;
 		}
 	};

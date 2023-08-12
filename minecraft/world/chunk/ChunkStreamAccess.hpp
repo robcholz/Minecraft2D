@@ -5,14 +5,11 @@
 #ifndef MINECRAFT_CHUNKSTREAMACCESS_HPP
 #define MINECRAFT_CHUNKSTREAMACCESS_HPP
 
-#include "block/attributes/Block.hpp"
 
 namespace chunk {
+	class Chunk;
 	class ChunkStreamAccess {
 	public:
-		virtual block::Block* getBlock(const coordinate::BlockPosition& blockPosition) = 0;
-		virtual block::Block* getBlock(const coordinate::BlockPos& blockPosition) = 0;
-
 		virtual int getRenderedChunks() = 0;
 
 		virtual int getUpdatedChunks() = 0;

@@ -15,7 +15,7 @@ class SoundEvent {
 private:
 	using String = std::string;
 public:
-	using SoundEventPtr = std::shared_ptr<SoundEvent>;
+	using SoundEventPtr = SoundEvent*;
 
 	explicit SoundEvent(const Identifier& id) {
 		this->identifier = std::make_unique<Identifier>(id);

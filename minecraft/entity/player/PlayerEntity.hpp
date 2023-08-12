@@ -16,28 +16,19 @@ namespace entity {
 	class PlayerEntity : public Entity {
 	private:
 		using String = std::string;
-		using BlockPosition = coordinate::BlockPosition;
-		using PixelPosition = coordinate::PixelPosition;
 		using sfRecti = sf::IntRect;
 		using Texture = sf::Texture;
 		using Sprite = sf::Sprite;
 	protected:
-		void updateHitbox() override {
+		void onHitboxUpdate() override {
 			entityHitbox.setHitbox(headSprite.getGlobalBounds().left, headSprite.getGlobalBounds().top, headSprite.getGlobalBounds().width,
 			                       headSprite.getGlobalBounds().height + armSprite.getGlobalBounds().height +
 			                       legSprite.getGlobalBounds().height);
 		}
 
 		void onUpdate() override {
-			Entity::onUpdate();
 			setSkinTexturePixelPosition(Entity::getEntityPosition().get<coordinate::PixelPos>());
 			receiveUpdateFromInput();
-
-			if (getWorld()->getChunkStream()->getBlock(getEntityPosition().get<coordinate::BlockPos>())->getID().tempID == "grass_block") {
-				if (Entity::isWalking() && Entity::onGround())
-					this->minecraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().STEP_SOUND_GRASS);
-			}
-
 		}
 
 		void onRender() override {
@@ -52,8 +43,8 @@ namespace entity {
 			WEST
 		};
 
-		explicit PlayerEntity(MinecraftClientAccess* minecraftClientAccess, WorldAccess* worldAccess) : Entity(worldAccess) {
-			this->minecraftClientAccess = minecraftClientAccess;
+		explicit PlayerEntity(MinecraftClientAccess* minecraftClientAccess, WorldAccess* worldAccess)
+				: Entity(minecraftClientAccess, worldAccess) {
 			moveLeft.attachKey(input::KeyboardKeyType::A);
 			moveRight.attachKey(input::KeyboardKeyType::D);
 			moveJump.attachKey(input::KeyboardKeyType::Space);
@@ -64,7 +55,7 @@ namespace entity {
 		~PlayerEntity() override = default;
 
 		float getMaxHealth() override {
-			return 20.f;
+			return MAX_HEALTH;
 		}
 
 	private:
@@ -74,7 +65,8 @@ namespace entity {
 		Texture rightLeg, rightArm, rightHead;
 		Sprite legSprite, armSprite, headSprite;
 		View _view{};
-		MinecraftClientAccess* minecraftClientAccess = nullptr;
+
+		static constexpr float MAX_HEALTH = 20.f;
 
 		void initSkin() {
 			leftLeg.loadFromFile(playerSkinAssetPath, sfRecti{24, 52, 4, 12}); // (24,52) (27,63)
@@ -119,27 +111,27 @@ namespace entity {
 		}
 
 		void receiveUpdateFromInput() {
-			acceleration.x = 0;
-			acceleration.z = 0;
+			//acceleration.x = 0;
+			//acceleration.z = 0;
 			if (moveLeft.isActivated()) {
 				viewFrom(View::WEST);
-				acceleration.x = -WALKING_ACCELERATION;
+				//acceleration.x = -WALKING_ACCELERATION;
 				getEntityPosition().setDirection(Direction::DirectionType::WEST);
-				//entity::Entity::getEntityPosition().offset<coordinate::PixelPos>(-5,0);
+				Entity::getEntityPosition().offset<coordinate::PixelPos>(-5,0);
 			}
 			if (moveRight.isActivated()) {
 				viewFrom(View::EAST);
-				acceleration.x = WALKING_ACCELERATION;
+				//acceleration.x = WALKING_ACCELERATION;
 				getEntityPosition().setDirection(Direction::DirectionType::EAST);
-				//entity::Entity::getEntityPosition().offset<coordinate::PixelPos>(5,0);
+				Entity::getEntityPosition().offset<coordinate::PixelPos>(5,0);
 			}
 			if (moveJump.isActivated()) {
-				if (onGround())
-					velocity.z = JUMPING_VELOCITY;
-				//entity::Entity::getEntityPosition().offset<coordinate::PixelPos>(0,-5);
+				//if (onGround())
+				//	velocity.z = JUMPING_VELOCITY;
+				Entity::getEntityPosition().offset<coordinate::PixelPos>(0,-5);
 			}
 			if (moveSniff.isActivated()) {
-				//entity::Entity::getEntityPosition().offset<coordinate::PixelPos>(0,5);
+				Entity::getEntityPosition().offset<coordinate::PixelPos>(0,5);
 			}
 		}
 	};

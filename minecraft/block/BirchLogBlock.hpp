@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class BirchLogBlock : public block::Block {
 	private:
 	public:
 		BirchLogBlock() : Block("birch_log_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new BirchLogBlock;
 		}
 	};

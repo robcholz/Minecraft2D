@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class GrassBlock : public block::Block {
 	private:
 	public:
 		explicit GrassBlock() : Block("grass_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new GrassBlock;
 		}
 	};

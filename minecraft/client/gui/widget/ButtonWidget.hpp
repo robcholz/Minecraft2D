@@ -26,7 +26,7 @@ private:
 protected:
 	void onUpdate() override {
 		Widget::onUpdate();
-		if (identifier->getPath() == "gui.button.singleplayer") {
+		if (identifier->getDotPath() == "gui.button.singleplayer") {
 			//TODO: fix this
 			//PLOG_DEBUG<<widgetSprite.getGlobalBounds().height;
 		}

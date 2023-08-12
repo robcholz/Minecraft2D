@@ -6,50 +6,93 @@
 #define MINECRAFT_REGISTRY_HPP
 
 #include <string>
-#include <map>
+#include <mutex>
+#include <unordered_map>
+#include "plog/Log.h"
 
-#define RegisterObject(object) registerObject(std::make_shared<object>())
 
-namespace util {
-	template<class T>
+namespace utils {
+	template<class ObjectT>
 	class Registry {
 	private:
 		using String = std::string;
-		using SmartPtr = std::shared_ptr<T>;
-	public:
-		explicit Registry() = default;
+		using ObjectPtr = ObjectT*;
+	protected:
+		Registry() = default;
 
-		void registerObject(const SmartPtr& block) {
-			IDRegistry.insert({block->getID().identifier, block});
-			serialIDRegistry.insert({block->getID().serialID, block});
+		virtual ~Registry() {
+			for (auto& v: IDRegistry) {
+				delete v.second;
+			}
 		}
 
-		static std::shared_ptr<Registry> getInstance() {
-			static std::shared_ptr<Registry> instance(new Registry);
+	public:
+		Registry(const Registry&) = delete;
+
+		Registry& operator=(const Registry&) = delete;
+
+		template<class T>
+		ObjectPtr registerObject() {
+			auto object = new T();
+			registerObject(object);
+			return object;
+		}
+
+		// this function will be called in a thread only
+		void registerObject(ObjectPtr object) {
+			IDRegistry.insert({object->getID().toString(), object});
+			serialIDRegistry.insert({object->getSerialID(), object});
+		}
+
+		static Registry<ObjectT>& getInstance() {
+			static Registry instance;
 			return instance;
 		}
 
-		T* newBlock(const String& id) {
-			return IDRegistry[id]->newBlock();
+		ObjectPtr createObject(ObjectPtr block) {
+			std::lock_guard<std::mutex> lock(mutex);
+			return block->createObject();
 		}
 
-		T* newBlock(int serialID) {
-			return serialIDRegistry[serialID]->newBlock();
+		ObjectPtr createObject(const String& id) {
+			std::lock_guard<std::mutex> lock(mutex);
+			return IDRegistry[id]->createObject();
 		}
 
-		T* getBlockInstance(const String& id) {
-			return IDRegistry[id].get();
+		ObjectPtr createObject(unsigned int serialID) {
+			std::lock_guard<std::mutex> lock(mutex);
+			return serialIDRegistry[serialID]->createObject();
 		}
 
-		T* getBlockInstance(int serialID) {
-			return serialIDRegistry[serialID].get();
+		ObjectPtr getObjectInstance(ObjectPtr block) {
+			std::lock_guard<std::mutex> lock(mutex);
+			auto id=block->getID().toString();
+			if (IDRegistry.contains(id))
+				return IDRegistry[id];
+			PLOG_ERROR << "Cannot find object with id: " << id << ". ID might not registered. Returning nullptr.";
+			return nullptr;
 		}
 
-		~Registry() = default;
+		ObjectPtr getObjectInstance(const String& id) {
+			std::lock_guard<std::mutex> lock(mutex);
+			if (IDRegistry.contains(id))
+				return IDRegistry[id];
+			PLOG_ERROR << "Cannot find object with id: " << id << ". ID might not registered. Returning nullptr.";
+			return nullptr;
+		}
+
+		ObjectPtr getObjectInstance(unsigned int serialID) {
+			std::lock_guard<std::mutex> lock(mutex);
+			if (IDRegistry.contains(serialID))
+				return serialIDRegistry[serialID];
+			PLOG_ERROR << "Cannot find object with id: " << serialID << ". ID might not registered. Returning nullptr.";
+			return nullptr;
+		}
 
 	private:
-		std::map<String, SmartPtr> IDRegistry;
-		std::map<int, SmartPtr> serialIDRegistry;
+		std::unordered_map<String, ObjectPtr> IDRegistry;
+		std::unordered_map<unsigned int, ObjectPtr> serialIDRegistry;
+		std::mutex mutex;
 	};
 }
 

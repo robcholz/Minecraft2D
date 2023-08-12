@@ -20,7 +20,7 @@ protected:
 		static math::PerlinNoise noise(this->seed);
 		for (int x_pos = 0; x_pos < chunk::ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
 			for (int z_pos = 0; z_pos < chunk::ChunkGenSettings::CHUNK_HEIGHT; z_pos++) {
-				chunkBlocksBuffer[x_pos][z_pos] = block::blocks::Blocks::getInstance()->getBlockInstance("air_block")->getID().serialID;
+				chunkBlocksBuffer[x_pos][z_pos] = block::Blocks::getInstance().getObjectInstance("minecraft:air_block")->getSerialID();
 				//heightDecorator
 			}
 		}
@@ -28,15 +28,15 @@ protected:
 			auto x_world = (float) (chunk::ChunkGenSettings::CHUNK_WIDTH * chunkPos + x_pos);
 			auto height = math::Math::floor(30 * noise.noise(x_world / 25.f, 0.9, 0.8) + 30 * noise.noise(x_world / 50.f, 0.9, 0.8));
 			auto surfaceZ = height + baseHeight;
-			chunkBlocksBuffer[x_pos][surfaceZ] = block::blocks::Blocks::getInstance()->getBlockInstance("grass_block")->getID().serialID;
+			chunkBlocksBuffer[x_pos][surfaceZ] = block::Blocks::getInstance().getObjectInstance("minecraft:grass_block")->getSerialID();
 			for (auto z_pos = surfaceZ - 4; z_pos < surfaceZ; z_pos++) {
-				chunkBlocksBuffer[x_pos][z_pos] = block::blocks::Blocks::getInstance()->getBlockInstance("dirt_block")->getID().serialID;
+				chunkBlocksBuffer[x_pos][z_pos] = block::Blocks::getInstance().getObjectInstance("minecraft:dirt_block")->getSerialID();
 			}
 			for (auto z_base = DEEPSLATE_BASE_HEIGHT; z_base < surfaceZ - 4; z_base++) {
-				chunkBlocksBuffer[x_pos][z_base] = block::blocks::Blocks::getInstance()->getBlockInstance("stone_block")->getID().serialID;;
+				chunkBlocksBuffer[x_pos][z_base] = block::Blocks::getInstance().getObjectInstance("minecraft:stone_block")->getSerialID();
 			}
 			for (auto z_base = BEDROCK_BASE_HEIGHT; z_base < DEEPSLATE_BASE_HEIGHT; z_base++) {
-				chunkBlocksBuffer[x_pos][z_base] = block::blocks::Blocks::getInstance()->getBlockInstance("deepslate_block")->getID().serialID;;
+				chunkBlocksBuffer[x_pos][z_base] = block::Blocks::getInstance().getObjectInstance("minecraft:deepslate_block")->getSerialID();
 			}
 
 			for (unsigned int z = 0; z < chunk::ChunkGenSettings::CHUNK_HEIGHT; ++z) {
@@ -47,7 +47,7 @@ protected:
 			}
 
 			for (auto z_base = 0; z_base < BEDROCK_BASE_HEIGHT; z_base++) {
-				chunkBlocksBuffer[x_pos][z_base] = block::blocks::Blocks::getInstance()->getBlockInstance("bedrock_block")->getID().serialID;;
+				chunkBlocksBuffer[x_pos][z_base] = block::Blocks::getInstance().getObjectInstance(block::Blocks::getInstance().BEDROCK_BLOCK)->getSerialID();
 			}
 		}
 	}
@@ -62,14 +62,16 @@ public:
 	}
 
 	chunk::Chunk* getChunk(ChunkPosT chunkPos) {
-		auto chunk = new chunk::Chunk(chunkPos);
+		block::Block* blocks[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT];
 		generateBlock(chunkPos);
 		for (auto x_pos = 0; x_pos < chunk::ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
 			for (auto z_pos = 0; z_pos < chunk::ChunkGenSettings::CHUNK_HEIGHT; z_pos++) {
 				auto block_serial_id = chunkBlocksBuffer[x_pos][z_pos];
-				chunk->setBlockPosition(x_pos, z_pos, block::blocks::Blocks::getInstance()->newBlock(block_serial_id));
+				auto block=block::Blocks::getInstance().createObject(block_serial_id);
+				blocks[x_pos][z_pos]=block;
 			}
 		}
+		auto chunk = new chunk::Chunk(chunkPos, &blocks);
 		return chunk;
 	}
 
@@ -83,7 +85,7 @@ private:
 	std::unique_ptr<Carver> carver;
 	std::unique_ptr<HeightDecorator> heightDecorator;
 
-	int chunkBlocksBuffer[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT]{};
+	block::ID::SerialIDT chunkBlocksBuffer[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT]{};
 };
 
 #endif //MINECRAFT_WORLDGENERATION_HPP

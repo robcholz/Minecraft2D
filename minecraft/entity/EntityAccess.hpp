@@ -17,6 +17,8 @@ public:
 
 	virtual coordinate::Velocity& getVelocity() = 0;
 
+	virtual coordinate::Acceleration& getAcceleration() = 0;
+
 	virtual coordinate::EntityPosition& getEntityPosition() = 0;
 
 	virtual coordinate::EntityPositionT getHeight() = 0;

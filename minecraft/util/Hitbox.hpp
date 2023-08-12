@@ -11,8 +11,6 @@
 
 
 class Hitbox {
-private:
-	struct Box;
 public:
 	/*
     * p1---------*
@@ -23,77 +21,42 @@ public:
     */
 	Hitbox() = default;
 
-	explicit Hitbox(int x, int y, int width, int height) {
-		box.x = x;
-		box.y = y;
+	explicit Hitbox(float left, float top, float width, float height) {
+		box.left = left;
+		box.top = top;
 		box.width = width;
 		box.height = height;
 	}
 
+	Hitbox(const Hitbox& copy) {
+		this->box = copy.box;
+	}
+
 	void setHitbox(sf::Sprite* sprite) {
-		box.x = floor(sprite->getGlobalBounds().left);
-		box.y = floor(sprite->getGlobalBounds().top);
-		box.width = floor(sprite->getGlobalBounds().width);
-		box.height = floor(sprite->getGlobalBounds().height);
+		box = sprite->getGlobalBounds();
 	}
 
-	void setHitbox(float x, float y, float width, float height) {
-		box.x = floor(x);
-		box.y = floor(y);
-		box.width = floor(width);
-		box.height = floor(height);
+	void setHitbox(float left, float top, float width, float height) {
+		box.left = left;
+		box.top = top;
+		box.width = width;
+		box.height = height;
 	}
 
-	bool isCollided(Hitbox& hitbox2, bool contactDetection) const {
-		bool xOverlap, yOverlap;
-
-		if (contactDetection) {
-			xOverlap = contactOverlap(box.x, hitbox2.box.x, hitbox2.box.x + hitbox2.box.width) ||
-			           contactOverlap(hitbox2.box.x, box.x, box.x + box.width);
-
-			yOverlap = contactOverlap(box.y, hitbox2.box.y, hitbox2.box.y + hitbox2.box.height) ||
-			           contactOverlap(hitbox2.box.y, box.y, box.y + box.height);
-		} else {
-			xOverlap = intersectionOverlap(box.x, hitbox2.box.x, hitbox2.box.x + hitbox2.box.width) ||
-			           intersectionOverlap(hitbox2.box.x, box.x, box.x + box.width);
-
-			yOverlap = intersectionOverlap(box.y, hitbox2.box.y, hitbox2.box.y + hitbox2.box.height) ||
-			           intersectionOverlap(hitbox2.box.y, box.y, box.y + box.height);
-		}
-		return xOverlap && yOverlap;
+	bool isCollided(Hitbox& hitbox2) {
+		return this->getBox().intersects(hitbox2.getBox());
 	}
 
-	static bool isCollided(Hitbox hitbox1, Hitbox hitbox2, bool contactDetection) {
-		bool xOverlap, yOverlap;
-		if (contactDetection) {
-			xOverlap = contactOverlap(hitbox1.getHitbox().x, hitbox2.box.x, hitbox2.box.x + hitbox2.box.width) ||
-			           contactOverlap(hitbox2.box.x, hitbox1.getHitbox().x, hitbox1.getHitbox().x + hitbox1.getHitbox().width);
-
-			yOverlap = contactOverlap(hitbox1.getHitbox().y, hitbox2.box.y, hitbox2.box.y + hitbox2.box.height) ||
-			           contactOverlap(hitbox2.box.y, hitbox1.getHitbox().y, hitbox1.getHitbox().y + hitbox1.getHitbox().height);
-		} else {
-			xOverlap = intersectionOverlap(hitbox1.getHitbox().x, hitbox2.box.x, hitbox2.box.x + hitbox2.box.width) ||
-			           intersectionOverlap(hitbox2.box.x, hitbox1.getHitbox().x, hitbox1.getHitbox().x + hitbox1.getHitbox().width);
-
-			yOverlap = intersectionOverlap(hitbox1.getHitbox().y, hitbox2.box.y, hitbox2.box.y + hitbox2.box.height) ||
-			           intersectionOverlap(hitbox2.box.y, hitbox1.getHitbox().y, hitbox1.getHitbox().y + hitbox1.getHitbox().height);
-		}
-		return xOverlap && yOverlap;
+	static bool isCollided(Hitbox& hitbox1, Hitbox& hitbox2) {
+		return hitbox1.getBox().intersects(hitbox2.getBox());
 	}
 
-	Box& getHitbox() { return box; }
-
-	Box& getBox() {
+	sf::FloatRect& getBox() {
 		return box;
 	}
 
 private:
-	struct Box { int x, y, width, height; } box;
-
-	static bool intersectionOverlap(int value, int min, int max) { return (value > min) && (value < max); }
-
-	static bool contactOverlap(int value, int min, int max) { return (value >= min) && (value <= max); }
-
+	sf::FloatRect box;
 };
 
 class HitboxHandler {
@@ -106,9 +69,9 @@ public:
 
 	void enableHitbox(bool hasHitbox) {
 		_hasHitbox = hasHitbox;
-		if(!_hasHitbox){
-			for (auto v:hitboxesList) {
-				v->setHitbox(0,0,0,0);
+		if (!_hasHitbox) {
+			for (auto v: hitboxesList) {
+				v->setHitbox(0, 0, 0, 0);
 			}
 		}
 	}
@@ -129,11 +92,11 @@ public:
 		return hitboxesList.front();
 	}
 
-	bool isCollided(HitboxHandler* hitboxHandler, bool contactDetection = false) {
+	bool isCollided(HitboxHandler* hitboxHandler) {
 		if (!_hasHitbox || !hitboxHandler->_hasHitbox) return false;
 		for (auto other: hitboxHandler->hitboxesList) {
-			for (auto self: hitboxesList){
-				if (other->isCollided(*self, contactDetection))
+			for (auto self: hitboxesList) {
+				if (other->isCollided(*self))
 					return true;
 			}
 		}
@@ -144,8 +107,8 @@ public:
 		if (_showHitbox && _hasHitbox) {
 			for (auto v: hitboxesList) {
 				sf::VertexArray lines(sf::LinesStrip, 2);
-				lines[0].position = sf::Vector2f(v->getBox().x, v->getBox().y);
-				lines[1].position = sf::Vector2f(v->getBox().x + v->getBox().width, v->getBox().y + v->getBox().height);
+				lines[0].position = sf::Vector2f(v->getBox().left, v->getBox().top);
+				lines[1].position = sf::Vector2f(v->getBox().left + v->getBox().width, v->getBox().top + v->getBox().height);
 				RenderSystem::render(lines);
 			}
 		}

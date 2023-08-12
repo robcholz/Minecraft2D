@@ -7,14 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block::blocks {
+namespace block {
 	class DiamondBlock : public block::Block {
 	private:
 	public:
 		DiamondBlock() : Block("diamond_block") {
 		}
 
-		Block* newBlock() override {
+		Block* createObject() override {
 			return new DiamondBlock;
 		}
 	};

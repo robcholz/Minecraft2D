@@ -43,7 +43,7 @@ public:
 		screenHeight = (int) ((float) sf::VideoMode::getDesktopMode().height * 8 / 15);
 		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
 		camera = window->getDefaultView();
-		setMaxFrameRate(60);
+		setMaxFrameRate(120);
 		setWindowIcon(iconName);
 		PLOG_DEBUG << "Initialize the minecraft main renderer. Parameters: Name: " + windowName + " Size: " +
 		              std::to_string(screenWidth) + "*" + std::to_string(screenHeight);
@@ -80,6 +80,7 @@ public:
 	}
 
 	static void setMaxFrameRate(int maxFPS) {
+		window->setVerticalSyncEnabled(false);
 		maxFrameRate = maxFPS;
 		window->setFramerateLimit(maxFPS);
 	}

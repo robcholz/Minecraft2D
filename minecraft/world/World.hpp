@@ -8,20 +8,21 @@
 #include <memory>
 #include <SFML/Graphics/View.hpp>
 #include "entity/player/PlayerEntity.hpp"
-#include "world/chunk/ChunkStream.hpp"
+#include "world/chunk/ChunkManager.hpp"
 #include "gen/WorldGeneration.hpp"
 #include "client/gui/hud/InGameBarHud.hpp"
 
-class World : public WorldAccess, public SceneAccess {
+class World : public WorldAccess,
+              public SceneAccess {
 public:
 	explicit World(MinecraftClientAccess* minecraftClientAccess) {
 		this->minecraftClientAccess = minecraftClientAccess;
 		player = std::make_unique<entity::PlayerEntity>(minecraftClientAccess, this);
 		worldGeneration = std::make_unique<WorldGeneration>(1234567);
-		chunkStream = std::make_unique<chunk::ChunkStream>(this, 4, 2);
+		chunkManager = std::make_unique<chunk::ChunkManager>(this, 4, 2);
 		hud = std::make_unique<hud::InGameBarHud>(minecraftClientAccess, this);
-		player->getEntityPosition().set(9, 137);
-		chunkStream->setChunkGenerator([this](int chunkPos) { return worldGeneration->getChunk(chunkPos); });
+		player->getEntityPosition().set(60, 142);
+		chunkManager->setChunkGenerator([this](int chunkPos) { return worldGeneration->getChunk(chunkPos); });
 		this->minecraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().MUSIC_HAL);
 	}
 
@@ -31,8 +32,8 @@ public:
 		return player.get();
 	}
 
-	chunk::ChunkStream* getChunkStream() override {
-		return chunkStream.get();
+	chunk::ChunkManager* getChunkManager() override {
+		return chunkManager.get();
 	}
 
 	sf::View& getView() override {
@@ -40,14 +41,14 @@ public:
 	}
 
 	void onUpdate() override {
-		chunkStream->update();
+		chunkManager->update();
 		updateCamera();
 		player->update();
 		hud->update();
 	}
 
 	void onRender() override {
-		chunkStream->render();
+		chunkManager->render();
 		player->render();
 		hud->render();
 	}
@@ -58,7 +59,7 @@ private:
 	sf::View view{sf::FloatRect{0.f, 0.f, screenWidth, screenHeight}};
 	std::unique_ptr<entity::PlayerEntity> player;
 	std::unique_ptr<WorldGeneration> worldGeneration;
-	std::unique_ptr<chunk::ChunkStream> chunkStream;
+	std::unique_ptr<chunk::ChunkManager> chunkManager;
 	std::unique_ptr<hud::InGameBarHud> hud;
 	MinecraftClientAccess* minecraftClientAccess = nullptr;
 

@@ -5,8 +5,12 @@
 #ifndef MINECRAFT_REGISTRYACCESS_HPP
 #define MINECRAFT_REGISTRYACCESS_HPP
 
-class RegistryAccess {
-
-};
+namespace utils {
+	template<class ObjectT>
+	class RegistryAccess {
+	public:
+		virtual ObjectT* createObject() = 0;
+	};
+}
 
 #endif //MINECRAFT_REGISTRYACCESS_HPP

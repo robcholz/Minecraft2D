@@ -9,6 +9,8 @@
 
 class Direction {
 public:
+	using DirectionT = uint8_t;
+
 	enum class DirectionType : uint8_t { UP, DOWN, WEST, EAST, IN, OUT };
 
 	explicit Direction(DirectionType blockDirection = DirectionType::UP) {
@@ -51,9 +53,10 @@ public:
 		return *this;
 	}
 
-	bool isFacing(DirectionType faceDirection){
+	bool isFacing(DirectionType faceDirection) {
 		return (this->direction == faceDirection);
 	}
+
 private:
 	DirectionType direction;
 };
