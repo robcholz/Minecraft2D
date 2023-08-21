@@ -11,13 +11,15 @@
 #include <limits>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Sprite.hpp>
+#include <mempool/MemoryPool.h>
 #include "util/Identifier.hpp"
-#include "block/attributes/BlockTextureLoader.hpp"
+#include "block/attributes/TextureLoader.hpp"
 #include "block/attributes/BlockIDLoader.hpp"
 #include "BlockState.hpp"
 #include "BlockAccess.hpp"
 #include "util/Hitbox.hpp"
 #include "client/render/TileColor.hpp"
+#include "resource/PooledSprite.hpp"
 
 
 namespace block { class Blocks; }
@@ -47,19 +49,17 @@ namespace block {
 				luminance(luminance) {
 			this->ID.serialID = BlockIDLoader::getBlockID(id);
 			ID.identifier = std::make_unique<Identifier>(id, Identifier::Category::BLOCK);
-			blockTexture = std::make_unique<BlockTextureLoader>(*ID.identifier);
 			blockPosition = coordinate::BlockPosition(0, 0, coordinate::DirectionType::OUT);
 			blockState = std::make_unique<BlockState>();
-			blockSprite = std::make_unique<sf::Sprite>();
+			blockSprite = std::make_unique<resource::Sprite>();
 			addHitbox(&hitbox);
 			onInitialize();
 		}
 
 		Block(const Block& block) : HitboxHandler(block) {
 			this->blockState = std::make_unique<BlockState>(*block.blockState);
-			this->blockSprite = std::make_unique<sf::Sprite>(*block.blockSprite);
+			this->blockSprite = std::make_unique<resource::Sprite>(*block.blockSprite);
 			blockPosition = block.blockPosition;
-			this->blockTexture = std::make_unique<BlockTextureLoader>(*block.blockTexture);
 			this->hitbox = block.hitbox;
 			this->ID.serialID = block.ID.serialID;
 			this->ID.identifier = std::make_unique<Identifier>(*block.ID.identifier);
@@ -86,7 +86,7 @@ namespace block {
 
 		void setDirection(Direction::DirectionType directionType) {
 			getPosition().setDirection(directionType);
-			blockSprite->setTexture(*blockTexture->getBlockTextureTile(directionType));
+			blockSprite->setTexture(*TextureLoader::getInstance().getBlockTextureTile(getID(),directionType));
 		}
 
 		void setTileColor(const sf::Color& color) {
@@ -138,16 +138,15 @@ namespace block {
 	private:
 		struct ID ID;
 		int luminance;
-		std::unique_ptr<sf::Sprite> blockSprite;
+		std::unique_ptr<resource::Sprite> blockSprite;
 		coordinate::BlockPosition blockPosition;
-		std::unique_ptr<BlockTextureLoader> blockTexture;
 		std::unique_ptr<BlockState> blockState;
 		Hitbox hitbox{};
 
 		friend class Blocks;
 
 		void onInitialize() {
-			blockSprite->setTexture(*blockTexture->getBlockTextureTile(Direction::DirectionType::OUT));
+			blockSprite->setTexture(*TextureLoader::getInstance().getBlockTextureTile(getID(),coordinate::DirectionType::OUT));
 			auto zoom = RenderSystem::Settings::pixelProportion;
 			blockSprite->setScale((float) zoom / 16.0f, (float) zoom / 16.0f);
 			onPositionChange();

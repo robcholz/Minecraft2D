@@ -26,7 +26,7 @@ set(SOURCE_FILES_CLIENT
         world/chunk/Chunk.hpp
         block/GrassBlock.hpp
         world/poi/Position.hpp
-        block/attributes/BlockTextureLoader.hpp
+        block/attributes/TextureLoader.hpp
         block/AirBlock.hpp
         block/DirtBlock.hpp
         entity/player/PlayerEntity.hpp
@@ -92,7 +92,7 @@ set(SOURCE_FILES_CLIENT
         world/chunk/WorldChunk.hpp
         world/chunk/WorldChunkAccess.hpp
         world/chunk/light/LightingProvider.hpp
-        world/chunk/light/LightingProviderAccess.hpp client/render/WorldRenderer.hpp)
+        world/chunk/light/LightingProviderAccess.hpp client/render/WorldRenderer.hpp resource/PooledSprite.hpp)
 
 add_executable(MinecraftClient ${SOURCE_FILES_CLIENT})
 
