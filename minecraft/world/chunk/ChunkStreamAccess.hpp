@@ -8,6 +8,7 @@
 
 namespace chunk {
 	class Chunk;
+
 	class ChunkStreamAccess {
 	public:
 		virtual int getRenderedChunks() = 0;
@@ -17,6 +18,15 @@ namespace chunk {
 		virtual int getDeletedChunks() = 0;
 
 		virtual int getCachedChunks() = 0;
+
+		[[nodiscard]]
+		virtual Intervali getRenderInterval() const = 0;
+
+		[[nodiscard]]
+		virtual Intervali getSimulationInterval() const = 0;
+
+		[[nodiscard]]
+		virtual bool isChunksLoaded() const = 0;
 	};
 }
 

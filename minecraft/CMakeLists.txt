@@ -87,7 +87,12 @@ set(SOURCE_FILES_CLIENT
         MinecraftVersion.hpp
         util/Date.hpp
         block/attributes/BlockSoundGroup.hpp
-        client/render/TileColor.hpp block/GlowstoneBlock.hpp world/chunk/ChunkManager.hpp world/chunk/ChunkManagerAccess.hpp)
+        client/render/TileColor.hpp
+        block/GlowstoneBlock.hpp
+        world/chunk/WorldChunk.hpp
+        world/chunk/WorldChunkAccess.hpp
+        world/chunk/light/LightingProvider.hpp
+        world/chunk/light/LightingProviderAccess.hpp client/render/WorldRenderer.hpp)
 
 add_executable(MinecraftClient ${SOURCE_FILES_CLIENT})
 
@@ -101,7 +106,11 @@ include_directories(${CMAKE_SOURCE_DIR}/minecraft)
 
 #plist
 include_directories(${CMAKE_SOURCE_DIR}/include/plist)
-target_link_libraries(MinecraftClient PlistLib)
+target_link_libraries(MinecraftClient Plist)
+
+# mem pool
+include_directories(${CMAKE_SOURCE_DIR}/include/mempool)
+target_link_libraries(MinecraftClient MemPool)
 
 #boost
 find_package(Boost 1.81.0 COMPONENTS system filesystem date_time REQUIRED)

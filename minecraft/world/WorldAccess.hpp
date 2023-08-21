@@ -5,7 +5,7 @@
 #ifndef MINECRAFT_WORLDACCESS_HPP
 #define MINECRAFT_WORLDACCESS_HPP
 
-#include "world/chunk/ChunkManagerAccess.hpp"
+#include "world/chunk/WorldChunkAccess.hpp"
 
 namespace entity {
 	class PlayerEntity;
@@ -15,7 +15,7 @@ class WorldAccess {
 public:
 	virtual entity::PlayerEntity* getPlayer() = 0;
 
-	virtual chunk::ChunkManagerAccess* getChunkManager() = 0;
+	virtual chunk::WorldChunkAccess* getChunkManager() = 0;
 
 	virtual sf::View& getView() = 0;
 };

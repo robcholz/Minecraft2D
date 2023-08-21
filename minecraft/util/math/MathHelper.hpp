@@ -80,6 +80,12 @@ namespace math {
 		return val < min ? min : (val > max ? max : val);
 	}
 
+	template<typename T=int>
+	static T ceil(float value) {
+		int i = (int) value;
+		return value > (float) i ? i + 1 : i;
+	}
+
 	static int floor(float value) {
 		int i = (int) value;
 		return value < (float) i ? i - 1 : i;
@@ -119,7 +125,7 @@ namespace math {
 
 	template<typename T>
 	static T map(T value, T inputMin, T inputMax, T outputMin, T outputMax) {
-		value= clamp(value,inputMin, inputMax);
+		value = clamp(value, inputMin, inputMax);
 		float normalizedValue = (value - inputMin) / (inputMax - inputMin);
 		float mappedValue = outputMin + (normalizedValue * (outputMax - outputMin));
 		return floor(mappedValue);

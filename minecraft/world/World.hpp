@@ -8,9 +8,10 @@
 #include <memory>
 #include <SFML/Graphics/View.hpp>
 #include "entity/player/PlayerEntity.hpp"
-#include "world/chunk/ChunkManager.hpp"
+#include "world/chunk/WorldChunk.hpp"
 #include "gen/WorldGeneration.hpp"
 #include "client/gui/hud/InGameBarHud.hpp"
+#include "client/render/WorldRenderer.hpp"
 
 class World : public WorldAccess,
               public SceneAccess {
@@ -18,9 +19,11 @@ public:
 	explicit World(MinecraftClientAccess* minecraftClientAccess) {
 		this->minecraftClientAccess = minecraftClientAccess;
 		player = std::make_unique<entity::PlayerEntity>(minecraftClientAccess, this);
-		worldGeneration = std::make_unique<WorldGeneration>(1234567);
-		chunkManager = std::make_unique<chunk::ChunkManager>(this, 4, 2);
+		worldGeneration = std::make_unique<WorldGeneration>(20060803);
+		worldRenderer = std::make_unique<WorldRenderer>(this);
+		chunkManager = std::make_unique<chunk::WorldChunk>(this, 4, 2);
 		hud = std::make_unique<hud::InGameBarHud>(minecraftClientAccess, this);
+
 		player->getEntityPosition().set(60, 142);
 		chunkManager->setChunkGenerator([this](int chunkPos) { return worldGeneration->getChunk(chunkPos); });
 		this->minecraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().MUSIC_HAL);
@@ -32,7 +35,7 @@ public:
 		return player.get();
 	}
 
-	chunk::ChunkManager* getChunkManager() override {
+	chunk::WorldChunk* getChunkManager() override {
 		return chunkManager.get();
 	}
 
@@ -48,7 +51,8 @@ public:
 	}
 
 	void onRender() override {
-		chunkManager->render();
+		//chunkManager->render();
+		worldRenderer->render();
 		player->render();
 		hud->render();
 	}
@@ -59,7 +63,8 @@ private:
 	sf::View view{sf::FloatRect{0.f, 0.f, screenWidth, screenHeight}};
 	std::unique_ptr<entity::PlayerEntity> player;
 	std::unique_ptr<WorldGeneration> worldGeneration;
-	std::unique_ptr<chunk::ChunkManager> chunkManager;
+	std::unique_ptr<WorldRenderer> worldRenderer;
+	std::unique_ptr<chunk::WorldChunk> chunkManager;
 	std::unique_ptr<hud::InGameBarHud> hud;
 	MinecraftClientAccess* minecraftClientAccess = nullptr;
 

@@ -25,22 +25,6 @@ namespace chunk {
 		using BlockPosition = coordinate::BlockPosition;
 	protected:
 		using DistanceT = unsigned short;
-
-		int getRenderedChunks() override {
-			return (int) chunkRenderingMap.size();
-		}
-
-		int getUpdatedChunks() override {
-			return (int) chunkSimulationMap.size();
-		}
-
-		int getDeletedChunks() override {
-			return (int) chunkDeletingList.size();
-		}
-
-		int getCachedChunks() override {
-			return (int) cachedChunks.size();
-		}
 	public:
 		ChunkStream() = delete;
 
@@ -58,6 +42,12 @@ namespace chunk {
 				saveHelper->saveChunk(v.second);
 		}
 
+		virtual void onUpdate() = 0;
+
+		void onChunkRender(std::function<void(ChunkPosT)> func) {
+			onChunkRendered = std::move(func);
+		}
+
 		void setRenderDistance(DistanceT distance) {
 			if (distance >= simulationDistance)
 				renderDistance = simulationDistance;
@@ -73,23 +63,48 @@ namespace chunk {
 			chunkGenerator = std::move(function);
 		}
 
-		Chunk* getChunk(ChunkPosT chunkPos){
+		Chunk* getChunk(ChunkPosT chunkPos) {
 			if (chunkSimulationMap.contains(chunkPos))
 				return chunkSimulationMap[chunkPos];
+			PLOG_ERROR << "Cannot find the chunk with chunkPosition: " << chunkPos;
 			return nullptr;
 		}
 
-		void update() {
-			onUpdate();
-			for (const auto& v: chunkSimulationMap) {
-				v.second->update();
-			}
+		int getRenderedChunks() override {
+			return (int) chunkRenderingMap.size();
 		}
 
-		void render() {
-			for (const auto& v: chunkRenderingMap) {
-				v.second->render();
-			}
+		int getUpdatedChunks() override {
+			return (int) chunkSimulationMap.size();
+		}
+
+		int getDeletedChunks() override {
+			return (int) chunkDeletingList.size();
+		}
+
+		int getCachedChunks() override {
+			return (int) cachedChunks.size();
+		}
+
+		[[nodiscard]]
+		Intervali getRenderInterval() const override {
+			return renderInterval;
+		}
+
+		[[nodiscard]]
+		Intervali getSimulationInterval() const override {
+			return simulationInterval;
+		}
+
+		[[nodiscard]]
+		bool isChunksLoaded() const override {
+			return !chunkSimulationMap.empty();
+		}
+
+		void update() {
+			updateStream();
+			onUpdate();
+			updateChunks();
 		}
 
 	private:
@@ -101,6 +116,7 @@ namespace chunk {
 		std::unique_ptr<SaveHelper> saveHelper;
 		std::unique_ptr<FileHelper> regionFileHelper;
 		std::function<Chunk*(ChunkPosT)> chunkGenerator = nullptr;
+		std::function<void(ChunkPosT)> onChunkRendered = nullptr;
 		DistanceT renderDistance = 0, simulationDistance = 0;
 		Intervali renderInterval{}, simulationInterval{};
 		ChunkPosT playerChunkPos = 0;
@@ -176,7 +192,7 @@ namespace chunk {
 			for (auto v: chunkDeletingList) {
 				chunkRenderingMap.erase(v);
 			}
-			for (auto v: chunkSimulationMap) {
+			for (auto& v: chunkSimulationMap) {
 				auto chunkPos = v.first;
 				auto chunk = v.second;
 				if (!(renderInterval.lower <= chunkPos && chunkPos <= renderInterval.upper)) {
@@ -185,16 +201,23 @@ namespace chunk {
 				else {
 					if (!chunkRenderingMap.contains(chunkPos)) {
 						chunkRenderingMap.insert({chunkPos, chunk});
+						onChunkRendered(chunkPos);
 					} // not found
 				}// chunk should be rendered
 			}
 		}
 
-		void onUpdate() {
+		void updateStream() {
 			updateInterval();
 			updateSimulationChunks();
 			updateRenderingChunks();
 			removeRedundantChunks();
+		}
+
+		void updateChunks() {
+			for (const auto& v: chunkSimulationMap) {
+				v.second->update();
+			}
 		}
 	};
 }

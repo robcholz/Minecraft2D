@@ -7,6 +7,7 @@ set(CMAKE_BINARY_DIR /build/client)
 
 # libraries
 add_subdirectory(${CMAKE_SOURCE_DIR}/include/plist)
+add_subdirectory(${CMAKE_SOURCE_DIR}/include/mempool)
 
 # client and server
 add_subdirectory(minecraft)

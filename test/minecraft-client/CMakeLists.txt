@@ -17,9 +17,14 @@ set(SOURCE_FILES_CLIENT_TEST
         test_math/MathTest.cpp
         test_util/IdentifierTest.cpp
         test_world_gen/CaveTest.cpp
+        test_mempool/MemPoolTest.cpp
         )
 
 add_executable(MinecraftClientTest ${SOURCE_FILES_CLIENT_TEST})
+
+# mem pool
+include_directories(${CMAKE_SOURCE_DIR}/include/mempool)
+target_link_libraries(MinecraftClient MemPool)
 
 #sfml
 find_package(SFML 2.5 COMPONENTS system window graphics network audio REQUIRED)
@@ -37,5 +42,6 @@ include_directories(/usr/local/include)
 include_directories(${CMAKE_SOURCE_DIR}/include/bitsery)
 include_directories(${CMAKE_SOURCE_DIR}/include/plog)
 include_directories(${CMAKE_SOURCE_DIR}/include/json)
+include_directories(${CMAKE_SOURCE_DIR}/include/mempool)
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(${CMAKE_SOURCE_DIR}/minecraft)

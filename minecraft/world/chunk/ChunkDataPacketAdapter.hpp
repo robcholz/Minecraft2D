@@ -74,7 +74,7 @@ namespace chunk::adapter {
 					addToContainer<DirectionT>(&chunkDataPacket->blockDirectionContainer, x_pos, y_pos,
 					                           static_cast<Direction::DirectionT>(block->getPosition().getDirection().getDirection()));
 					addToContainer<TileColorT>(&chunkDataPacket->tileColorContainer, x_pos, y_pos,
-					                           chunk->gerRGBA(x_pos, y_pos));
+					                           chunk->getRGBA(x_pos, y_pos));
 				}
 			}
 		}

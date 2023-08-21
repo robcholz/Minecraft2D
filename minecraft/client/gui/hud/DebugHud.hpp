@@ -43,9 +43,12 @@ namespace hud {
 			});
 			messageStackLeft.addMessage("pos", [&]() -> String {
 				auto pos = this->worldAccess->getPlayer()->getEntityPosition().get();
-				return (boost::format("XZ: %s / %s")
+				auto block_pos=this->worldAccess->getPlayer()->getEntityPosition().get<coordinate::BlockPos>();
+				auto chunk_pos= chunk::Chunk::toChunkPosition(block_pos.x, block_pos.z).chunkPos;
+				return (boost::format("XZ: %s / %s ChunkPos: %d")
 				        % utils::setPrecision(pos.x, 3)
 				        % utils::setPrecision(pos.z, 5)
+						% chunk_pos
 				).str();
 			});
 			messageStackLeft.addMessage("block", [&]() -> String {
@@ -54,6 +57,11 @@ namespace hud {
 				auto block_id = stream->getBlock(pos)->getID();
 				auto id = block_id.toString();
 				return (boost::format("Block: %d / %d %s") % pos.x % pos.z % id).str();
+			});
+			messageStackLeft.addMessage("block_light", [&]() -> String {
+				auto pos = this->worldAccess->getPlayer()->getEntityPosition().get<coordinate::BlockPos>();
+				auto light = (int)this->worldAccess->getChunkManager()->getBlockLightLevel(pos);
+				return (boost::format("BlockLight: %d") % light).str();
 			});
 
 			messageStackRight.setView(&worldAccess->getView());
