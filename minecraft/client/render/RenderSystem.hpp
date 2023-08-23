@@ -33,7 +33,7 @@ public:
 		 * @range [50,100]
 		 */
 		static constexpr ZoomT zoomSize = 50;
-		static constexpr ZoomT pixelToBlock = 30; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
+		static constexpr ZoomT pixelToBlock = 10; // the screen pixel of one block(16 pixels) // one block take up pixelProportion pixels
 		static constexpr ZoomT pixelProportion = (ZoomT) (pixelToBlock * 2);
 		static constexpr float actualPixelToOnePixel = (float) pixelProportion / 16;
 	};
@@ -43,7 +43,7 @@ public:
 		screenHeight = (int) ((float) sf::VideoMode::getDesktopMode().height * 8 / 15);
 		window = new sf::RenderWindow(sf::VideoMode(screenWidth, screenHeight), windowName);
 		camera = window->getDefaultView();
-		setMaxFrameRate(120);
+		setMaxFrameRate(60);
 		setWindowIcon(iconName);
 		PLOG_DEBUG << "Initialize the minecraft main renderer. Parameters: Name: " + windowName + " Size: " +
 		              std::to_string(screenWidth) + "*" + std::to_string(screenHeight);

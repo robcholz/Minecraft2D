@@ -1,59 +1,65 @@
-# Minecraft-Nostalgia Dev
-
-## This is an attempt to write Minecraft 2D with SFML in C++.
+# Minecraft2D
 
 - Features: Original soundtracks and textures used(All the resources are updated to 1.19.4).
-- The game is designed to be compatible with vanilla Minecraft resourcepacks(Yes it will support resourcepacks). 
-  ![menu.png](docs%2Freadme%2Fmenu_july_2023.png)
+- The game is designed to be compatible with vanilla Minecraft resourcepacks(it will support resourcepacks).
+  ![menu.png](docs%2Freadme%2Fmenu_aug_2023.png)
 
 ## Installations
 
-### CMake: requires 3.24 and above
-### SFML: requires 2.5.1 
-### Boost: requires 1.81.0
-### C++: requires C++20
+### CMake: ```3.24 and above```
+
+### SFML: ```2.5.1```
+
+### Boost: ```1.81.0```
+
+### C++: ```C++20```
 
 ## Build
+
+### Windows
+
+### OSX
+
 ```sh
-git clone https://github.com/robcholz/RunCrafts-Nostalgia.git
-cd RunCrafts-Nostalgia
+git clone https://github.com/robcholz/Minecraft2D.git
+cd Minecraft2D
 mkdir build&&cd build
 cmake -G "Unix Makefiles" ..
 make
 cd ..
-./bin/minecraft #run the game
+./bin/MinecraftClient #run the game
 ```
 
+### Linux
 
-## Progress Tracker - Stage One: RunCraft-Nostalgia
-#### Essential Components
+
+## Progress
+
 - [x] Logger
 - [x] Multi-language support
 - [x] Widget GUI components
 - [x] Sound manager
 - [x] Peripherals support
 - [x] Binary map file loading
-#### Gameplay - Essentials
+
 - [x] Block
 - [x] Save
-- [ ] World generation - in progress
-- [ ] Decoration  - in progress
+- [x] World generation
+- [ ] Decoration - in progress
 - [ ] Gravity - waiting to be fixed
+- [x] Entity
 - [x] In-game GUI
 - [x] Player
-#### Gameplay - Enhanced
-- [ ] Particle Effects
-
-## Progress Tracker - Stage Two: Minecraft2D
-#### Essential Components
-- [ ] Binary map file loading
-#### Gameplay - Essentials
-- [ ] World generation
-- [ ] Decoration builder
-- [ ] Gravity
-- [ ] Entity
-#### Gameplay - Enhanced
 - [ ] Multiplayer
-#### Compatibility
+- [ ] Particle Effects
 - [ ] Fullscreen mode
 - [ ] Cross-platform
+
+
+## Dependencies
+- [Bitsery](https://github.com/fraillt/bitsery)
+- [Json](https://github.com/nlohmann/json)
+- [MemoryPool](https://github.com/appshift/mempool) (repo is private now)
+- [ObjectPool](https://github.com/bitshifter/objectpool)
+- [Plist](https://github.com/animetrics/PlistCpp)
+- [Logger](https://github.com/SergiusTheBest/plog)

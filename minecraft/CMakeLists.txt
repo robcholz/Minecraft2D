@@ -92,7 +92,7 @@ set(SOURCE_FILES_CLIENT
         world/chunk/WorldChunk.hpp
         world/chunk/WorldChunkAccess.hpp
         world/chunk/light/LightingProvider.hpp
-        world/chunk/light/LightingProviderAccess.hpp client/render/WorldRenderer.hpp resource/PooledSprite.hpp)
+        world/chunk/light/LightingProviderAccess.hpp client/render/WorldRenderer.hpp resource/PooledSprite.hpp world/gen/decorator/treedecorator/TreeDecorator.hpp)
 
 add_executable(MinecraftClient ${SOURCE_FILES_CLIENT})
 

@@ -27,7 +27,7 @@ public:
 
 	static inline String guiFilePath = rootDirectory + "/assets/textures/gui";
 	static inline String widgetPath = rootDirectory + "/assets/textures/gui/widgets.png";
-	static inline String currentLangPath = rootDirectory + "/assets/lang/zh-cn.json";
+	static inline String currentLangPath = rootDirectory + "/assets/lang/en-us.json";
 	static inline String optionsPath = rootDirectory + "/assets/options.json";
 	static inline String currentPlayerPath = rootDirectory + "/assets/textures/player/steve.png";
 
