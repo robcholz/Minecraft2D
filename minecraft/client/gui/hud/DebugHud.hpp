@@ -37,7 +37,7 @@ class DebugHud : public GUI, public Hud {
     messageStackLeft.addMessage("fps", [&]() -> String {
       auto chunk_updates = this->worldAccess->getChunkManager()
                                ->getChunkStream()
-                               ->getUpdatedChunks();
+                               .getUpdatedChunks();
       return (boost::format("%d/%f fps (%d chunk updates)") %
               RenderSystem::getMaxFrameRate() %
               (int)RenderSystem::getFrameRate() % chunk_updates)
@@ -60,7 +60,7 @@ class DebugHud : public GUI, public Hud {
                      ->getEntityPosition()
                      .get<coordinate::BlockPos>();
       auto stream = this->worldAccess->getChunkManager();
-      auto block_id = stream->getBlock(pos)->getID();
+      auto block_id = stream->getBlockUnsafe(pos).getID();
       auto id = block_id.toString();
       return (boost::format("Block: %d / %d %s") % pos.x % pos.z % id).str();
     });

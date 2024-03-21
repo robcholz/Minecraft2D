@@ -73,8 +73,8 @@ class ChunkDataPacketAdapter {
 
   ~ChunkDataPacketAdapter() = delete;
 
-  static void compress(Chunk* chunk, ChunkDataPacket* chunkDataPacket) {
-    chunkDataPacket->chunkPos = chunk->chunkPos;
+  static void compress(const Chunk& chunk, ChunkDataPacket* chunkDataPacket) {
+    chunkDataPacket->chunkPos = chunk.chunkPos;
     // allocate the memory only once to save time
     allocateContainerMemory(
         chunkDataPacket,
@@ -82,7 +82,7 @@ class ChunkDataPacketAdapter {
     for (ChunkPosT x_pos = 0; x_pos < ChunkGenSettings::CHUNK_WIDTH; x_pos++) {
       for (ChunkPosT y_pos = 0; y_pos < ChunkGenSettings::CHUNK_HEIGHT;
            y_pos++) {
-        auto block = chunk->chunkBlocks[x_pos][y_pos];
+        auto block = chunk.chunkBlocks[x_pos][y_pos];
         addToContainer<SerialIDT>(&chunkDataPacket->serialIDContainer, x_pos,
                                   y_pos, block->getSerialID());
         addToContainer<DirectionT>(
@@ -90,12 +90,12 @@ class ChunkDataPacketAdapter {
             static_cast<Direction::DirectionT>(
                 block->getPosition().getDirection().getDirection()));
         addToContainer<TileColorT>(&chunkDataPacket->tileColorContainer, x_pos,
-                                   y_pos, chunk->getRGBA(x_pos, y_pos));
+                                   y_pos, chunk.getRGBA(x_pos, y_pos));
       }
     }
   }
 
-  static chunk::Chunk* decompress(ChunkDataPacket* chunkDataPacket) {
+  static std::unique_ptr<Chunk> decompress(ChunkDataPacket* chunkDataPacket) {
     auto chunkPos = static_cast<int32_t>(chunkDataPacket->chunkPos);
     block::Block* blocks[ChunkGenSettings::CHUNK_WIDTH]
                         [ChunkGenSettings::CHUNK_HEIGHT];
@@ -117,8 +117,7 @@ class ChunkDataPacketAdapter {
             chunkDataPacket->tileColorContainer[oneDimensionIndex];
       }
     }
-    auto chunk = new Chunk(chunkPos, &blocks, &directions, &tile_colors);
-    return chunk;
+    return std::make_unique<Chunk>(chunkPos, &blocks, &directions, &tile_colors);
   }
 };
 }  // namespace chunk::adapter

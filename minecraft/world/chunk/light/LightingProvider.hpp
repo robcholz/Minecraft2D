@@ -42,7 +42,7 @@ class LightingProvider : public LightingProviderAccess {
       auto x_world = chunk::Chunk::toBlockPosition(chunkPos, x_in_chunk, 15).x;
       // set the all the air blocks exposed to daylight to the max light level
       for (auto z_pos =
-               worldChunkAccess->getChunk(chunkPos)->getHeightMap(x_in_chunk);
+               worldChunkAccess->getChunk(chunkPos)->get().getHeightMap(x_in_chunk);
            z_pos < chunk::ChunkGenSettings::CHUNK_HEIGHT; ++z_pos) {
         updateLightSource({x_world, z_pos}, 15);
       }
@@ -73,7 +73,7 @@ class LightingProvider : public LightingProviderAccess {
       return;
     auto chunk_pos = chunk::Chunk::toChunkPosition(x, z);
     auto render_interval =
-        worldChunkAccess->getChunkStream()->getRenderInterval();
+        worldChunkAccess->getChunkStream().getRenderInterval();
     // check if the block is in the render interval
     if (!(render_interval.lower < chunk_pos.chunkPos ||
           render_interval.upper > chunk_pos.chunkPos))

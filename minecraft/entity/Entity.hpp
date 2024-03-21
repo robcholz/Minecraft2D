@@ -121,8 +121,8 @@ class Entity : public EntityAccess, public HitboxHandler {
       auto x = getEntityPosition().get<coordinate::BlockPos>().x;
       auto block_pos_upper = BlockPos(x, i);
       auto block_pos_lower = BlockPos(x, i - 1);
-      auto block_itr_upper = chunk_stream->getBlock(block_pos_upper);
-      auto block_itr_lower = chunk_stream->getBlock(block_pos_lower);
+      auto block_itr_upper = &chunk_stream->getBlockUnsafe(block_pos_upper);
+      auto block_itr_lower = &chunk_stream->getBlockUnsafe(block_pos_lower);
       if ((!block_itr_upper->hasHitbox() || block_itr_upper->isError()) &&
           (block_itr_lower->hasHitbox()))
         return block_itr_lower->getPosition().get().z;
@@ -141,11 +141,12 @@ class Entity : public EntityAccess, public HitboxHandler {
     coordinate_right.set(current_pos_x + 1, current_pos_z + 1);
     coordinate_left.set(current_pos_x - 1, current_pos_z + 1);
     auto block_right =
-        worldAccess->getChunkManager()->getBlock(coordinate_right);
-    auto block_left = worldAccess->getChunkManager()->getBlock(coordinate_left);
+        &worldAccess->getChunkManager()->getBlockUnsafe(coordinate_right);
+    auto block_left =
+        &worldAccess->getChunkManager()->getBlockUnsafe(coordinate_left);
     coordinate_left.offset(1, 0);
     auto block_inside_entity =
-        worldAccess->getChunkManager()->getBlock(coordinate_left);
+        &worldAccess->getChunkManager()->getBlockUnsafe(coordinate_left);
     block::Block *block_distance_left = nullptr,
                  *block_distance_right = nullptr;
     if (!block_inside_entity->hasHitbox()) {
@@ -189,6 +190,10 @@ class Entity : public EntityAccess, public HitboxHandler {
       velocity.x -= velocity.x * friction_const;
   }
 
+  block::Block& getBlock_(BlockPosT x, BlockPosT z) {
+    return worldAccess->getChunkManager()->getBlockUnsafe(BlockPos(x, z));
+  }
+
   void handleCollision() {
     // step. fill bottom, left, right containers
     entityBottomBlocksHitboxHandler.clearHitboxesList();
@@ -218,16 +223,12 @@ class Entity : public EntityAccess, public HitboxHandler {
     auto right_block_range_upper_z =
         entity_stand_block_pos_z + (BlockPosT)std::ceil(getHeight());
 
-    auto getBlock_ = [&](BlockPosT x, BlockPosT z) {
-      return worldAccess->getChunkManager()->getBlock(BlockPos(x, z));
-    };
-
     // find the position of a block with hitbox that has the largest z position;
     // this block must be lower than the pos of entity
     auto predicateVerticalBarrierPos_ = [&](BlockPosT blockPosX) {
       for (int i = chunk::ChunkGenSettings::CHUNK_HEIGHT - 1; i >= 1; i--) {
-        auto block_itr_upper = getBlock_(blockPosX, i);
-        auto block_itr_lower = getBlock_(blockPosX, i - 1);
+        auto block_itr_upper = &getBlock_(blockPosX, i);
+        auto block_itr_lower = &getBlock_(blockPosX, i - 1);
         if (!block_itr_upper->hasHitbox() && (block_itr_lower->hasHitbox())) {
           if ((float)block_itr_lower->getPosition().get().z <
               entity_stand_pos_z)
@@ -255,7 +256,7 @@ class Entity : public EntityAccess, public HitboxHandler {
         // entity_stand_block_pos_z;
         //  set entity position to the barrier pos for a moment...
         auto hitbox = entityHitbox.getBox();
-        auto blockHitbox = getBlock_(maximum_x, maximum_z)->getHitbox();
+        auto blockHitbox = getBlock_(maximum_x, maximum_z).getHitbox();
         auto entityFutureHitbox =
             Hitbox(hitbox.left, blockHitbox.getBox().top - hitbox.height / 2,
                    hitbox.width, hitbox.height);
@@ -269,7 +270,7 @@ class Entity : public EntityAccess, public HitboxHandler {
     for (auto z_left = left_block_range_lower_z;
          z_left <= left_block_range_upper_z; ++z_left) {
       // TODO in line 230 x should plus 1; why x stayed constant here??
-      auto block = getBlock_(bottom_block_range_lower_x - 1, z_left);
+      auto block = &getBlock_(bottom_block_range_lower_x - 1, z_left);
       if (block->isAir())
         block->getHitbox().setHitbox(0, 0, 0, 0);
       entityLeftBlocksHitboxHandler.addHitbox(&block->getHitbox());
@@ -277,7 +278,7 @@ class Entity : public EntityAccess, public HitboxHandler {
 
     for (auto z_right = right_block_range_lower_z;
          z_right <= right_block_range_upper_z; ++z_right) {
-      auto block = getBlock_(bottom_block_range_upper_x + 1,
+      auto block = &getBlock_(bottom_block_range_upper_x + 1,
                              z_right);  // TODO pretty wried!
       if (block->isAir())
         block->getHitbox().setHitbox(0, 0, 0, 0);
@@ -354,7 +355,7 @@ class Entity : public EntityAccess, public HitboxHandler {
 
   void updateSound() {
     if (isWalking() && onGround()) {
-      auto block = getWorld()->getChunkManager()->getBlock(
+      auto block = &getWorld()->getChunkManager()->getBlockUnsafe(
           getEntityPosition().get<coordinate::BlockPos>());
       this->minecraftClientAccess->getSoundManager()->addSound(
           BlockSoundGroup::get(block));

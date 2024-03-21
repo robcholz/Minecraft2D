@@ -98,6 +98,10 @@ class Block : public BlockAccess, public HitboxHandler, public sf::Drawable {
 
   void setTileColor(uint32_t rgba) { blockSprite->setColor(sf::Color(rgba)); }
 
+  Block* createObject(){
+      // ***intentionally leaved blank***
+  }
+
   coordinate::BlockPosition& getPosition() override { return blockPosition; }
 
   [[nodiscard]] Identifier& getID() const override {

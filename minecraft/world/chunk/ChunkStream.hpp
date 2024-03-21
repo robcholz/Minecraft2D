@@ -19,15 +19,12 @@
 namespace chunk {
 class ChunkStream : public ChunkStreamAccess {
  private:
-  using ChunkPtr = Chunk*;
   using String = std::string;
   using ChunkPosT = coordinate::ChunkPositionT;
-  using BlockPosition = coordinate::BlockPosition;
-
- protected:
-  using DistanceT = unsigned short;
 
  public:
+  using DistanceT = unsigned short;
+
   ChunkStream() = delete;
 
   explicit ChunkStream(WorldAccess* worldAccess,
@@ -43,11 +40,11 @@ class ChunkStream : public ChunkStreamAccess {
   }
 
   virtual ~ChunkStream() {
-    for (auto v : chunkSimulationMap)
-      saveHelper->saveChunk(v.second);
+    for (const auto& v : chunkSimulationMap)
+      saveHelper->saveChunk(*v.second);
   }
 
-  virtual void onUpdate() = 0;
+  virtual void onUpdate() {}
 
   void onChunkRender(std::function<void(ChunkPosT)> func) {
     onChunkRendered = std::move(func);
@@ -64,20 +61,24 @@ class ChunkStream : public ChunkStreamAccess {
     simulationDistance = distance;
   }
 
-  void setChunkGenerator(std::function<Chunk*(ChunkPosT)> function) {
+  void setChunkGenerator(
+      std::function<std::unique_ptr<Chunk>(ChunkPosT)> function) {
     chunkGenerator = std::move(function);
   }
 
-  Chunk* getChunk(ChunkPosT chunkPos) {
-    if (chunkSimulationMap.contains(chunkPos))
-      return chunkSimulationMap[chunkPos];
+  std::optional<std::reference_wrapper<Chunk>> getChunk(ChunkPosT chunkPos) {
+    if (chunkSimulationMap.contains(chunkPos)) {
+      return std::make_optional(std::ref(*chunkSimulationMap[chunkPos]));
+    }
     PLOG_VERBOSE << "Cannot find the chunk with chunkPosition: " << chunkPos;
-    return nullptr;
+    return std::nullopt;
   }
 
   int getRenderedChunks() override { return (int)chunkRenderingMap.size(); }
 
-  int getUpdatedChunks() override { return (int)chunkSimulationMap.size(); }
+  uint16_t getUpdatedChunks() const override {
+    return (uint16_t)chunkSimulationMap.size();
+  }
 
   int getDeletedChunks() override { return (int)chunkDeletingList.size(); }
 
@@ -103,15 +104,16 @@ class ChunkStream : public ChunkStreamAccess {
 
  private:
   WorldAccess* worldAccess = nullptr;
-  std::unordered_map<ChunkPosT, ChunkPtr>
+  std::unordered_map<ChunkPosT, Chunk*>
       chunkRenderingMap;  // chunks that will be rendered
-  std::unordered_map<ChunkPosT, ChunkPtr>
+  std::unordered_map<ChunkPosT, std::unique_ptr<Chunk>>
       chunkSimulationMap;                  // chunks that will be updated
   std::set<ChunkPosT> cachedChunks;        // chunks that have been cached
   std::list<ChunkPosT> chunkDeletingList;  // chunks that will be deleted
   std::unique_ptr<SaveHelper> saveHelper;
   std::unique_ptr<FileHelper> regionFileHelper;
-  std::function<Chunk*(ChunkPosT)> chunkGenerator = nullptr;
+  std::function<std::unique_ptr<chunk::Chunk>(ChunkPosT)> chunkGenerator =
+      nullptr;
   std::function<void(ChunkPosT)> onChunkRendered = nullptr;
   DistanceT renderDistance = 0, simulationDistance = 0;
   Intervali renderInterval{}, simulationInterval{};
@@ -144,8 +146,8 @@ class ChunkStream : public ChunkStreamAccess {
     cachedChunks.insert(chunkPos);
   }
 
-  Chunk* loadChunk(ChunkPosT chunkPos) {
-    Chunk* chunk;
+  std::unique_ptr<chunk::Chunk> loadChunk(ChunkPosT chunkPos) {
+    std::unique_ptr<chunk::Chunk> chunk;
     if (cachedChunks.count(chunkPos))
       chunk = saveHelper->loadChunk(chunkPos);
     else {
@@ -156,48 +158,54 @@ class ChunkStream : public ChunkStreamAccess {
   }
 
   void addToSimulationChunks(ChunkPosT chunkPos) {
+    // chunk is loaded here
     auto chunk = loadChunk(chunkPos);
-    saveHelper->saveChunk(chunk);
-    chunkSimulationMap.insert({chunkPos, chunk});
+    saveHelper->saveChunk(*chunk);
+    chunkSimulationMap.insert({chunkPos, std::move(chunk)});
   }
 
-  void removeFromSimulationChunks(ChunkPosT chunkPos) {
-    auto chunk = chunkSimulationMap[chunkPos];
-    saveHelper->saveChunk(chunk);
+  void removeFromSimulationChunksInFuture(ChunkPosT chunkPos) {
+    // chunk will be freed after this scope
+    const auto& chunk = chunkSimulationMap[chunkPos];
+    saveHelper->saveChunk(*chunk);
     chunkDeletingList.push_front(chunkPos);
   }
 
   void removeRedundantChunks() {
     for (auto chunkPos : chunkDeletingList) {
-      delete chunkSimulationMap[chunkPos];
+      auto chunk = std::move(chunkSimulationMap[chunkPos]);
       chunkSimulationMap.erase(chunkPos);
     }
     chunkDeletingList.clear();
   }
 
   void updateSimulationChunks() {
-    for (auto v : chunkSimulationMap) {
+    for (const auto& v : chunkSimulationMap) {
       auto chunkPos = v.first;
       if (!(simulationInterval.lower <= chunkPos &&
             chunkPos <= simulationInterval.upper)) {
-        removeFromSimulationChunks(chunkPos);  // chunk has been unloaded
+        removeFromSimulationChunksInFuture(
+            chunkPos);  // chunk will be removed in the future, since we cannot
+                        // edit container during iteration
       }
     }
     for (auto chunkPos = simulationInterval.lower;
-         chunkPos <= simulationInterval.upper; chunkPos++)
+         chunkPos <= simulationInterval.upper; chunkPos++) {
       if (!chunkSimulationMap.contains(chunkPos))
         addToSimulationChunks(chunkPos);  // load chunks
+    }
   }
 
   void updateRenderingChunks() {
     for (auto v : chunkDeletingList) {
       chunkRenderingMap.erase(v);
     }
-    for (auto& v : chunkSimulationMap) {
+    chunkDeletingList.clear();
+    for (const auto& v : chunkSimulationMap) {
       auto chunkPos = v.first;
-      auto chunk = v.second;
-      if (!(renderInterval.lower <= chunkPos &&
-            chunkPos <= renderInterval.upper)) {
+      auto chunk = v.second.get();
+      [[unlikely]] if (!(renderInterval.lower <= chunkPos &&
+                         chunkPos <= renderInterval.upper)) {
         chunkRenderingMap.erase(chunkPos);
       }  // chunk has been de-rendered
       else {
@@ -210,6 +218,7 @@ class ChunkStream : public ChunkStreamAccess {
   }
 
   void updateStream() {
+    // orders cannot be reversed
     updateInterval();
     updateSimulationChunks();
     updateRenderingChunks();

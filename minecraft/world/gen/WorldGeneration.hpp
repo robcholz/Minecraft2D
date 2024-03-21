@@ -5,6 +5,7 @@
 #ifndef MINECRAFT_WORLDGENERATION_HPP
 #define MINECRAFT_WORLDGENERATION_HPP
 
+#include <memory>
 #include "util/math/noise/PerlinNoise.hpp"
 #include "world/chunk/Chunk.hpp"
 #include "world/gen/carver/Carver.hpp"
@@ -64,7 +65,7 @@ class WorldGeneration {
         .setLayerBlendModifier(deepslateLayer, bedrockLayer, 4);
   }
 
-  chunk::Chunk* getChunk(ChunkPosT chunkPos) {
+  std::unique_ptr<chunk::Chunk> getChunk(ChunkPosT chunkPos) {
     block::Block* blocks[chunk::ChunkGenSettings::CHUNK_WIDTH]
                         [chunk::ChunkGenSettings::CHUNK_HEIGHT];
     generateBlock(chunkPos);
@@ -77,8 +78,7 @@ class WorldGeneration {
         blocks[x_pos][z_pos] = block;
       }
     }
-    auto chunk = new chunk::Chunk(chunkPos, &blocks);
-    return chunk;
+    return std::make_unique<chunk::Chunk>(chunkPos, &blocks);
   }
 
  private:

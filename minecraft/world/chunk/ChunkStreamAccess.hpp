@@ -12,7 +12,7 @@ class ChunkStreamAccess {
  public:
   virtual int getRenderedChunks() = 0;
 
-  virtual int getUpdatedChunks() = 0;
+  virtual uint16_t getUpdatedChunks() const = 0;
 
   virtual int getDeletedChunks() = 0;
 

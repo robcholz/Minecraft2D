@@ -36,7 +36,7 @@ class SaveHelper {
     regionFile.close();
   }
 
-  chunk::Chunk* loadRegion(const String& filename) {
+  std::unique_ptr<chunk::Chunk> loadRegion(const String& filename) {
     std::fstream regionFile;
     regionFile.open(saveDirectory + "/region/" + filename + ".mca",
                     std::ios::binary | std::ios::in);
@@ -48,7 +48,7 @@ class SaveHelper {
         &chunk_data_packet);
   }
 
-  void writeRegion(const String& filename, chunk::Chunk* chunk) {
+  void writeRegion(const String& filename, const chunk::Chunk& chunk) {
     std::ofstream regionFile;
     regionFile.open(saveDirectory + "/region/" + filename + ".mca",
                     std::ios::binary | std::ios::trunc | std::ios::out);
@@ -113,12 +113,12 @@ class SaveHelper {
 
   ~SaveHelper() = default;
 
-  void saveChunk(chunk::Chunk* chunk) {
-    createRegion(chunk->getChunkPosition());
-    writeRegion(getRegionName(chunk->getChunkPosition()), chunk);
+  void saveChunk(const chunk::Chunk& chunk) {
+    createRegion(chunk.getChunkPosition());
+    writeRegion(getRegionName(chunk.getChunkPosition()), chunk);
   }
 
-  chunk::Chunk* loadChunk(coordinate::ChunkPositionT chunkPos) {
+  std::unique_ptr<chunk::Chunk> loadChunk(coordinate::ChunkPositionT chunkPos) {
     return loadRegion(getRegionName(chunkPos));
   }
 
