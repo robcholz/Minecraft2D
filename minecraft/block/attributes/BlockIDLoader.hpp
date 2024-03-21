@@ -8,26 +8,27 @@
 #include <map>
 
 namespace block {
-	class BlockIDLoader {
-	private:
-		using String = std::string;
-	public:
-		BlockIDLoader() = delete;
+class BlockIDLoader {
+ private:
+  using String = std::string;
 
-		static int getBlockID(const String& id) { return loadID(id); }
+ public:
+  BlockIDLoader() = delete;
 
-		~BlockIDLoader() = default;
+  static int getBlockID(const String& id) { return loadID(id); }
 
-	private:
-		static inline std::map<String, int> blockIDs;
-		static inline int serialID = 0;
+  ~BlockIDLoader() = default;
 
-		static int loadID(const String& id) {
-			if (blockIDs[id] == 0)
-				blockIDs[id] = ++serialID;
-			return blockIDs[id];
-		}
-	};
-}
+ private:
+  static inline std::map<String, int> blockIDs;
+  static inline int serialID = 0;
 
-#endif //MINECRAFT_BLOCKIDLOADER_HPP
+  static int loadID(const String& id) {
+    if (blockIDs[id] == 0)
+      blockIDs[id] = ++serialID;
+    return blockIDs[id];
+  }
+};
+}  // namespace block
+
+#endif  // MINECRAFT_BLOCKIDLOADER_HPP

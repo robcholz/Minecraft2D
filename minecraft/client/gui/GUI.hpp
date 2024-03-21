@@ -6,25 +6,19 @@
 #ifndef MINECRAFT_GUI_HPP
 #define MINECRAFT_GUI_HPP
 
-
-#include <string>
 #include <SFML/Graphics/Drawable.hpp>
+#include <string>
 #include "client/Layout.hpp"
 
 class GUI {
-public:
-	virtual void update() = 0;
+ public:
+  virtual void update() = 0;
 
-	virtual void render() = 0;
+  virtual void render() = 0;
 
-	virtual void onWindowResize() {
+  virtual void onWindowResize() {}
 
-	}
-
-
-
-private:
-
+ private:
 };
 
-#endif //MINECRAFT_GUI_HPP
+#endif  // MINECRAFT_GUI_HPP

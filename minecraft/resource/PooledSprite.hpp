@@ -5,40 +5,36 @@
 #ifndef MINECRAFT_2D_POOLEDSPRITE_HPP
 #define MINECRAFT_2D_POOLEDSPRITE_HPP
 
-
-#include <SFML/Graphics/Sprite.hpp>
 #include <mempool/MemoryPool.h>
-
+#include <SFML/Graphics/Sprite.hpp>
 
 namespace resource {
-	class SpritePool : public AppShift::Memory::MemoryPool {
-	public:
-		SpritePool(const SpritePool&) = delete;
+class SpritePool : public AppShift::Memory::MemoryPool {
+ public:
+  SpritePool(const SpritePool&) = delete;
 
-		SpritePool& operator=(const SpritePool&) = delete;
+  SpritePool& operator=(const SpritePool&) = delete;
 
-		static SpritePool& getInstance() {
-			static SpritePool instance;
-			return instance;
-		}
+  static SpritePool& getInstance() {
+    static SpritePool instance;
+    return instance;
+  }
 
-	private:
-		SpritePool() : AppShift::Memory::MemoryPool() {}
+ private:
+  SpritePool() : AppShift::Memory::MemoryPool() {}
 
-		~SpritePool() = default;
-	};
+  ~SpritePool() = default;
+};
 
-	class Sprite : public sf::Sprite {
-	public:
-		void* operator new(size_t size) {
-			void* memory = SpritePool::getInstance().allocate(size);
-			return memory;
-		}
+class Sprite : public sf::Sprite {
+ public:
+  void* operator new(size_t size) {
+    void* memory = SpritePool::getInstance().allocate(size);
+    return memory;
+  }
 
-		void operator delete(void* memory) {
-			SpritePool::getInstance().free(memory);
-		}
-	};
-}
+  void operator delete(void* memory) { SpritePool::getInstance().free(memory); }
+};
+}  // namespace resource
 
-#endif //MINECRAFT_2D_POOLEDSPRITE_HPP
+#endif  // MINECRAFT_2D_POOLEDSPRITE_HPP

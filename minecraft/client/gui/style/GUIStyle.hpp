@@ -5,26 +5,25 @@
 #ifndef MINECRAFT_GUISTYLE_HPP
 #define MINECRAFT_GUISTYLE_HPP
 
-#include <memory>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Font.hpp>
+#include <memory>
 #include "client/gui/GUI.hpp"
 #include "util/Path.hpp"
 
 namespace initialization {
-	class GUIFont : public sf::Font {
-	protected:
-		std::string fontAssetPath = Path::fontFilePath + "/minecraft.ttf";
-	public:
-		GUIFont() : sf::Font() {
-			loadFromFile(fontAssetPath);
-		}
-	};
-}
+class GUIFont : public sf::Font {
+ protected:
+  std::string fontAssetPath = Path::fontFilePath + "/minecraft.ttf";
+
+ public:
+  GUIFont() : sf::Font() { loadFromFile(fontAssetPath); }
+};
+}  // namespace initialization
 
 namespace gui_style {
-	sf::Color MessageColor(220, 220, 220);
-	initialization::GUIFont MessageFont;
-}
+sf::Color MessageColor(220, 220, 220);
+initialization::GUIFont MessageFont;
+}  // namespace gui_style
 
-#endif //MINECRAFT_GUISTYLE_HPP
+#endif  // MINECRAFT_GUISTYLE_HPP

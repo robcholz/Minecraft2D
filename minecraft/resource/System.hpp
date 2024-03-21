@@ -6,191 +6,147 @@
 #ifndef MINECRAFT_2D_SYSTEM_HPP
 #define MINECRAFT_2D_SYSTEM_HPP
 
-
-#include <string>
-#include <map>
-#include <type_traits>
-#include <thread>
-#include <boost/algorithm/string/replace.hpp>
+#include <plog/Log.h>
+#include <tinyxml2.h>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/replace.hpp>
 #include <boost/format.hpp>
-#include <plist/Plist.hpp>
+#include <map>
+#include <string>
+#include <thread>
+#include <type_traits>
 #include "util/Utils.hpp"
-#include "plog/Log.h"
-
-
-#ifdef _WIN32
-
-#elif _WIN64
-
-#elif __APPLE__ || __MACH__
-
-#include <sys/utsname.h>
-#include <sys/proc_info.h>
-#include <sys/types.h>
-
-#elif __linux__
-
-#elif __FreeBSD__
-
-#elif __unix || __unix__
-
-#else
-// none
-#endif
-
 
 class OS {
-private:
-	using String = std::string;
-public:
-	static void init() {
-		processor_count = std::thread::hardware_concurrency();
-#ifdef _WIN32
-		os_name = "Windows 32-bit";
-#elif _WIN64
-		os_name =  "Windows 64-bit";
-#elif __APPLE__ || __MACH__
-		struct utsname uts{};
-		std::map<String, boost::any> dict;
-		uname(&uts);
-		Plist::readPlist("/System/Library/CoreServices/SystemVersion.plist", dict);
-		os_name = boost::any_cast<String>(dict["ProductName"]);
-		os_version = boost::any_cast<String>(dict["ProductVersion"]);
-		os_architecture = String(uts.machine);
-		cpu_model_name = utils::execCommand("sysctl -n machdep.cpu.brand_string").first;
-		gpu_model_name = getExecCommandString("system_profiler SPDisplaysDataType | grep Chipset", "Chipset Model:");
-		screen_info = getExecCommandString("system_profiler SPDisplaysDataType | grep Resolution", "Resolution:");
-		pid = getpid();
-		RAM_total = getExecCommandNumeric<long>("sysctl -n hw.memsize", "") / 1024 / 1024;
-#elif __linux__
-		os_name = "Linux";
-#elif __FreeBSD__
-		os_name = "FreeBSD";
-#elif __unix || __unix__
-		os_name = "Unix";
-#else
-		os_name = "Uknown";
-		os_version = "Uknown";
-		os_architecture = "Uknown";
-		pid = -1;
-#endif
-	}
+ private:
+  using String = std::string;
 
-	static String getOSName() {
-		return os_name;
-	}
+ public:
+  static void init();
 
-	static String getOSVersion() {
-		return os_version;
-	}
+  static String getOSName() { return os_name; }
 
-	static String getOSArch() {
-		return os_architecture;
-	}
+  static String getOSVersion() { return os_version; }
 
-	static String getCPUModelName() {
-		return cpu_model_name;
-	}
+  static String getOSArch() { return os_architecture; }
 
-	static String getGPUModelName() {
-		return gpu_model_name;
-	}
+  static String getCPUModelName() { return cpu_model_name; }
 
-	static String getScreenInfo() {
-		return screen_info;
-	}
+  static String getGPUModelName() { return gpu_model_name; }
 
-	template<typename T>
-	static T getPID() {
-		static_assert(std::is_same<T, signed int>::value || std::is_same<T, String>::value, "T must be either signed int or String");
-		if constexpr (std::is_same<T, signed int>::value)
-			return pid;
-		if constexpr (std::is_same<T, String>::value) {
-			static String str = std::to_string(pid);
-			return str;
-		}
-	}
+  static String getScreenInfo() { return screen_info; }
 
-	static unsigned int getTotalRAM() {
-		return RAM_total;
-	}
+  template <typename T>
+  static T getPID() {
+    static_assert(
+        std::is_same<T, signed int>::value || std::is_same<T, String>::value,
+        "T must be either signed int or String");
+    if constexpr (std::is_same<T, signed int>::value)
+      return pid;
+    if constexpr (std::is_same<T, String>::value) {
+      static String str = std::to_string(pid);
+      return str;
+    }
+  }
 
-	static unsigned int getProcessorCount() {
-		return processor_count;
-	}
+  static unsigned int getTotalRAM() { return RAM_total; }
 
-	template<typename T>
-	static T getProcessCPUUsagePercent() {
-		static_assert(std::is_same<T, String>::value || std::is_same<T, int>::value,
-		              "T must be either String or int");
-		if constexpr (std::is_same<T, String>::value)
-			return getExecCommandString("ps -p " + getPID<String>() + " -o %cpu", "%CPU");
-		if constexpr (std::is_same<T, int>::value)
-			return getExecCommandNumeric<int>("ps -p " + getPID<String>() + " -o %cpu", "%CPU");
-		return -1;
-	}
+  static unsigned int getProcessorCount() { return processor_count; }
 
-	static int getGPUUsage() {
-		return -1;
-		//TODO to implement
-	}
+  static uint8_t getProcessCPUUsagePercent();
 
-	static int getProcessMemoryUsage() {
-		float mem_percent = getExecCommandNumeric<float>("ps -p " + getPID<String>() + " -o %mem", "%MEM") / 100;
-		auto mem_resident = (int) (getExecCommandNumeric<float>("ps -p " + getPID<String>() + " -o rss", "RSS") / 1024 / 1024);
-		return (int) (mem_percent * (float) getTotalRAM()) + mem_resident;
-	}
+  static int getGPUUsage() {
+    return -1;
+    // TODO to implement
+  }
 
-	static int getProcessMemoryUsagePercent() {
-		return getExecCommandNumeric<int>("ps -p " + getPID<String>() + " -o %mem", "%MEM");
-	}
+  static uint64_t getProcessMemoryUsage();
 
-	static String getProcessRunningTime() {
-		return getExecCommandString("ps -p " + getPID<String>() + " -o etime", "ELAPSED");
-	}
+  static uint8_t getProcessMemoryUsagePercent() {
+    return getProcessMemoryUsage() / getTotalRAM();
+  }
 
-private:
-	static inline String os_name;
-	static inline String os_version;
-	static inline String os_architecture;
+  static String getProcessRunningTime() {
+    return getExecCommandString("ps -p " + getPID<String>() + " -o etime",
+                                "ELAPSED");
+  }
 
-	static inline String cpu_model_name;
-	static inline String gpu_model_name;
-	static inline String screen_info;
+ private:
+  static inline String os_name;
+  static inline String os_version;
+  static inline String os_architecture;
 
-	// the unit is MB
-	static inline unsigned int RAM_total;
-	static inline unsigned int processor_count;
+  static inline String cpu_model_name;
+  static inline String gpu_model_name;
+  static inline String screen_info;
 
-	static inline signed int pid;
+  // the unit is MB
+  static inline unsigned int RAM_total;
+  static inline unsigned int processor_count;
 
-	static void removeString(String& str, const String& remove) {
-		boost::erase_all(str, remove);
-		boost::trim(str);
-	}
+  static inline signed int pid;
 
-	static String getExecCommandString(const String& cmd, const String& remove) {
-		auto str = utils::execCommand(cmd).first;
-		removeString(str, remove);
-		return str;
-	}
+  static void loadPlistFile(tinyxml2::XMLDocument& doc,
+                            std::map<String, String>& dictMap) {
+    if (doc.LoadFile("/System/Library/CoreServices/SystemVersion.plist") !=
+        tinyxml2::XML_SUCCESS) {
+      PLOG_FATAL << "Cannot load System Version Configuration Files";
+      dictMap["ProductName"] = "Unknown Mac";
+      dictMap["ProductVersion"] = "Unknown Mac Version";
+      return;
+    }
+    tinyxml2::XMLNode* root = doc.FirstChildElement("plist");
+    if (!root) {
+      PLOG_FATAL << "Should never get there!";
+      std::exit(1);
+    }
+    tinyxml2::XMLElement* dict = root->FirstChildElement("dict");
+    if (!dict) {
+      PLOG_FATAL << "Should never get there!";
+      std::exit(1);
+    }
+    tinyxml2::XMLElement* key = dict->FirstChildElement("key");
+    while (key) {
+      const char* keyName = key->GetText();
+      tinyxml2::XMLElement* value = key->NextSiblingElement("string");
+      if (value) {
+        const char* valueText = value->GetText();
+        if (keyName && valueText) {
+          dictMap[String(keyName)] = String(valueText);
+        }
+      }
+      key = value->NextSiblingElement("key");
+    }
+  }
 
-	template<typename T>
-	static T getExecCommandNumeric(const String& cmd, const String& remove) {
-		auto str = getExecCommandString(cmd, remove);
-		char* end_ptr;
-		T integer;
-		if constexpr (std::is_same<T, float>::value || std::is_same<T, double>::value)
-			integer = (T) std::strtof(str.c_str(), &end_ptr);
-		else
-			integer = (T) std::strtol(str.c_str(), &end_ptr, 10);
-		if (end_ptr != str || *end_ptr == '\0')
-			return integer;
-		PLOG_ERROR << "Failed to convert to number. Invalid String:" << str << " Output:" << integer;
-		return -1;
-	}
+  static void removeString(String& str, const String& remove) {
+    boost::erase_all(str, remove);
+    boost::trim(str);
+  }
+
+  static String getExecCommandString(const String& cmd, const String& remove) {
+    auto str = utils::execCommand(cmd).first;
+    removeString(str, remove);
+    return str;
+  }
+
+  template <typename T>
+  static inline T getExecCommandNumeric(const String& cmd,
+                                        const String& remove) {
+    auto str = getExecCommandString(cmd, remove);
+    char* end_ptr;
+    T integer;
+    if constexpr (std::is_same<T, float>::value ||
+                  std::is_same<T, double>::value)
+      integer = (T)std::strtof(str.c_str(), &end_ptr);
+    else
+      integer = (T)std::strtol(str.c_str(), &end_ptr, 10);
+    if (end_ptr != str || *end_ptr == '\0')
+      return integer;
+    PLOG_ERROR << "Failed to convert to number. Invalid String:" << str
+               << " Output:" << integer;
+    return -1;
+  }
 };
 
-
-#endif //MINECRAFT_2D_SYSTEM_HPP
+#endif  // MINECRAFT_2D_SYSTEM_HPP

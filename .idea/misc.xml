@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="Black">
+    <option name="sdkName" value="Python 3.8" />
+  </component>
   <component name="CMakeWorkspace" PROJECT_DIR="$PROJECT_DIR$" />
   <component name="CidrRootsConfiguration">
     <sourceRoots>
@@ -18,5 +21,9 @@
       <file path="$PROJECT_DIR$/log" />
       <file path="$PROJECT_DIR$/tools" />
     </excludeRoots>
+  </component>
+  <component name="XMakeProjectSettings">
+    <option name="currentArchitecture" value="x86_64" />
+    <option name="workingDirectory" value="$PROJECT_DIR$" />
   </component>
 </project>

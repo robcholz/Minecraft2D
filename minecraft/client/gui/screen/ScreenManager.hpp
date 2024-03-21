@@ -9,32 +9,29 @@
 #include "Screen.hpp"
 
 class ScreenManager : public GUI {
-private:
-	std::list<Screen*> screenList;
-	Screen* currentRenderingScreen = nullptr;
-public:
-	ScreenManager() = default;
+ private:
+  std::list<Screen*> screenList;
+  Screen* currentRenderingScreen = nullptr;
 
-	ScreenManager& addScreen(Screen* screen) {
-		screenList.push_back(screen);
-		return *this;
-	}
+ public:
+  ScreenManager() = default;
 
-	void setEntry(Screen* entryScreen) {
-		currentRenderingScreen = entryScreen;
-	}
+  ScreenManager& addScreen(Screen* screen) {
+    screenList.push_back(screen);
+    return *this;
+  }
 
-	void update() override{
-		if (currentRenderingScreen->getResponseCallbackScreen() != nullptr) {
-			currentRenderingScreen = currentRenderingScreen->getResponseCallbackScreen();
-		}
-		currentRenderingScreen->update();
-	}
+  void setEntry(Screen* entryScreen) { currentRenderingScreen = entryScreen; }
 
-	void render() override {
-		currentRenderingScreen->render();
-	}
+  void update() override {
+    if (currentRenderingScreen->getResponseCallbackScreen() != nullptr) {
+      currentRenderingScreen =
+          currentRenderingScreen->getResponseCallbackScreen();
+    }
+    currentRenderingScreen->update();
+  }
 
+  void render() override { currentRenderingScreen->render(); }
 };
 
-#endif //MINECRAFT_SCREENMANAGER_HPP
+#endif  // MINECRAFT_SCREENMANAGER_HPP

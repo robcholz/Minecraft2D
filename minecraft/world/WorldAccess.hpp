@@ -8,16 +8,16 @@
 #include "world/chunk/WorldChunkAccess.hpp"
 
 namespace entity {
-	class PlayerEntity;
+class PlayerEntity;
 }
 
 class WorldAccess {
-public:
-	virtual entity::PlayerEntity* getPlayer() = 0;
+ public:
+  virtual entity::PlayerEntity* getPlayer() = 0;
 
-	virtual chunk::WorldChunkAccess* getChunkManager() = 0;
+  virtual chunk::WorldChunkAccess* getChunkManager() = 0;
 
-	virtual sf::View& getView() = 0;
+  virtual sf::View& getView() = 0;
 };
 
-#endif //MINECRAFT_WORLDACCESS_HPP
+#endif  // MINECRAFT_WORLDACCESS_HPP

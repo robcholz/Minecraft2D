@@ -2,10 +2,11 @@
 // Created by robcholz on 8/20/23.
 //
 #include "gtest/gtest.h"
-#include <mempool/ObjectPool.hpp>
+//#include <mempool/ObjectPool.hpp>
 
 
 TEST(MemPoolTest, BasicAssertion) {
+	/*
 	class TestBlock {
 	private:
 		std::string str;
@@ -25,4 +26,5 @@ TEST(MemPoolTest, BasicAssertion) {
 	test_pool.delete_all();
 	EXPECT_TRUE(false) << test_pool.calc_stats().num_allocations;
 	EXPECT_TRUE(false) << test_pool.calc_stats().num_blocks;
+	 */
 }

@@ -9,13 +9,20 @@
 #include "world/chunk/Chunk.hpp"
 
 class Decorator {
-protected:
-	using BlockPosT = coordinate::BlockPositionT;
-public:
-	virtual void decorate(int (blockBuffer)[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT],
-	                      BlockPosT blockPosX, BlockPosT chunkBlockPosX, BlockPosT chunkBlockPos, int curveThresholdConstant, bool condition) = 0;
+ protected:
+  using BlockPosT = coordinate::BlockPositionT;
+  using SerialT = block::ID::SerialIDT;
 
-private:
+ public:
+  virtual void decorate(
+      SerialT blockBuffer[chunk::ChunkGenSettings::CHUNK_WIDTH]
+                         [chunk::ChunkGenSettings::CHUNK_HEIGHT],
+      BlockPosT chunkBlockPos,
+      BlockPosT blockPosX,
+      BlockPosT blockPosZ,
+      BlockPosT worldPosX) = 0;
+
+ private:
 };
 
-#endif //MINECRAFT_DECORATOR_HPP
+#endif  // MINECRAFT_DECORATOR_HPP

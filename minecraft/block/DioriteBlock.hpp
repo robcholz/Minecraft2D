@@ -9,16 +9,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class DioriteBlock : public block::Block {
-	private:
-	public:
-		DioriteBlock() : Block("diorite_block") {
-		}
+class DioriteBlock : public block::Block {
+ private:
+ public:
+  DioriteBlock() : Block("diorite_block") {}
 
-		Block* createObject() override {
-			return new DioriteBlock;
-		}
-	};
-}
+  Block* createObject() override { return new DioriteBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_DIORITEBLOCK_HPP
+#endif  // MINECRAFT_DIORITEBLOCK_HPP

@@ -5,22 +5,18 @@
 #ifndef MINECRAFT_2D_GLOWSTONEBLOCK_HPP
 #define MINECRAFT_2D_GLOWSTONEBLOCK_HPP
 
-
 #include "block/attributes/Block.hpp"
 
-
 namespace block {
-	class GlowstoneBlock : public block::Block {
-	private:
-	public:
-		explicit GlowstoneBlock() : Block("glowstone_block", 15) {
-			enableHitbox(true);
-		}
+class GlowstoneBlock : public block::Block {
+ private:
+ public:
+  explicit GlowstoneBlock() : Block("glowstone_block", 15) {
+    enableHitbox(true);
+  }
 
-		Block* createObject() override {
-			return new GlowstoneBlock;
-		}
-	};
-}
+  Block* createObject() override { return new GlowstoneBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_2D_GLOWSTONEBLOCK_HPP
+#endif  // MINECRAFT_2D_GLOWSTONEBLOCK_HPP

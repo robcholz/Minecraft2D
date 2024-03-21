@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class CobblestoneBlock : public block::Block {
-	private:
-	public:
-		CobblestoneBlock() : Block("cobblestone_block") {
-		}
+class CobblestoneBlock : public block::Block {
+ private:
+ public:
+  CobblestoneBlock() : Block("cobblestone_block") {}
 
-		Block* createObject() override {
-			return new CobblestoneBlock;
-		}
-	};
-}
+  Block* createObject() override { return new CobblestoneBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_COBBLESTONEBLOCK_HPP
+#endif  // MINECRAFT_COBBLESTONEBLOCK_HPP

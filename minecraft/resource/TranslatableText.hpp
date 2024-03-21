@@ -5,51 +5,51 @@
 #ifndef MINECRAFT_TRANSLATABLETEXT_HPP
 #define MINECRAFT_TRANSLATABLETEXT_HPP
 
-#include <fstream>
-#include <string>
-#include <locale>
 #include <codecvt>
-#include "json.hpp"
-#include "util/Identifier.hpp"
-#include "error/ErrorHandling.hpp"
+#include <fstream>
+#include <locale>
+#include <string>
 
+#include <nlohmann/json.hpp>
+#include "error/ErrorHandling.hpp"
+#include "util/Identifier.hpp"
 
 class TranslatableText {
-private:
-	using Json = nlohmann::json;
-public:
-	TranslatableText() = delete;
+ private:
+  using Json = nlohmann::json;
 
-	TranslatableText(const TranslatableText& other) = delete;
+ public:
+  TranslatableText() = delete;
 
-	~TranslatableText() = delete;
+  TranslatableText(const TranslatableText& other) = delete;
 
-	static std::wstring getTranslatable(Identifier& identifier) {
-		std::ifstream file(Path::currentLangPath);
-		Json lang_json = Json::parse(file);
-		std::string literal = lang_json[identifier.getDotPath()];
-		return convert(literal);
-	}
+  ~TranslatableText() = delete;
 
-	static std::wstring convert(const std::string& input)
-	{
-		try
-		{
-			std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-			return converter.from_bytes(input);
-		}
-		catch(std::range_error& e)
-		{
-			size_t length = input.length();
-			std::wstring result;
-			result.reserve(length);
-			for(size_t i = 0; i < length; i++)
-			{
-				result.push_back(input[i] & 0xFF);
-			}
-			return result;
-		}
-	}
+  static std::wstring getTranslatable(Identifier& identifier) {
+    std::ifstream file(Path::currentLangPath);
+    Json lang_json = Json::parse(file);
+    std::string literal = lang_json[identifier.getDotPath()];
+    return convert(literal);  // TODO
+  }
+
+  static std::wstring convert(const std::string& input) {
+    std::wstring result;
+    // Calculate the required length of the resulting wide string
+    size_t requiredLength = mbstowcs(nullptr, input.c_str(), 0);
+    if (requiredLength == static_cast<size_t>(-1)) {
+      // Error handling for conversion failure
+      return L"";
+    }
+
+    result.resize(requiredLength);
+    // Perform the actual conversion
+    if (mbstowcs(&result[0], input.c_str(), requiredLength) ==
+        static_cast<size_t>(-1)) {
+      // Error handling for conversion failure
+      return L"";
+    }
+    return result;
+  }
 };
 
-#endif //MINECRAFT_TRANSLATABLETEXT_HPP
+#endif  // MINECRAFT_TRANSLATABLETEXT_HPP

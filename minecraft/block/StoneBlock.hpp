@@ -7,18 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block{
+namespace block {
 
-	class StoneBlock: public block::Block{
-	public:
-		StoneBlock(): Block("stone_block"){
+class StoneBlock : public block::Block {
+ public:
+  StoneBlock() : Block("stone_block") {}
 
-		}
+  Block* createObject() override { return new StoneBlock; }
+};
+}  // namespace block
 
-		Block* createObject() override {
-			return new StoneBlock;
-		}
-	};
-}
-
-#endif //MINECRAFT_STONEBLOCK_HPP
+#endif  // MINECRAFT_STONEBLOCK_HPP

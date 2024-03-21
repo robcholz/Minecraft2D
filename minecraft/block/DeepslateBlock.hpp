@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class DeepslateBlock : public block::Block {
-	private:
-	public:
-		DeepslateBlock() : Block("deepslate_block") {
-		}
+class DeepslateBlock : public block::Block {
+ private:
+ public:
+  DeepslateBlock() : Block("deepslate_block") {}
 
-		Block* createObject() override {
-			return new DeepslateBlock;
-		}
-	};
-}
+  Block* createObject() override { return new DeepslateBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_DEEPSLATEBLOCK_HPP
+#endif  // MINECRAFT_DEEPSLATEBLOCK_HPP

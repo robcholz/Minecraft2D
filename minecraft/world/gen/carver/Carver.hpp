@@ -5,35 +5,42 @@
 #ifndef MINECRAFT_CARVER_HPP
 #define MINECRAFT_CARVER_HPP
 
-#include "util/math/noise/PerlinNoise.hpp"
 #include "block/attributes/Block.hpp"
+#include "util/math/noise/PerlinNoise.hpp"
 #include "world/chunk/Chunk.hpp"
 
 class Carver {
-private:
-	using ChunkPosT = coordinate::ChunkPositionT;
-	using BlockPosT = coordinate::BlockPositionT;
-protected:
-public:
-	explicit Carver(unsigned int seed) {
-		noise.initialize(seed);
-	}
+ private:
+  using ChunkPosT = coordinate::ChunkPositionT;
+  using BlockPosT = coordinate::BlockPositionT;
 
-	void curve(block::ID::SerialIDT (blockBuffer)[chunk::ChunkGenSettings::CHUNK_WIDTH][chunk::ChunkGenSettings::CHUNK_HEIGHT], BlockPosT blockPosX, BlockPosT chunkBlockPosX,
-	           BlockPosT chunkBlockPos,
-	           int curveThresholdConstant, bool condition) {
-		double x = (double) blockPosX / ((double) 100);
-		double y = (double) chunkBlockPos / ((double) 100);
-		double n = 2 * noise.noise(x * 5, y * 5, 0.8);
-		auto grey_channel = (uint8_t) floor(255 * n);
-		if (grey_channel > curveThresholdConstant && condition)
-			blockBuffer[chunkBlockPosX][chunkBlockPos] = block::Blocks::getInstance().getObjectInstance("minecraft:air_block")->getSerialID();
-	}
+ protected:
+ public:
+  explicit Carver(unsigned int seed) { noise.initialize(seed); }
 
-	~Carver() = default;
+  void curve(
+      block::ID::SerialIDT(blockBuffer)[chunk::ChunkGenSettings::CHUNK_WIDTH]
+                                       [chunk::ChunkGenSettings::CHUNK_HEIGHT],
+      BlockPosT blockPosX,
+      BlockPosT chunkBlockPosX,
+      BlockPosT chunkBlockPos,
+      int curveThresholdConstant,
+      bool condition) {
+    double x = (double)blockPosX / ((double)100);
+    double y = (double)chunkBlockPos / ((double)100);
+    double n = 2 * noise.noise(x * 5, y * 5, 0.8);
+    auto grey_channel = (uint8_t)floor(255 * n);
+    if (grey_channel > curveThresholdConstant && condition)
+      blockBuffer[chunkBlockPosX][chunkBlockPos] =
+          block::Blocks::getInstance()
+              .getObjectInstance("minecraft:air_block")
+              ->getSerialID();
+  }
 
-private:
-	math::PerlinNoise noise;
+  ~Carver() = default;
+
+ private:
+  math::PerlinNoise noise;
 };
 
-#endif //MINECRAFT_CARVER_HPP
+#endif  // MINECRAFT_CARVER_HPP

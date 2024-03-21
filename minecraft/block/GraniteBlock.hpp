@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class GraniteBlock : public block::Block {
-	private:
-	public:
-		GraniteBlock() : Block("granite_block") {
-		}
+class GraniteBlock : public block::Block {
+ private:
+ public:
+  GraniteBlock() : Block("granite_block") {}
 
-		Block* createObject() override {
-			return new GraniteBlock;
-		}
-	};
-}
+  Block* createObject() override { return new GraniteBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_GRANITEBLOCK_HPP
+#endif  // MINECRAFT_GRANITEBLOCK_HPP

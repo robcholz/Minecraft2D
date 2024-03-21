@@ -6,11 +6,11 @@
 #define MINECRAFT_REGISTRYACCESS_HPP
 
 namespace utils {
-	template<class ObjectT>
-	class RegistryAccess {
-	public:
-		virtual ObjectT* createObject() = 0;
-	};
-}
+template <class ObjectT>
+class RegistryAccess {
+ public:
+  virtual ObjectT* createObject() = 0;
+};
+}  // namespace utils
 
-#endif //MINECRAFT_REGISTRYACCESS_HPP
+#endif  // MINECRAFT_REGISTRYACCESS_HPP

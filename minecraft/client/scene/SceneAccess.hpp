@@ -6,38 +6,28 @@
 #define MINECRAFT_SCENEACCESS_HPP
 
 class SceneAccess {
-protected:
-	void runScene(){
-		state=State::RUNNING;
-	}
+ protected:
+  void runScene() { state = State::RUNNING; }
 
-	void pauseScene(){
-		state=State::PAUSED;
-	}
+  void pauseScene() { state = State::PAUSED; }
 
-	void terminateScene(){
-		state=State::TERMINATED;
-	}
-public:
-	enum class State{RUNNING,PAUSED,TERMINATED};
-	bool isRunning() {
-		return (state==State::RUNNING);
-	}
+  void terminateScene() { state = State::TERMINATED; }
 
-	bool isPaused() {
-		return (state==State::PAUSED);
-	}
+ public:
+  enum class State { RUNNING, PAUSED, TERMINATED };
+  bool isRunning() { return (state == State::RUNNING); }
 
-	bool isTerminated() {
-		return (state==State::TERMINATED);
-	}
+  bool isPaused() { return (state == State::PAUSED); }
 
-	virtual void onUpdate()=0;
-	virtual void onRender()=0;
+  bool isTerminated() { return (state == State::TERMINATED); }
 
-	virtual ~SceneAccess()=default;
-private:
-	State state{};
+  virtual void onUpdate() = 0;
+  virtual void onRender() = 0;
+
+  virtual ~SceneAccess() = default;
+
+ private:
+  State state{};
 };
 
-#endif //MINECRAFT_SCENEACCESS_HPP
+#endif  // MINECRAFT_SCENEACCESS_HPP

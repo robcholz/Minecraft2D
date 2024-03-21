@@ -9,23 +9,26 @@
 #include "util/Identifier.hpp"
 
 class TextureWidget : public Widget {
-protected:
-	void onUpdate() override {}
+ protected:
+  void onUpdate() override {}
 
-public:
-	explicit TextureWidget(const String& id, bool visible = true, int x = 0, int y = 0)
-			: Widget(id) {
-		setVisible(visible);
-		loadWidgetTexture(identifier->getAbsolutePath());
-		widgetSprite.setTexture(widgetNormalTexture);
-		auto width = (int) widgetSprite.getGlobalBounds().width;
-		auto height = (int) widgetSprite.getGlobalBounds().height;
-		setOutline(&widgetOutline, widgetSprite, x, y, width, height);
-		widgetSprite.setScale(2.1, 2.1);
-		widgetSprite.setPosition((float) widgetOutline.x, (float) widgetOutline.y);
-	}
+ public:
+  explicit TextureWidget(const String& id,
+                         bool visible = true,
+                         int x = 0,
+                         int y = 0)
+      : Widget(id) {
+    setVisible(visible);
+    loadWidgetTexture(identifier->getAbsolutePath());
+    widgetSprite.setTexture(widgetNormalTexture);
+    auto width = (int)widgetSprite.getGlobalBounds().width;
+    auto height = (int)widgetSprite.getGlobalBounds().height;
+    setOutline(&widgetOutline, widgetSprite, x, y, width, height);
+    widgetSprite.setScale(2.1, 2.1);
+    widgetSprite.setPosition((float)widgetOutline.x, (float)widgetOutline.y);
+  }
 
-	~TextureWidget() override = default;
+  ~TextureWidget() override = default;
 };
 
-#endif //MINECRAFT_TEXTUREWIDGET_HPP
+#endif  // MINECRAFT_TEXTUREWIDGET_HPP

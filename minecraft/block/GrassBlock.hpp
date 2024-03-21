@@ -8,17 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class GrassBlock : public block::Block {
-	private:
-	public:
-		explicit GrassBlock() : Block("grass_block") {
-		}
+class GrassBlock : public block::Block {
+ private:
+ public:
+  explicit GrassBlock() : Block("grass_block") {}
 
-		Block* createObject() override {
-			return new GrassBlock;
-		}
-	};
-}
+  Block* createObject() override { return new GrassBlock; }
+};
+}  // namespace block
 
-
-#endif //MINECRAFT_GRASSBLOCK_HPP
+#endif  // MINECRAFT_GRASSBLOCK_HPP

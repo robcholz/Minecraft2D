@@ -5,80 +5,90 @@
 #ifndef MINECRAFT_2D_WORLDCHUNK_HPP
 #define MINECRAFT_2D_WORLDCHUNK_HPP
 
-
 #include "ChunkStream.hpp"
 #include "WorldChunkAccess.hpp"
+#include "error/ErrorHandling.hpp"
 #include "world/chunk/light/LightingProvider.hpp"
 
 namespace chunk {
-	class WorldChunk : public ChunkStream,
-	                   public WorldChunkAccess {
-	private:
-		using ChunkPosT = coordinate::ChunkPositionT;
-		using BlockPosT = coordinate::BlockPositionT;
-		using BlockPosition = coordinate::BlockPosition;
-	public:
-		WorldChunk() = delete;
+class WorldChunk : public ChunkStream, public WorldChunkAccess {
+ private:
+  using ChunkPosT = coordinate::ChunkPositionT;
+  using BlockPosT = coordinate::BlockPositionT;
+  using BlockPosition = coordinate::BlockPosition;
 
-		explicit WorldChunk(WorldAccess* worldAccess, ChunkStream::DistanceT simulationDistance, ChunkStream::DistanceT renderDistance) :
-				ChunkStream(worldAccess, simulationDistance, renderDistance) {
-			lightingProvider = std::make_unique<LightingProvider>(this);
-			ChunkStream::onChunkRender([this](ChunkPosT chunkPos) { lightingProvider->updateDaylight(chunkPos); });
-		}
+ public:
+  WorldChunk() = delete;
 
-		~WorldChunk() override = default;
+  explicit WorldChunk(WorldAccess* worldAccess,
+                      ChunkStream::DistanceT simulationDistance,
+                      ChunkStream::DistanceT renderDistance)
+      : ChunkStream(worldAccess, simulationDistance, renderDistance) {
+    lightingProvider = std::make_unique<LightingProvider>(this);
+    ChunkStream::onChunkRender([this](ChunkPosT chunkPos) {
+      lightingProvider->updateDaylight(chunkPos);
+    });
+  }
 
-		Chunk* getChunk(ChunkPosT chunkPos) override {
-			return ChunkStream::getChunk(chunkPos);
-		}
+  ~WorldChunk() override = default;
 
-		ChunkStreamAccess* getChunkStream() override {
-			return this;
-		}
+  Chunk* getChunk(ChunkPosT chunkPos) override {
+    return ChunkStream::getChunk(chunkPos);
+  }
 
-		uint8_t getBlockLightLevel(const coordinate::BlockPos& blockPosition) override {
-			return getBlockLightLevel(blockPosition.x, blockPosition.z);
-		}
+  ChunkStreamAccess* getChunkStream() override { return this; }
 
-		uint8_t getBlockLightLevel(BlockPosT x, BlockPosT z) override {
-			auto chunkSettings = Chunk::toChunkPosition(x, z);
-			auto chunk = this->getChunk(chunkSettings.chunkPos);
-			return chunk->getBlockLightLevel(chunkSettings.blockPos);
-		}
+  uint8_t getBlockLightLevel(
+      const coordinate::BlockPos& blockPosition) override {
+    return getBlockLightLevel(blockPosition.x, blockPosition.z);
+  }
 
-		block::Block* getBlock(const BlockPosition& blockPosition) override {
-			return getBlock(blockPosition.get());
-		}
+  uint8_t getBlockLightLevel(BlockPosT x, BlockPosT z) override {
+    auto chunkSettings = Chunk::toChunkPosition(x, z);
+    auto chunk = this->getChunk(chunkSettings.chunkPos);
+    return chunk->getBlockLightLevel(chunkSettings.blockPos);
+  }
 
-		block::Block* getBlock(const coordinate::BlockPos& blockPosition) override {
-			// convert to chunk position and search in stream
-			// locate the block pointer in a specific chunk
-			auto chunkSettings = Chunk::toChunkPosition(blockPosition.x, blockPosition.z);
-			auto chunk = this->getChunk(chunkSettings.chunkPos);
-			if (chunk != nullptr)
-				return chunk->getBlockWithBoundaryCheck(chunkSettings);
-			PLOG_ERROR << "Given block doesn't exist in the loaded chunks: ChunkPosition: " << chunkSettings.chunkPos;
-			return block::Blocks::getInstance().getObjectInstance("minecraft:error_block");
-		}
+  // nullptr
+  block::Block* getBlock(const BlockPosition& blockPosition) override {
+    return getBlock(blockPosition.get());
+  }
 
-		void setBlockLightLevel(BlockPosT x, BlockPosT z, uint8_t lightLevel) override {
-			auto chunkSettings = Chunk::toChunkPosition(x, z);
-			auto chunk = this->getChunk(chunkSettings.chunkPos);
-			chunk->setBlockLightLevel(chunkSettings.blockPos.x, chunkSettings.blockPos.z, lightLevel);
-		}
+  // nullptr
+  block::Block* getBlock(const coordinate::BlockPos& blockPosition) override {
+    // convert to chunk position and search in stream
+    // locate the block pointer in a specific chunk
+    auto chunkSettings =
+        Chunk::toChunkPosition(blockPosition.x, blockPosition.z);
+    auto chunk = this->getChunk(chunkSettings.chunkPos);
+    if (chunk != nullptr)
+      return chunk->getBlockWithBoundaryCheck(chunkSettings);
+    PLOG_VERBOSE << "Given block " << blockPosition.x << " " << blockPosition.z
+                 << " doesn't exist in the loaded chunks: ChunkPosition: "
+                 << chunkSettings.chunkPos;
+    return nullptr;
+  }
 
-		void setBlockLightLevel(const coordinate::BlockPos& blockPosition, uint8_t lightLevel) override {
-			setBlockLightLevel(blockPosition.x, blockPosition.z, lightLevel);
-		}
+  void setBlockLightLevel(BlockPosT x,
+                          BlockPosT z,
+                          uint8_t lightLevel) override {
+    auto chunkSettings = Chunk::toChunkPosition(x, z);
+    auto chunk = this->getChunk(chunkSettings.chunkPos);
+    chunk->setBlockLightLevel(chunkSettings.blockPos.x,
+                              chunkSettings.blockPos.z, lightLevel);
+  }
 
-		// main chunk update function
-		void onUpdate() override {
-			lightingProvider->update();
-		}
+  void setBlockLightLevel(const coordinate::BlockPos& blockPosition,
+                          uint8_t lightLevel) override {
+    setBlockLightLevel(blockPosition.x, blockPosition.z, lightLevel);
+  }
 
-	private:
-		std::unique_ptr<LightingProvider> lightingProvider;
-	};
-}
+  // main chunk update function
+  void onUpdate() override { lightingProvider->update(); }
 
-#endif //MINECRAFT_2D_WORLDCHUNK_HPP
+ private:
+  std::unique_ptr<LightingProvider> lightingProvider;
+};
+}  // namespace chunk
+
+#endif  // MINECRAFT_2D_WORLDCHUNK_HPP

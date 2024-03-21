@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class AndesiteBlock : public block::Block {
-	private:
-	public:
-		AndesiteBlock() : Block("andesite_block") {
-		}
+class AndesiteBlock : public block::Block {
+ private:
+ public:
+  AndesiteBlock() : Block("andesite_block") {}
 
-		Block* createObject() override {
-			return new AndesiteBlock;
-		}
-	};
-}
+  Block* createObject() override { return new AndesiteBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_ANDESITEBLOCK_HPP
+#endif  // MINECRAFT_ANDESITEBLOCK_HPP

@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class DiamondBlock : public block::Block {
-	private:
-	public:
-		DiamondBlock() : Block("diamond_block") {
-		}
+class DiamondBlock : public block::Block {
+ private:
+ public:
+  DiamondBlock() : Block("diamond_block") {}
 
-		Block* createObject() override {
-			return new DiamondBlock;
-		}
-	};
-}
+  Block* createObject() override { return new DiamondBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_DIAMONDBLOCK_HPP
+#endif  // MINECRAFT_DIAMONDBLOCK_HPP

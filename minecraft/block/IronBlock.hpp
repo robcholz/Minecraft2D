@@ -7,18 +7,14 @@
 
 #include "block/attributes/Block.hpp"
 
-namespace block{
+namespace block {
 
-	class IronBlock: public block::Block{
-	public:
-		IronBlock(): Block("iron_block"){
+class IronBlock : public block::Block {
+ public:
+  IronBlock() : Block("iron_block") {}
 
-		}
+  Block* createObject() override { return new IronBlock; }
+};
+}  // namespace block
 
-		Block* createObject() override {
-			return new IronBlock;
-		}
-	};
-}
-
-#endif //MINECRAFT_IRONBLOCK_HPP
+#endif  // MINECRAFT_IRONBLOCK_HPP

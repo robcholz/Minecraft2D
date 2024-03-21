@@ -6,61 +6,63 @@
 #ifndef MINECRAFT_SCREEN_HPP
 #define MINECRAFT_SCREEN_HPP
 
-
-#include <memory>
 #include <map>
+#include <memory>
+#include "client/gui/widget/Widget.hpp"
+#include "sound/SoundManager.hpp"
 #include "sound/SoundEvents.hpp"
 
-
 class Screen {
-public:
-	explicit Screen(MinecraftClientAccess* minecraftClientAccess, Background* background) {
-		this->background = background;
-		this->minecraftClientAccess = minecraftClientAccess;
-	}
+ public:
+  explicit Screen(MinecraftClientAccess* minecraftClientAccess,
+                  Background* background) {
+    this->background = background;
+    this->minecraftClientAccess = minecraftClientAccess;
+  }
 
-	~Screen() = default;
+  ~Screen() = default;
 
-	Screen& addWidget(Widget* widget) {
-		widgetsList.push_back(widget);
-		return *this;
-	}
+  Screen& addWidget(Widget* widget) {
+    widgetsList.push_back(widget);
+    return *this;
+  }
 
-	Screen& addCallbackScreen(Screen* callBackScreen, Widget* callBackButton) {
-		callbackScreenMap.insert({callBackButton, callBackScreen});
-		return *this;
-	}
+  Screen& addCallbackScreen(Screen* callBackScreen, Widget* callBackButton) {
+    callbackScreenMap.insert({callBackButton, callBackScreen});
+    return *this;
+  }
 
-	Screen* getResponseCallbackScreen() { return responseCallBackScreenPtr; }
+  Screen* getResponseCallbackScreen() { return responseCallBackScreenPtr; }
 
-	void update(){
-		for (const auto widget_obj: widgetsList) {
-			widget_obj->update();
-			if (widget_obj->isClicked() && widget_obj->isFocused()) {
-				this->minecraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().CLICK_SOUND_GUI);
-				widget_obj->executeCallbackFunc();
-				if (callbackScreenMap.contains(widget_obj)) {
-					responseCallBackScreenPtr = callbackScreenMap[widget_obj];
-					return;
-				}
-			} else
-				responseCallBackScreenPtr = nullptr;
-		}
-	}
+  void update() {
+    for (const auto widget_obj : widgetsList) {
+      widget_obj->update();
+      if (widget_obj->isClicked() && widget_obj->isFocused()) {
+        this->minecraftClientAccess->getSoundManager()->addSound(
+            SoundEvents::getInstance().CLICK_SOUND_GUI);
+        widget_obj->executeCallbackFunc();
+        if (callbackScreenMap.contains(widget_obj)) {
+          responseCallBackScreenPtr = callbackScreenMap[widget_obj];
+          return;
+        }
+      } else
+        responseCallBackScreenPtr = nullptr;
+    }
+  }
 
-	void render() {
-		background->render();
-		for (const auto widget_obj: widgetsList) {
-			widget_obj->render();
-		}
-	}
+  void render() {
+    background->render();
+    for (const auto widget_obj : widgetsList) {
+      widget_obj->render();
+    }
+  }
 
-private:
-	MinecraftClientAccess* minecraftClientAccess= nullptr;
-	Screen* responseCallBackScreenPtr = nullptr;
-	Background* background = nullptr;
-	std::list<Widget*> widgetsList;
-	std::map<Widget*, Screen*> callbackScreenMap;
+ private:
+  MinecraftClientAccess* minecraftClientAccess = nullptr;
+  Screen* responseCallBackScreenPtr = nullptr;
+  Background* background = nullptr;
+  std::list<Widget*> widgetsList;
+  std::map<Widget*, Screen*> callbackScreenMap;
 };
 
-#endif //MINECRAFT_SCREEN_HPP
+#endif  // MINECRAFT_SCREEN_HPP

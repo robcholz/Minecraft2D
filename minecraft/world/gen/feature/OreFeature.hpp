@@ -8,12 +8,13 @@
 #include "world/poi/Coordinate.hpp"
 
 class OreFeature {
-private:
-	using ChunkPosT = coordinate::ChunkPositionT;
-	using BlockPosT = coordinate::BlockPositionT;
-protected:
-public:
-private:
+ private:
+  using ChunkPosT = coordinate::ChunkPositionT;
+  using BlockPosT = coordinate::BlockPositionT;
+
+ protected:
+ public:
+ private:
 };
 
-#endif //MINECRAFT_OREFEATURE_HPP
+#endif  // MINECRAFT_OREFEATURE_HPP

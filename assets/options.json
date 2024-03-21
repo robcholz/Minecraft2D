@@ -1,6 +1,6 @@
 {
   "logging":{
     "file": false,
-    "max_severity": "all"
+    "max_severity": "debug"
   }
 }

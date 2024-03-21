@@ -5,8 +5,6 @@
 #ifndef MINECRAFT_CLICKABLEWIDGET_HPP
 #define MINECRAFT_CLICKABLEWIDGET_HPP
 
-class ClickableWidget{
+class ClickableWidget {};
 
-};
-
-#endif //MINECRAFT_CLICKABLEWIDGET_HPP
+#endif  // MINECRAFT_CLICKABLEWIDGET_HPP

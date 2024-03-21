@@ -6,84 +6,87 @@
 #ifndef MINECRAFT_FILEHELPER_HPP
 #define MINECRAFT_FILEHELPER_HPP
 
-#include <vector>
 #include <filesystem>
 #include <fstream>
-
+#include <vector>
 
 class FileHelper {
-private:
-	using String = std::string;
-public:
-	explicit FileHelper(const String& directoryPath) {
-		this->directoryPath = directoryPath;
-	}
+ private:
+  using String = std::string;
 
-	~FileHelper() = default;
+ public:
+  explicit FileHelper(const String& directoryPath) {
+    this->directoryPath = directoryPath;
+  }
 
-	bool static isExisted(const String& filename) {
-		std::ifstream file;
-		file.open(filename);
-		if (file) return true;
-		else return false;
-	}
+  ~FileHelper() = default;
 
-	std::vector<String>* getFilesInDirectory() {
-		directories.clear();
-		for (const auto& entry: std::filesystem::directory_iterator(directoryPath)) {
-			directories.push_back(entry.path());
-		}
-		return &directories;
-	}
+  bool static isExisted(const String& filename) {
+    std::ifstream file;
+    file.open(filename);
+    if (file)
+      return true;
+    else
+      return false;
+  }
 
-	String getDirectoryName() {
-		return directoryPath;
-	}
+  std::vector<String>* getFilesInDirectory() {
+    directories.clear();
+    for (const auto& entry :
+         std::filesystem::directory_iterator(directoryPath)) {
+      directories.push_back(entry.path());
+    }
+    return &directories;
+  }
 
-	static bool createFolder(const String& folderName) {
-		return std::filesystem::create_directory(folderName);
-	}
+  String getDirectoryName() { return directoryPath; }
 
-	static bool createFolder(const String& directory, const String& folderName) {
-		return std::filesystem::create_directory(directory + "/" + folderName);
-	}
+  static bool createFolder(const String& folderName) {
+    return std::filesystem::create_directory(folderName);
+  }
 
-	String createSubFolder(const String& folderName) {
-		std::filesystem::create_directory(directoryPath + "/" + folderName);
-		return directoryPath + "/" + folderName;
-	}
+  static bool createFolder(const String& directory, const String& folderName) {
+    return std::filesystem::create_directory(directory + "/" + folderName);
+  }
 
-	static void createFile(const String& filename) {
-		std::ofstream file(filename);
-	}
+  String createSubFolder(const String& folderName) {
+    std::filesystem::create_directory(directoryPath + "/" + folderName);
+    return directoryPath + "/" + folderName;
+  }
 
-	static void createFile(const String& directory, const String& filename) {
-		std::ofstream file(directory + "/" + filename);
-	}
+  static void createFile(const String& filename) {
+    std::ofstream file(filename);
+  }
 
-	String createSubFile(const String& filename) {
-		std::ofstream my_file(directoryPath + "/" + filename);
-		return directoryPath + "/" + filename;
-	}
+  static void createFile(const String& directory, const String& filename) {
+    std::ofstream file(directory + "/" + filename);
+  }
 
-	bool isDirectoryEmpty() {
-		return std::filesystem::is_empty(directoryPath);
-	}
+  String createSubFile(const String& filename) {
+    std::ofstream my_file(directoryPath + "/" + filename);
+    return directoryPath + "/" + filename;
+  }
 
-	static String transferJsonPathToFilePath(const String& jsonPath) {
-		String field = jsonPath.substr(0, jsonPath.find(':'));
-		String type = jsonPath.substr(jsonPath.find(':') + 1, jsonPath.find('/') - jsonPath.find(':') - 1);
-		String filename = jsonPath.substr(jsonPath.find('/') + 1, jsonPath.length() - jsonPath.find(':'));
-		return Path::rootDirectory + "/assets/textures/" + type + "s/" + filename + ".png";
-	}
+  bool isDirectoryEmpty() { return std::filesystem::is_empty(directoryPath); }
 
-	static String appendFilename(const String& filename,const String& append){
-		return filename.substr(0,filename.find_last_of('.')) + append + filename.substr(filename.find_last_of('.'));
-	}
+  static String transferJsonPathToFilePath(const String& jsonPath) {
+    String field = jsonPath.substr(0, jsonPath.find(':'));
+    String type = jsonPath.substr(jsonPath.find(':') + 1,
+                                  jsonPath.find('/') - jsonPath.find(':') - 1);
+    String filename = jsonPath.substr(jsonPath.find('/') + 1,
+                                      jsonPath.length() - jsonPath.find(':'));
+    return Path::rootDirectory + "/assets/textures/" + type + "s/" + filename +
+           ".png";
+  }
 
-private:
-	std::vector<String> directories;
-	String directoryPath;
+  static String appendFilename(const String& filename, const String& append) {
+    return filename.substr(0, filename.find_last_of('.')) + append +
+           filename.substr(filename.find_last_of('.'));
+  }
+
+ private:
+  std::vector<String> directories;
+  String directoryPath;
 };
 
-#endif //MINECRAFT_FILEHELPER_HPP
+#endif  // MINECRAFT_FILEHELPER_HPP

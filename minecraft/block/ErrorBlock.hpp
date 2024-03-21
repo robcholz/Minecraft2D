@@ -8,17 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class ErrorBlock : public block::Block {
-	private:
-	public:
-		ErrorBlock() : Block("error_block") {
-			enableHitbox(false);
-		}
+class ErrorBlock : public block::Block {
+ private:
+ public:
+  ErrorBlock() : Block("error_block") { enableHitbox(false); }
 
-		Block* createObject() override {
-			return new ErrorBlock;
-		}
-	};
-}
+  Block* createObject() override { return new ErrorBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_ERRORBLOCK_HPP
+#endif  // MINECRAFT_ERRORBLOCK_HPP

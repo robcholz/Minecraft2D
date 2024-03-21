@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class BedrockBlock : public block::Block {
-	private:
-	public:
-		BedrockBlock() : Block("bedrock_block") {
-		}
+class BedrockBlock : public block::Block {
+ private:
+ public:
+  BedrockBlock() : Block("bedrock_block") {}
 
-		Block* createObject() override {
-			return new BedrockBlock;
-		}
-	};
-}
+  Block* createObject() override { return new BedrockBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_BEDROCKBLOCK_HPP
+#endif  // MINECRAFT_BEDROCKBLOCK_HPP

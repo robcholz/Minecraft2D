@@ -5,6 +5,12 @@
     <option name="excludedDirectories">
       <list>
         <option value="$PROJECT_DIR$/include" />
+        <option value="$PROJECT_DIR$/saves" />
+        <option value="$PROJECT_DIR$/build" />
+        <option value="$PROJECT_DIR$/cmake-build-debug" />
+        <option value="$PROJECT_DIR$/cmake-build-release" />
+        <option value="$PROJECT_DIR$/assets" />
+        <option value="$PROJECT_DIR$/targets" />
       </list>
     </option>
   </component>

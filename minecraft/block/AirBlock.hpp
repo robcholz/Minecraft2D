@@ -9,16 +9,12 @@
 
 namespace block {
 class AirBlock : public block::Block {
-	private:
-	public:
-		explicit AirBlock() : Block("air_block") {
-			enableHitbox(false);
-		}
+ private:
+ public:
+  explicit AirBlock() : Block("air_block") { enableHitbox(false); }
 
-		Block* createObject() override {
-			return new AirBlock;
-		}
-	};
-}
+  Block* createObject() override { return new AirBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_AIRBLOCK_HPP
+#endif  // MINECRAFT_AIRBLOCK_HPP

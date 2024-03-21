@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class BirchLogBlock : public block::Block {
-	private:
-	public:
-		BirchLogBlock() : Block("birch_log_block") {
-		}
+class BirchLogBlock : public block::Block {
+ private:
+ public:
+  BirchLogBlock() : Block("birch_log_block") {}
 
-		Block* createObject() override {
-			return new BirchLogBlock;
-		}
-	};
-}
+  Block* createObject() override { return new BirchLogBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_BIRCHLOGBLOCK_HPP
+#endif  // MINECRAFT_BIRCHLOGBLOCK_HPP

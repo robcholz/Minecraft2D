@@ -8,16 +8,13 @@
 #include "block/attributes/Block.hpp"
 
 namespace block {
-	class DirtBlock : public block::Block {
-	private:
-	public:
-		DirtBlock() : Block("dirt_block") {
-		}
+class DirtBlock : public block::Block {
+ private:
+ public:
+  DirtBlock() : Block("dirt_block") {}
 
-		Block* createObject() override {
-			return new DirtBlock;
-		}
-	};
-}
+  Block* createObject() override { return new DirtBlock; }
+};
+}  // namespace block
 
-#endif //MINECRAFT_DIRTBLOCK_HPP
+#endif  // MINECRAFT_DIRTBLOCK_HPP

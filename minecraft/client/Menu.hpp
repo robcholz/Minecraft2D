@@ -6,184 +6,226 @@
 #ifndef MINECRAFT_MENU_HPP
 #define MINECRAFT_MENU_HPP
 
-
-#include "util/Utils.hpp"
-#include "Initializers/ConsoleInitializer.h"
+#include <plog/Initializers/ConsoleInitializer.h>
+#include "MinecraftClientAccess.hpp"
 #include "client/gui/screen/Background.hpp"
+#include "client/gui/screen/ScreenManager.hpp"
 #include "client/gui/widget/ButtonWidget.hpp"
-#include "client/gui/widget/TexturedButtonWidget.hpp"
 #include "client/gui/widget/SoundSliderWidget.hpp"
+#include "client/gui/widget/SplashingTextFieldWidget.hpp"
 #include "client/gui/widget/TextFieldWidget.hpp"
 #include "client/gui/widget/TextureWidget.hpp"
-#include "client/gui/widget/SplashingTextFieldWidget.hpp"
-#include "client/gui/screen/ScreenManager.hpp"
+#include "client/gui/widget/TexturedButtonWidget.hpp"
 #include "client/scene/SceneAccess.hpp"
 #include "sound/SoundEvents.hpp"
-#include "MinecraftClientAccess.hpp"
-
+#include "sound/SoundManager.hpp"
+#include "util/Utils.hpp"
 
 class Menu : public SceneAccess {
-public:
-	explicit Menu(MinecraftClientAccess* minecraftClientAccess) {
-		this->minecraftClientAccess = minecraftClientAccess;
-		backgroundMenuScreen = std::make_unique<Screen>(minecraftClientAccess, &backgroundTexture);
-		backgroundBiomeSettingScreen = std::make_unique<Screen>(minecraftClientAccess, &backgroundTexture);
-		settingVolumeScreen = std::make_unique<Screen>(minecraftClientAccess, &settingBackground);
-		settingSingleplayerScreen = std::make_unique<Screen>(minecraftClientAccess, &settingBackground);
+ public:
+  explicit Menu(MinecraftClientAccess* minecraftClientAccess) {
+    this->minecraftClientAccess = minecraftClientAccess;
+    backgroundMenuScreen =
+        std::make_unique<Screen>(minecraftClientAccess, &backgroundTexture);
+    backgroundBiomeSettingScreen =
+        std::make_unique<Screen>(minecraftClientAccess, &backgroundTexture);
+    settingVolumeScreen =
+        std::make_unique<Screen>(minecraftClientAccess, &settingBackground);
+    settingSingleplayerScreen =
+        std::make_unique<Screen>(minecraftClientAccess, &settingBackground);
 
-		PLOG_DEBUG << "Menu started!";
-		onInitialize();
-	}
+    PLOG_DEBUG << "Menu started!";
+    onInitialize();
+  }
 
-	~Menu() override {
-		PLOG_DEBUG << "Menu stopped!";
-	}
+  ~Menu() override { PLOG_DEBUG << "Menu stopped!"; }
 
-	void onUpdate() override {
-		screenManager.update();
-	}
+  void onUpdate() override { screenManager.update(); }
 
-	void onRender() override {
-		screenManager.render();
-	}
+  void onRender() override { screenManager.render(); }
 
-private:
-	int screenWidth = (int) RenderSystem::getScreenWidth();
-	int screenHeight = (int) RenderSystem::getScreenHeight();
+ private:
+  int screenWidth = (int)RenderSystem::getScreenWidth();
+  int screenHeight = (int)RenderSystem::getScreenHeight();
 
-	MinecraftClientAccess* minecraftClientAccess;
+  MinecraftClientAccess* minecraftClientAccess;
 
-	Background backgroundTexture{"background"};
-	Background settingBackground{"options_background"};
+  Background backgroundTexture{"background"};
+  Background settingBackground{"options_background"};
 
-	/*main menu*/
-	Layout::Stack backgroundMenuStack;
-	ButtonWidget backgroundMenuSinglePlayer{"singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432};
-	ButtonWidget backgroundMenuLanguage{"language", 800, 80, true, screenWidth / 2 - 800 / 2, 528};
-	ButtonWidget backgroundMenuWhat{"multiplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 624};
-	ButtonWidget backgroundMenuOptions{"options", 380, 80, true, screenWidth / 2 - 800 / 2, 768};//
-	ButtonWidget backgroundMenuQuitGame{"quit_game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768};
-	TexturedButtonWidget backgroundMenuLanguageTexturedButton{32, 32, true, screenWidth / 2 - 500, 768};
-	TextureWidget backgroundMinecraftTitle{"title.minecraft", true, screenWidth / 2 - 982 / 2, 128};
-	SplashingTextFieldWidget backgroundSplashingText{"splashing_text", 70, 5, -30};
-	std::unique_ptr<Screen> backgroundMenuScreen;
+  std::unique_ptr<Screen> backgroundMenuScreen;
+  std::unique_ptr<Screen> backgroundBiomeSettingScreen;
+  std::unique_ptr<Screen> settingVolumeScreen;
+  std::unique_ptr<Screen> settingSingleplayerScreen;
 
-	/*settings*/
-	Layout::Stack backgroundSettingBiomeStack;
-	ButtonWidget backgroundSettingVolume{"music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200};
-	ButtonWidget backgroundSettingBack{"done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50};
-	std::unique_ptr<Screen> backgroundBiomeSettingScreen;
+  // main menu
+  ButtonWidget backgroundMenuSinglePlayer{
+      "singleplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 432};
+  ButtonWidget backgroundMenuLanguage{
+      "language", 800, 80, true, screenWidth / 2 - 800 / 2, 528};
+  ButtonWidget backgroundMenuWhat{
+      "multiplayer", 800, 80, true, screenWidth / 2 - 800 / 2, 624};
+  ButtonWidget backgroundMenuOptions{
+      "options", 380, 80, true, screenWidth / 2 - 800 / 2, 768};  //
+  ButtonWidget backgroundMenuQuitGame{
+      "quit_game", 380, 80, true, screenWidth / 2 + 800 / 2 - 380, 768};
+  TexturedButtonWidget backgroundMenuLanguageTexturedButton{
+      32, 32, true, screenWidth / 2 - 500, 768};
+  TextureWidget backgroundMinecraftTitle{"title.minecraft", true,
+                                         screenWidth / 2 - 982 / 2, 128};
+  SplashingTextFieldWidget backgroundSplashingText{"splashing_text", 70, 5,
+                                                   -30};
 
-	/*music settings*/
-	Layout::Stack settingVolumeStack;
-	TextFieldWidget settingVolumeSliderTitle{"music_sound_options", 70, true, screenWidth / 2 - 440 / 2, 20};
-	SoundSliderWidget settingVolumeSliderMasterVolume{"master_volume", 1240, 80, true, screenWidth / 2 - 620, 115};
-	SoundSliderWidget settingVolumeSliderMusic{"music_volume", 590, 80, true, screenWidth / 2 - 620, 225};
-	SoundSliderWidget settingVolumeSliderJukeboxNoteblocks{"jukebox_noteblocks_volume", 590, 80, true, screenWidth / 2 + 30, 225};
-	SoundSliderWidget settingVolumeSliderWeather{"weather_volume", 590, 80, true, screenWidth / 2 - 620, 335};
-	SoundSliderWidget settingVolumeSliderBlocks{"blocks_volume", 36, 590, 80, true, screenWidth / 2 + 30, 335};
-	SoundSliderWidget settingVolumeSliderHostileCreatures{"hostile_creatures_volume", 590, 80, true, screenWidth / 2 - 620, 445};
-	SoundSliderWidget settingVolumeSliderFriendlyCreatures{"friendly_creatures_volume", 590, 80, true, screenWidth / 2 + 30, 445};
-	SoundSliderWidget settingVolumeSliderPlayers{"players_volume", 590, 80, true, screenWidth / 2 - 620, 555};
-	SoundSliderWidget settingVolumeSliderAmbientEnvironment{"ambient_environment_volume", 590, 80, true, screenWidth / 2 + 30, 555};
-	ButtonWidget settingVolumeBack{"done", 790, 80, true, screenWidth / 2 - 390, 555 + 260};
-	std::unique_ptr<Screen> settingVolumeScreen;
+  // settings
+  ButtonWidget backgroundSettingVolume{
+      "music", 1200, 80, true, screenWidth / 2 - 1200 / 2, 200};
+  ButtonWidget backgroundSettingBack{
+      "done", 790, 80, true, screenWidth / 2 - 780 / 2, screenHeight - 80 - 50};
 
-	/*singleplayer page*/
-	Layout::Stack singleplayerStack;
-	ButtonWidget singleplayerGenerateWorld{"generate_experimental_world", 800, 80, true, screenWidth / 2 - 800 / 2, screenHeight / 2 + 80};
-	ButtonWidget singleplayerSettingBack{"done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50};
-	std::unique_ptr<Screen> settingSingleplayerScreen;
+  // music settings
+  TextFieldWidget settingVolumeSliderTitle{"music_sound_options", 70, true,
+                                           screenWidth / 2 - 440 / 2, 20};
+  SoundSliderWidget settingVolumeSliderMasterVolume{
+      "master_volume", 1240, 80, true, screenWidth / 2 - 620, 115};
+  SoundSliderWidget settingVolumeSliderMusic{
+      "music_volume", 590, 80, true, screenWidth / 2 - 620, 225};
+  SoundSliderWidget settingVolumeSliderJukeboxNoteblocks{
+      "jukebox_noteblocks_volume", 590, 80, true, screenWidth / 2 + 30, 225};
+  SoundSliderWidget settingVolumeSliderWeather{
+      "weather_volume", 590, 80, true, screenWidth / 2 - 620, 335};
+  SoundSliderWidget settingVolumeSliderBlocks{
+      "blocks_volume", 36, 590, 80, true, screenWidth / 2 + 30, 335};
+  SoundSliderWidget settingVolumeSliderHostileCreatures{
+      "hostile_creatures_volume", 590, 80, true, screenWidth / 2 - 620, 445};
+  SoundSliderWidget settingVolumeSliderFriendlyCreatures{
+      "friendly_creatures_volume", 590, 80, true, screenWidth / 2 + 30, 445};
+  SoundSliderWidget settingVolumeSliderPlayers{
+      "players_volume", 590, 80, true, screenWidth / 2 - 620, 555};
+  SoundSliderWidget settingVolumeSliderAmbientEnvironment{
+      "ambient_environment_volume", 590, 80, true, screenWidth / 2 + 30, 555};
+  ButtonWidget settingVolumeBack{"done",   790, 80, true, screenWidth / 2 - 390,
+                                 555 + 260};
 
-	ScreenManager screenManager;
+  // singleplayer page
+  ButtonWidget singleplayerGenerateWorld{
+      "generate_experimental_world", 800, 80, true, screenWidth / 2 - 800 / 2,
+      screenHeight / 2 + 80};
+  ButtonWidget singleplayerSettingBack{
+      "done", 790, 80, true, screenWidth / 2 - 790 / 2, screenHeight - 80 - 50};
 
-	void onInitialize() {
-		backgroundTexture.fitToScreen();
-		settingBackground.composeToScreen();
-		initWidget();
-		playRandomMusic();
+  ScreenManager screenManager;
 
-		PLOG_DEBUG << "Initialize assets.";
-	}
+  void onInitialize() {
+    backgroundTexture.fitToScreen();
+    settingBackground.composeToScreen();
+    initWidget();
+    playRandomMusic();
 
-	void initWidget() {
-		screenManager.addScreen(backgroundMenuScreen.get())
-		             .addScreen(backgroundBiomeSettingScreen.get())
-		             .addScreen(settingSingleplayerScreen.get())
-		             .addScreen(settingVolumeScreen.get())
-		             .setEntry(backgroundMenuScreen.get());
+    PLOG_DEBUG << "Initialize assets.";
+  }
 
-		backgroundMenuScreen->addCallbackScreen(backgroundBiomeSettingScreen.get(), &backgroundMenuOptions)
-		                    .addCallbackScreen(settingSingleplayerScreen.get(), &backgroundMenuSinglePlayer)
-		                    .addWidget(&backgroundMenuOptions)
-		                    .addWidget(&backgroundMenuSinglePlayer)
-		                    .addWidget(&backgroundMenuLanguage)
-		                    .addWidget(&backgroundMenuWhat)
-		                    .addWidget(&backgroundMenuLanguageTexturedButton)
-		                    .addWidget(&backgroundMenuQuitGame)
-		                    .addWidget(&backgroundMinecraftTitle)
-		                    .addWidget(&backgroundSplashingText);
-		backgroundMenuQuitGame.executeFuncWhenActivated([] {
-			PLOG_DEBUG << "Cancel minecraft!";
-			RenderSystem::getWindow()->close();
-		});
+  void initWidget() {
+    screenManager.addScreen(backgroundMenuScreen.get())
+        .addScreen(backgroundBiomeSettingScreen.get())
+        .addScreen(settingSingleplayerScreen.get())
+        .addScreen(settingVolumeScreen.get())
+        .setEntry(backgroundMenuScreen.get());
 
-		settingVolumeScreen->addCallbackScreen(backgroundBiomeSettingScreen.get(), &settingVolumeBack)
-		                   .addWidget(&settingVolumeSliderTitle)
-		                   .addWidget(&settingVolumeSliderAmbientEnvironment)
-		                   .addWidget(&settingVolumeSliderBlocks)
-		                   .addWidget(&settingVolumeSliderFriendlyCreatures)
-		                   .addWidget(&settingVolumeSliderHostileCreatures)
-		                   .addWidget(&settingVolumeSliderJukeboxNoteblocks)
-		                   .addWidget(&settingVolumeSliderMasterVolume)
-		                   .addWidget(&settingVolumeSliderMusic)
-		                   .addWidget(&settingVolumeSliderPlayers)
-		                   .addWidget(&settingVolumeSliderWeather)
-		                   .addWidget(&settingVolumeBack);
-		settingVolumeSliderAmbientEnvironment.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::ENVIRONMENT, settingVolumeSliderAmbientEnvironment.getValue());
-		});
-		settingVolumeSliderBlocks.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::BLOCKS, settingVolumeSliderBlocks.getValue());
-		});
-		settingVolumeSliderFriendlyCreatures.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::FRIENDLY_CREATURES, settingVolumeSliderFriendlyCreatures.getValue());
-		});
-		settingVolumeSliderHostileCreatures.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::HOSTILE_CREATURES, settingVolumeSliderHostileCreatures.getValue());
-		});
-		settingVolumeSliderJukeboxNoteblocks.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::JUKEBOX, settingVolumeSliderJukeboxNoteblocks.getValue());
-		});
-		settingVolumeSliderMasterVolume.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::MASTER, settingVolumeSliderMasterVolume.getValue());
-		});
-		settingVolumeSliderMusic.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::MUSIC, settingVolumeSliderMusic.getValue());
-		});
-		settingVolumeSliderPlayers.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::PLAYERS, settingVolumeSliderPlayers.getValue());
-		});
-		settingVolumeSliderWeather.executeFuncWhenActivated([this]() {
-			this->minecraftClientAccess->getSoundManager()->setVolume(SoundManager::Sound::WEATHER, settingVolumeSliderWeather.getValue());
-		});
+    backgroundMenuScreen
+        ->addCallbackScreen(backgroundBiomeSettingScreen.get(),
+                            &backgroundMenuOptions)
+        .addCallbackScreen(settingSingleplayerScreen.get(),
+                           &backgroundMenuSinglePlayer)
+        .addWidget(&backgroundMenuOptions)
+        .addWidget(&backgroundMenuSinglePlayer)
+        .addWidget(&backgroundMenuLanguage)
+        .addWidget(&backgroundMenuWhat)
+        .addWidget(&backgroundMenuLanguageTexturedButton)
+        .addWidget(&backgroundMenuQuitGame)
+        .addWidget(&backgroundMinecraftTitle)
+        .addWidget(&backgroundSplashingText);
+    backgroundMenuQuitGame.executeFuncWhenActivated([] {
+      PLOG_DEBUG << "Cancel minecraft!";
+      RenderSystem::getWindow()->close();
+    });
 
-		settingSingleplayerScreen->addCallbackScreen(backgroundMenuScreen.get(), &singleplayerSettingBack)
-		                         .addWidget(&singleplayerGenerateWorld)
-		                         .addWidget(&singleplayerSettingBack);
-		singleplayerGenerateWorld.executeFuncWhenActivated([this] { terminateScene(); });
+    settingVolumeScreen
+        ->addCallbackScreen(backgroundBiomeSettingScreen.get(),
+                            &settingVolumeBack)
+        .addWidget(&settingVolumeSliderTitle)
+        .addWidget(&settingVolumeSliderAmbientEnvironment)
+        .addWidget(&settingVolumeSliderBlocks)
+        .addWidget(&settingVolumeSliderFriendlyCreatures)
+        .addWidget(&settingVolumeSliderHostileCreatures)
+        .addWidget(&settingVolumeSliderJukeboxNoteblocks)
+        .addWidget(&settingVolumeSliderMasterVolume)
+        .addWidget(&settingVolumeSliderMusic)
+        .addWidget(&settingVolumeSliderPlayers)
+        .addWidget(&settingVolumeSliderWeather)
+        .addWidget(&settingVolumeBack);
+    settingVolumeSliderAmbientEnvironment.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::ENVIRONMENT,
+          settingVolumeSliderAmbientEnvironment.getValue());
+    });
+    settingVolumeSliderBlocks.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::BLOCKS, settingVolumeSliderBlocks.getValue());
+    });
+    settingVolumeSliderFriendlyCreatures.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::FRIENDLY_CREATURES,
+          settingVolumeSliderFriendlyCreatures.getValue());
+    });
+    settingVolumeSliderHostileCreatures.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::HOSTILE_CREATURES,
+          settingVolumeSliderHostileCreatures.getValue());
+    });
+    settingVolumeSliderJukeboxNoteblocks.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::JUKEBOX,
+          settingVolumeSliderJukeboxNoteblocks.getValue());
+    });
+    settingVolumeSliderMasterVolume.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::MASTER,
+          settingVolumeSliderMasterVolume.getValue());
+    });
+    settingVolumeSliderMusic.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::MUSIC, settingVolumeSliderMusic.getValue());
+    });
+    settingVolumeSliderPlayers.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::PLAYERS, settingVolumeSliderPlayers.getValue());
+    });
+    settingVolumeSliderWeather.executeFuncWhenActivated([this]() {
+      this->minecraftClientAccess->getSoundManager()->setVolume(
+          SoundManager::Sound::WEATHER, settingVolumeSliderWeather.getValue());
+    });
 
-		backgroundBiomeSettingScreen->addCallbackScreen(backgroundMenuScreen.get(), &backgroundSettingBack)
-		                            .addCallbackScreen(settingVolumeScreen.get(), &backgroundSettingVolume)
-		                            .addWidget(&backgroundSettingBack)
-		                            .addWidget(&backgroundSettingVolume);
+    settingSingleplayerScreen
+        ->addCallbackScreen(backgroundMenuScreen.get(),
+                            &singleplayerSettingBack)
+        .addWidget(&singleplayerGenerateWorld)
+        .addWidget(&singleplayerSettingBack);
+    singleplayerGenerateWorld.executeFuncWhenActivated(
+        [this] { terminateScene(); });
 
-		PLOG_DEBUG << "Initialize widget components";
-	}
+    backgroundBiomeSettingScreen
+        ->addCallbackScreen(backgroundMenuScreen.get(), &backgroundSettingBack)
+        .addCallbackScreen(settingVolumeScreen.get(), &backgroundSettingVolume)
+        .addWidget(&backgroundSettingBack)
+        .addWidget(&backgroundSettingVolume);
 
-	void playRandomMusic() {
-		this->minecraftClientAccess->getSoundManager()->addSound(SoundEvents::getInstance().MUSIC_MENU);
-	}
+    PLOG_DEBUG << "Initialize widget components";
+  }
+
+  void playRandomMusic() {
+    this->minecraftClientAccess->getSoundManager()->addSound(
+        SoundEvents::getInstance().MUSIC_MENU);
+  }
 };
 
-#endif //MINECRAFT_MENU_HPP
+#endif  // MINECRAFT_MENU_HPP
