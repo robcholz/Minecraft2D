@@ -7,7 +7,8 @@
 
 #include <algorithm>
 #include <array>
-#include "bitsery/brief_syntax.h"
+#include <memory>
+#include <bitsery/brief_syntax.h>
 #include "block/attributes/Block.hpp"
 #include "block/attributes/Blocks.hpp"
 #include "client/render/TileColor.hpp"
@@ -74,6 +75,20 @@ class Chunk {
         delete getBlock(x_pos, y_pos);
       }
     }
+  }
+
+  static std::unique_ptr<Chunk> emptyChunk(ChunkPosT chunkPos){
+    block::Block* blocks[chunk::ChunkGenSettings::CHUNK_WIDTH]
+                        [chunk::ChunkGenSettings::CHUNK_HEIGHT];
+    for (auto x_pos = 0; x_pos < chunk::ChunkGenSettings::CHUNK_WIDTH;
+         x_pos++) {
+      for (auto z_pos = 0; z_pos < chunk::ChunkGenSettings::CHUNK_HEIGHT;
+           z_pos++) {
+        auto block = block::Blocks::getInstance().AIR_BLOCK->createObject();
+        blocks[x_pos][z_pos] = block;
+      }
+    }
+    return std::make_unique<Chunk>(chunkPos,&blocks);
   }
 
   [[nodiscard]] block::Block* getBlock(BlockPosT x, BlockPosT z) const {

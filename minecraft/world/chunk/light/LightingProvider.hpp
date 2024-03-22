@@ -36,13 +36,20 @@ class LightingProvider : public LightingProviderAccess {
 
   // exert the light due to the influence of the daylights
   void updateDaylight(ChunkPosT chunkPos) {
+    auto chunk = this->worldChunkAccess->getChunk(chunkPos);
+    if (chunk)
+      updateDaylight(chunk.value());
+  }
+
+  void updateDaylight(chunk::Chunk& chunk) {
     for (auto x_in_chunk = 0; x_in_chunk < chunk::ChunkGenSettings::CHUNK_WIDTH;
          ++x_in_chunk) {
       // get world-x position
-      auto x_world = chunk::Chunk::toBlockPosition(chunkPos, x_in_chunk, 15).x;
+      auto x_world = chunk::Chunk::toBlockPosition(chunk.getChunkPosition(),
+                                                   x_in_chunk, 15)
+                         .x;
       // set the all the air blocks exposed to daylight to the max light level
-      for (auto z_pos =
-               worldChunkAccess->getChunk(chunkPos)->get().getHeightMap(x_in_chunk);
+      for (auto z_pos = chunk.getHeightMap(x_in_chunk);
            z_pos < chunk::ChunkGenSettings::CHUNK_HEIGHT; ++z_pos) {
         updateLightSource({x_world, z_pos}, 15);
       }

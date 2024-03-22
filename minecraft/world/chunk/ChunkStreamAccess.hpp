@@ -10,6 +10,8 @@ class Chunk;
 
 class ChunkStreamAccess {
  public:
+  virtual ~ChunkStreamAccess() = default;
+
   virtual int getRenderedChunks() = 0;
 
   virtual uint16_t getUpdatedChunks() const = 0;

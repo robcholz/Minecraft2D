@@ -28,12 +28,14 @@ class SpritePool : public AppShift::Memory::MemoryPool {
 
 class Sprite : public sf::Sprite {
  public:
+  /*
   void* operator new(size_t size) {
     void* memory = SpritePool::getInstance().allocate(size);
     return memory;
   }
+   */
 
-  void operator delete(void* memory) { SpritePool::getInstance().free(memory); }
+  //void operator delete(void* memory) { SpritePool::getInstance().free(memory); }
 };
 }  // namespace resource
 

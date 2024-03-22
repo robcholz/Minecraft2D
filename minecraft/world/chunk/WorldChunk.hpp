@@ -25,8 +25,9 @@ class WorldChunk : public WorldChunkAccess {
     chunkStream = std::make_unique<ChunkStream>(worldAccess, simulationDistance,
                                                 renderDistance);
     lightingProvider = std::make_unique<LightingProvider>(this);
-    chunkStream->onChunkRender([this](ChunkPosT chunkPos) {
-      lightingProvider->updateDaylight(chunkPos);
+    chunkStream->onChunkRender([this](chunk::Chunk& chunk) {
+      PLOG_DEBUG << "update daylight data in chunk " << chunk.getChunkPosition();
+      lightingProvider->updateDaylight(chunk);
     });
   }
 
@@ -52,7 +53,7 @@ class WorldChunk : public WorldChunkAccess {
     if (chunk.has_value())
       return chunk->get().getBlockLightLevel(chunkSettings.blockPos);
     else {
-      PLOG_ERROR << "no such chunk exists";
+      PLOG_ERROR << "no such chunk exists at" << chunkSettings.chunkPos;
     }
     return 0;
   }
