@@ -23,9 +23,9 @@ class MinecraftClientAccess {
 
   virtual SceneManager* getSceneManager() = 0;
 
-  virtual input::mouse::Mouse* getMouse() = 0;
+  virtual input::mouse::Mouse& getMouse() = 0;
 
-  virtual input::keyboard::Keyboard* getKeyboard() = 0;
+  virtual input::keyboard::Keyboard& getKeyboard() = 0;
 };
 
 #endif  // MINECRAFT_MINECRAFTCLIENTACCESS_HPP

@@ -30,21 +30,25 @@ namespace peripherals {
 template <class Key, typename KeyType>
 class Peripherals {
  protected:
-  using String = std::string;
-  std::map<KeyType, Key*> loadedPeripheralsList;
+  std::map<KeyType, std::unique_ptr<Key>> loadedPeripheralsList;
 
  public:
-  Key* addKey(KeyType keyType) {
-    auto key = new Key(keyType);
-    loadedPeripheralsList.insert({keyType, key});
-    loadedPeripheralsList[keyType] = key;
-    return key;
+  virtual ~Peripherals() = default;
+
+  Key& addKey(KeyType keyType) {
+    if (!loadedPeripheralsList.contains(keyType))
+      loadedPeripheralsList.insert({keyType, std::make_unique<Key>(keyType)});
+    return *loadedPeripheralsList[keyType];
   }
 
-  Key* getKey(KeyType keyType) { return loadedPeripheralsList[keyType]; }
+  std::optional<std::reference_wrapper<Key>> getKey(KeyType keyType) {
+    if (loadedPeripheralsList.contains(keyType))
+      return *loadedPeripheralsList[keyType];
+    return std::nullopt;
+  }
 
   virtual void onUpdate() {
-    for (auto v : loadedPeripheralsList) {
+    for (auto& v : loadedPeripheralsList) {
       v.second->update();
     }
   }
@@ -138,17 +142,7 @@ class Mouse : public input::peripherals::Peripherals<MouseKey, MouseKeyType> {
 };
 }  // namespace mouse
 
-using Keyboard = std::shared_ptr<keyboard::Keyboard>;
-using Mouse = std::shared_ptr<mouse::Mouse>;
-
 class PeripheralsFactory {
- private:
-  template <class T>
-  static std::shared_ptr<T> getInstance() {
-    static std::shared_ptr<T> instance(new T);
-    return instance;
-  }
-
  public:
   PeripheralsFactory() = delete;
 
@@ -156,32 +150,37 @@ class PeripheralsFactory {
 
   ~PeripheralsFactory() = delete;
 
-  static Keyboard getKeyboard() { return getInstance<keyboard::Keyboard>(); }
+  static keyboard::Keyboard& getKeyboard() {
+    static keyboard::Keyboard keyboard;
+    return keyboard;
+  }
 
-  static Mouse getMouse() { return getInstance<mouse::Mouse>(); }
+  static mouse::Mouse& getMouse() {
+    static mouse::Mouse mouse;
+    return mouse;
+  }
 };
 
 class KeyboardObserver {
  private:
-  std::vector<keyboard::KeyboardKey*> hotKeyList;
-  Keyboard keyboard = PeripheralsFactory::getKeyboard();
+  std::vector<std::reference_wrapper<keyboard::KeyboardKey>> hotKeyList;
+  std::reference_wrapper<keyboard::Keyboard> keyboard;
 
  public:
-  KeyboardObserver() = default;
+  KeyboardObserver() : keyboard(PeripheralsFactory::getKeyboard()) {}
 
   KeyboardObserver& attachKey(KeyboardKeyType keyType) {
-    auto key = keyboard->getKey(keyType);
-    if (key == nullptr)
-      hotKeyList.push_back(keyboard->addKey(keyType));
+    auto key = keyboard.get().getKey(keyType);
+    if (!key.has_value())
+      hotKeyList.push_back(keyboard.get().addKey(keyType));
     else
-      hotKeyList.push_back(key);
+      hotKeyList.push_back(key.value());
     return *this;
   }
 
   [[nodiscard]] bool isActivated() const {
-    return std::all_of(
-        hotKeyList.cbegin(), hotKeyList.cend(),
-        [](keyboard::KeyboardKey* key) { return key->isPressed(); });
+    return std::all_of(hotKeyList.cbegin(), hotKeyList.cend(),
+                       [](auto key) { return key.get().isPressed(); });
   }
 
   ~KeyboardObserver() = default;
@@ -189,27 +188,27 @@ class KeyboardObserver {
 
 class MouseObserver {
  private:
-  std::vector<mouse::MouseKey*> hotKeyList;
-  Mouse mouse = PeripheralsFactory::getMouse();
+  std::vector<std::reference_wrapper<mouse::MouseKey>> hotKeyList;
+  std::reference_wrapper<mouse::Mouse> mouse;
 
  public:
-  MouseObserver() = default;
+  MouseObserver() : mouse(PeripheralsFactory::getMouse()) {}
 
   MouseObserver& attachKey(MouseKeyType keyType) {
-    auto key = mouse->getKey(keyType);
-    if (key == nullptr)
-      hotKeyList.push_back(mouse->addKey(keyType));
+    auto key = mouse.get().getKey(keyType);
+    if (!key.has_value())
+      hotKeyList.push_back(mouse.get().addKey(keyType));
     else
-      hotKeyList.push_back(key);
+      hotKeyList.push_back(key.value());
     return *this;
   }
 
   [[nodiscard]] bool isActivated() const {
     return std::all_of(hotKeyList.cbegin(), hotKeyList.cend(),
-                       [](mouse::MouseKey* key) { return key->isPressed(); });
+                       [](auto key) { return key.get().isPressed(); });
   }
 
-  sf::Vector2i getPosition() { return mouse->getPosition(); }
+  sf::Vector2i getPosition() { return mouse.get().getPosition(); }
 
   ~MouseObserver() = default;
 };
