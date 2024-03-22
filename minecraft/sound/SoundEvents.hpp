@@ -39,8 +39,8 @@ class SoundEvents {
 
  private:
   // TODO need to implement an essential sound pool here to save mm
-  std::list<SoundEventPtr> soundEventsRegistryList;
-  std::list<MusicSoundEventPtr> musicSoundEventsRegistryList;
+  std::list<std::unique_ptr<SoundEvent>> soundEventsRegistryList;
+  std::list<std::unique_ptr<MusicSoundEvent>> musicSoundEventsRegistryList;
 
   SoundEvents() {
     STEP_SOUND_GRASS = registerSoundEvent("step.grass");
@@ -53,26 +53,24 @@ class SoundEvents {
     MUSIC_NUANCE = registerMusicSoundEvent("game.nuance");
   }
 
-  ~SoundEvents() {
-    for (auto v : soundEventsRegistryList)
-      delete v;
-    for (auto v : musicSoundEventsRegistryList)
-      delete v;
-  }
+  ~SoundEvents() = default;
 
   SoundEventPtr registerSoundEvent(const String& id) {
-    auto sound_event =
-        new SoundEvent(Identifier(id, Identifier::Category::SOUND));
-    soundEventsRegistryList.push_back(sound_event);
-    return sound_event;
+    auto sound_event = std::make_unique<SoundEvent>(
+        Identifier(id, Identifier::Category::SOUND));
+    auto sound_event_ptr = sound_event.get();
+    soundEventsRegistryList.push_back(std::move(sound_event));
+    return soundEventsRegistryList.back().get();
   }
 
   MusicSoundEventPtr registerMusicSoundEvent(const String& id) {
-    auto music_sound_event = new MusicSoundEvent(
-        SoundEvent(Identifier("music." + id, Identifier::Category::SOUND)), 1,
-        1.0f);
-    musicSoundEventsRegistryList.push_back(music_sound_event);
-    return music_sound_event;
+    auto music_sound_event = std::make_unique<MusicSoundEvent>(
+        std::make_unique<SoundEvent>(
+            Identifier("music." + id, Identifier::Category::SOUND)),
+        1, 1.0f);
+    auto music_sound_event_ptr = music_sound_event.get();
+    musicSoundEventsRegistryList.push_back(std::move(music_sound_event));
+    return musicSoundEventsRegistryList.back().get();
   }
 };
 

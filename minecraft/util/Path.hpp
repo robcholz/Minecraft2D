@@ -14,7 +14,7 @@ class Path {
   using String = std::string;
 
  protected:
-  static inline String getRoot() {
+  static String getRoot() {
     boost::filesystem::path program_location(boost::system::error_code & ec);
     auto raw_dir = boost::dll::program_location().string();
     raw_dir = raw_dir.substr(0, raw_dir.find_last_of("\\/"));

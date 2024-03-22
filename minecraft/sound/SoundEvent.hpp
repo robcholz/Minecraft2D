@@ -1,4 +1,3 @@
-
 //
 // Created by robcholz on 6/9/23.
 //
@@ -23,26 +22,18 @@ class SoundEvent {
     search(soundsList);
   }
 
-  SoundEvent(const SoundEvent& soundEvent) {
-    this->identifier = std::make_unique<Identifier>(*soundEvent.identifier);
-    this->currentIdentifier = soundEvent.currentIdentifier;
-    this->soundBuffer = soundEvent.soundBuffer;
-    this->soundsList = soundEvent.soundsList;
-  }
-
   ~SoundEvent() = default;
 
   void loadSound() {
     if (!currentIdentifier)
-      delete currentIdentifier;
-    currentIdentifier = new Identifier(Identifier(
-        Random::randomElement(soundsList), Identifier::Category::SOUND));
+      currentIdentifier = std::make_unique<Identifier>(
+          Random::randomElement(soundsList), Identifier::Category::SOUND);
     soundBuffer.loadFromFile(currentIdentifier->getAbsolutePath());
   }
 
   sf::SoundBuffer& getSound() { return soundBuffer; }
 
-  Identifier& getID() {
+  Identifier& getID() const {
     if (!currentIdentifier)
       return *identifier;
     return *currentIdentifier;
@@ -50,7 +41,7 @@ class SoundEvent {
 
  private:
   std::unique_ptr<Identifier> identifier;
-  Identifier* currentIdentifier = nullptr;
+  std::unique_ptr<Identifier> currentIdentifier;
   sf::SoundBuffer soundBuffer;
   std::vector<String> soundsList;
 

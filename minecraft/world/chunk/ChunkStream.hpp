@@ -308,7 +308,7 @@ class ChunkStream : public ChunkStreamAccess {
 
   /// @warning only used in chunkIOThreadMain
   void processChunkSaveRequest() {
-    PLOG_DEBUG << "process chunk save request";
+    PLOG_DEBUG << "processing chunk save request";
     auto chunk = std::move(chunkSaveRequestQueue.back());
     chunkSaveRequestQueue.pop_back();
     saveHelper->saveChunk(*chunk);
