@@ -90,7 +90,7 @@ class Keyboard : public peripherals::Peripherals<KeyboardKey, KeyboardKeyType> {
  public:
   explicit Keyboard() = default;
 
-  ~Keyboard() = default;
+  ~Keyboard() override = default;
 };
 }  // namespace keyboard
 
@@ -138,7 +138,7 @@ class Mouse : public input::peripherals::Peripherals<MouseKey, MouseKeyType> {
 
   sf::Vector2i& getPosition() { return position; }
 
-  ~Mouse() = default;
+  ~Mouse() override = default;
 };
 }  // namespace mouse
 
@@ -172,7 +172,7 @@ class KeyboardObserver {
   KeyboardObserver& attachKey(KeyboardKeyType keyType) {
     auto key = keyboard.get().getKey(keyType);
     if (!key.has_value())
-      hotKeyList.push_back(keyboard.get().addKey(keyType));
+      hotKeyList.emplace_back(keyboard.get().addKey(keyType));
     else
       hotKeyList.push_back(key.value());
     return *this;
@@ -197,7 +197,7 @@ class MouseObserver {
   MouseObserver& attachKey(MouseKeyType keyType) {
     auto key = mouse.get().getKey(keyType);
     if (!key.has_value())
-      hotKeyList.push_back(mouse.get().addKey(keyType));
+      hotKeyList.emplace_back(mouse.get().addKey(keyType));
     else
       hotKeyList.push_back(key.value());
     return *this;
