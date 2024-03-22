@@ -10,11 +10,11 @@
 class MusicSoundEvent {
  public:
   using MusicSoundEventPtr = MusicSoundEvent*;
-  MusicSoundEvent(const SoundEvent& soundEvent,
+  MusicSoundEvent(std::unique_ptr<SoundEvent> soundEvent,
                   int minDelay,
                   int maxDelay,
                   bool replaceCurrentMusic = false) {
-    this->soundEvent = std::make_unique<SoundEvent>(soundEvent);
+    this->soundEvent = std::move(soundEvent);
     this->minDelay = minDelay;
     this->maxDelay = maxDelay;
     this->replaceCurrentMusic = replaceCurrentMusic;
