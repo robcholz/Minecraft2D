@@ -164,9 +164,9 @@ class Chunk {
       chunk_settings.chunkPos = 0;
     } else [[likely]] {
       if (blockPosX > 0) {
-        chunk_settings.chunkPos = blockPosX / 16;
+        chunk_settings.chunkPos = blockPosX / ChunkGenSettings::CHUNK_WIDTH;
       } else {
-        chunk_settings.chunkPos = ((blockPosX + 1) / 16 - 1);
+        chunk_settings.chunkPos = ((blockPosX + 1) / ChunkGenSettings::CHUNK_WIDTH - 1);
       }
     }
     chunk_settings.blockPos.x =
