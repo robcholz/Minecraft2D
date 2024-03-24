@@ -20,16 +20,19 @@ class SceneManager {
     this->minecraftClientAccess = minecraftClientAccess;
   }
 
-  ~SceneManager() = default;
+  ~SceneManager(){
+    if(scene!= nullptr)
+      delete scene;
+  }
 
   SceneManager& setEntry(const String& name) {
-    scene = sceneCallableMap[name]();
+    scene = sceneCallableMap[name]().release();
     sceneName = name;
     return *this;
   }
 
   SceneManager& addScene(const String& name,
-                         std::function<SceneAccess*()> function) {
+                         std::function<std::unique_ptr<SceneAccess>()> function) {
     sceneCallableMap.insert({name, std::move(function)});
     return *this;
   }
@@ -53,7 +56,7 @@ class SceneManager {
               .clearMusicSoundEventQueue();
           sceneName = pairMap[sceneName];
           delete scene;
-          scene = sceneCallableMap[sceneName]();
+          scene = sceneCallableMap[sceneName]().release();
         }
       }
     }
@@ -71,7 +74,7 @@ class SceneManager {
 
  private:
   MinecraftClientAccess* minecraftClientAccess = nullptr;
-  std::map<String, std::function<SceneAccess*()>> sceneCallableMap;
+  std::map<String, std::function<std::unique_ptr<SceneAccess>()>> sceneCallableMap;
   std::map<String, String> pairMap;
   SceneAccess* scene = nullptr;
   bool isPaused = false;

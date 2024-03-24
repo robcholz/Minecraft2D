@@ -97,7 +97,6 @@ class Keyboard : public peripherals::Peripherals<KeyboardKey, KeyboardKeyType> {
 namespace mouse {
 class MouseKey : public peripherals::Key<MouseKeyType> {
  private:
-  SystemEvents* event = SystemEvents::getInstance();
   struct Wheel {
     float delta;
     float change;
@@ -115,8 +114,8 @@ class MouseKey : public peripherals::Key<MouseKeyType> {
 
   void update() override {
     if (isAnalog()) {
-      if (event->getEvent()->type == sf::Event::MouseWheelScrolled)
-        wheel.delta = event->getEvent()->mouseWheelScroll.delta;
+      if (SystemEvents::getInstance().getEvent().type == sf::Event::MouseWheelScrolled)
+        wheel.delta = SystemEvents::getInstance().getEvent().mouseWheelScroll.delta;
     } else {
       pressed =
           sf::Mouse::isButtonPressed(static_cast<sf::Mouse::Button>(toggleKey));

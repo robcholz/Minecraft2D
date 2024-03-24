@@ -364,7 +364,7 @@ class RichText : public sf::Drawable, public sf::Transformable {
   }
 
  public:
-  RichText() : RichText(&gui_style::MessageFont) {}
+  RichText() : RichText(gui_style::MessageFont) {}
 
   explicit RichText(const sf::Font& font) : RichText(&font) {}
 

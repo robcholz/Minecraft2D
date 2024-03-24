@@ -14,12 +14,12 @@
 
 class SystemEvents {
  public:
-  explicit SystemEvents(MinecraftClientAccess* minecraftClientAccess) {
-    this->minecraftClientAccess = minecraftClientAccess;
-    SystemEvents::instance = this;
+  static SystemEvents& getInstance(){
+    static SystemEvents instance;
+    return instance;
   }
 
-  sf::Event* getEvent() { return &event; }
+  sf::Event& getEvent() { return event; }
 
   void update() {
     while (RenderSystem::getWindow()->pollEvent(event)) {
@@ -101,11 +101,7 @@ class SystemEvents {
     this->resizeWindow = std::move(presizeWindow);
   }
 
-  static SystemEvents* getInstance() { return SystemEvents::instance; }
-
  private:
-  MinecraftClientAccess* minecraftClientAccess = nullptr;
-  static inline SystemEvents* instance = nullptr;
   sf::Event event{};
   std::function<void()> resumeGame;
   std::function<void()> pauseGame;

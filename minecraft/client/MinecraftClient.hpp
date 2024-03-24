@@ -16,11 +16,11 @@
 class MinecraftClient : public MinecraftClientAccess {
  protected:
   void onUpdate() {
-    gameEvents->update();
+    SystemEvents::getInstance().update();
     keyboard.get().update();
     mouse.get().update();
     sceneManager->update();
-    soundManager.update();
+    soundManager->update();
   }
 
   void onRender() { sceneManager->render(); }
@@ -32,18 +32,19 @@ class MinecraftClient : public MinecraftClientAccess {
     MinecraftVersion::init();
     RenderSystem::init(MinecraftVersion::getProductionName(),
                        "grass_block_side");
-    gameEvents = std::make_unique<SystemEvents>(this);
     sceneManager = std::make_unique<SceneManager>(this);
+    soundManager = std::make_unique<SoundManager>();
 
-    gameEvents->onGamePause([this]() { this->sceneManager->pause(); });
-    gameEvents->onGameResume([this]() { this->sceneManager->resume(); });
-    gameEvents->onWindowResize([]() {
+    SystemEvents::getInstance().onGamePause([this]() { this->sceneManager->pause(); });
+    SystemEvents::getInstance().onGameResume([this]() { this->sceneManager->resume(); });
+    SystemEvents::getInstance().onWindowResize([]() {
       PLOG_DEBUG << "Yes";
       // sf::FloatRect visibleArea(0, 0, , RenderSystem::getScreenHeight());
       // RenderSystem::getWindow()->setView(sf::View(visibleArea));
     });
-    sceneManager->addScene("menu", [this]() { return new Menu(this); })
-        .addScene("world", [this]() { return new World(this); })
+    sceneManager
+        ->addScene("menu", [this]() { return std::make_unique<Menu>(this); })
+        .addScene("world", [this]() { return std::make_unique<World>(this); })
         .setPair("menu", "world")
         .setEntry("menu");
   }
@@ -60,7 +61,7 @@ class MinecraftClient : public MinecraftClientAccess {
     }
   }
 
-  SoundManager& getSoundManager() override { return soundManager; }
+  SoundManager& getSoundManager() override { return *soundManager; }
 
   SceneManager& getSceneManager() override { return *sceneManager; }
 
@@ -69,9 +70,8 @@ class MinecraftClient : public MinecraftClientAccess {
   input::keyboard::Keyboard& getKeyboard() override { return keyboard.get(); }
 
  private:
-  SoundManager soundManager;
+  std::unique_ptr<SoundManager> soundManager;
   std::unique_ptr<SceneManager> sceneManager;
-  std::unique_ptr<SystemEvents> gameEvents;
   std::reference_wrapper<input::mouse::Mouse> mouse;
   std::reference_wrapper<input::keyboard::Keyboard> keyboard;
 };
