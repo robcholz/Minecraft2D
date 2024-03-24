@@ -5,10 +5,10 @@
 #ifndef MINECRAFT_CHUNK_HPP
 #define MINECRAFT_CHUNK_HPP
 
+#include <bitsery/brief_syntax.h>
 #include <algorithm>
 #include <array>
 #include <memory>
-#include <bitsery/brief_syntax.h>
 #include "block/attributes/Block.hpp"
 #include "block/attributes/Blocks.hpp"
 #include "client/render/TileColor.hpp"
@@ -77,7 +77,7 @@ class Chunk {
     }
   }
 
-  static std::unique_ptr<Chunk> emptyChunk(ChunkPosT chunkPos){
+  static std::unique_ptr<Chunk> emptyChunk(ChunkPosT chunkPos) {
     block::Block* blocks[chunk::ChunkGenSettings::CHUNK_WIDTH]
                         [chunk::ChunkGenSettings::CHUNK_HEIGHT];
     for (auto x_pos = 0; x_pos < chunk::ChunkGenSettings::CHUNK_WIDTH;
@@ -88,7 +88,7 @@ class Chunk {
         blocks[x_pos][z_pos] = block;
       }
     }
-    return std::make_unique<Chunk>(chunkPos,&blocks);
+    return std::make_unique<Chunk>(chunkPos, &blocks);
   }
 
   [[nodiscard]] block::Block* getBlock(BlockPosT x, BlockPosT z) const {
@@ -159,38 +159,26 @@ class Chunk {
   static coordinate::ChunkPos toChunkPosition(BlockPosT blockPosX,
                                               BlockPosT blockPosZ) {
     coordinate::ChunkPos chunk_settings;
-    if (blockPosX / 16 == 0) {
-      if (blockPosX < 0)
-        chunk_settings.chunkPos = -1;
-      else
-        chunk_settings.chunkPos = 0;
-    } else {
-      if (blockPosX < 0)
-        chunk_settings.chunkPos = blockPosX / 16 - 1;
-      else
+
+    if (blockPosX == 0) [[unlikely]] {
+      chunk_settings.chunkPos = 0;
+    } else [[likely]] {
+      if (blockPosX > 0) {
         chunk_settings.chunkPos = blockPosX / 16;
+      } else {
+        chunk_settings.chunkPos = ((blockPosX + 1) / 16 - 1);
+      }
     }
-    if (blockPosX < 0) {
-      auto x =
-          blockPosX - ChunkGenSettings::CHUNK_WIDTH * chunk_settings.chunkPos;
-      if (x == 16)
-        x = 0;
-      chunk_settings.blockPos.x = x;
-      chunk_settings.blockPos.z = blockPosZ;
-    } else {
-      chunk_settings.blockPos.x = blockPosX % 16;
-      chunk_settings.blockPos.z = blockPosZ;
-      ;
-    }
+    chunk_settings.blockPos.x =
+        blockPosX - ChunkGenSettings::CHUNK_WIDTH * chunk_settings.chunkPos;
+    chunk_settings.blockPos.z = blockPosZ;
     return chunk_settings;
   }
 
   static coordinate::BlockPos toBlockPosition(ChunkPosT chunkPos,
                                               BlockPosT x,
                                               BlockPosT z) {
-    coordinate::BlockPos position{x + ChunkGenSettings::CHUNK_WIDTH * chunkPos,
-                                  z};
-    return position;
+    return {x + ChunkGenSettings::CHUNK_WIDTH * chunkPos, z};
   }
 
   static coordinate::BlockPos toBlockPosition(
