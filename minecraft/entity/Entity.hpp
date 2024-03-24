@@ -357,7 +357,7 @@ class Entity : public EntityAccess, public HitboxHandler {
     if (isWalking() && onGround()) {
       auto block = &getWorld()->getChunkManager()->getBlockUnsafe(
           getEntityPosition().get<coordinate::BlockPos>());
-      this->minecraftClientAccess->getSoundManager()->addSound(
+      this->minecraftClientAccess->getSoundManager().addSound(
           BlockSoundGroup::get(block));
     }
   }

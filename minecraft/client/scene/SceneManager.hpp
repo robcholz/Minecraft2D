@@ -50,7 +50,7 @@ class SceneManager {
       } else {
         if (scene->isTerminated()) {
           this->minecraftClientAccess->getSoundManager()
-              ->clearMusicSoundEventQueue();
+              .clearMusicSoundEventQueue();
           sceneName = pairMap[sceneName];
           delete scene;
           scene = sceneCallableMap[sceneName]();

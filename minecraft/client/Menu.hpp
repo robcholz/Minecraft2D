@@ -164,44 +164,44 @@ class Menu : public SceneAccess {
         .addWidget(&settingVolumeSliderWeather)
         .addWidget(&settingVolumeBack);
     settingVolumeSliderAmbientEnvironment.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::ENVIRONMENT,
           settingVolumeSliderAmbientEnvironment.getValue());
     });
     settingVolumeSliderBlocks.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::BLOCKS, settingVolumeSliderBlocks.getValue());
     });
     settingVolumeSliderFriendlyCreatures.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::FRIENDLY_CREATURES,
           settingVolumeSliderFriendlyCreatures.getValue());
     });
     settingVolumeSliderHostileCreatures.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::HOSTILE_CREATURES,
           settingVolumeSliderHostileCreatures.getValue());
     });
     settingVolumeSliderJukeboxNoteblocks.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::JUKEBOX,
           settingVolumeSliderJukeboxNoteblocks.getValue());
     });
     settingVolumeSliderMasterVolume.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::MASTER,
           settingVolumeSliderMasterVolume.getValue());
     });
     settingVolumeSliderMusic.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::MUSIC, settingVolumeSliderMusic.getValue());
     });
     settingVolumeSliderPlayers.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::PLAYERS, settingVolumeSliderPlayers.getValue());
     });
     settingVolumeSliderWeather.executeFuncWhenActivated([this]() {
-      this->minecraftClientAccess->getSoundManager()->setVolume(
+      this->minecraftClientAccess->getSoundManager().setVolume(
           SoundManager::Sound::WEATHER, settingVolumeSliderWeather.getValue());
     });
 
@@ -223,7 +223,7 @@ class Menu : public SceneAccess {
   }
 
   void playRandomMusic() {
-    this->minecraftClientAccess->getSoundManager()->addSound(
+    this->minecraftClientAccess->getSoundManager().addSound(
         SoundEvents::getInstance().MUSIC_MENU);
   }
 };

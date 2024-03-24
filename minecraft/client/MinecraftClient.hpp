@@ -60,9 +60,9 @@ class MinecraftClient : public MinecraftClientAccess {
     }
   }
 
-  SoundManager* getSoundManager() override { return &soundManager; }
+  SoundManager& getSoundManager() override { return soundManager; }
 
-  SceneManager* getSceneManager() override { return sceneManager.get(); }
+  SceneManager& getSceneManager() override { return *sceneManager; }
 
   input::mouse::Mouse& getMouse() override { return mouse.get(); }
 

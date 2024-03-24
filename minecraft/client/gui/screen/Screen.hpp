@@ -38,7 +38,7 @@ class Screen {
     for (const auto widget_obj : widgetsList) {
       widget_obj->update();
       if (widget_obj->isClicked() && widget_obj->isFocused()) {
-        this->minecraftClientAccess->getSoundManager()->addSound(
+        this->minecraftClientAccess->getSoundManager().addSound(
             SoundEvents::getInstance().CLICK_SOUND_GUI);
         widget_obj->executeCallbackFunc();
         if (callbackScreenMap.contains(widget_obj)) {

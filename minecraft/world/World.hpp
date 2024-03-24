@@ -27,7 +27,7 @@ class World : public WorldAccess, public SceneAccess {
     player->getEntityPosition().set(60, 142);
     chunkManager->setChunkGenerator(
         [this](int chunkPos) { return worldGeneration->getChunk(chunkPos); });
-    this->minecraftClientAccess->getSoundManager()->addSound(
+    this->minecraftClientAccess->getSoundManager().addSound(
         SoundEvents::getInstance().MUSIC_HAL);
   }
 

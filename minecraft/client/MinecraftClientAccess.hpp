@@ -19,9 +19,9 @@ class Keyboard;
 
 class MinecraftClientAccess {
  public:
-  virtual SoundManager* getSoundManager() = 0;
+  virtual SoundManager& getSoundManager() = 0;
 
-  virtual SceneManager* getSceneManager() = 0;
+  virtual SceneManager& getSceneManager() = 0;
 
   virtual input::mouse::Mouse& getMouse() = 0;
 
