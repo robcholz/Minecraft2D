@@ -38,7 +38,7 @@ class TextFieldWidget : public Widget {
   bool isClicked() = delete;
 
  private:
-  RichText text{gui_style::MessageFont};
+  RichText text{gui_style::getMessageFont()};
 
   void executeCallbackFunc() override {}
 

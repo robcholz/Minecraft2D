@@ -14,7 +14,7 @@ class TexturedButtonWidget : public Widget {
                                 bool visible = true,
                                 int x = 0,
                                 int y = 0)
-      : Widget("", visible, {0, 106, 20, 20}, {0, 126, 20, 20}) {
+      : Widget("", visible, {0, 106, 20, 20}, {0, 126, 20, 20}), message(gui_style::getMessageFont()) {
     widgetSprite.setScale((float)width / 8, (float)height / 8);
     auto width_ = (int)widgetSprite.getGlobalBounds().width;
     auto height_ = (int)widgetSprite.getGlobalBounds().height;

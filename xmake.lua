@@ -26,6 +26,7 @@ add_files("minecraft/**.cpp")
 if is_plat("macosx") then
     add_files("minecraft/src/platform/osx/**.mm")
 end
+add_cxxflags("-fno-inline")
 add_deps("MemPool")
 add_packages("sfml")
 add_packages("boost")

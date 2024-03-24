@@ -58,7 +58,7 @@ class SliderWidget : public Widget {
                         bool visible = true,
                         int x = 0,
                         int y = 0)
-      : Widget("slider." + id, visible) {
+      : Widget("slider." + id, visible), message(gui_style::getMessageFont()) {
     title = TranslatableText::getTranslatable(*identifier);
     /*background*/
     sliderBackgroundTexture.loadFromFile(Path::widgetPath, intRectBackground);
@@ -82,7 +82,7 @@ class SliderWidget : public Widget {
         (int)sliderBackgroundSprite.getPosition().x +
         (int)sliderBackgroundSprite.getGlobalBounds().width -
         (int)widgetSprite.getGlobalBounds().width - 4;
-    message.setFont(gui_style::MessageFont)
+    message.setFont(gui_style::getMessageFont())
         .setColor(gui_style::MessageColor)
         .setMessage(getDisplayContent(title, getValue()));
     message.setCharacterSize((int)((float)widgetBackgroundOutline.height / 2));

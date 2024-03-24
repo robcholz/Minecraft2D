@@ -128,7 +128,7 @@ class DebugHud : public GUI, public Hud {
     void setLayout(Layout::layout layout) { _layout.setLayout(layout); }
 
     void addMessage(const String& id, std::function<String()> func) {
-      auto message = std::make_unique<RichText>();
+      auto message = std::make_unique<RichText>(gui_style::getMessageFont());
       message->setCharacterSize(35)
           .setColor(sf::Color(255, 255, 255))
           .setBackgroundColor(sf::Color(170, 170, 170, 168));

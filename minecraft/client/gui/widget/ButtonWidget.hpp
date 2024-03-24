@@ -44,12 +44,13 @@ class ButtonWidget : public Widget {
                         bool visible = true,
                         int x = 0,
                         int y = 0)
-      : Widget("button." + id, visible) {
+      : Widget("button." + id, visible), message(gui_style::getMessageFont()) {
     widgetSprite.setScale((float)width / 200, (float)height / 20);
     setOutline(&widgetOutline, widgetSprite, x, y, width, height);
     widgetSprite.setPosition((float)widgetOutline.x, (float)widgetOutline.y);
 
-    message.setFont(gui_style::MessageFont)
+
+    message.setFont(gui_style::getMessageFont())
         .setColor(gui_style::MessageColor)
         .setMessage(TranslatableText::getTranslatable(*identifier));
     message.setCharacterSize((int)((float)widgetOutline.height / 2));

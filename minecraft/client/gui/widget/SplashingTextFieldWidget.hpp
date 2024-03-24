@@ -39,7 +39,7 @@ class SplashingTextFieldWidget : public Widget {
   bool isClicked() = delete;
 
  private:
-  RichText text{gui_style::MessageFont};
+  RichText text{gui_style::getMessageFont()};
   static constexpr float changingSpeed = 0.0035f;
   static constexpr float lower = 1.f;
   static constexpr float upper = 1.05f;

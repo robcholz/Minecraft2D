@@ -23,7 +23,10 @@ class GUIFont : public sf::Font {
 
 namespace gui_style {
 sf::Color MessageColor(220, 220, 220);
-initialization::GUIFont MessageFont;
+static initialization::GUIFont& getMessageFont(){
+  static initialization::GUIFont font;
+  return font;
+}
 }  // namespace gui_style
 
 #endif  // MINECRAFT_GUISTYLE_HPP
