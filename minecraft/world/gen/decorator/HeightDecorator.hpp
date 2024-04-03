@@ -5,6 +5,7 @@
 #ifndef MINECRAFT_HEIGHTDECORATOR_HPP
 #define MINECRAFT_HEIGHTDECORATOR_HPP
 
+#include <optional>
 #include <unordered_map>
 #include <utility>
 #include "Decorator.hpp"
@@ -30,7 +31,10 @@ class HeightDecorator : public Decorator {
     LayerPriority layerPriority;
   };
 
-  explicit HeightDecorator(unsigned int seed) { noise.initialize(seed); }
+  explicit HeightDecorator(unsigned int seed) {
+    noise.initialize(seed);
+    randomEngineForLayerBlender.seed(seed);
+  }
 
   HeightDecorator& configure(const LayerConfig& layerConfig) {
     layers.insert({layerConfig.layerPriority, layerConfig});
@@ -46,6 +50,8 @@ class HeightDecorator : public Decorator {
     }
     return *this;
   }
+
+  std::optional<BlockPosT> getLayerHeight(const block::Block& block) {}
 
   HeightDecorator& setLayerBlendModifier(const LayerConfig& config1,
                                          const LayerConfig& config2,
@@ -91,22 +97,24 @@ class HeightDecorator : public Decorator {
     }
   }
 
-  BlockPosT normalDistri(uint8_t halfRange) {
-    // normalDistribution.param({DEFAULT_DISTRI_MEAN,halfRange});
-    //  TODO TODO TODO TODO
-    return (BlockPosT)normalDistribution(randomEngine);
+  bool blendLayerShouldGenerateLowerLayerBlock(BlockPosT worldBlockPosX,
+                                               BlockPosT worldBlockPosZ,
+                                               uint8_t halfRange) {
+    //normalDistributionForLayerBlender.param(0,halfRange);
+    // TODO
   }
 
  private:
   math::PerlinNoise noise;
 
-  std::default_random_engine randomEngine;
+  std::default_random_engine randomEngineForLayerBlender;
+  //std::normal_distribution<BlockPosT> normalDistributionForLayerBlender;
   static constexpr uint8_t DEFAULT_DISTRI_MEAN = 0;
-  std::normal_distribution<float> normalDistribution;
 
   std::unordered_map<LayerPriority, LayerConfig> layers;
   std::unordered_map<LayerPriority, std::pair<BlockPosT, BlockPosT>>
       layerInfo;  // lower, upper
+  // value:: 8:mean, 8:stdev
   std::unordered_map<uint16_t, uint16_t> blendModifiers;
 };
 

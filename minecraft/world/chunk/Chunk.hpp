@@ -140,7 +140,7 @@ class Chunk {
    * @param light brightness, from 0-15
    */
   void setBlockLightLevel(BlockPosT x, BlockPosT z, uint8_t light) {
-    auto brightness = light * 17;  // 255/15=17
+    auto brightness = 255;  // 255/15=17
     auto rgba =
         TileColor::convertToRGBA(brightness, brightness, brightness, 255);
     getBlock(x, z)->setTileColor(rgba);

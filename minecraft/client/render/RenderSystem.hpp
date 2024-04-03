@@ -8,6 +8,7 @@
 
 #include <plog/Log.h>
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <format>
 #include <functional>
 #include <memory>
 #include "util/Path.hpp"
@@ -33,7 +34,7 @@ class RenderSystem {
      */
     static constexpr ZoomT zoomSize = 50;
     static constexpr ZoomT pixelToBlock =
-        20;  // the screen pixel of one block(16 pixels) // one block take up
+        10;  // the screen pixel of one block(16 pixels) // one block take up
              // pixelProportion pixels
     static constexpr ZoomT pixelProportion = (ZoomT)(pixelToBlock * 2);
     static constexpr float actualPixelToOnePixel = (float)pixelProportion / 16;

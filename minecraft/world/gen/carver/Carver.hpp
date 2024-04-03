@@ -23,15 +23,15 @@ class Carver {
                                        [chunk::ChunkGenSettings::CHUNK_HEIGHT],
       BlockPosT blockPosX,
       BlockPosT chunkBlockPosX,
-      BlockPosT chunkBlockPos,
+      BlockPosT chunkBlockPosZ,
       int curveThresholdConstant,
       bool condition) {
     double x = (double)blockPosX / ((double)100);
-    double y = (double)chunkBlockPos / ((double)100);
+    double y = (double)chunkBlockPosZ / ((double)100);
     double n = 2 * noise.noise(x * 5, y * 5, 0.8);
     auto grey_channel = (uint8_t)floor(255 * n);
-    if (grey_channel > curveThresholdConstant && condition)
-      blockBuffer[chunkBlockPosX][chunkBlockPos] =
+    if (grey_channel <= curveThresholdConstant && condition)
+      blockBuffer[chunkBlockPosX][chunkBlockPosZ] =
           block::Blocks::getInstance()
               .getObjectInstance("minecraft:air_block")
               ->getSerialID();

@@ -27,17 +27,13 @@ class WorldGeneration {
         heightDecorator->decorate(chunkBlocksBuffer, chunkPos, x_pos, z_pos,
                                   x_world);
       }
+      for (unsigned int z = 0; z < chunk::ChunkGenSettings::CHUNK_HEIGHT; ++z) {
+        auto cond1 = z <= 50 && z > 1;
+        carver->curve(chunkBlocksBuffer, x_world, x_pos, z, 150, cond1);
+        auto cond2 = z > 50;
+        carver->curve(chunkBlocksBuffer, x_world, x_pos, z, 200, cond2);
+      }
     }
-    /*
-            for (unsigned int z = 0; z < chunk::ChunkGenSettings::CHUNK_HEIGHT;
-       ++z) { carver->curve(chunkBlocksBuffer, x_world, x_pos, z, 150,
-                                  [](BlockPosT z) { return z <=
-       DEEPSLATE_BASE_HEIGHT; }); carver->curve(chunkBlocksBuffer, x_world,
-       x_pos, z, 200,
-                                              [](BlockPosT z) { return z >
-       DEEPSLATE_BASE_HEIGHT; });
-            }
-            */
   }
 
  public:
@@ -50,7 +46,7 @@ class WorldGeneration {
                    HeightDecorator::LayerPriority::TRANSITION},
         deepslateLayer{block::Blocks::getInstance().DEEPSLATE_BLOCK, 50,
                        HeightDecorator::LayerPriority::MIDDLE},
-        bedrockLayer{block::Blocks::getInstance().BEDROCK_BLOCK, 5,
+        bedrockLayer{block::Blocks::getInstance().BEDROCK_BLOCK, 1,
                      HeightDecorator::LayerPriority::BOTTOM} {
     carver = std::make_unique<Carver>(seed);
     heightDecorator = std::make_unique<HeightDecorator>(seed);
