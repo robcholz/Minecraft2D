@@ -97,7 +97,7 @@ class ChunkStream : public ChunkStreamAccess {
   int getDeletedChunks() override { return (int)chunkDeletingList.size(); }
 
   int getCachedChunks() override {
-    std::lock_guard<std::mutex> cached_chunk_lock(cachedChunksMutex);
+    std::scoped_lock<std::mutex> cached_chunk_lock(cachedChunksMutex);
     return (int)cachedChunks.size();
   }
 
@@ -137,8 +137,9 @@ class ChunkStream : public ChunkStreamAccess {
   std::mutex chunkSaveRequestQueueMutex;
   std::mutex chunkLoadRequestQueueMutex;
   std::mutex chunkNewlyLoadedQueueMutex;
-  std::atomic<bool> threadTryStopFlag{false};
-  std::atomic<bool> threadIsStoppedFlag{true};
+  std::atomic_bool threadHasTaskFlag{false};
+  std::atomic_bool threadTryStopFlag{false};
+  std::atomic_bool threadIsStoppedFlag{true};
   std::unique_ptr<SaveHelper> saveHelper;
   std::unique_ptr<FileHelper> regionFileHelper;
 
@@ -218,8 +219,7 @@ class ChunkStream : public ChunkStreamAccess {
     for (const auto& v : chunkSimulationMap) {
       auto chunkPos = v.first;
       auto chunk = v.second.get();
-      [[unlikely]]
-      if (!(renderInterval.lower <= chunkPos &&
+      [[unlikely]] if (!(renderInterval.lower <= chunkPos &&
                          chunkPos <= renderInterval.upper)) {
         chunkRenderingMap.erase(chunkPos);
       }  // chunk has been de-rendered
@@ -247,25 +247,27 @@ class ChunkStream : public ChunkStreamAccess {
   }
 
   void sendLoadChunkRequest(ChunkPosT chunkPos) {
-    std::lock_guard<std::mutex> load_lock(chunkLoadRequestQueueMutex);
+    std::scoped_lock<std::mutex> load_lock(chunkLoadRequestQueueMutex);
     chunkLoadRequestQueue.push_front(chunkPos);
+    threadHasTaskFlag = true;
+    threadHasTaskFlag.notify_one();
   }
 
   std::optional<std::unique_ptr<Chunk>> tryGetLoadedChunk() {
-    chunkNewlyLoadedQueueMutex.lock();
+    std::scoped_lock<std::mutex> load_lock(chunkNewlyLoadedQueueMutex);
     if (!chunkNewlyLoadedQueue.empty()) {
       auto chunk = std::move(chunkNewlyLoadedQueue.back());
       chunkNewlyLoadedQueue.pop_back();
-      chunkNewlyLoadedQueueMutex.unlock();
       return chunk;
     }
-    chunkNewlyLoadedQueueMutex.unlock();
     return std::nullopt;
   }
 
   void sendUnloadChunkRequest(std::unique_ptr<Chunk> chunk) {
-    std::lock_guard<std::mutex> save_lock(chunkSaveRequestQueueMutex);
+    std::scoped_lock<std::mutex> save_lock(chunkSaveRequestQueueMutex);
     chunkSaveRequestQueue.push_front(std::move(chunk));
+    threadHasTaskFlag = true;
+    threadHasTaskFlag.notify_one();
   }
 
   /// @warning only used in chunkIOThreadMain
@@ -276,7 +278,7 @@ class ChunkStream : public ChunkStreamAccess {
       auto third_dot_occur = utils::nthOccurrence(filename, ".", 3);
       coordinate::ChunkPositionT chunkPos = std::stoi(filename.substr(
           second_dot_occur + 1, third_dot_occur - second_dot_occur));
-      std::lock_guard<std::mutex> cached_chunk_lock(cachedChunksMutex);
+      std::scoped_lock<std::mutex> cached_chunk_lock(cachedChunksMutex);
       cachedChunks.insert(chunkPos);  // added to indexed chunks
     }
   }
@@ -288,7 +290,7 @@ class ChunkStream : public ChunkStreamAccess {
     chunkLoadRequestQueue.pop_back();
     std::unique_ptr<chunk::Chunk> chunk;
     {
-      std::lock_guard<std::mutex> cached_chunk_lock(cachedChunksMutex);
+      std::scoped_lock<std::mutex> cached_chunk_lock(cachedChunksMutex);
       if (cachedChunks.count(chunk_pos)) {
         PLOG_DEBUG << "loaded chunk from cache files";
         chunk = saveHelper->loadChunk(chunk_pos);
@@ -301,7 +303,7 @@ class ChunkStream : public ChunkStreamAccess {
     // send processed chunk
     {
       PLOG_DEBUG << "sent processed chunk to queue";
-      std::lock_guard<std::mutex> newly_loaded_lock(chunkNewlyLoadedQueueMutex);
+      std::scoped_lock<std::mutex> newly_loaded_lock(chunkNewlyLoadedQueueMutex);
       chunkNewlyLoadedQueue.push_front(std::move(chunk));
     }
   }
@@ -319,20 +321,23 @@ class ChunkStream : public ChunkStreamAccess {
     indexRegions();
     PLOG_INFO << "chunk IO thread started!";
     while (!threadTryStopFlag) {
+      threadHasTaskFlag.wait(false); // wait until there are tasks
       {
-        std::lock_guard<std::mutex> load_lock(chunkLoadRequestQueueMutex);
+        std::scoped_lock<std::mutex> load_lock(chunkLoadRequestQueueMutex);
         if (!chunkLoadRequestQueue.empty())
           processChunkLoadRequest();
+        threadHasTaskFlag.store(threadHasTaskFlag.load() || (!chunkLoadRequestQueue.empty()));
       }
       {
-        std::lock_guard<std::mutex> save_lock(chunkSaveRequestQueueMutex);
+        std::scoped_lock<std::mutex> save_lock(chunkSaveRequestQueueMutex);
         if (!chunkSaveRequestQueue.empty())
           processChunkSaveRequest();
+        threadHasTaskFlag.store(threadHasTaskFlag.load() || (!chunkSaveRequestQueue.empty()));
       }
     }
     // if thread is going to stop, check if there are chunks to save
     {
-      std::lock_guard<std::mutex> save_lock(chunkSaveRequestQueueMutex);
+      std::scoped_lock<std::mutex> save_lock(chunkSaveRequestQueueMutex);
       while (!chunkSaveRequestQueue.empty())
         processChunkSaveRequest();
     }
