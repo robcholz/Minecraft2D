@@ -11,6 +11,8 @@
 #include <list>
 #include <memory>
 #include <mutex>
+#include <semaphore>
+#include <numeric>
 #include <set>
 #include <thread>
 #include <utility>
@@ -35,7 +37,7 @@ class ChunkStream : public ChunkStreamAccess {
 
   explicit ChunkStream(WorldAccess* worldAccess,
                        DistanceT simulationDistance,
-                       DistanceT renderDistance) {
+                       DistanceT renderDistance){
     PLOG_INFO << "class instance ChunkStream initialized!";
     this->worldAccess = worldAccess;
     this->saveHelper = std::make_unique<SaveHelper>("TestChunkSave");
@@ -137,7 +139,7 @@ class ChunkStream : public ChunkStreamAccess {
   std::mutex chunkSaveRequestQueueMutex;
   std::mutex chunkLoadRequestQueueMutex;
   std::mutex chunkNewlyLoadedQueueMutex;
-  std::atomic_bool threadHasTaskFlag{false};
+  std::counting_semaphore<std::numeric_limits<std::ptrdiff_t>::max()> threadHasTask{0};
   std::atomic_bool threadTryStopFlag{false};
   std::atomic_bool threadIsStoppedFlag{true};
   std::unique_ptr<SaveHelper> saveHelper;
@@ -249,8 +251,7 @@ class ChunkStream : public ChunkStreamAccess {
   void sendLoadChunkRequest(ChunkPosT chunkPos) {
     std::scoped_lock<std::mutex> load_lock(chunkLoadRequestQueueMutex);
     chunkLoadRequestQueue.push_front(chunkPos);
-    threadHasTaskFlag = true;
-    threadHasTaskFlag.notify_one();
+    threadHasTask.release();
   }
 
   std::optional<std::unique_ptr<Chunk>> tryGetLoadedChunk() {
@@ -266,8 +267,7 @@ class ChunkStream : public ChunkStreamAccess {
   void sendUnloadChunkRequest(std::unique_ptr<Chunk> chunk) {
     std::scoped_lock<std::mutex> save_lock(chunkSaveRequestQueueMutex);
     chunkSaveRequestQueue.push_front(std::move(chunk));
-    threadHasTaskFlag = true;
-    threadHasTaskFlag.notify_one();
+    threadHasTask.release();
   }
 
   /// @warning only used in chunkIOThreadMain
@@ -321,18 +321,20 @@ class ChunkStream : public ChunkStreamAccess {
     indexRegions();
     PLOG_INFO << "chunk IO thread started!";
     while (!threadTryStopFlag) {
-      threadHasTaskFlag.wait(false); // wait until there are tasks
+      threadHasTask.acquire(); // wait until there are tasks
       {
         std::scoped_lock<std::mutex> load_lock(chunkLoadRequestQueueMutex);
-        if (!chunkLoadRequestQueue.empty())
+        if (!chunkLoadRequestQueue.empty()) {
           processChunkLoadRequest();
-        threadHasTaskFlag.store(threadHasTaskFlag.load() || (!chunkLoadRequestQueue.empty()));
+          threadHasTask.release();
+        }
       }
       {
         std::scoped_lock<std::mutex> save_lock(chunkSaveRequestQueueMutex);
-        if (!chunkSaveRequestQueue.empty())
+        if (!chunkSaveRequestQueue.empty()) {
           processChunkSaveRequest();
-        threadHasTaskFlag.store(threadHasTaskFlag.load() || (!chunkSaveRequestQueue.empty()));
+          threadHasTask.release();
+        }
       }
     }
     // if thread is going to stop, check if there are chunks to save
